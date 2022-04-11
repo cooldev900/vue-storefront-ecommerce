@@ -1,0 +1,78 @@
+<template>
+  <SfButton
+    class="sf-button--pure a-account-ico navigation-icon"
+  >
+    <div class="sf-header__custom-icon" :class="[{
+      'sf-header__icon--is-active': isLoggedIn
+    }, menuStyle]"
+    >
+    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="20" height="20"
+viewBox="0 0 50 50"
+style=" fill:#000000;"><path d="M 21 3 C 11.601563 3 4 10.601563 4 20 C 4 29.398438 11.601563 37 21 37 C 24.355469 37 27.460938 36.015625 30.09375 34.34375 L 42.375 46.625 L 46.625 42.375 L 34.5 30.28125 C 36.679688 27.421875 38 23.878906 38 20 C 38 10.601563 30.398438 3 21 3 Z M 21 7 C 28.199219 7 34 12.800781 34 20 C 34 27.199219 28.199219 33 21 33 C 13.800781 33 8 27.199219 8 20 C 8 12.800781 13.800781 7 21 7 Z"></path></svg>
+    </div>
+    <span class="sf-header__split">|</span>
+    <span @click="goToAccount" class="sf-header__custom-icon">MY ACCOUNT</span>
+    <span class="sf-header__split">|</span>
+    <span @click="goToAccount" class="sf-header__custom-icon">HELP</span>
+  </SfButton>
+</template>
+
+<script>
+import { SfIcon, SfButton } from '@storefront-ui/vue';
+import { mapGetters, mapActions } from 'vuex';
+import { ModalList } from 'theme/store/ui/modals'
+
+export default {
+  components: { SfIcon, SfButton },
+  props: {
+    menuStyle: String
+  },
+  computed: {
+    ...mapGetters('user', ['isLoggedIn'])
+  },
+  methods: {
+    ...mapActions('ui', {
+      openModal: 'openModal'
+    }),
+    goToAccount () {
+      if (this.isLoggedIn) {
+        this.$router.push(this.localizedRoute('/my-account'))
+      } else {
+        this.openModal({ name: ModalList.Auth, payload: 'login' })
+      }
+    }
+  }
+};
+</script>
+<style lang="scss" scoped>
+@import "~@storefront-ui/shared/styles/helpers/breakpoints";
+.navigation-icon{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  font-weight: 700;
+  background: #fff;
+  border-radius: 20px 0 0 20px;
+  padding: 0 30px 0 10px;
+  font-size: 13px;
+}
+.sf-header__custom-icon{
+font-size: 14px;
+font-family: var(--font-family-primary);
+color: #000000;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+position: relative;
+margin: 0 5px;
+  &.navigation-transparent{
+    color: #ffffff;
+  }
+}
+.sf-header__split{
+  padding: 0 10px;
+}
+</style>

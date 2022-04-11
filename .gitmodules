@@ -1,0 +1,14 @@
+[submodule "src/modules/vsf-cache-nginx"]
+	path = src/modules/vsf-cache-nginx
+	url = https://github.com/new-fantastic/vsf-cache-nginx.git
+	branch = master
+[submodule "src/modules/vsf-cache-varnish"]
+	path = src/modules/vsf-cache-varnish
+	url = https://github.com/new-fantastic/vsf-cache-varnish.git
+	branch = master
+[submodule "vsf-lexascms"]
+	path = vsf-lexascms
+	url = ./src/modules/vsf-lexascms
+[submodule "src/modules/vsf-lexascms"]
+	path = src/modules/vsf-lexascms
+	url = https://github.com/LexasCMS/vsf-lexascms.git

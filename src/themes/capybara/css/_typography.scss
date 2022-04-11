@@ -1,0 +1,308 @@
+:root.theme-3 {
+  --font-family-primary: MINI Serif Regular, Arial, Helvetica, sans-serif;
+  --font-family-secondary: MINI Serif Regular, Arial, Helvetica, sans-serif;
+  --font-family-bold: MINI Serif Bold, Arial, Helvetica, sans-serif;
+  --font-family-navigation: MINI Sans Serif Regular, Arial, Helvetica, sans-serif;
+}
+:root.theme-2 {
+  --font-family-primary: "bmwTypeNextWeb";
+  --font-family-secondary: "bmwTypeNextWeb-Light";
+  --font-family-bold: "bmwTypeNextWeb-bold";
+  --font-family-navigation: "bmwTypeNextWeb-bold";
+}
+:root {
+  // font-family
+  --font-family-primary: 'Montserrat', sans-serif;
+  --font-family-secondary:'Montserrat', sans-serif;
+  --font-family-bold: 'Montserrat', sans-serif;
+  --font-family-navigation: 'Montserrat', sans-serif;
+  // font-weight
+  --font-light: 300;
+  --font-normal: 300;
+  --font-medium: 300;
+  --font-semibold: 300;
+  --font-bold: 700;
+  --font-extra-bold: 800;
+  --font-black: 900;
+  // font-size
+  --font-2xs: 0.625rem; //10px
+  --font-xs: 0.75rem; //12px
+  --font-sm: 0.875rem; //14px
+  --font-base: 1rem; //16px
+  --font-lg: 1.125rem; //18px
+  --font-xl: 1.5rem; //24px
+  // heading font-size
+  --h1-font-size: 34px; //22px
+  --h2-font-size: 1.375rem; //22px
+  --h3-font-size: 1rem; //16px
+  --h4-font-size: 14px; //14px
+  --h5-font-size: 0.75rem; //12px
+  --h6-font-size: 0.75rem; //12px
+  @include for-desktop {
+    :is(h1, h2, h3, h4, h5, h6) {
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-family: var(--font-family-secondary);
+    }
+
+    h1 {
+      line-height: 60px;
+    }
+    h2 {
+ 
+    }
+    h4 {
+      line-height: 15px;
+    }
+    h5 {
+      line-height: 27px;
+    }
+
+    --h1-font-size: 34px;
+    --h2-font-size: 50px;
+    --h3-font-size: 35px;
+    --h4-font-size: 14px;
+    --h5-font-size: 20px;
+    // --h6-font-size: 0.625rem; //10px
+    .sf-heading__title--h3{
+      font-size: 26px;
+      text-transform: none;
+      line-height: 30px;
+    }
+    .sf-heading__title--h2{
+      font-size: 26px;
+      text-transform: none;
+      line-height: 30px;
+      margin-bottom: 20px;
+      font-family: var(--font-family-bold);
+    }
+    .sf-heading__title--h4{
+      font-size: 20px;
+      text-transform: none;
+      margin-bottom: 20px;
+      font-family: var(--font-family-bold);
+    }
+  }
+
+  @include for-tablet {
+    :is(h1, h2, h3, h4, h5, h6) {
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-family: var(--font-family-secondary);
+    }
+
+    h1 {
+      line-height: 50px;
+    }
+    h2 {
+      line-height: 42px;
+    }
+    h3 {
+      line-height: initial;
+    }
+    h4 {
+      line-height: 15px;
+    }
+    h5 {
+      line-height: 27px;
+    }
+    .sf-heading__title--h3{
+      font-size: 26px;
+      text-transform: none;
+      line-height: 30px;
+    }
+    .sf-heading__title--h2{
+      font-size: 26px;
+      text-transform: none;
+      line-height: 30px;
+      margin-bottom: 20px;
+      font-family: var(--font-family-bold);
+    }
+    .sf-heading__title--h4{
+      font-size: 20px;
+      text-transform: none;
+      margin-bottom: 20px;
+      font-family: var(--font-family-bold);
+    }
+    --h1-font-size: 34px;
+    --h2-font-size: 35px;
+    --h3-font-size: 16px;
+    --h4-font-size: 15px;
+    --h5-font-size: 20px;
+  }
+
+  @include for-mobile {
+    :is(h1, h2, h3, h4, h5, h6) {
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-family: var(--font-family-secondary);
+    }
+
+    h1 {
+      line-height: 35px;
+    }
+    h2 {
+      line-height: 42px;
+    }
+    h3 {
+      line-height: initial;
+    }
+    h4 {
+      line-height: 15px;
+    }
+    h5 {
+      line-height: 27px;
+    }
+    .sf-heading__title--h3{
+      font-size: 26px;
+      text-transform: none;
+      line-height: 30px;
+    }
+    .sf-heading__title--h2{
+      font-size: 26px;
+      text-transform: none;
+      line-height: 30px;
+      margin-bottom: 20px;
+      font-family: var(--font-family-bold);
+    }
+    .sf-heading__title--h4{
+      font-size: 20px;
+      text-transform: none;
+      margin-bottom: 20px;
+      font-family: var(--font-family-bold);
+    }
+
+    --h1-font-size: 35px;
+    --h2-font-size: 35px;
+    --h3-font-size: 15px;
+    --h4-font-size: 20px;
+    --h5-font-size: 20px;
+  }
+  [class*=' icon-'],[class^=icon-]{font-family:BMW_iconFont !important;speak:none;font-style:normal;font-weight:400;font-feature-settings:normal;font-variant:normal;line-height:1;text-transform:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+  .icon-geolocation::before{content:'\e95d'}
+  .icon-data-sheet-download::before{content:'\e952'}
+  .icon-need-analyzer::before{content:'\e953'}
+  .icon-pre-owned-search::before{content:'\e954'}
+  .icon-request-for-accessories::before{content:'\e955'}
+  .icon-request-for-information::before{content:'\e956'}
+  .icon-request-for-service-appointment::before{content:'\e957'}
+  .icon-request-for-contact::before{content:'\e94b'}
+  .icon-request-for-offer::before{content:'\e94c'}
+  .icon-service-package-finder::before{content:'\e958'}
+  .icon-stock-car-locator::before{content:'\e959'}
+  .icon-accessory-configurator::before{content:'\e93c'}
+  .icon-accessory-shop::before{content:'\e95a'}
+  .icon-shopping-cart::before{content:'\e93e'}
+  .icon-shopping-reservation-b:before{content:"\e973"}
+  .icon-shopping-reservation:before{content:"\e974"}
+  .icon-accessory-showroom::before{content:'\e93f'}
+  .icon-business-calculator::before,.icon-business-drive-calculator::before{content:'\e940'}
+  .icon-configurator::before{content:'\e941'}
+  .icon-connected-drive-store::before{content:'\e942'}
+  .icon-dealer-locator::before{content:'\e943'}
+  .icon-electrical-parts-catalogue::before{content:'\e944'}
+  .icon-insurance-calculator::before{content:'\e945'}
+  .icon-my-notepad::before{content:'\e946'}
+  .icon-online-appointment-scheduling::before{content:'\e947'}
+  .icon-online-manual-bmw::before{content:'\e948'}
+  .icon-price-list::before{content:'\e949'}
+  .icon-private-leasing-calculator::before{content:'\e94a'}
+  .icon-search2::before{content:'\e94d'}
+  .icon-software-update::before{content:'\e94e'}
+  .icon-stay-informed::before{content:'\e94f'}
+  .icon-test-drive-appointment::before{content:'\e950'}
+  .icon-user::before{content:'\e951'}
+  .icon-close-roof2::before{content:'\e933'}
+  .icon-open-roof2::before{content:'\e934'}
+  .icon-youtube::before{content:'\e939'}
+  .icon-facebook::before{content:'\e93d'}
+  .icon-instagram::before{content:'\e937'}
+  .icon-twitter::before{content:'\e938'}
+  .icon-grid-view::before{content:'\e93a'}
+  .icon-360::before{content:'\e93b'}
+  .icon-close-roof::before{content:'\e935'}
+  .icon-open-roof::before{content:'\e936'}
+  .icon-arrow-m-right::before{content:'\e90c'}
+  .icon-arrow-m-left::before,.icon-arrow_m_left::before{content:'\e90d'}
+  .icon-arrow-m-down::before,.icon-arrow_m_down::before{content:'\e90e'}
+  .icon-arrow-m-top::before,.icon-arrow_m_top::before{content:'\e90f'}
+  .icon-checkmark::before{content:'\e909'}
+  .icon-close-x::before,.icon-close_x::before{content:'\e90a'}
+  .icon-info-i::before,.icon-info_i::before{content:'\e90b'}
+  .icon-data-collect2::before,.icon-data_collect2::before{content:'\e910'}
+  .icon-change-data2::before,.icon-change_data2::before{content:'\e911'}
+  .icon-contact-rights2::before,.icon-contact_rights2::before{content:'\e912'}
+  .icon-data-security2::before,.icon-data_security2::before{content:'\e913'}
+  .icon-data-usage2::before,.icon-data_usage2::before{content:'\e914'}
+  .icon-how-we-collect2::before,.icon-how_we_collect2::before{content:'\e915'}
+  .icon-keep-info2::before,.icon-keep_info2::before{content:'\e916'}
+  .icon-share-data2::before,.icon-share_data2::before{content:'\e917'}
+  .icon-what-companies2::before,.icon-what_companies2::before{content:'\e918'}
+  .icon-global_hint::before{content:'\e95b'}
+  .icon-finance-lease-2::before,.icon-finance_lease_2::before{content:'\e919'}
+  .icon-finance-lease::before,.icon-finance_lease::before{content:'\e91a'}
+  .icon-individual::before{content:'\e91b'}
+  .icon-location::before{content:'\e91c'}
+  .icon-mybmw::before{content:'\e91d'}
+  .icon-need-analyzer::before,.icon-needanalyzer::before{content:'\e91e'}
+  .icon-offers::before{content:'\e91f'}
+  .icon-pre-owned-search::before,.icon-preownedsearch::before{content:'\e920'}
+  .icon-shop::before{content:'\e921'}
+  .icon-techhub::before{content:'\e922'}
+  .icon-technologies::before{content:'\e923'}
+  .icon-teilekatalog::before{content:'\e924'}
+  .icon-contact::before{content:'\e925'}
+  .icon-connected-drive::before,.icon-connected_drive::before{content:'\e926'}
+  .icon-configurator2::before{content:'\e927'}
+  .icon-calender::before{content:'\e928'}
+  .icon-configurator-2::before{content:'\e929'}
+  .icon-search::before{content:'\e930'}
+  .icon-arrow-down::before{content:'\e92a'}
+  .icon-arrow-left::before{content:'\e92b'}
+  .icon-arrow-right::before{content:'\e92c'}
+  .icon-arrow-up::before{content:'\e92d'}
+  .icon-drag-icon::before,.icon-drag_icon::before{content:'\e92e'}
+  .icon-profile::before{content:'\e92f'}
+  .icon-shopping-bag::before,.icon-shopping_bag::before{content:'\e931'}
+  .icon-burger-menu::before,.icon-burger_menu::before{content:'\e932'}
+  .icon-data-collect::before,.icon-data_collect::before{content:'\e908'}
+  .icon-change-data::before,.icon-change_data::before{content:'\e900'}
+  .icon-contact-rights::before,.icon-contact_rights::before{content:'\e901'}
+  .icon-data-security::before,.icon-data_security::before{content:'\e902'}
+  .icon-data-usage::before,.icon-data_usage::before{content:'\e903'}
+  .icon-how-we-collect::before,.icon-how_we_collect::before{content:'\e904'}
+  .icon-keep-info::before,.icon-keep_info::before{content:'\e905'}
+  .icon-share-data::before,.icon-share_data::before{content:'\e906'}
+  .icon-what-companies::before,.icon-what_companies::before{content:'\e907'}
+  .icon-filter::before{content:'\e95c'}
+  .icon-dealers::before{content:'\e95e'}
+  .icon-layer-indicator::before{content:'\e95f'}
+  .icon-charge::before{content:'\e960'}
+  .icon-charging-station::before{content:'\e961'}
+  .icon-fuel::before{content:'\e962'}
+  .icon-fuel-station::before{content:'\e963'}
+  .icon-app::before{content:'\e964'}
+  .icon-checkmark-dashed::before{content:'\e965'}
+  .icon-bmw_ecom_shopping-cart::before{content:'\e966'}
+  .icon-bmw_label_car-compare::before{content:'\e967'}
+  .icon-bmw_actions_delete::before{content:'\e968'}
+  .icon-bmw_media_explore::before,.icon-media-explore::before{content:'\e969'}
+  .icon-bmw_media_list::before,.icon-media-list::before{content:'\e96a'}
+  .icon-bmw_media_heart_def_b::before,.icon-heart-filled::before{content:'\e96b'}
+  .icon-bmw_media_heart_b::before,.icon-heart-outline::before{content:'\e96c'}
+  .icon-maximize::before{content:'\e970'}
+  .icon-fuel-type-bev::before{content:'\e96d'}
+  .icon-fuel-type-phev::before{content:'\e96e'}
+  .icon-bmw-model-touring:before{content:"\e975"}
+  .icon-bmw-model-sedan:before{content:"\e976"}
+  .icon-bmw-model-sav:before{content:"\e977"}
+  .icon-bmw-model-sac:before{content:"\e978"}
+  .icon-bmw-model-roadster:before{content:"\e979"}
+  .icon-bmw-model-mpv:before{content:"\e97a"}
+  .icon-bmw-model-gt:before{content:"\e97b"}
+  .icon-bmw-model-gran-coupe:before{content:"\e97c"}
+  .icon-bmw-model-coupe:before{content:"\e97d"}
+  .icon-bmw-model-convertible:before{content:"\e97e"}
+  .icon-bmw-model-compact:before{content:"\e97f"}
+  .icon-faq:before{content:"\e981"}
+}

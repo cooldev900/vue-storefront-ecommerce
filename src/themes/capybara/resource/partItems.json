@@ -1,0 +1,123 @@
+[
+  {
+    "label": "Front",
+    "value": null,
+    "child": [
+      {
+        "label": "Body Front Exterior",
+        "value": "02"
+      },
+      {
+        "label": "Body Front Interior",
+        "value": "03"
+      },
+      {
+        "label": "Doors Front",
+        "value": "08"
+      }
+    ]
+  },
+  {
+    "label": "Middle",
+    "value": null,
+    "child": [
+      {
+        "label": "Body Middle Exterior",
+        "value": "04"
+      },
+      {
+        "label": "Body Middle Interior",
+        "value": "05"
+      }
+    ]
+  },
+  {
+    "label": "Rear",
+    "value": null,
+    "child": [
+      {
+        "label": "Body Rear Exterior",
+        "value": "06"
+      },
+      {
+        "label": "Body Rear Interior",
+        "value": "07"
+      },
+      {
+        "label": "Doors Rear",
+        "value": "09"
+      }
+    ]
+  },
+  {
+    "label": "Cooling",
+    "value": 10,
+    "child": []
+  },
+  {
+    "label": "Engine",
+    "value": 11,
+    "child": []
+  },
+  {
+    "label": "Transmission",
+    "value": 12,
+    "child": []
+  },
+  {
+    "label": "Exhaust & Fuel",
+    "value": null,
+    "child": [
+      {
+        "label": "Exhaust",
+        "value": 13
+      },
+      {
+        "label": "Fuel Tank",
+        "value": 14
+      }
+    ]
+  },
+  {
+    "label": "Interior",
+    "value": null,
+    "child": [
+      {
+        "label": "Dashboard / Center Console",
+        "value": 15
+      },
+      {
+        "label": "Seats",
+        "value": 16
+      }
+    ]
+  },
+  {
+    "label": "Suspension",
+    "value": null,
+    "child": [
+      {
+        "label": "Suspension Front & Steering",
+        "value": 17
+      },
+      {
+        "label": "Suspension Rear",
+        "value": 18
+      }
+    ]
+  },
+  {
+    "label": "Wheels",
+    "value": null,
+    "child": [
+      {
+        "label": "Wheels Front",
+        "value": 19
+      },
+      {
+        "label": "Wheels Rear",
+        "value": 20
+      }
+    ]
+  }
+]

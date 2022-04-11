@@ -1,0 +1,33 @@
+{
+  "make": [
+    { "icon": "", "text": "Abarth" },
+    { "icon": "", "text": "Bentley" },
+    { "icon": "", "text": "BMW" },
+    { "icon": "", "text": "BMW Motorrad" },
+    { "icon": "", "text": "Dacia" },
+    { "icon": "", "text": "Fiat" },
+    { "icon": "", "text": "Ford" },
+    { "icon": "", "text": "Honda" },
+    { "icon": "", "text": "Jaguar" },
+    { "icon": "", "text": "Kia" },
+    { "icon": "", "text": "Land Rover" },
+    { "icon": "", "text": "Maserati" },
+    { "icon": "", "text": "Mazda" },
+    { "icon": "", "text": "MINI" },
+    { "icon": "", "text": "Mitsubishi" },
+    { "icon": "", "text": "Renault" },
+    { "icon": "", "text": "SKODA" },
+    { "icon": "", "text": "Suzuki" }
+  ],
+  "model": [
+    { "icon": "", "text": "Bentayga" },
+    { "icon": "", "text": "Continental" },
+    { "icon": "", "text": "Flying Spur" },
+    { "icon": "", "text": "Mulsanne" }
+  ],
+  "trim": [{ "icon": "", "text": "Saloon" }],
+  "year": [
+    { "icon": "", "text": "2013 to 2019" },
+    { "icon": "", "text": "2019 to present" }
+  ]
+}

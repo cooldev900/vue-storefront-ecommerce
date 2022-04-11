@@ -1,0 +1,225 @@
+<template>
+  <div class="sb-best-match-grid">
+    <h2 class="sb-best-match-grid__title">
+     Trending Now
+    </h2>
+    <p class="sb-best-match-grid__copy">Explore our latest offers</p>
+    <swiper
+      ref="bestMatchCarousel"
+      :options="swiperOption"
+      class="best-match-carousel"
+
+    >
+      <swiper-slide v-for="(card, index) in cards" :key="index">
+        <OmCard
+          :info="card"
+        />
+      </swiper-slide>
+          <div class="swiper-pagination--best-match" slot="pagination"></div>
+    </swiper>
+               <div class="swiper-button-prev--best-match" slot="button-prev">
+                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.777 12.02l7.071-7.071 1.414 1.414-7.07 7.071z"></path><path d="M7.737 11.98l1.415-1.414 7.07 7.071-1.414 1.414z"></path></svg>
+               </div>
+        <div class="swiper-button-next--best-match" slot="button-next">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.737 17.637l7.07-7.071 1.415 1.414-7.071 7.07z"></path><path d="M7.777 6.363L9.19 4.95l7.071 7.071-1.414 1.414z"></path></svg>
+    </div>
+  </div>
+</template>
+
+<script>
+import OmCard from '../omni/om-card-collection/om-card.vue';
+import {Swiper, SwiperSlide } from 'vue-awesome-swiper';
+
+export default {
+  name: 'SbBestMatchGrid',
+  components: {
+    OmCard,
+    SwiperSlide,
+    Swiper
+  },
+  props: {
+    content: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  computed: {
+    cards () {
+      if (this.content) {
+        return this.content.logos.map(logo =>
+          ({
+            imgUrl: logo.logo.filename,
+            title: logo.title,
+            text: logo.description,
+            cta: logo.cta.url
+          }))
+      } else {
+        return []
+      }
+    },
+    swiper () {
+          return this.$refs.bestMatchCarousel.$swiper
+    }
+  },
+  data () {
+    return {
+   swiperOption: {
+          slidesPerView: 4,
+          spaceBetween: 20,
+          pagination: {
+            el: '.swiper-pagination--best-match',
+            clickable: true
+          },
+          navigation: {
+            nextEl: '.swiper-button-next--best-match',
+            prevEl: '.swiper-button-prev--best-match'
+          },
+          breakpoints: {
+            1401: {
+              slidesPerView: 3.3,
+              spaceBetween: 30,
+            },
+            1300: {
+              slidesPerView: 3.2,
+              spaceBetween: 30
+            },
+            600: {
+              slidesPerView: 2,
+              spaceBetween: 20
+            },
+            320: {
+              slidesPerView: 1.1,
+              spaceBetween: 10
+            }
+          }
+    }
+    }
+  }
+};
+</script>
+<style lang="scss">
+@import "~@storefront-ui/shared/styles/helpers/breakpoints";
+.sb-best-match-grid {
+  margin: var(--spacer-2xl) auto;
+  padding: 0 40px;
+  max-width: 1680px;
+  margin: 60px auto;
+  width: 86%;
+  position: relative;
+  @include for-mobile {
+    /* grid-template-columns: 1fr; */
+    padding: 0 20px;
+    margin: 40px auto;
+  }
+&__title{
+  font-size: 30px;
+  margin: 0;
+  margin-bottom: 10px;
+  @include for-mobile{
+    font-size: 30px;
+  }
+}
+&__copy{
+  margin: 0;
+  color: #333;
+  font-size: 20px;
+  margin-bottom: 40px;
+  @include for-mobile{
+    margin-bottom: 30px;
+    font-size: 16px;
+  }
+}
+.swiper-container{
+  padding: 4px;
+}
+.swiper-pagination--best-match{
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    .swiper-pagination-bullet{
+      height: 10px;
+      width: 10px;
+    }
+    .swiper-pagination-bullet-active{
+      background: var(--c-primary);
+    }
+  }
+
+  .swiper-button-disabled {
+    visibility: hidden;
+  }
+   .swiper-button-next--best-match {
+   right: 10px  !important;
+   position: absolute;
+   z-index: 1;
+   cursor: pointer;
+   top: 50%;
+   transform: translateY(-50%);
+    width: 38px;
+    height: 38px;
+    background: #fff;
+    -webkit-box-shadow: 0 4px 9px 1px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 9px 1px rgba(0,0,0,0.1);
+    border-radius: 50%;
+    border: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid transparent;
+    @include for-desktop{
+      height: 48px;
+      width: 48px;
+    }
+        @include for-mobile{
+      display: none;
+    }
+    svg{
+      fill: var(--c-primary);
+      height: 20px;
+      width: 20px;
+    }
+    &:hover{
+      background: #e8e8e8;
+      border: 1px solid #bbb;
+    }
+  }
+ .swiper-button-prev--best-match {
+   left: 10px  !important;
+   position: absolute;
+   z-index: 1;
+   cursor: pointer;
+   top: 50%;
+   transform: translateY(-50%);
+    width: 38px;
+    height: 38px;
+    background: #fff;
+    -webkit-box-shadow: 0 4px 9px 1px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 9px 1px rgba(0,0,0,0.1);
+    border-radius: 50%;
+    border: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid transparent;
+    @include for-desktop{
+      height: 48px;
+      width: 48px;
+    }
+    @include for-mobile{
+      display: none;
+    }
+    svg{
+      fill: var(--c-primary);
+      height: 20px;
+      width: 20px;
+    }
+    &:hover{
+      background: #e8e8e8;
+      border: 1px solid #bbb;
+    }
+  }
+  .swiper-slide{
+    height: auto !important;
+  }
+}
+</style>

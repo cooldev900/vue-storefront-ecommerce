@@ -1,0 +1,16 @@
+.slide-bottom-enter-active,
+.slide-bottom-leave-active,
+.slide-top-enter-active,
+.slide-top-leave-active {
+  transition: transform .6s;
+}
+
+.slide-bottom-enter,
+.slide-bottom-leave-to {
+  transform: translateY(100%);
+}
+
+.slide-top-enter,
+.slide-top-leave-to {
+  transform: translateY(-100%);
+}

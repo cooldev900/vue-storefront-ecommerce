@@ -1,0 +1,13 @@
+{
+  "name": "vsf-storyblok",
+  "version": "1.0.0",
+  "description": "A Storyblok module for vue-storefront",
+  "main": "index.ts",
+  "repository": "https://github.com/jankawulok/vsf-storyblok",
+  "author": "Jan Kawulok",
+  "license": "MIT",
+  "dependencies": {
+    "storyblok-js-client": "^3.3.1",
+    "storyblok-vue": "^1.0.5"
+  }
+}

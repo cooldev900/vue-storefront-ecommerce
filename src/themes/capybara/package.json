@@ -1,0 +1,53 @@
+{
+  "name": "@vue-storefront/theme-capybara",
+  "version": "1.0.4",
+  "description": "New theme for Vue Storefront based on Storefront UI",
+  "main": "index.js",
+  "scripts": {
+    "test:unit": "echo \"No test specified yet\" && exit 0",
+    "lint": "cd ../../../ && yarn lint",
+    "dev": "cd ../../../ && yarn dev",
+    "generate-local-config": "node ./scripts/generate-local-config",
+    "generate-local-config:next": "yarn generate-local-config --next"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@storefront-ui/shared": "0.7.11",
+    "@storefront-ui/vue": "0.7.11",
+    "@voerro/vue-tagsinput": "^2.7.1",
+    "add": "^2.0.6",
+    "axios": "^0.21.1",
+    "body-scroll-lock": "^3.0.1",
+    "dom-parser": "^0.1.6",
+    "jsdom": "^15.2.1",
+    "net": "^1.0.2",
+    "parse5": "^5.1.0",
+    "quicklink": "^2.0.0-alpha",
+    "storefront-query-builder": "https://github.com/DivanteLtd/storefront-query-builder.git",
+    "supports-webp": "^2.0.1",
+    "swiper": "^5.3.7",
+    "vue": "^2.6.11",
+    "vue-awesome-swiper": "^4.1.0",
+    "vue-friendly-iframe": "^0.20.0",
+    "vue-lazy-hydration": "^1.0.0-beta.9",
+    "vue-loading-skeleton": "^1.1.9",
+    "vue-no-ssr": "^0.2.2",
+    "vue-offline": "^1.0.8",
+    "vue-progressbar": "^0.7.5",
+    "vue-recaptcha-v3": "1.9.0",
+    "vuejs-progress-bar": "^1.2.7",
+    "vuelidate": "0.6.2",
+    "vuex": "^3.0.1",
+    "xmlhttprequest": "^1.8.0",
+    "xmlserializer": "^0.6.1"
+  },
+  "devDependencies": {
+    "husky": "^3.1.0",
+    "postcss-filter-stream": "^0.0.6",
+    "semver": "^7.3.2"
+  },
+  "sideEffects": [
+    "*.(sc|sa|c)?ss",
+    "*.vue"
+  ]
+}

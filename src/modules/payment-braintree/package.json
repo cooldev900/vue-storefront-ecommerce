@@ -1,0 +1,36 @@
+{
+  "name": "@vue-storefront/payment-braintree",
+  "version": "0.2.0",
+  "description": "The Braintree module built By daniel coull @ SuttonSilver.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danrcoull/vsf-payment-braintree.git"
+  },
+  "keywords": [
+    "vue-storefront-braintree",
+    "vsf-payment-braintree",
+    "ttechitsolutions/vue-storefront-braintree",
+    "suttonsilver",
+    "vue-storefront",
+    "divanteltd/vue-storefront"
+  ],
+  "author": "Daniel Coull <d.coull@suttonsilver.co.uk> (https://www.suttonsilver.co.uk)",
+  "maintainers": [],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danrcoull/vsf-payment-braintree/issues"
+  },
+  "homepage": "https://github.com/danrcoull/vsf-payment-braintree#readme",
+  "dependencies": {
+    "braintree": "^2.14.0",
+    "braintree-web": "^3.40.0",
+    "braintree-web-drop-in": "^1.14.1"
+  }
+}
