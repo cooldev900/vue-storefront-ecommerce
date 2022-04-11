@@ -1,7 +1,7 @@
 <template>
   <div class="af-vehicle-finder">
     <div class="container">
-      <SfTabs :open-tab="1">
+      <SfTabs :open-tab="selectedTab">
         <SfTab title="Tire By Vehicle">
           <div class="selector-wrapper">
             <select
@@ -67,6 +67,7 @@
 import { SfTabs, SfButton } from '@storefront-ui/vue';
 import axios from 'axios';
 import config from 'config';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'SbVehicleFinder',
@@ -102,15 +103,20 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({activeVehicle: 'vehicles/activeVehicle'}),
     disableVehicleGoButton () {
       return Object.keys(this.models['vehicle']).some(key => this.models['vehicle'][key] === null);
     },
     disableSizeGoButton () {
       return Object.keys(this.models['size']).some(key => this.models['size'][key] === null);
+    },
+    selectedTab () {
+      return this.activeVehicle?.width ? 2 : 1;
     }
   },
   methods: {
     async changeSelector (type, keyIndex) {
+      console.log('changeSelector', type, 'type', keyIndex, 'keyIndex');
       if (type === 'vehicle') {
         if (keyIndex < 2) {
           const allKeys = Object.keys(this.models.vehicle);
@@ -197,22 +203,58 @@ export default {
     }
   },
   async mounted () {
-    let response = await axios.post(
-      `${config.api.url}/api/ext/alfardan/vehicle-finder/options/make`
-    );
-    if (response.data.code === 200) {
-      this.options.vehicle.make = response.data.result;
-      this.makeOptions = response.data.result;
-    }
+      let response = await axios.post(
+        `${config.api.url}/api/ext/alfardan/vehicle-finder/options/make`
+      );
+      if (response.data.code === 200) {
+        this.options.vehicle.make = response.data.result;
+        this.makeOptions = response.data.result;
+      }
 
-    response = await axios.post(
-      `${config.api.url}/api/ext/alfardan/tire-size/options/width`
-    );
-    if (response.data.code === 200) {
-      this.options.size.width = response.data.result;
-      this.widthOptions = response.data.result;
-    }
-  }
+      if (this.activeVehicle?.make) {
+        this.models.vehicle.make = this.activeVehicle.make;
+        await this.changeSelector('vehicle', 0);
+        this.models.vehicle.model = this.activeVehicle.model;
+        await this.changeSelector('vehicle', 1);
+        this.models.vehicle.tire_size = this.activeVehicle.tire_size;
+      }
+
+      response = await axios.post(
+        `${config.api.url}/api/ext/alfardan/tire-size/options/width`
+      );
+      if (response.data.code === 200) {
+        this.options.size.width = response.data.result;
+        this.widthOptions = response.data.result;
+      }
+
+      if (this.activeVehicle?.width) {
+        this.models.size.width = this.activeVehicle.width;
+        await this.changeSelector('size', 0);
+        this.models.size.rim = this.activeVehicle.rim;
+        await this.changeSelector('size', 1);
+        this.models.size.profile = this.activeVehicle.profile;
+      }           
+  },
+  // watch: {
+  //   async activeVehicle (value) {
+  //     console.log(value, 'activeVehicle');
+  //     if (value?.make) {
+  //       this.models.vehicle.make = value.make;
+  //       await this.changeSelector('vehicle', 0);
+  //       this.models.vehicle.model = value.model;
+  //       await this.changeSelector('vehicle', 1);
+  //       this.models.vehicle.tire_size = value.tire_size;
+  //     }
+
+  //     if (value?.width) {
+  //       this.models.size.width = value.width;
+  //       await this.changeSelector('size', 0);
+  //       this.models.size.model = value.model;
+  //       await this.changeSelector('size', 1);
+  //       this.models.size.tire_size = value.tire_size;
+  //     }
+  //   }
+  // }
 };
 </script>
 
