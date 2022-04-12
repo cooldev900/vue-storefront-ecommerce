@@ -28,7 +28,7 @@ export default {
       type: Object,
       default: () => {}
     },
-    varient: {
+    variant: {
       type: String,
       default: 'light' // light/grey/dark
     }
@@ -44,17 +44,17 @@ export default {
       return this.content.image.filename
     },
     theme () {
-      if (this.varient === 'light') {
+      if (this.variant === 'light') {
         return {
           bgColor: 'var(--c-primary)',
           color: 'white'
         }
-      } else if (this.varient === 'grey') {
+      } else if (this.variant === 'grey') {
         return {
           bgColor: '#e9ecec',
           color: '#0c121c'
         }
-      } else if (this.varient === 'dark') {
+      } else if (this.variant === 'dark') {
         return {
           bgColor: 'var(--c-primary)',
           color: 'white'

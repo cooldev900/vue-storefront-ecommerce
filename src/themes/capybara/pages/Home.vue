@@ -6,6 +6,7 @@
         :key="content._uid"
         :is="getComponentName(content.component)"
         :content="content"
+        :variant="content.variant"
       />
     </transition-group>
   </div>
