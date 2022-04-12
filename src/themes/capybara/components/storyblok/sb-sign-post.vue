@@ -44,7 +44,7 @@ export default {
       return this.content.image.filename
     },
     imagePosition () {
-      return this.content.image_position 
+      return this.content.image_position
     },
     theme () {
       if (this.variant === 'light') {
