@@ -736,7 +736,8 @@
       "rim",
       "litres",
       "grade",
-      "oil_type"
+      "oil_type",
+      "car_size"
     ],
     "systemFilterNames": [
       "sort"

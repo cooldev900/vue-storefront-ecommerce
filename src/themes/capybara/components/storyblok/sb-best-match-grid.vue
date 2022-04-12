@@ -1,28 +1,8 @@
 <template>
-  <div class="sb-best-match-grid">
-    <h2 class="sb-best-match-grid__title">
-     Trending Now
-    </h2>
-    <p class="sb-best-match-grid__copy">Explore our latest offers</p>
-    <swiper
-      ref="bestMatchCarousel"
-      :options="swiperOption"
-      class="best-match-carousel"
-
-    >
-      <swiper-slide v-for="(card, index) in cards" :key="index">
-        <OmCard
-          :info="card"
-        />
-      </swiper-slide>
-          <div class="swiper-pagination--best-match" slot="pagination"></div>
-    </swiper>
-               <div class="swiper-button-prev--best-match" slot="button-prev">
-                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.777 12.02l7.071-7.071 1.414 1.414-7.07 7.071z"></path><path d="M7.737 11.98l1.415-1.414 7.07 7.071-1.414 1.414z"></path></svg>
-               </div>
-        <div class="swiper-button-next--best-match" slot="button-next">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.737 17.637l7.07-7.071 1.415 1.414-7.071 7.07z"></path><path d="M7.777 6.363L9.19 4.95l7.071 7.071-1.414 1.414z"></path></svg>
-    </div>
+  <div class="promo-area">
+          <div class="promo-area__item" v-for="(card, index) in cards" :key="index">
+        <img :src="card.imgUrl" />
+      </div>
   </div>
 </template>
 
@@ -99,18 +79,23 @@ export default {
 </script>
 <style lang="scss">
 @import "~@storefront-ui/shared/styles/helpers/breakpoints";
-.sb-best-match-grid {
+.promo-area {
   margin: var(--spacer-2xl) auto;
   padding: 0 40px;
   max-width: 1680px;
   margin: 60px auto;
   width: 86%;
   position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   @include for-mobile {
     /* grid-template-columns: 1fr; */
     padding: 0 20px;
     margin: 40px auto;
   }
+&__item{
+  display: block;
+}
 &__title{
   font-size: 30px;
   margin: 0;

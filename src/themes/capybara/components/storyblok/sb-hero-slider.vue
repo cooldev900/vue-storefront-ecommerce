@@ -13,7 +13,7 @@
               <div class="description">
                 {{ slide.Sub_title }}
               </div>
-              <SfButton class="sf-button--full-width om-btn--primary" @click="onClick">
+              <SfButton class="sf-button--full-width om-btn--secondary" @click="onClick">
                 Select Your Vehicle
               </SfButton>
             </div>

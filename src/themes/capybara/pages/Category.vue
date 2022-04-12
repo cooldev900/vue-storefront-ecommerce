@@ -12,35 +12,9 @@
     <div class="main section">
       <div class="sidebar desktop-only">
         <div>
-          <OmVehicleCardCategory :vehicle="activeVehicle" :active="true" />
+          <omTyreFinder />
         </div>
-      </div>
-      <div class="products">
-        <div v-if="loading">
-          <transition-group
-            appear
-            name="products__slide"
-            tag="div"
-            class="products__grid"
-          >
-            <OmProductCardLoader
-              v-for="(value, index) in new Array(9).fill('')"
-              :key="index"
-            />
-          </transition-group>
-        </div>
-        <SfHeading
-          v-if="isCategoryEmpty && !loading"
-          :title="$t('No products found!')"
-          :subtitle="
-            $t(
-              'Please change Your search criteria and try again. If still not finding anything relevant, please visit the Home page and try out some of our bestsellers!'
-            )
-          "
-        />
-        <template v-if="!isCategoryEmpty && !loading">
-          <!-- <lazy-hydrate :trigger-hydration="!loading"> -->
-          <div class="filters">
+                  <div class="filters">
             <lazy-hydrate :trigger-hydration="!loading">
               <SfAccordion
                 class="tyre-filters"
@@ -83,6 +57,87 @@
               </SfAccordion>
             </lazy-hydrate>
           </div>
+      </div>
+      <div class="products">
+           <div class="navbar section">
+          <div class="navbar__main">
+            <div class="navbar__filter mobile-only">
+              <SfButton
+                class="sf-button--text navbar__filters-button"
+                @click="isFilterSidebarOpen = true"
+              >
+                <SfIcon size="18px" class="navbar__filters-icon" color="#BEBFC4" icon="filter" />
+                {{ $t("Filters") }}
+              </SfButton>
+              <template v-if="activeFiltersCount">
+                ({{ activeFiltersCount }})
+                <span> &nbsp;&mdash;&nbsp;</span>
+                <button @click="clearAllFilters" class="sf-button sf-button--text navbar__filters-clear-all">
+                  {{ $t('Clear all') }}
+                </button>
+              </template>
+            </div>
+            <div class="navbar__counter">
+              <span class="navbar__label desktop-only">
+                {{ $t("Products found") }}:
+              </span>
+              <strong class="desktop-only">{{ productTotalCount }}</strong>
+              <span class="navbar__label mobile-only">
+                {{ $t("{count} items", { count: productTotalCount }) }}
+              </span>
+            </div>
+            <div class="navbar__sort">
+              <span class="navbar__label desktop-only">{{ $t("Sort By") }}:</span>
+              <SfSelect
+                class="navbar__select sort-by"
+                ref="SortBy"
+                :selected="sortOrder"
+                @change="changeSortOder"
+              >
+                <SfSelectOption
+                  v-for="option in sortOptions"
+                  :key="option.id"
+                  :value="option.id"
+                  class="sort-by__option"
+                >
+                  {{ option.label }}
+                </SfSelectOption>
+              </SfSelect>
+              <SfButton
+                class="sf-button--text navbar__filters-button sort-by__button mobile-only"
+                @click="$refs.SortBy.toggle()"
+              >
+                {{ $t("Sort By") }}
+                <ASortIcon />
+              </SfButton>
+            </div>
+          </div>
+        </div>
+        <div v-if="loading">
+          <transition-group
+            appear
+            name="products__slide"
+            tag="div"
+            class="products__grid"
+          >
+            <OmProductCardLoader
+              v-for="(value, index) in new Array(9).fill('')"
+              :key="index"
+            />
+          </transition-group>
+        </div>
+        <SfHeading
+          v-if="isCategoryEmpty && !loading"
+          :title="$t('No products found!')"
+          :subtitle="
+            $t(
+              'Please change Your search criteria and try again. If still not finding anything relevant, please visit the Home page and try out some of our bestsellers!'
+            )
+          "
+        />
+        <template v-if="!isCategoryEmpty && !loading">
+          <!-- <lazy-hydrate :trigger-hydration="!loading"> -->
+
           <transition-group
             appear
             name="products__slide"
@@ -98,6 +153,7 @@
               :regular-price="product.price.regular"
               :special-price="product.price.special"
               :link="product.link"
+              brandImage="/assets/continental_logo.svg"
               link-tag="router-link"
               :wishlist-icon="false"
               class="products__product-card"
@@ -118,6 +174,18 @@
                 #price
               >
                 <b :style="{ color: 'black' }">Not Available Online</b>
+              </template>
+                    <template #reviews>
+                   <div class="product-card__action-area">
+                 <SfButton
+    :disabled="isProductDisabled || loading"
+    class="a-add-to-cart om-btn--primary btn--narrow sf-button--full-width"
+    @click.native="addToCart(product)"
+  >
+    <SfLoader v-if="loading" :loading="loading" />
+    <span v-else>{{ $t("Add to cart") }}</span>
+  </SfButton>
+                   </div>
               </template>
             </SfProductCard>
           </transition-group>
@@ -251,7 +319,7 @@ import {
   SfSearchBar,
   SfImage,
 } from "@storefront-ui/vue";
-import OmVehicleCardCategory from "theme/components/omni/om-vehicle/om-vehicle-card-category";
+import omTyreFinder from "theme/components/omni/om-vehicle/om-tyre-finder";
 import OmCategoryHeader from "theme/components/omni/om-category-header";
 import OmProductCardLoader from "theme/components/omni/skeletons/om-product-card-loader.vue";
 import SvgViewer from "theme/components/svg-viewer.vue";
@@ -312,7 +380,7 @@ export default {
     SfPagination,
     SfBreadcrumbs,
     SfProductCard,
-    OmVehicleCardCategory,
+    omTyreFinder,
     SvgViewer,
     SfSearchBar,
     OmCategoryHeader,
@@ -1158,6 +1226,8 @@ export default {
     --product-card-max-width: 100%;
     margin: 0;
     border-radius: 8px;
+    padding: 0 !important;
+    overflow: hidden;
   }
   ::v-deep .sf-product-card {
     &__title {
@@ -1203,24 +1273,14 @@ export default {
   padding: 0;
   max-height: 200px;
   overflow: scroll;
-  margin-bottom: 20px;
-  position: absolute;
-  z-index: 1;
   width: 100%;
   background: #fff;
-  box-shadow: var(
-    --select-dropdown-box-shadow,
-    0 4px 11px rgba(var(--c-dark-base), 0.1)
-  );
 }
 ::v-deep .sf-accordion-item__content.tyres {
-  position: absolute;
   z-index: 1;
   width: 100%;
 }
 .tyre-filters {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
   .sf-accordion-item {
     position: relative;
   }
@@ -1229,5 +1289,80 @@ export default {
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+::v-deep .sf-product-card__brand{
+  height: 60px;
+  width: 100%;
+  background: orange;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .brand-logo{
+    max-height: 30px;
+  }
+}
+::v-deep .action-area__wrap{
+  background: #000;
+  padding: 15px;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+}
+::v-deep .action-area__wrap--price{
+  padding: 0 10px;
+}
+::v-deep .action-area__wrap--message1{
+  color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #fff;
+  p{
+    text-align: center;
+    color: #fff;
+  }
+}
+
+::v-deep .action-area__wrap--message2{
+  color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-left: 1px solid #fff;
+  p{
+    text-align: center;
+    color: #fff;
+  }
+}
+::v-deep .action-area__wrap--promobanner{
+  height: 25px;
+  width: 100%;
+  background: grey;
+  color: #fff;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+::v-deep .action-area__wrap--stock{
+  height: 45px;
+  padding: 0 5px;
+  width: 100%;
+  background: #000;
+  color: #fff;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+.stock-pill{
+  background: green;
+  padding: 5px 10px;
+  border-radius: 25px;
+  font-size: 11px;
+  color: #fff;
+  margin-right: 15px;
+}
 }
 </style>

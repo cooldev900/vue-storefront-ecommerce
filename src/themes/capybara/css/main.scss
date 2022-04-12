@@ -142,9 +142,13 @@
     padding-left: 30px;
     padding-right: 30px;
     border-radius: 4px;
+    background-color: orange;
     font-size: 15px !important;
     font-weight: 700;
     font-family: var(--font-family-bold);
+  }
+  .btn--narrow{
+    height: 30px;
   }
   .btn--full-width{
     width: 100%;
@@ -154,7 +158,7 @@
     border-radius: 4px;
     padding-left: 30px;
     padding-right: 30px;
-    background: #4d4d4d;
+    background: grey;
     font-size: 15px !important;
     font-weight: 700;
     font-family: var(--font-family-bold);
@@ -167,7 +171,7 @@
     display: block;
   }
   .sf-price__regular{
-    color: #262626;
+    color: orange;
     font-size: 18px;
     font-weight: 700;
     font-family: var(--font-family-bold);

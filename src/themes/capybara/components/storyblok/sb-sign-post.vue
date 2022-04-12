@@ -8,7 +8,7 @@
         {{ copy }}
       </p>
     </div>
-    <div class="image-wrapper">
+    <div class="image-wrapper" :class="imagePosition">
       <img :src="image">
     </div>
   </div>
@@ -43,6 +43,9 @@ export default {
     image () {
       return this.content.image.filename
     },
+    imagePosition () {
+      return this.content.image_position 
+    },
     theme () {
       if (this.varient === 'light') {
         return {
@@ -56,7 +59,7 @@ export default {
         }
       } else if (this.varient === 'dark') {
         return {
-          bgColor: 'var(--c-primary)',
+          bgColor: '#000',
           color: 'white'
         }
       }
@@ -71,8 +74,7 @@ export default {
 .sb-sign-post {
   display: flex;
   max-width: 1600px;
-    margin: 20px auto;
-    border-radius: 10px;
+    margin: 0 auto;
     overflow: hidden;
   justify-content: center;
   align-content: center;
@@ -105,6 +107,13 @@ export default {
     img {
       width: 100%;
       vertical-align: middle;
+    }
+  }
+  .image-left{
+    order: 1;
+     @include for-mobile {
+      order: 1;
+      width: 100%;
     }
   }
 }
