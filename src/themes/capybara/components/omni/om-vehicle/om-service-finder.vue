@@ -137,7 +137,7 @@ export default {
     async getProducts () {
       this.$emit('update:loading', true);
       const url = `${config.api.url}/api/ext/alfardan/vehicle-finder/national-code`;
-      const { data: { code, result } } = await axios.post(url, { ...this.models.vehicle, tire_size: this.tire_size });
+      const { data: { code, result } } = await axios.post(url, { ...this.models.vehicle });
       if (code === 200) {
         let { car_size } = result;
         this.car_size = car_size;
@@ -159,9 +159,11 @@ export default {
           this.saveServiceVehicle({ ...this.models.vehicle, tire_size: this.tire_size, car_size: this.car_size });
           this.saveServiceVehicles(response.items);
         }
+
+        this.$emit('update:loading', false);
       }
       this.$emit('update:loading', false);
-    },
+    }
   },
   async mounted () {
     let response = await axios.post(
