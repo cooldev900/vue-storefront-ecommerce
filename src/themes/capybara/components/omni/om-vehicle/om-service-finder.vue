@@ -75,7 +75,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      serviceVehicle: 'vehicles/serviceVehicle',
+      activeVehicle: "vehicles/activeVehicle",
+      serviceVehicle: "vehicles/serviceVehicle",
       getAttributeIdByLabel: 'vehicles/getAttributeIdByLabel'
     }),
     disableVehicleGoButton () {
@@ -134,7 +135,7 @@ export default {
       }
     },
     async getProducts () {
-      this.$emit('update:loading', true)
+      this.$emit('update:loading', true);
       const url = `${config.api.url}/api/ext/alfardan/vehicle-finder/national-code`;
       const { data: { code, result } } = await axios.post(url, { ...this.models.vehicle, tire_size: this.tire_size });
       if (code === 200) {
@@ -157,10 +158,10 @@ export default {
           console.log(response.items, 'serviceVehicles');
           this.saveServiceVehicle({ ...this.models.vehicle, tire_size: this.tire_size, car_size: this.car_size });
           this.saveServiceVehicles(response.items);
-          this.$emit('update:loading', false);
         }
       }
-    }
+      this.$emit('update:loading', false);
+    },
   },
   async mounted () {
     let response = await axios.post(
@@ -175,6 +176,38 @@ export default {
       this.models.vehicle.make = this.activeVehicle.make;
       await this.changeSelector('vehicle', 0);
       this.models.vehicle.model = this.activeVehicle.model;
+    }
+
+    let carSizeValue = '';
+    if (this.activeVehicle?.car_size) {
+      this.models.vehicle.make = this.activeVehicle.make;
+      this.models.vehicle.model = this.activeVehicle.model;
+      carSizeValue = this.getAttributeIdByLabel('car_size', this.activeVehicle.car_size);
+    } else if (this.serviceVehicle?.car_size) {
+      this.models.vehicle.make = this.serviceVehicle.make;
+      this.models.vehicle.model = this.serviceVehicle.model;
+      carSizeValue = this.serviceVehicle?.car_size
+    }
+
+    if (carSizeValue) {
+      this.$emit('update:loading', true);
+      let relatedProductsQuery = new SearchQuery();
+      relatedProductsQuery = relatedProductsQuery
+        .applyFilter({ key: 'category_ids', value: { 'in': [6] } })
+        .applyFilter({ key: 'car_size', value: { 'in': carSizeValue } });
+      const response = await this.$store.dispatch('product/findProducts', {
+        query: relatedProductsQuery,
+        size: 36,
+        prefetchGroupProducts: false,
+        updateState: false
+      });
+
+      if (response) {
+        console.log(response.items, 'serviceVehicles');
+        this.saveServiceVehicle({ ...this.models.vehicle, tire_size: this.tire_size, car_size: this.car_size });
+        this.saveServiceVehicles(response.items);
+      }
+      this.$emit('update:loading', false);
     }
   }
 };
