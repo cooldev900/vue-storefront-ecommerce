@@ -1,5 +1,13 @@
 <template>
   <div class="o-personal-details">
+    <OmAppointmentSelector
+      v-model="schedule"
+      :appointment-duration="120"
+      :appointments-taken="appointmentsTaken"
+      :intervals="intervals"
+      :non-working-days="[0, 5]"
+      :period="3"
+    />
     <SfHeading
       :title="`1. ${$t('How Would You Like to Recieve Your Order?')}`"
       :level="2"
@@ -152,6 +160,8 @@ import { SfInput, SfButton, SfHeading, SfCheckbox, SfCharacteristic } from '@sto
 import { ModalList } from 'theme/store/ui/modals'
 import { mapActions, mapGetters } from 'vuex';
 import OmLocator from 'theme/components/omni/om-locator';
+import OmAppointmentSelector from 'theme/components/omni/om-appointment-selector.vue';
+import dayjs from 'dayjs';
 
 export default {
   name: 'OPersonalDetails',
@@ -161,7 +171,8 @@ export default {
     SfHeading,
     SfCheckbox,
     SfCharacteristic,
-    OmLocator
+    OmLocator,
+    OmAppointmentSelector
   },
   mixins: [PersonalDetails],
   computed: {
@@ -188,7 +199,35 @@ export default {
           description: this.$t('Manage your wishlist'),
           icon: 'heart'
         }
-      ]
+      ],
+      schedule: {
+        start: dayjs()
+          .add(1, 'day')
+          .hour(14)
+          .minute(0)
+          .second(0)
+          .format('YYYY-MM-DD HH:mm:ss'),
+        end: dayjs()
+          .add(1, 'day')
+          .hour(16)
+          .minute(0)
+          .second(0)
+          .format('YYYY-MM-DD HH:mm:ss')
+      },
+      minWeeks: 2,
+      intervals: [
+        {
+          from: {
+            hour: 8,
+            minute: 0
+          },
+          to: {
+            hour: 20,
+            minute: 0
+          }
+        }
+      ],
+      appointmentsTaken: []
     };
   },
   validations: {

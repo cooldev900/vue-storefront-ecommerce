@@ -1,13 +1,5 @@
 <template>
   <div id="home">
-    <OmAppointmentSelector
-      v-model="schedule"
-      :appointment-duration="120"
-      :appointments-taken="appointmentsTaken"
-      :intervals="intervals"
-      :non-working-days="[0, 5]"
-      :period="3"
-    />
     <transition-group name="fade">
       <component
         v-for="content in pageSbData.body"
@@ -24,43 +16,12 @@
 import { mapGetters } from 'vuex';
 import { Logger } from '@vue-storefront/core/lib/logger';
 import { isServer, onlineHelper } from '@vue-storefront/core/helpers';
-import OmAppointmentSelector from 'theme/components/omni/om-appointment-selector.vue';
-import dayjs from 'dayjs';
 
 export default {
   name: 'Home',
-  components: { OmAppointmentSelector },
   data () {
     return {
       loading: true,
-      schedule: {
-        start: dayjs()
-          .add(1, 'day')
-          .hour(14)
-          .minute(0)
-          .second(0)
-          .format('YYYY-MM-DD HH:mm:ss'),
-        end: dayjs()
-          .add(1, 'day')
-          .hour(16)
-          .minute(0)
-          .second(0)
-          .format('YYYY-MM-DD HH:mm:ss')
-      },
-      minWeeks: 2,
-      intervals: [
-        {
-          from: {
-            hour: 8,
-            minute: 0
-          },
-          to: {
-            hour: 20,
-            minute: 0
-          }
-        }
-      ],
-      appointmentsTaken: []
     };
   },
   computed: {
