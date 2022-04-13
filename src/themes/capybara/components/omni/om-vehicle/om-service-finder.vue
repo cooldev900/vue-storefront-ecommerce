@@ -49,6 +49,9 @@ import { SearchQuery } from 'storefront-query-builder';
 export default {
   name: 'OmServiceFinder',
   components: { SfTabs, SfButton },
+  props: {
+    loading: Boolean
+  },
   data () {
     return {
       makeOptions: [],
@@ -63,10 +66,11 @@ export default {
       models: {
         vehicle: {
           make: '',
-          model: '',
-          tire_size: ''
+          model: ''
         }
-      }
+      },
+      tire_size: '',
+      car_size: ''
     };
   },
   computed: {
@@ -115,7 +119,7 @@ export default {
           if (code === 200) {
             if (keyIndex === 1) {
               console.log(result, 'sizes');
-              this.models.vehicle.tire_size = result[0];
+              this.tire_size = result[0];
             } else {
               this.options.vehicle[key] = result;
             }
@@ -130,12 +134,12 @@ export default {
       }
     },
     async getProducts () {
+      this.$emit('update:loading', true)
       const url = `${config.api.url}/api/ext/alfardan/vehicle-finder/national-code`;
-      const { data: { code, result } } = await axios.post(url, this.models.vehicle);
+      const { data: { code, result } } = await axios.post(url, { ...this.models.vehicle, tire_size: this.tire_size });
       if (code === 200) {
         let { car_size } = result;
-        this.models.vehicle.car_size = car_size;
-        this.saveServiceVehicle(this.models.vehicle);
+        this.car_size = car_size;
         const carSizeValue = this.getAttributeIdByLabel('car_size', car_size);
 
         let relatedProductsQuery = new SearchQuery();
@@ -151,8 +155,9 @@ export default {
 
         if (response) {
           console.log(response.items, 'serviceVehicles');
-          this.saveServiceVehicle({ ...this.models.vehicle, car_size: carSizeValue, currentPage: 1 });
+          this.saveServiceVehicle({ ...this.models.vehicle, tire_size: this.tire_size, car_size: this.car_size });
           this.saveServiceVehicles(response.items);
+          this.$emit('update:loading', false);
         }
       }
     }
