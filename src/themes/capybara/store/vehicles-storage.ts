@@ -80,6 +80,38 @@ export const saveActiveVehicle = async data => {
   }
 };
 
+export const saveServiceVehicle = async data => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      asyncLocalStorage?.removeItem(storeView.storeCode + '/service-vehicle');
+      asyncLocalStorage?.setItem(
+        storeView.storeCode + '/service-vehicle',
+        JSON.stringify(data)
+      );
+    }
+  } catch (e) {
+    console.log('localStorage error----', e);
+  }
+};
+
+export const saveServiceVehicles = async data => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView(); console.log(data, 'vehicles')
+    if (existLocalStorage) {
+      asyncLocalStorage?.removeItem(storeView.storeCode + '/service-vehicles');
+      asyncLocalStorage?.setItem(
+        storeView.storeCode + '/service-vehicles',
+        JSON.stringify(data)
+      );
+    }
+  } catch (e) {
+    console.log('localStorage error----', e);
+  }
+};
+
 export const saveLocation = async data => {
   try {
     const existLocalStorage = await availableLocalStorage();
@@ -130,6 +162,21 @@ export const clearVehicles = async () => {
   }
 };
 
+export const clearServiceVehicles = async () => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      asyncLocalStorage?.setItem(
+        storeView.storeCode + '/service-vehicles',
+        JSON.stringify([])
+      );
+    }
+  } catch (e) {
+    console.log('localStorage error----', e);
+  }
+};
+
 export const getSavedVehiclesData = async () => {
   try {
     const existLocalStorage = await availableLocalStorage();
@@ -137,6 +184,36 @@ export const getSavedVehiclesData = async () => {
     if (existLocalStorage) {
       const vehicles = await asyncLocalStorage?.getItem(
         storeView.storeCode + '/vehicles'
+      );
+      return vehicles ? JSON.parse(vehicles) : []
+    }
+  } catch (e) {
+    console.log('localStorage error----', e);
+  }
+};
+
+export const getSavedServiceVehicleData = async () => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      const vehicles = await asyncLocalStorage?.getItem(
+        storeView.storeCode + '/service-vehicle'
+      );
+      return vehicles ? JSON.parse(vehicles) : []
+    }
+  } catch (e) {
+    console.log('localStorage error----', e);
+  }
+};
+
+export const getSavedServiceVehiclesData = async () => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      const vehicles = await asyncLocalStorage?.getItem(
+        storeView.storeCode + '/service-vehicles'
       );
       return vehicles ? JSON.parse(vehicles) : []
     }
@@ -159,6 +236,17 @@ export const getActiveVehicleData = async () => {
     console.log('localStorage error----', e);
   }
 };
+
+export const removeServiceVehicle = async data => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    if (existLocalStorage) {
+      await clearVehicles();
+    }
+  } catch (e) {
+    console.log('localStorage error----', e);
+  }
+}
 
 export const removeVehicle = async data => {
   try {

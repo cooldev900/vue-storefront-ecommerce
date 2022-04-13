@@ -6,6 +6,8 @@ const Product = () =>
   import(/* webpackChunkName: "vsf-product" */ 'theme/pages/Product');
 const Category = () =>
   import(/* webpackChunkName: "vsf-category" */ 'theme/pages/Category');
+const Services = () =>
+  import(/* webpackChunkName: "vsf-Services" */ 'theme/pages/Services');
 const Checkout = () =>
   import(/* webpackChunkName: "vsf-checkout" */ 'theme/pages/Checkout');
 const Quote = () =>
@@ -52,6 +54,7 @@ let routes = [
   { name: 'configurable-product', path: '/p/:parentSku/:slug/:childSku', component: Product, meta: { breadcrumb: 'Configurable product' } },
   { name: 'product', path: '/p/:parentSku/:slug/:childSku', component: Product, meta: { breadcrumb: 'Product' } },
   { name: 'category', path: '/c/:slug', component: Category, meta: { breadcrumb: 'Category' } },
+  { name: 'services', path: '/services', component: Services, meta: { breadcrumb: 'Services' } },
   { name: 'cms-page', path: '/i/:slug', component: Static, meta: { breadcrumb: 'CMS page' } },
   { name: 'vehicle-page', path: '/vehicle', component: Vehicle, meta: { breadcrumb: 'Vehicle page' } },
   { name: 'vehicle-svg', path: '/vehicle/:nationalCode/parts/:visualGroup', component: VehicleSvg, meta: { breadcrumb: 'Vehicle svg page' } },

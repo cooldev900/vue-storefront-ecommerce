@@ -3,12 +3,15 @@ import * as VehicleStorage from './vehicles-storage';
 import axios from 'axios';
 import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 import config from 'config';
+import { SearchQuery } from 'storefront-query-builder';
 
 export const vehiclesStore = {
   namespaced: true,
   state: {
     savedVehicles: [],
     activeVehicle: {},
+    serviceVehicle: {},
+    serviceVehicles: [],
     svgs: {},
     tooltips: [],
     selectedSvgCode: '',
@@ -21,6 +24,20 @@ export const vehiclesStore = {
     storyblok: {}
   },
   actions: {
+    async saveServiceVehicles ({ commit }, serviceVehicles) {
+      await VehicleStorage.saveServiceVehicles(serviceVehicles);
+      const vehicles = await VehicleStorage.getSavedServiceVehiclesData();
+      console.log(vehicles, 'save vehicles')
+      commit('setServiceVehicles', serviceVehicles);
+    },
+    async loadMoreServiceProducts ({ commit }) {
+      commit('loadMoreServiceVehicles');
+    },
+    async fetchServiceVehicles ({ commit }) {
+      const result = await VehicleStorage.getSavedServiceVehiclesData();
+
+      commit('setServiceVehicles', result);
+    },
     async fetchVehicles ({ commit }) {
       const result = await VehicleStorage.getSavedVehiclesData();
 
@@ -48,6 +65,21 @@ export const vehiclesStore = {
       await VehicleStorage.clearVehicles();
       commit('clearVehicles');
     },
+    /** service vehicle part **/
+    async fetchServiceVehicle ({ commit }) {
+      const result = await VehicleStorage.getSavedServiceVehicleData();
+
+      commit('setServiceVehicle', result);
+    },
+    async saveServiceVehicle ({ commit }, vehicle) {
+      await VehicleStorage.saveServiceVehicle(vehicle);
+      const vehicles = await VehicleStorage.getSavedServiceVehicleData();
+      commit('setServiceVehicle', vehicles);
+    },
+    async removeServiceVehicle ({ commit }, vehicle) {
+      await VehicleStorage.saveServiceVehicle({});
+      commit('setServiceVehicle', {});
+    },
     /** ***  Storyblok *****/
     async fetchSbData ({ commit }, pageId) {
       const res = await axios.get(
@@ -64,6 +96,27 @@ export const vehiclesStore = {
     }
   },
   mutations: {
+    async loadMoreServiceVehicles (state) {
+      let relatedProductsQuery = new SearchQuery();
+      relatedProductsQuery = relatedProductsQuery
+        .applyFilter({ key: 'category_ids', value: { 'in': [6] } })
+        .applyFilter({ key: 'car_size', value: { 'in': state.serviceVehicle.car_size } });
+      const response = await this.$store.dispatch('product/findProducts', {
+        query: relatedProductsQuery,
+        size: 12 * (state.serviceVehicle.currentPage + 1),
+        prefetchGroupProducts: false,
+        updateState: false
+      });
+
+      if (response) {
+        console.log(response.items, 'load serviceVehicles');
+        Vue.set(state, 'serviceVehicles', response.items);
+        Vue.set(state, 'serviceVehicle', { ...state.serviceVehicle, currentPage: state.serviceVehicle.currentPage + 1 });
+      }
+    },
+    setServiceVehicles (state, serviceVehicles) {
+      Vue.set(state, 'serviceVehicles', serviceVehicles);
+    },
     addNewSvg (state, svg) {
       const { key, value } = svg;
       const stateSvgInstance = Object.assign({}, state.svgs);
@@ -78,6 +131,9 @@ export const vehiclesStore = {
     },
     setVehicles (state, vehicles) {
       Vue.set(state, 'savedVehicles', vehicles);
+    },
+    setServiceVehicle (state, vehicles) {
+      Vue.set(state, 'serviceVehicle', vehicles);
     },
     removeVehicle (state, vehicle) {
       const oldVehicles = [...state.savedVehicles];
@@ -121,6 +177,12 @@ export const vehiclesStore = {
     }
   },
   getters: {
+    getServiceVehicles: (state, getters, rootState, rootGetters) => {
+      return state.serviceVehicles;
+    },
+    getServiceVehicle: (state, getters, rootState, rootGetters) => {
+      return state.serviceVehicle;
+    },
     getAttributeIdByLabel: (state, getters, rootState, rootGetters) => (
       attributeCode,
       attributeLabel
