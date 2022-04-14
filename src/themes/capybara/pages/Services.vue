@@ -112,6 +112,7 @@ import buildQuery from '@vue-storefront/core/modules/catalog/helpers/associatedP
 import { ProductService } from '@vue-storefront/core/data-resolver/ProductService';
 import { Logger } from '@vue-storefront/core/lib/logger';
 import { notifications } from '@vue-storefront/core/modules/cart/helpers';
+import { StorageManager } from '@vue-storefront/core/lib/storage-manager';
 
 const THEME_PAGE_SIZE = 12;
 const LAZY_LOADING_ACTIVATION_BREAKPOINT = 1024;
@@ -172,6 +173,10 @@ export default {
     }),
   },
   methods: {
+    ...mapActions({
+      openVehicleCart: 'ui/toggleSidebar',
+      openModal: 'ui/openModal'
+    }),
     async onBottomScroll() {
       // if (!this.isLazyLoadingEnabled || this.loadingProducts) {
       //   return;
@@ -186,7 +191,7 @@ export default {
     async addToCart (product) {
       this.isAddingToCart = true;
       const query = buildQuery([product.sku]);
-
+      console.log(product, 'product');
       try {
         const { items = [] } = await ProductService.getProducts({
           query,
@@ -197,7 +202,7 @@ export default {
             assignProductConfiguration: true
           }
         });
-
+        
         const productData = items[0] || null;
         await this.$store.dispatch('cart/addItem', {
           productToAdd: Object.assign({}, productData, { qty: 1 })
@@ -236,26 +241,26 @@ export default {
             }
           }
         })
-
+        
         await StorageManager.get('cart').setItem('current-cart', cartItems).catch((reason) => {
           Logger.error(reason)()
         })
         const storedItems = await StorageManager.get('cart').getItem('current-cart');
         this.$store.dispatch('cart/syncCartWhenLocalStorageChange', { items: storedItems })
         this.loading = false;
-
+        console.log(storedItems, 'storeItems');
         this.$store.commit(
           'notification/clearNotification',
           { root: true }
         );
-
+        
         this.openModal({
           name: ModalList.OmCartPopupModal,
           payload: {
             qty: 1,
             name: productData.name
           }
-        })
+        });
       } catch (message) {
         this.$store.dispatch(
           'notification/spawnNotification',
@@ -263,7 +268,7 @@ export default {
           { root: true }
         );
       }
-
+      
       this.isAddingToCart = false;
     }
   },
