@@ -345,6 +345,11 @@ import { createSmoothscroll } from "theme/helpers";
 import SearchPanelMixin from "@vue-storefront/core/compatibility/components/blocks/SearchPanel/SearchPanel";
 import OmAppointmentSelector from "theme/components/omni/om-appointment-selector.vue";
 import OmProductCard from "theme/components/omni/om-product-card.vue";
+import buildQuery from '@vue-storefront/core/modules/catalog/helpers/associatedProducts/buildQuery.ts';
+import { ProductService } from '@vue-storefront/core/data-resolver/ProductService';
+import { Logger } from '@vue-storefront/core/lib/logger';
+import { notifications } from '@vue-storefront/core/modules/cart/helpers';
+import { StorageManager } from '@vue-storefront/core/lib/storage-manager';
 
 const THEME_PAGE_SIZE = 12;
 const LAZY_LOADING_ACTIVATION_BREAKPOINT = 1024;
@@ -673,6 +678,88 @@ export default {
       openVehicleCart: "ui/toggleSidebar",
       openModal: "ui/openModal",
     }),
+    async addToCart (product) {
+      this.isAddingToCart = true;
+      const query = buildQuery([product.sku]);
+      try {
+        const { items = [] } = await ProductService.getProducts({
+          query,
+          size: 1,
+          configuration: { sku: product.sku },
+          options: {
+            prefetchGroupProducts: true,
+            assignProductConfiguration: true
+          }
+        });
+        
+        const productData = items[0] || null;
+        await this.$store.dispatch('cart/addItem', {
+          productToAdd: Object.assign({}, productData, { qty: 1 })
+        });
+  
+        const cartItems = await StorageManager.get('cart').getItem('current-cart');
+        cartItems.forEach(item => {
+          if (item.groupedParents) {
+            item.groupedParents.map(p => {
+              if (p.name === productData?.name && this.activeVehicle?.National_Code) {
+                if (item.fitVehicles) {
+                  const existFitVehicle = item.fitVehicles.find(item => item.National_Code === this.activeVehicle?.National_Code);
+                  if (!existFitVehicle) {
+                    item.fitVehicles = [ ...item.fitVehicles, this.activeVehicle ];
+                  }
+                } else {
+                  item.fitVehicles = [ this.activeVehicle ];
+                }
+
+                // setting main_image
+              }
+              if (p.name === productData?.name && productData?.main_image) {
+                item.main_image = productData?.main_image;
+              }
+            })
+          } else {
+            if (item.sku === productData?.sku && this.activeVehicle?.National_Code) {
+              if (item.fitVehicles) {
+                const existFitVehicle = item.fitVehicles.find(item => item.National_Code === this.activeVehicle?.National_Code);
+                if (!existFitVehicle) {
+                  item.fitVehicles = [ ...item.fitVehicles, this.activeVehicle ];
+                }
+              } else {
+                item.fitVehicles = [ this.activeVehicle ];
+              }
+            }
+          }
+        })
+        console.log('hey cart')
+        await StorageManager.get('cart').setItem('current-cart', cartItems).catch((reason) => {
+          Logger.error(reason)()
+        })
+        const storedItems = await StorageManager.get('cart').getItem('current-cart');
+        this.$store.dispatch('cart/syncCartWhenLocalStorageChange', { items: storedItems })
+        this.loading = false;
+        console.log(storedItems, 'storeItems');
+        this.$store.commit(
+          'notification/clearNotification',
+          { root: true }
+        );
+        console.log('hey modal')
+        this.openModal({
+          name: ModalList.OmCartPopupModal,
+          payload: {
+            qty: 1,
+            name: productData.name
+          }
+        });
+      } catch (message) {
+        this.$store.dispatch(
+          'notification/spawnNotification',
+          notifications.createNotification({ type: 'danger', message }),
+          { root: true }
+        );
+      }
+      
+      this.isAddingToCart = false;
+    },
     title(filterType) {
       if (filterType === "right_left_filter") {
         return "Fitting Position (R / L)";
@@ -875,7 +962,7 @@ export default {
       title: htmlDecode(meta_title || name),
       meta,
     };
-  },
+  }  
 };
 </script>
 
