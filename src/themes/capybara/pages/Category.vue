@@ -730,7 +730,7 @@ export default {
             }
           }
         })
-        console.log('hey cart')
+        
         await StorageManager.get('cart').setItem('current-cart', cartItems).catch((reason) => {
           Logger.error(reason)()
         })
