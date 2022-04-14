@@ -150,19 +150,19 @@
 </div>
 </template>
 <script>
-import { focus } from "../../../utilities/directives";
+import { focus } from "@storefront-ui/vue/src/utilities/directives";
 import { colorsValues as SF_COLORS } from "@storefront-ui/shared/variables/colors";
-import { deprecationWarning } from "../../../utilities/helpers";
-import SfIcon from "../../atoms/SfIcon/SfIcon.vue";
-import SfLink from "../../atoms/SfLink/SfLink.vue";
-import SfPrice from "../../atoms/SfPrice/SfPrice.vue";
-import SfRating from "../../atoms/SfRating/SfRating.vue";
-import SfImage from "../../atoms/SfImage/SfImage.vue";
-import SfCircleIcon from "../../atoms/SfCircleIcon/SfCircleIcon.vue";
-import SfBadge from "../../atoms/SfBadge/SfBadge.vue";
-import SfButton from "../../atoms/SfButton/SfButton.vue";
+import { deprecationWarning } from "@storefront-ui/vue/src/utilities/helpers";
+import SfIcon from "@storefront-ui/vue/src/components/atoms/SfIcon/SfIcon.vue";
+import SfLink from "@storefront-ui/vue/src/components/atoms/SfLink/SfLink.vue";
+import SfPrice from "@storefront-ui/vue/src/components/atoms/SfPrice/SfPrice.vue";
+import SfRating from "@storefront-ui/vue/src/components/atoms/SfRating/SfRating.vue";
+import SfImage from "@storefront-ui/vue/src/components/atoms/SfImage/SfImage.vue";
+import SfCircleIcon from "@storefront-ui/vue/src/components/atoms/SfCircleIcon/SfCircleIcon.vue";
+import SfBadge from "@storefront-ui/vue/src/components/atoms/SfBadge/SfBadge.vue";
+import SfButton from "@storefront-ui/vue/src/components/atoms/SfButton/SfButton.vue";
 export default {
-  name: "SfProductCard",
+  name: "OmProductCard",
   components: {
     SfPrice,
     SfRating,

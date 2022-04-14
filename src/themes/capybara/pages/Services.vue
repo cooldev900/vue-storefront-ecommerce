@@ -17,7 +17,7 @@
     </div>
     <div v-else>
       <div class="service-vehicles" v-if="getServiceVehicles">
-        <SfProductCard
+        <OmProductCard
           v-for="product in getServiceVehicles"
           :key="product.id"
           :title="product.name || product.title"
@@ -26,7 +26,7 @@
           :regular-price="product.price.regular"
           :special-price="product.price.special"
           :link="product.link"
-          brandImage="/assets/continental_logo.svg"
+          :brandImage="brandImage"
           link-tag="router-link"
           :wishlist-icon="false"
           class="products__product-card"
@@ -55,7 +55,7 @@
               </SfButton>
             </div>
           </template>
-        </SfProductCard>
+        </OmProductCard>
       </div>
       <div v-else>There is no data</div>
     </div>
@@ -113,6 +113,7 @@ import { ProductService } from '@vue-storefront/core/data-resolver/ProductServic
 import { Logger } from '@vue-storefront/core/lib/logger';
 import { notifications } from '@vue-storefront/core/modules/cart/helpers';
 import { StorageManager } from '@vue-storefront/core/lib/storage-manager';
+import OmProductCard from "theme/components/omni/om-product-card.vue";
 
 const THEME_PAGE_SIZE = 12;
 const LAZY_LOADING_ACTIVATION_BREAKPOINT = 1024;
@@ -142,6 +143,7 @@ export default {
     OmCategoryHeader,
     OmProductCardLoader,
     SfImage,
+    OmProductCard
   },
   mixins: [onBottomScroll, SearchPanelMixin],
   data() {
@@ -149,6 +151,7 @@ export default {
       loading: false,
       loadingProducts: false,
       currentPage: 1,
+      brandImage: "/assets/continental_logo.svg"
     };
   },
   computed: {
