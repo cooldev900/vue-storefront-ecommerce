@@ -7,7 +7,7 @@
     }"
   >
     <SfCarouselItem v-for="(product, i) in carouselProducts" :key="i">
-      <SfProductCard
+      <OmProductCard
         :title="product.title"
         :image="product.image"
         :regular-price="product.price.regular"
@@ -24,11 +24,13 @@
 <script>
 import { SfProductCard, SfCarousel } from '@storefront-ui/vue';
 import { prepareCategoryProduct } from 'theme/helpers';
+import OmProductCard from "theme/components/omni/om-product-card.vue";
 export default {
   name: 'MProductCarousel',
   components: {
     SfCarousel,
-    SfProductCard
+    SfProductCard,
+    OmProductCard
   },
   props: {
     products: {

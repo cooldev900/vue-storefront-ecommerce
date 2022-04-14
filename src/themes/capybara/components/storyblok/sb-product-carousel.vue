@@ -13,7 +13,7 @@
               tag="div"
               class="products__grid"
             >
-              <SfProductCard
+              <OmProductCard
                 :key="key"
                 :title="product.title"
                 :image="product.image"
@@ -68,6 +68,7 @@ import { prepareRelatedQuery } from '@vue-storefront/core/modules/catalog/querie
 import * as VehicleStorage from 'theme/store/vehicles-storage.ts';
 import LazyHydrate from 'vue-lazy-hydration';
 import { prepareCategoryProduct } from 'theme/helpers';
+import OmProductCard from "theme/components/omni/om-product-card.vue";
 
 export default {
   name: 'SbProductCarousel',
@@ -78,7 +79,8 @@ export default {
     SwiperSlide,
     SfChevron,
     SfProductCard,
-    LazyHydrate
+    LazyHydrate,
+    OmProductCard
   },
   props: {
     content: {

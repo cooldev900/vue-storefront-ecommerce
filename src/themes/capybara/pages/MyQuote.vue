@@ -44,8 +44,12 @@
       image="/assets/storybook/Home/newsletter.jpg"
     />
     <div class="match-with-it">
-      <p class="match-with-it__paragraph">Match with it</p>
-      <SfButton class="sf-button--text smartphone-only">See all</SfButton>
+      <p class="match-with-it__paragraph">
+        Match with it
+      </p>
+      <SfButton class="sf-button--text smartphone-only">
+        See all
+      </SfButton>
     </div>
     <SfCarousel
       :settings="{ peek: 16, breakpoints: { 1023: { peek: 0, perView: 2 } } }"
@@ -56,7 +60,7 @@
         :key="index"
         class="carousel__item"
       >
-        <SfProductCard
+        <OmProductCard
           :image="product.image"
           :colors="product.colors"
           :title="product.title"
@@ -95,16 +99,18 @@
               alt="katherina_trn"
               :width="140"
               :height="140"
-              >katherina_trn</SfImage
             >
+              katherina_trn
+            </SfImage>
             <SfImage
               class="desktop-only"
               src="/assets/storybook/Home/imageAd.webp"
               alt="katherina_trn"
               :width="470"
               :height="470"
-              >katherina_trn</SfImage
             >
+              katherina_trn
+            </SfImage>
           </div>
           <div class="grid__col small">
             <SfImage
@@ -113,16 +119,18 @@
               alt="katherina_trn"
               :width="140"
               :height="140"
-              >katherina_trn</SfImage
             >
+              katherina_trn
+            </SfImage>
             <SfImage
               class="desktop-only"
               src="/assets/storybook/Home/imageCd.webp"
               alt="katherina_trn"
               :width="470"
               :height="160"
-              >katherina_trn</SfImage
             >
+              katherina_trn
+            </SfImage>
           </div>
         </div>
         <div class="grid__row gap">
@@ -133,16 +141,18 @@
               alt="katherina_trn"
               :width="140"
               :height="140"
-              >katherina_trn</SfImage
             >
+              katherina_trn
+            </SfImage>
             <SfImage
               class="desktop-only"
               src="/assets/storybook/Home/imageBd.webp"
               alt="katherina_trn"
               :width="470"
               :height="160"
-              >katherina_trn</SfImage
             >
+              katherina_trn
+            </SfImage>
           </div>
           <div class="grid__col">
             <SfImage
@@ -151,16 +161,18 @@
               alt="katherina_trn"
               :width="140"
               :height="140"
-              >katherina_trn</SfImage
             >
+              katherina_trn
+            </SfImage>
             <SfImage
               class="desktop-only"
               src="/assets/storybook/Home/imageDd.webp"
               alt="katherina_trn"
               :width="470"
               :height="470"
-              >katherina_trn</SfImage
             >
+              katherina_trn
+            </SfImage>
           </div>
         </div>
       </div>
@@ -172,9 +184,7 @@
       data-testid="application-banner"
     >
       <template #title>
-        <span class="app-banner__title"
-          >Download our application to your mobile</span
-        >
+        <span class="app-banner__title">Download our application to your mobile</span>
       </template>
       <template #call-to-action>
         <div class="app-banner__call-to-action">
@@ -218,11 +228,12 @@ import {
   SfCarousel,
   SfProductCard,
   SfImage,
-  SfHeading,
-} from "@storefront-ui/vue";
+  SfHeading
+} from '@storefront-ui/vue';
+import OmProductCard from "theme/components/omni/om-product-card.vue";
 
 export default {
-  name: "Home",
+  name: 'Home',
   components: {
     SfButton,
     SfHero,
@@ -234,335 +245,336 @@ export default {
     SfProductCard,
     SfImage,
     SfHeading,
+    OmProductCard
   },
-  data() {
+  data () {
     return {
       headingTitle: {
-        mobile: "Match it with",
-        desktop: "Bestsellers",
+        mobile: 'Match it with',
+        desktop: 'Bestsellers'
       },
       heroes: [
         {
-          title: "Colorful summer dresses are already in store",
-          subtitle: "SUMMER COLLECTION 2020",
-          buttonText: "Learn more",
-          background: "rgb(236, 239, 241)",
-          image: "/assets/storybook/Home/hero.png",
+          title: 'Colorful summer dresses are already in store',
+          subtitle: 'SUMMER COLLECTION 2020',
+          buttonText: 'Learn more',
+          background: 'rgb(236, 239, 241)',
+          image: '/assets/storybook/Home/hero.png'
         },
         {
-          title: "Colorful summer dresses are already in store",
-          subtitle: "SUMMER COLLECTION 2020",
-          buttonText: "Learn more",
-          background: "rgb(239, 235, 233)",
-          image: "/assets/storybook/Home/bannerHM.jpg",
+          title: 'Colorful summer dresses are already in store',
+          subtitle: 'SUMMER COLLECTION 2020',
+          buttonText: 'Learn more',
+          background: 'rgb(239, 235, 233)',
+          image: '/assets/storybook/Home/bannerHM.jpg',
           className:
-            "sf-hero-item--position-bg-top-left sf-hero-item--align-right",
+            'sf-hero-item--position-bg-top-left sf-hero-item--align-right'
         },
         {
-          title: "Colorful summer dresses are already in store",
-          subtitle: "SUMMER COLLECTION 2020",
-          buttonText: "Learn more",
-          background: "rgb(236, 239, 241)",
-          image: "/assets/storybook/Home/hero.png",
-        },
+          title: 'Colorful summer dresses are already in store',
+          subtitle: 'SUMMER COLLECTION 2020',
+          buttonText: 'Learn more',
+          background: 'rgb(236, 239, 241)',
+          image: '/assets/storybook/Home/hero.png'
+        }
       ],
       banners: [
         {
-          slot: "banner-A",
-          subtitle: "Dresses",
-          title: "Cocktail & Party",
+          slot: 'banner-A',
+          subtitle: 'Dresses',
+          title: 'Cocktail & Party',
           description:
             "Find stunning women's cocktail dresses and party dresses. Stand out in lace and metallic cocktail dresses from all your favorite brands.",
-          buttonText: "Shop now",
-          image: "/assets/storybook/Home/bannerF.jpg",
-          class: "desktop-only",
+          buttonText: 'Shop now',
+          image: '/assets/storybook/Home/bannerF.jpg',
+          class: 'desktop-only'
         },
         {
-          slot: "banner-B",
-          subtitle: "Dresses",
-          title: "Linen Dresses",
+          slot: 'banner-B',
+          subtitle: 'Dresses',
+          title: 'Linen Dresses',
           description:
             "Find stunning women's cocktail dresses and party dresses. Stand out in lace and metallic cocktail dresses from all your favorite brands.",
-          buttonText: "Shop now",
-          image: "/assets/storybook/Home/bannerE.jpg",
-          class: "desktop-only",
+          buttonText: 'Shop now',
+          image: '/assets/storybook/Home/bannerE.jpg',
+          class: 'desktop-only'
         },
         {
-          slot: "banner-C",
-          subtitle: "T-Shirts",
-          title: "The Office Life",
-          image: "/assets/storybook/Home/bannerC.jpg",
+          slot: 'banner-C',
+          subtitle: 'T-Shirts',
+          title: 'The Office Life',
+          image: '/assets/storybook/Home/bannerC.jpg'
         },
         {
-          slot: "banner-D",
-          subtitle: "Summer Sandals",
-          title: "Eco Sandals",
-          image: "/assets/storybook/Home/bannerG.jpg",
-        },
+          slot: 'banner-D',
+          subtitle: 'Summer Sandals',
+          title: 'Eco Sandals',
+          image: '/assets/storybook/Home/bannerG.jpg'
+        }
       ],
       products: [
         {
-          title: "Cream Beach Bag",
-          image: "assets/storybook/Home/productA.jpg",
-          price: { regular: "$ 50.00 " },
+          title: 'Cream Beach Bag',
+          image: 'assets/storybook/Home/productA.jpg',
+          price: { regular: '$ 50.00 ' },
           rating: { max: 5, score: 4 },
           isInWishlist: true,
           reviews: 8,
-          badgeLabel: "",
-          badgeColor: "color-primary",
+          badgeLabel: '',
+          badgeColor: 'color-primary',
           colors: [
-            { label: "Sand", value: "sand", color: "#EDCBB9", selected: false },
-            { label: "Mint", value: "mint", color: "#ABD9D8", selected: false },
+            { label: 'Sand', value: 'sand', color: '#EDCBB9', selected: false },
+            { label: 'Mint', value: 'mint', color: '#ABD9D8', selected: false },
             {
-              label: "Vivid rose",
-              value: "vivid rose",
-              color: "#DB5593",
-              selected: false,
+              label: 'Vivid rose',
+              value: 'vivid rose',
+              color: '#DB5593',
+              selected: false
             },
             {
-              label: "Peach",
-              value: "peach",
-              color: "#F59F93",
-              selected: false,
-            },
-          ],
+              label: 'Peach',
+              value: 'peach',
+              color: '#F59F93',
+              selected: false
+            }
+          ]
         },
         {
-          title: "Cream Beach Bag",
-          image: "assets/storybook/Home/productB.jpg",
-          price: { regular: "$ 50.00 ", special: "$ 25.00 " },
+          title: 'Cream Beach Bag',
+          image: 'assets/storybook/Home/productB.jpg',
+          price: { regular: '$ 50.00 ', special: '$ 25.00 ' },
           rating: { max: 5, score: 4 },
           isInWishlist: true,
           reviews: 8,
-          badgeLabel: "-50%",
-          badgeColor: "color-primary",
+          badgeLabel: '-50%',
+          badgeColor: 'color-primary',
           colors: [
             {
-              label: "Green",
-              value: "green",
-              color: "#AAAA00",
-              selected: false,
+              label: 'Green',
+              value: 'green',
+              color: '#AAAA00',
+              selected: false
             },
-            { label: "Blue", value: "blue", color: "#0099AA", selected: false },
+            { label: 'Blue', value: 'blue', color: '#0099AA', selected: false },
             {
-              label: "Vivid red",
-              value: "vivid red",
-              color: "#aa1100",
-              selected: false,
-            },
-            {
-              label: "Peach",
-              value: "peach",
-              color: "#F59F93",
-              selected: false,
+              label: 'Vivid red',
+              value: 'vivid red',
+              color: '#aa1100',
+              selected: false
             },
             {
-              label: "Citrus",
-              value: "citrus",
-              color: "#FFEE97",
-              selected: false,
+              label: 'Peach',
+              value: 'peach',
+              color: '#F59F93',
+              selected: false
             },
-          ],
+            {
+              label: 'Citrus',
+              value: 'citrus',
+              color: '#FFEE97',
+              selected: false
+            }
+          ]
         },
         {
-          title: "Cream Beach Bag",
-          image: "assets/storybook/Home/productC.jpg",
-          price: { regular: "$ 50.00 " },
+          title: 'Cream Beach Bag',
+          image: 'assets/storybook/Home/productC.jpg',
+          price: { regular: '$ 50.00 ' },
           rating: { max: 5, score: 4 },
           isInWishlist: false,
           reviews: 8,
-          badgeLabel: "",
-          badgeColor: "color-primary",
+          badgeLabel: '',
+          badgeColor: 'color-primary',
           colors: [
             {
-              label: "Vivid rose",
-              value: "vivid rose",
-              color: "#DB5593",
-              selected: false,
+              label: 'Vivid rose',
+              value: 'vivid rose',
+              color: '#DB5593',
+              selected: false
             },
-            { label: "Mint", value: "mint", color: "#ABD9D8", selected: false },
+            { label: 'Mint', value: 'mint', color: '#ABD9D8', selected: false },
             {
-              label: "Peach",
-              value: "peach",
-              color: "#F59F93",
-              selected: false,
+              label: 'Peach',
+              value: 'peach',
+              color: '#F59F93',
+              selected: false
             },
             {
-              label: "Citrus",
-              value: "citrus",
-              color: "#FFEE97",
-              selected: false,
+              label: 'Citrus',
+              value: 'citrus',
+              color: '#FFEE97',
+              selected: false
             },
-            { label: "Sand", value: "sand", color: "#EDCBB9", selected: false },
-          ],
+            { label: 'Sand', value: 'sand', color: '#EDCBB9', selected: false }
+          ]
         },
         {
-          title: "Cream Beach Bag",
-          image: "assets/storybook/Home/productA.jpg",
-          price: { regular: "$ 50.00 " },
+          title: 'Cream Beach Bag',
+          image: 'assets/storybook/Home/productA.jpg',
+          price: { regular: '$ 50.00 ' },
           rating: { max: 5, score: 4 },
           isInWishlist: false,
           reviews: 8,
-          badgeLabel: "",
-          badgeColor: "color-primary",
+          badgeLabel: '',
+          badgeColor: 'color-primary',
           colors: [
             {
-              label: "Peach",
-              value: "peach",
-              color: "#F59F93",
-              selected: false,
+              label: 'Peach',
+              value: 'peach',
+              color: '#F59F93',
+              selected: false
             },
             {
-              label: "Citrus",
-              value: "citrus",
-              color: "#FFEE97",
-              selected: false,
+              label: 'Citrus',
+              value: 'citrus',
+              color: '#FFEE97',
+              selected: false
             },
-            { label: "Sand", value: "sand", color: "#EDCBB9", selected: false },
-            { label: "Mint", value: "mint", color: "#ABD9D8", selected: false },
+            { label: 'Sand', value: 'sand', color: '#EDCBB9', selected: false },
+            { label: 'Mint', value: 'mint', color: '#ABD9D8', selected: false },
             {
-              label: "Vivid rose",
-              value: "vivid rose",
-              color: "#DB5593",
-              selected: false,
-            },
-          ],
+              label: 'Vivid rose',
+              value: 'vivid rose',
+              color: '#DB5593',
+              selected: false
+            }
+          ]
         },
         {
-          title: "Cream Beach Bag",
-          image: "assets/storybook/Home/productB.jpg",
-          price: { regular: "$ 50.00 ", special: "$ 45.00" },
+          title: 'Cream Beach Bag',
+          image: 'assets/storybook/Home/productB.jpg',
+          price: { regular: '$ 50.00 ', special: '$ 45.00' },
           rating: { max: 5, score: 4 },
           isInWishlist: false,
           reviews: 8,
-          badgeLabel: "-10%",
-          badgeColor: "color-primary",
+          badgeLabel: '-10%',
+          badgeColor: 'color-primary',
           colors: [
-            { label: "Sand", value: "sand", color: "#EDCBB9", selected: false },
-            { label: "Mint", value: "mint", color: "#ABD9D8", selected: false },
+            { label: 'Sand', value: 'sand', color: '#EDCBB9', selected: false },
+            { label: 'Mint', value: 'mint', color: '#ABD9D8', selected: false },
             {
-              label: "Vivid rose",
-              value: "vivid rose",
-              color: "#DB5593",
-              selected: false,
+              label: 'Vivid rose',
+              value: 'vivid rose',
+              color: '#DB5593',
+              selected: false
             },
             {
-              label: "Peach",
-              value: "peach",
-              color: "#F59F93",
-              selected: false,
+              label: 'Peach',
+              value: 'peach',
+              color: '#F59F93',
+              selected: false
             },
             {
-              label: "Citrus",
-              value: "citrus",
-              color: "#FFEE97",
-              selected: false,
-            },
-          ],
+              label: 'Citrus',
+              value: 'citrus',
+              color: '#FFEE97',
+              selected: false
+            }
+          ]
         },
         {
-          title: "Cream Beach Bag",
-          image: "assets/storybook/Home/productC.jpg",
-          price: { regular: "$ 50.00 " },
+          title: 'Cream Beach Bag',
+          image: 'assets/storybook/Home/productC.jpg',
+          price: { regular: '$ 50.00 ' },
           rating: { max: 5, score: 4 },
           isInWishlist: false,
           reviews: 8,
-          badgeLabel: "",
-          badgeColor: "color-primary",
+          badgeLabel: '',
+          badgeColor: 'color-primary',
           colors: [
-            { label: "Sand", value: "sand", color: "#EDCBB9", selected: false },
+            { label: 'Sand', value: 'sand', color: '#EDCBB9', selected: false },
             {
-              label: "Peach",
-              value: "peach",
-              color: "#F59F93",
-              selected: false,
+              label: 'Peach',
+              value: 'peach',
+              color: '#F59F93',
+              selected: false
             },
             {
-              label: "Citrus",
-              value: "citrus",
-              color: "#FFEE97",
-              selected: false,
-            },
-          ],
+              label: 'Citrus',
+              value: 'citrus',
+              color: '#FFEE97',
+              selected: false
+            }
+          ]
         },
         {
-          title: "Cream Beach Bag",
-          image: "assets/storybook/Home/productA.jpg",
-          price: { regular: "$ 50.00 " },
+          title: 'Cream Beach Bag',
+          image: 'assets/storybook/Home/productA.jpg',
+          price: { regular: '$ 50.00 ' },
           rating: { max: 5, score: 4 },
           isInWishlist: false,
           reviews: 8,
-          badgeLabel: "",
-          badgeColor: "color-primary",
+          badgeLabel: '',
+          badgeColor: 'color-primary',
           colors: [
-            { label: "Sand", value: "sand", color: "#EDCBB9", selected: false },
-            { label: "Mint", value: "mint", color: "#ABD9D8", selected: false },
+            { label: 'Sand', value: 'sand', color: '#EDCBB9', selected: false },
+            { label: 'Mint', value: 'mint', color: '#ABD9D8', selected: false },
             {
-              label: "Vivid rose",
-              value: "vivid rose",
-              color: "#DB5593",
-              selected: false,
+              label: 'Vivid rose',
+              value: 'vivid rose',
+              color: '#DB5593',
+              selected: false
             },
             {
-              label: "Peach",
-              value: "peach",
-              color: "#F59F93",
-              selected: false,
+              label: 'Peach',
+              value: 'peach',
+              color: '#F59F93',
+              selected: false
             },
             {
-              label: "Citrus",
-              value: "citrus",
-              color: "#FFEE97",
-              selected: false,
-            },
-          ],
+              label: 'Citrus',
+              value: 'citrus',
+              color: '#FFEE97',
+              selected: false
+            }
+          ]
         },
         {
-          title: "Cream Beach Bag",
-          image: "assets/storybook/Home/productB.jpg",
-          price: { regular: "$ 50.00 " },
+          title: 'Cream Beach Bag',
+          image: 'assets/storybook/Home/productB.jpg',
+          price: { regular: '$ 50.00 ' },
           rating: { max: 5, score: 4 },
           isInWishlist: false,
           reviews: 8,
-          badgeLabel: "",
-          badgeColor: "color-primary",
+          badgeLabel: '',
+          badgeColor: 'color-primary',
           colors: [
-            { label: "Sand", value: "sand", color: "#EDCBB9", selected: false },
-            { label: "Mint", value: "mint", color: "#ABD9D8", selected: false },
+            { label: 'Sand', value: 'sand', color: '#EDCBB9', selected: false },
+            { label: 'Mint', value: 'mint', color: '#ABD9D8', selected: false },
             {
-              label: "Vivid rose",
-              value: "vivid rose",
-              color: "#DB5593",
-              selected: false,
+              label: 'Vivid rose',
+              value: 'vivid rose',
+              color: '#DB5593',
+              selected: false
             },
             {
-              label: "Peach",
-              value: "peach",
-              color: "#F59F93",
-              selected: false,
+              label: 'Peach',
+              value: 'peach',
+              color: '#F59F93',
+              selected: false
             },
             {
-              label: "Citrus",
-              value: "citrus",
-              color: "#FFEE97",
-              selected: false,
-            },
-          ],
-        },
-      ],
+              label: 'Citrus',
+              value: 'citrus',
+              color: '#FFEE97',
+              selected: false
+            }
+          ]
+        }
+      ]
     };
   },
   methods: {
-    toggleWishlist(index) {
+    toggleWishlist (index) {
       return (this.products[index].isInWishlist =
         !this.products[index].isInWishlist);
     },
-    handleSelectedColor(color, index) {
+    handleSelectedColor (color, index) {
       this.products[index].colors.map((el) => {
         el.selected = el.label === color.label ? !el.selected : false;
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

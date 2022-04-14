@@ -14,66 +14,71 @@
         <div>
           <omTyreFinder />
         </div>
-                  <div class="filters">
-            <lazy-hydrate :trigger-hydration="!loading">
-              <SfAccordion
-                class="tyre-filters"
-                :first-open="false"
-                :multiple="false"
-                transition="sf-collapse-top"
-                show-chevron
-              >
-                <template v-for="(filters, filterType) in availableFilters">
-                  <SfAccordionItem
-                    :key="filterType"
-                    :header="title(filterType)"
-                  >
-                    <template v-if="filterType === 'color_sfilter'">
-                      <div class="filters__colors" :key="filterType + 'filter'">
-                        <SfColor
-                          v-for="filter in filters"
-                          :key="filter.id"
-                          :color="filter.color"
-                          :selected="isFilterActive(filter)"
-                          class="filters__color"
-                          @click="changeFilter(filter)"
-                        />
-                      </div>
-                    </template>
-                    <template v-else>
-                      <SfFilter
+        <div class="filters">
+          <lazy-hydrate :trigger-hydration="!loading">
+            <SfAccordion
+              class="tyre-filters"
+              :first-open="false"
+              :multiple="false"
+              transition="sf-collapse-top"
+              show-chevron
+            >
+              <template v-for="(filters, filterType) in availableFilters">
+                <SfAccordionItem :key="filterType" :header="title(filterType)">
+                  <template v-if="filterType === 'color_sfilter'">
+                    <div class="filters__colors" :key="filterType + 'filter'">
+                      <SfColor
                         v-for="filter in filters"
                         :key="filter.id"
-                        :label="filter.label"
-                        :count="filter.count"
                         :color="filter.color"
                         :selected="isFilterActive(filter)"
-                        class="filters__item"
-                        @change="changeFilter(filter)"
+                        class="filters__color"
+                        @click="changeFilter(filter)"
                       />
-                    </template>
-                  </SfAccordionItem>
-                </template>
-              </SfAccordion>
-            </lazy-hydrate>
-          </div>
+                    </div>
+                  </template>
+                  <template v-else>
+                    <SfFilter
+                      v-for="filter in filters"
+                      :key="filter.id"
+                      :label="filter.label"
+                      :count="filter.count"
+                      :color="filter.color"
+                      :selected="isFilterActive(filter)"
+                      class="filters__item"
+                      @change="changeFilter(filter)"
+                    />
+                  </template>
+                </SfAccordionItem>
+              </template>
+            </SfAccordion>
+          </lazy-hydrate>
+        </div>
       </div>
       <div class="products">
-           <div class="navbar section">
+        <div class="navbar section">
           <div class="navbar__main">
             <div class="navbar__filter mobile-only">
               <SfButton
                 class="sf-button--text navbar__filters-button"
                 @click="isFilterSidebarOpen = true"
               >
-                <SfIcon size="18px" class="navbar__filters-icon" color="#BEBFC4" icon="filter" />
+                <SfIcon
+                  size="18px"
+                  class="navbar__filters-icon"
+                  color="#BEBFC4"
+                  icon="filter"
+                />
                 {{ $t("Filters") }}
               </SfButton>
               <template v-if="activeFiltersCount">
                 ({{ activeFiltersCount }})
                 <span> &nbsp;&mdash;&nbsp;</span>
-                <button @click="clearAllFilters" class="sf-button sf-button--text navbar__filters-clear-all">
-                  {{ $t('Clear all') }}
+                <button
+                  @click="clearAllFilters"
+                  class="sf-button sf-button--text navbar__filters-clear-all"
+                >
+                  {{ $t("Clear all") }}
                 </button>
               </template>
             </div>
@@ -87,7 +92,9 @@
               </span>
             </div>
             <div class="navbar__sort">
-              <span class="navbar__label desktop-only">{{ $t("Sort By") }}:</span>
+              <span class="navbar__label desktop-only"
+                >{{ $t("Sort By") }}:</span
+              >
               <SfSelect
                 class="navbar__select sort-by"
                 ref="SortBy"
@@ -104,7 +111,12 @@
                 </SfSelectOption>
               </SfSelect>
               <SfButton
-                class="sf-button--text navbar__filters-button sort-by__button mobile-only"
+                class="
+                  sf-button--text
+                  navbar__filters-button
+                  sort-by__button
+                  mobile-only
+                "
                 @click="$refs.SortBy.toggle()"
               >
                 {{ $t("Sort By") }}
@@ -144,7 +156,7 @@
             tag="div"
             class="products__grid"
           >
-            <SfProductCard
+            <OmProductCard
               v-for="product in currentPageProducts"
               :key="product.id"
               :title="product.enhanced_title || product.title"
@@ -175,19 +187,24 @@
               >
                 <b :style="{ color: 'black' }">Not Available Online</b>
               </template>
-                    <template #reviews>
-                   <div class="product-card__action-area">
-                 <SfButton
-    :disabled="isProductDisabled || loading"
-    class="a-add-to-cart om-btn--primary btn--narrow sf-button--full-width"
-    @click.native="addToCart(product)"
-  >
-    <SfLoader v-if="loading" :loading="loading" />
-    <span v-else>{{ $t("Add to cart") }}</span>
-  </SfButton>
-                   </div>
+              <template #reviews>
+                <div class="product-card__action-area">
+                  <SfButton
+                    :disabled="isProductDisabled || loading"
+                    class="
+                      a-add-to-cart
+                      om-btn--primary
+                      btn--narrow
+                      sf-button--full-width
+                    "
+                    @click.native="addToCart(product)"
+                  >
+                    <SfLoader v-if="loading" :loading="loading" />
+                    <span v-else>{{ $t("Add to cart") }}</span>
+                  </SfButton>
+                </div>
               </template>
-            </SfProductCard>
+            </OmProductCard>
           </transition-group>
           <!-- </lazy-hydrate> -->
           <SfPagination
@@ -326,6 +343,8 @@ import SvgViewer from "theme/components/svg-viewer.vue";
 import { ModalList } from "theme/store/ui/modals";
 import { createSmoothscroll } from "theme/helpers";
 import SearchPanelMixin from "@vue-storefront/core/compatibility/components/blocks/SearchPanel/SearchPanel";
+import OmAppointmentSelector from "theme/components/omni/om-appointment-selector.vue";
+import OmProductCard from "theme/components/omni/om-product-card.vue";
 
 const THEME_PAGE_SIZE = 12;
 const LAZY_LOADING_ACTIVATION_BREAKPOINT = 1024;
@@ -386,6 +405,7 @@ export default {
     OmCategoryHeader,
     OmProductCardLoader,
     SfImage,
+    OmAppointmentSelector,
   },
   mixins: [onBottomScroll, SearchPanelMixin],
   data() {
@@ -1290,7 +1310,7 @@ export default {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-::v-deep .sf-product-card__brand{
+::v-deep .sf-product-card__brand {
   height: 60px;
   width: 100%;
   background: orange;
@@ -1298,43 +1318,43 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  .brand-logo{
+  .brand-logo {
     max-height: 30px;
   }
 }
-::v-deep .action-area__wrap{
+::v-deep .action-area__wrap {
   background: #000;
   padding: 15px;
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
 }
-::v-deep .action-area__wrap--price{
+::v-deep .action-area__wrap--price {
   padding: 0 10px;
 }
-::v-deep .action-area__wrap--message1{
+::v-deep .action-area__wrap--message1 {
   color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-right: 1px solid #fff;
-  p{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid #fff;
+  p {
     text-align: center;
     color: #fff;
   }
 }
 
-::v-deep .action-area__wrap--message2{
+::v-deep .action-area__wrap--message2 {
   color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-left: 1px solid #fff;
-  p{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-left: 1px solid #fff;
+  p {
     text-align: center;
     color: #fff;
   }
 }
-::v-deep .action-area__wrap--promobanner{
+::v-deep .action-area__wrap--promobanner {
   height: 25px;
   width: 100%;
   background: grey;
@@ -1345,7 +1365,7 @@ export default {
   align-items: center;
   text-align: center;
 }
-::v-deep .action-area__wrap--stock{
+::v-deep .action-area__wrap--stock {
   height: 45px;
   padding: 0 5px;
   width: 100%;
@@ -1356,13 +1376,13 @@ export default {
   justify-content: center;
   align-items: center;
   text-align: center;
-.stock-pill{
-  background: green;
-  padding: 5px 10px;
-  border-radius: 25px;
-  font-size: 11px;
-  color: #fff;
-  margin-right: 15px;
-}
+  .stock-pill {
+    background: green;
+    padding: 5px 10px;
+    border-radius: 25px;
+    font-size: 11px;
+    color: #fff;
+    margin-right: 15px;
+  }
 }
 </style>

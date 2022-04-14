@@ -26,7 +26,7 @@
       <div class="products">
         <SfHeading :level="3" :title="$t('Product suggestions')" class="products__title sf-heading--left" />
         <div class="products__listing">
-          <SfProductCard
+          <OmProductCard
             v-for="product in visibleProducts"
             :key="product.id"
             :title="product.title"
@@ -37,9 +37,9 @@
             link-tag="router-link"
             :wishlist-icon="false"
             class="products__product-card"
-            @click.native="$store.commit('ui/setSearchpanel', false)" 
-            >
-                <template v-if="!isJpgRender(product)" #image>
+            @click.native="$store.commit('ui/setSearchpanel', false)"
+          >
+            <template v-if="!isJpgRender(product)" #image>
               <SvgViewer
                 :width="150"
                 :height="150"
@@ -47,8 +47,8 @@
                 :image-code="product.main_image"
                 :dom-id="product.id"
               />
-            </template> 
-          </SfProductCard>
+            </template>
+          </OmProductCard>
         </div>
         <SfButton
           v-if="OnlineOnly && readMore && visibleProducts.length >= pageSize"
@@ -74,6 +74,7 @@ import VueOfflineMixin from 'vue-offline/mixin';
 import { SfHeading, SfButton, SfList, SfMenuItem, SfProductCard } from '@storefront-ui/vue';
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 import SvgViewer from 'theme/components/svg-viewer.vue';
+import OmProductCard from "theme/components/omni/om-product-card.vue";
 
 export default {
   name: 'OSearchPanel',
@@ -83,7 +84,8 @@ export default {
     SfMenuItem,
     SfProductCard,
     SfHeading,
-    SvgViewer
+    SvgViewer,
+    OmProductCard
   },
   mixins: [VueOfflineMixin],
   data () {
@@ -152,8 +154,8 @@ export default {
         this.selectedCategoryIds.push(category.category_id);
       }
     },
-      isJpgRender (product) {
-        if (product.main_image == null) return true;
+    isJpgRender (product) {
+      if (product.main_image == null) return true;
     },
     getImageId (imageCode) {
       if (imageCode) {
@@ -253,7 +255,7 @@ export default {
       margin-bottom: 30px;
     }
     &__product-card {
-      
+
       flex: 0 1 calc(25% - 15px);
       min-width: calc(var(--product-card-max-width) * 0.8);
       border-radius: 8px;

@@ -100,7 +100,7 @@
               tag="div"
               class="products__grid"
             >
-              <SfProductCard
+              <OmProductCard
                 v-for="product in products"
                 :key="product.id"
                 :title="product.title"
@@ -220,6 +220,7 @@ import {
   SfBreadcrumbs,
   SfProductCard
 } from '@storefront-ui/vue';
+import OmProductCard from "theme/components/omni/om-product-card.vue";
 
 const THEME_PAGE_SIZE = 12;
 const LAZY_LOADING_ACTIVATION_BREAKPOINT = 1024;
