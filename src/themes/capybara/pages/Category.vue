@@ -406,6 +406,7 @@ export default {
     OmProductCardLoader,
     SfImage,
     OmAppointmentSelector,
+    OmProductCard
   },
   mixins: [onBottomScroll, SearchPanelMixin],
   data() {

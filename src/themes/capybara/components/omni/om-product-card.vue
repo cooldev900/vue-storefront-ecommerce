@@ -141,11 +141,11 @@
         </div>
 </div>
       <div class="action-area__wrap--promobanner">
-        {{promotion || ' '}}
+        This tire is available under buy 3 get 1 free promotion.
       </div>
        <div class="action-area__wrap--stock">
          <span class="stock-pill">In Stock</span>
-        Fiting & balancing at your door step
+        {{promotion || ' '}}
       </div>
 </div>
 </template>
