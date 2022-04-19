@@ -138,6 +138,7 @@
   </div>
     <div class="action-area__wrap--message2">
             <p>{{waranty || ' '}}</p>
+            <OmQuantitySelector :qty="qty" @update:qty="updateQTY" />
         </div>
 </div>
       <div class="action-area__wrap--promobanner">
@@ -161,6 +162,9 @@ import SfImage from "@storefront-ui/vue/src/components/atoms/SfImage/SfImage.vue
 import SfCircleIcon from "@storefront-ui/vue/src/components/atoms/SfCircleIcon/SfCircleIcon.vue";
 import SfBadge from "@storefront-ui/vue/src/components/atoms/SfBadge/SfBadge.vue";
 import SfButton from "@storefront-ui/vue/src/components/atoms/SfButton/SfButton.vue";
+import OmQuantitySelector from "./om-quantity-selector.vue";
+import { mapGetters } from "vuex";
+
 export default {
   name: "OmProductCard",
   components: {
@@ -172,6 +176,7 @@ export default {
     SfCircleIcon,
     SfBadge,
     SfButton,
+    OmQuantitySelector
   },
   directives: { focus },
   props: {
@@ -334,13 +339,21 @@ export default {
       type: Boolean,
       default: false,
     },
+    qty1: {
+      type: Number,
+      default: 1,
+    }
   },
   data() {
     return {
       isAddingToCart: false,
+      qty: 1,
     };
   },
   computed: {
+    ...mapGetters({
+      previewQty: "vehicles/qty"
+    }),
     isSFColors() {
       return SF_COLORS.includes(this.badgeColor.trim());
     },
@@ -390,7 +403,19 @@ export default {
       }, 1000);
       this.$emit("click:add-to-cart");
     },
+    updateQTY(value) {
+      this.qty = value;
+    },
   },
+  mounted() {
+    if (this.qty1) this.qty = this.qty1;
+  },
+  watch: {
+    qty(value) {
+      if (this.previewQty !== value)
+        this.$store.dispatch("vehicles/saveQTY", value);
+    }
+  }
 };
 </script>
 <style lang="scss">
