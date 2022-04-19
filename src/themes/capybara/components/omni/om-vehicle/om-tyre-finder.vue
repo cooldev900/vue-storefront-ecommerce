@@ -13,7 +13,9 @@
               @change="changeSelector('vehicle', index)"
               v-model="models['vehicle'][selectorName]"
             >
-            <option value="" disabled selected hidden>Select {{selectorName}}</option>
+              <option value="" disabled selected hidden>
+                Select {{ selectorName }}
+              </option>
               <option
                 v-for="label in options.vehicle[selectorName]"
                 :value="label"
@@ -41,7 +43,9 @@
               @change="changeSelector('size', index)"
               v-model="models['size'][selectorName]"
             >
-            <option value="" disabled selected hidden>Select {{selectorName}}</option>
+              <option value="" disabled selected hidden>
+                Select {{ selectorName }}
+              </option>
               <option
                 v-for="label in options.size[selectorName]"
                 :value="label"
@@ -69,7 +73,7 @@ import axios from 'axios';
 import config from 'config';
 
 export default {
-  name: 'omTyreFinder',
+  name: 'OmTyreFinder',
   components: { SfTabs, SfButton },
   data () {
     return {
@@ -117,7 +121,7 @@ export default {
           const key = allKeys[keyIndex + 1];
           const url = `${config.api.url}/api/ext/alfardan/vehicle-finder/options/${key}`;
           for (let i = keyIndex + 1; i <= 2; i++) {
-            this.models.vehicle[allKeys[i]] = null;
+            // this.models.vehicle[allKeys[i]] = [];
           }
           const payload = allKeys.reduce((result, key) => {
             if (this.models.vehicle[key]) {
@@ -141,7 +145,7 @@ export default {
           const key = allKeys[keyIndex + 1];
           const url = `${config.api.url}/api/ext/alfardan/tire-size/options/${key}`;
           for (let i = keyIndex + 1; i <= 2; i++) {
-            this.models.size[allKeys[i]] = null;
+            // this.models.size[allKeys[i]] = [];
           }
           const payload = allKeys.reduce((result, key) => {
             if (this.models.size[key]) {
@@ -183,14 +187,14 @@ export default {
         };
         this.models = {
           vehicle: {
-            make: null,
-            model: null,
-            tire_size: null
+            make: '',
+            model: '',
+            tire_size: ''
           },
           size: {
-            width: null,
-            rim: null,
-            profile: null
+            width: '',
+            rim: '',
+            profile: ''
           }
         }
       }
