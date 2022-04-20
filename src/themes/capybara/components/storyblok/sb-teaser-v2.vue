@@ -1,18 +1,15 @@
 <template>
   <div class="sb-key-info">
+    <div class="grid-container">
     <div class="sb-key-info__title">
-      How to Buy Online
+     How it works
     </div>
+    <p class="sb-key-info__description">Our simple step-by-step online buying process</p>
     <div class="sb-key-info__content">
       <div v-for="(step, index) in steps" :key="index" class="sb-key-info__card">
-        <SfImage
-          class="sb-key-info__card-icon"
-          loading="lazy"
-          :width="70"
-          src="../../assets/icons/recycle.png"
-        />
+       <img src="https://img.icons8.com/ios/100/000000/calendar--v1.png"/>
         <div class="sb-key-info__card-step">
-          STEP {{ index + 1 }}
+        {{ index + 1 }}
         </div>
         <div class="sb-key-info__card-title">
           {{ step.title }}
@@ -23,6 +20,7 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -72,50 +70,77 @@ description: 'Receive your item, whether it’s a floor mat or a brake disc, in 
 </script>
 
 <style lang="scss">
+@import "~@storefront-ui/shared/styles/helpers/breakpoints";
 .sb-key-info {
   display: flex;
   justify-content: center;
+  background: var(--c-primary);
   align-items: center;
   flex-direction: column;
-  margin: var(--spacer-lg) 0;
+  margin: var(--spacer-lg) 0 0 0;
   text-align: center;
+  padding: 50px 20px;
 
   &__title {
     text-transform: uppercase;
     font-size: 34px;
-    font-weight: 300;
-    margin-bottom: 30px;
-
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #fff;
   }
 
   &__description {
     margin: var(--spacer-lg) 0;
-    font-size: 30px;
+    font-size: 24px;
+    color: #fff;
+    margin: 0 0 60px 0;
   }
 
   &__content {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    gap: var(--spacer-lg);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-column-gap: 20px;
+    @include for-mobile{
+    grid-template-columns: 1fr;
+    grid-row-gap: 40px;
+    }
   }
 
   &__card {
     display: flex;
     justify-content: center;
+    position: relative;
     align-items: center;
     flex-direction: column;
     gap: var(--spacer-xs);
     font-size: 16px;
     gap: var(--spacer-base);
-    padding: 0 var(--spacer-lg);
-    max-width: 350px;
+    padding: 60px var(--spacer-lg) 40px var(--spacer-lg);
     text-align: center;
+    background: #fff;
 
     &-title {
       font-weight: bold;
     }
-
+    &-step{
+    background-color: var(--c-primary);
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    color: #ffffff;
+    width: 3rem;
+    height: 3rem;
+    position: absolute;
+    top: -1.5rem;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    font-weight: 700;
+    font-size: 24px;
+    }
     .sf-image {
       display: none;
       img {

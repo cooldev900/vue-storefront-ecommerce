@@ -74,13 +74,11 @@ export default {
 @import "~@storefront-ui/shared/styles/helpers/breakpoints";
 .om-category-header {
   display: flex;
-  background: #fff;
   margin: auto;
   background-position: center;
   background-size: cover;
-  min-height: 350px;
-  background-image: url('/assets/tyre-background.jpg'), -webkit-gradient(linear, left bottom, left top, from(#000), color-stop(50%, transparent)), -webkit-gradient(linear, left top, right top, from(#000), color-stop(50%, transparent));
-  @include for-mobile{
+  min-height: 250px;
+ @include for-mobile{
     margin: 5px;
     padding: 20px 15px 0 15px;
   }
@@ -89,16 +87,20 @@ export default {
    margin: auto;
  }
  .title{
+   h2{
    font-weight: 700;
+   text-align: center;
+   }
  }
   .description {
     display: flex;
     justify-content: center;
-    text-align: left;
     margin-bottom: 40px;
     font-size: 14px;
     p{
       margin: 0;
+      text-align: center;
+      max-width: 800px;
     }
   }
 

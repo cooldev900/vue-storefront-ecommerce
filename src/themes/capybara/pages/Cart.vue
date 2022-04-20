@@ -71,38 +71,7 @@
                 </template>
                 <template #actions>
                   <div class="actions desktop-only">
-                    <!-- <SfButton class="sf-button--text actions__button"
-                      >Edit</SfButton
-                    >
-                    <SfButton class="sf-button--text actions__button"
-                      >Save for later</SfButton
-                    >
-                    <SfButton class="sf-button--text actions__button"
-                      >Add to compare</SfButton
-                    >
-                    <SfButton class="sf-button--text actions__button"
-                      >Add message or gift wrap</SfButton
-                    > -->
-                    <div v-if="product.fitVehicles && product.fitVehicles.length">
-                      <p class="fitment-vehicles">
-                        <b>Fitment Vehicles</b>
-                      </p>
-                      <p v-for="vehicle in product.fitVehicles" :key="vehicle.national_code">
-                        {{ vehicle.Model }} : {{ vehicle.VRN }}
-                      </p>
-                    </div>
-
-                    <!-- <span class="actions__description">
-                      Usually arrives in 5-13 business days. A shipping timeline
-                      specific to your destination can be viewed in Checkout.
-                    </span> -->
-                    <OmRadioCheckbox
-                      v-if="isFittingProduct(product.sku)"
-                      v-model="fittingRadioModels[product.sku]"
-                      :items="fittingItems"
-                      @change="onFittingChange(product)"
-                      :price="getFittingPrice(product.sku, product.qty)"
-                    />
+            
                   </div>
                 </template>
               </SfCollectedProduct>
@@ -235,13 +204,7 @@ export default {
       await VehicleStorage.removeFittingProduct(product.sku)
     },
     goToCheckout () {
-      if (this.missingVin) {
-        this.openModal({
-          name: ModalList.OmCartCheckoutModal
-        })
-      } else {
         this.$router.push(localizedRoute('/checkout'));
-      }
     },
     changeQuantity (product, newQuantity) {
       this.$store.dispatch('cart/updateQuantity', {

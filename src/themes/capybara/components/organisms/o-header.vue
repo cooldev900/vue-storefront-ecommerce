@@ -14,24 +14,25 @@
       :style="{ 'z-index': isHoveredMenu ? 2 : 1 }"
     >
       <template #navigation>
-        <SfHeaderNavigationItem
-          v-for="category in _categories"
-          :key="category._uid"
-          :class="navigationItemColors"
-          @mouseover="isHoveredMenu = true"
-          @mouseleave="isHoveredMenu = false"
-        >
-          <router-link
-            to="/"
+       <SfHeaderNavigationItem
+            v-for="category in _categories"
+            :key="category._uid"
+            class="navigation-link"
+            @mouseover="triggerSubMenu(category)"
+            @mouseleave="isHoveredMenu = false"
           >
-            {{ category.navigation_level_1_title }}
-          </router-link>
-          <MMenu
-            :visible="isHoveredMenu && !isSearchPanelVisible"
-            :category="category"
-            @close="isHoveredMenu = false"
-          />
-        </SfHeaderNavigationItem>
+            <router-link
+              :to="category.navigation_level_1_link.url"
+            >
+              {{ category.navigation_level_1_title }}
+            </router-link>
+            <MMenu
+              v-if="!category.navigation_level_1_link.url"
+              :visible="isHoveredMenu && !isSearchPanelVisible"
+              :category="category"
+              @close="isHoveredMenu = false"
+            />
+          </SfHeaderNavigationItem>
       </template>
       <template #header-icons>
         <div class="sf-header__icons">

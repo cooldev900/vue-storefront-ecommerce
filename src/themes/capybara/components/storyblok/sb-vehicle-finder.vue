@@ -52,6 +52,7 @@
               </option>
             </select>
             <SfButton
+               class="om-btn--primary"
               :disabled="disableSizeGoButton"
               @click="fetchNationalCode('size')"
             >

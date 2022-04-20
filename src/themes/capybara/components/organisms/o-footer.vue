@@ -37,12 +37,10 @@
       <ul>
         <li class="left">
           <p class="copywrite">
-            © Glyn Hopkin. All Rights Reserved
+            © Alfardan Commercial. All Rights Reserved
           </p>
           <p>
-            Glyn Hopkin Online Shop, 279-289 London Road, Romford, Essex, RM7 9NP, UK
-            <br>
-            Vat Reg: 597406403 Company no: 2756516
+            7GM4+HH, PO 3763 Suhaim Bin Hamad Street, Doha, Qatar
           </p>
         </li>
         <li class="right" />
@@ -94,28 +92,18 @@ export default {
                 : { clickHandler: () => this.openModal({ name: ModalList.Auth, payload: 'login' }) }
             },
             { name: 'About Us', link: '/explore/about-us' },
-            { name: 'Contact Us', clickHandler: () => this.openModal({ name: ModalList['OmContactModal']}) },
-            { name: 'FAQs', clickHandler: () => this.openModal({ name: ModalList['OmInfoModal'], payload: { contentKey: 'modal-faqs' } }) },
-            { name: 'Request Part or Accessory', clickHandler: () => this.openModal({ name: ModalList['OmEnquiryModal']}) },
-            { name: 'Offer T&Cs', clickHandler: () => this.openModal({ name: ModalList.OmInfoModal, payload: { contentKey: 'modal-offers' } }) },
-            { name: 'Installation Service', clickHandler: () => this.openModal({ name: ModalList['OmInfoModal'], payload: { contentKey: 'modal-installationservice' } }) }
+            { name: 'Contact Us', clickHandler: () => this.openModal({ name: ModalList['OmContactModal']}) }
           ]
         },
         help: {
           name: 'Legal',
           children: [
             { name: 'Terms & Conditions', clickHandler: () => this.openModal({ name: ModalList['OmInfoModal'], payload: { contentKey: 'modal-terms' } }) },
-            { name: 'Privacy Policy', clickHandler: () => this.openModal({ name: ModalList['OmInfoModal'], payload: { contentKey: 'modal-privacy' } }) },
-            { name: 'Cookie Policy', clickHandler: () => this.openModal({ name: ModalList['OmInfoModal'], payload: { contentKey: 'modal-cookie' } }) },
-            { name: 'UK Delivery', clickHandler: () => this.openModal({ name: ModalList['OmInfoModal'], payload: { contentKey: 'modal-ukdelivery' } }) },
-            { name: 'International Delivery', clickHandler: () => this.openModal({ name: ModalList['OmInfoModal'], payload: { contentKey: 'modal-internationaldelivery' } }) },
-            { name: 'UK Returns', clickHandler: () => this.openModal({ name: ModalList['OmInfoModal'], payload: { contentKey: 'modal-ukreturns' } }) },
-            { name: 'International Returns', clickHandler: () => this.openModal({ name: ModalList['OmInfoModal'], payload: { contentKey: 'modal-internationalreturns' } }) },
-            { name: 'Surcharges', clickHandler: () => this.openModal({ name: ModalList['OmInfoModal'], payload: { contentKey: 'modal-surcharges' } }) }
+            { name: 'Privacy Policy', clickHandler: () => this.openModal({ name: ModalList['OmInfoModal'], payload: { contentKey: 'modal-privacy' } }) }
           ]
         },
         about: {
-          name: 'More from Glyn Hopkin',
+          name: 'More from AlFardan',
           children: [
             {
               name: 'New Cars',
@@ -154,9 +142,9 @@ export default {
 @import "~@storefront-ui/shared/styles/helpers/breakpoints";
 
 .o-footer {
-  background: #222;
+  background: #000;
   &__inner{
-  max-width: 1600px;
+    max-width: 1400px;
     padding: 15px 25px;
   @include for-desktop {
     margin: auto;
@@ -204,7 +192,7 @@ export default {
     background: #fff;
     ul{
       list-style: none;
-      max-width: 1600px;
+      max-width: 1400px;
       margin: auto;
       padding: 0;
     .footer-bottom__menu-item{
@@ -219,7 +207,7 @@ export default {
     background: #fff;
     ul{
       list-style: none;
-      max-width: 1600px;
+      max-width: 1400px;
       margin: auto;
       padding: 0;
       display: flex;

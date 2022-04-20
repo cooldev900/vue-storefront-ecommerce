@@ -435,6 +435,12 @@
         "available_images",
         "is_epc",
         "enhanced_title",
+        "brand_colour",
+        "brand_logo",
+        "oe_brand",
+        "usp1",
+        "usp2",
+        "secondary_title",
         "image_code",
         "visual_group",
         "main_image",
@@ -517,6 +523,12 @@
         "available_images",
         "is_epc",
         "enhanced_title",
+        "brand_colour",
+        "brand_logo",
+        "oe_brand",
+        "usp1",
+        "usp2",
+        "secondary_title",
         "image_code",
         "main_image",
         "type",
@@ -731,12 +743,13 @@
     "calculateBundlePriceByOptions": true,
     "endpoint": "/api/product",
     "defaultFilters": [
-      "width",
-      "profile",
-      "rim",
       "litres",
       "grade",
       "oil_type",
+      "oe_brand",
+      "price",
+      "vehicle_type",
+      "battery_capacity",
       "car_size"
     ],
     "systemFilterNames": [
@@ -783,18 +796,18 @@
       "ranges": [
         {
           "from": 0,
-          "to": 50
+          "to": 500
         },
         {
-          "from": 50,
-          "to": 100
+          "from": 500,
+          "to": 1000
         },
         {
-          "from": 100,
-          "to": 150
+          "from": 1000,
+          "to": 2000
         },
         {
-          "from": 150
+          "from": 2000
         }
       ]
     },

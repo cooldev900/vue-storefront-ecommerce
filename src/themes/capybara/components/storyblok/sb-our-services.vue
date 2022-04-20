@@ -1,4 +1,5 @@
 <template>
+<div class="grid-container">
   <div class="sb-our-services">
     <div
       class="sb-our-services__card"
@@ -14,6 +15,7 @@
       </p>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -46,10 +48,7 @@ export default {
 <style lang="scss">
 @import "~@storefront-ui/shared/styles/helpers/breakpoints";
 .sb-our-services {
-  padding: 0 40px;
-  max-width: 1680px;
   margin: 60px auto;
-  width: 86%;
   position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -65,7 +64,7 @@ export default {
     justify-content: center;
     height: 100%;
     background-color: white;
-    border: 1px solid #ddd;
+    border-radius: 8px;
     box-sizing: border-box;
     padding: 1.25rem 0.5rem;
     text-decoration: none;

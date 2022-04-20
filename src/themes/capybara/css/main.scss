@@ -137,6 +137,14 @@
       margin: auto;
     }
   }
+  .grid-container{
+    max-width: 1400px;
+    padding: 0 25px;
+    margin: auto;
+    @include for-mobile{
+      padding: 0 15px;
+    }
+  }
   .om-btn--primary{
     height: 54px;
     padding-left: 30px;
@@ -288,9 +296,6 @@
 }
 .sf-select__options {
   overflow-y: auto;
-}
-#sfSelect {
-  padding-top: var(--spacer-lg);
 }
 /**** ---- loaders ----- ****/
 .loader--circle {

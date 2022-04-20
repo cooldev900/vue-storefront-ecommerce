@@ -1,9 +1,11 @@
 <template>
+<div class="grid-container">
   <div class="promo-area">
           <div class="promo-area__item" v-for="(card, index) in cards" :key="index">
-        <img :src="card.imgUrl" />
+        <img class="promo-area__item--img" :src="card.imgUrl" />
       </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -81,12 +83,10 @@ export default {
 @import "~@storefront-ui/shared/styles/helpers/breakpoints";
 .promo-area {
   margin: var(--spacer-2xl) auto;
-  padding: 0 40px;
-  max-width: 1680px;
   margin: 60px auto;
-  width: 86%;
   position: relative;
   display: grid;
+  grid-column-gap: 15px;
   grid-template-columns: 1fr 1fr 1fr;
   @include for-mobile {
     /* grid-template-columns: 1fr; */
@@ -95,6 +95,9 @@ export default {
   }
 &__item{
   display: block;
+&--img{
+  width: 100%;
+}
 }
 &__title{
   font-size: 30px;

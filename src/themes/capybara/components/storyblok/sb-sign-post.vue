@@ -73,8 +73,8 @@ export default {
 @import "~@storefront-ui/shared/styles/helpers/breakpoints";
 .sb-sign-post {
   display: flex;
-  max-width: 1600px;
-    margin: 0 auto;
+  max-width: 1400px;
+    margin: 30px auto;
     overflow: hidden;
   justify-content: center;
   align-content: center;
