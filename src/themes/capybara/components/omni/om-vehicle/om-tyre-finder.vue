@@ -131,7 +131,7 @@ export default {
       )
         isFullWidth = true;
 
-      return !!existsNationCode && !isFullWidth && !this.isTireSearch;
+      return !!existsNationCode && !isFullWidth;
     },
     disableVehicleGoButton() {
       return Object.keys(this.models["vehicle"]).some(
@@ -146,7 +146,7 @@ export default {
   },
   methods: {
     showTireSearch() {
-      this.isTireSearch = true;
+      this.$store.dispatch("vehicles/saveActiveVehicle", {});
     },
     async changeSelector(type, keyIndex) {
       if (type === "vehicle") {
@@ -237,7 +237,6 @@ export default {
             profile: "",
           },
         };
-        this.isTireSearch = false;
       }
     },
   },
