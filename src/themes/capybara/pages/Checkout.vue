@@ -1,4 +1,5 @@
 <template>
+<div>
   <div id="checkout">
     <div v-if="!isThankYouPage" class="checkout">
       <SfSteps
@@ -24,8 +25,12 @@
     </div>
     <OOrderConfirmation v-if="isThankYouPage" />
   </div>
+   <SbTeaseV2/>
+  </div>
 </template>
 <script>
+
+import SbTeaseV2 from "theme/components/storyblok/sb-teaser-v2.vue";
 import Checkout from '@vue-storefront/core/pages/Checkout';
 import { SfSteps, SfButton } from '@storefront-ui/vue';
 import OPayment from 'theme/components/organisms/o-payment';
@@ -48,7 +53,8 @@ export default {
     OConfirmOrder,
     OPersonalDetails,
     OOrderConfirmation,
-    SfButton
+    SfButton,
+    SbTeaseV2
   },
   mixins: [Checkout],
   data () {

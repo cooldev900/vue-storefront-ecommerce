@@ -1,4 +1,5 @@
 <template>
+<div>
   <div class="deliver">
     <h2>Delivery options</h2>
     <h4>How would you prefer to receive your items?</h4>
@@ -9,9 +10,12 @@
       </SfButton>
     </div>
   </div>
+  <SbTeaseV2/>
+  </div>
 </template>
 
 <script>
+import SbTeaseV2 from "theme/components/storyblok/sb-teaser-v2.vue";
 import {
   SfRadio,
   SfButton
@@ -28,7 +32,8 @@ export default {
   components: {
     SfRadio,
     SfButton,
-    OmLocator
+    OmLocator,
+    SbTeaseV2
   },
   data () {
     return {

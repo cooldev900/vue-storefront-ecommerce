@@ -1,4 +1,5 @@
 <template>
+<div>
   <div class="static-page">
     <h1>Your {{ brand }}</h1>
     <transition-group name="fade">
@@ -10,9 +11,12 @@
       />
     </transition-group>
   </div>
+  <SbTeaseV2/>
+  </div>
 </template>
 
 <script>
+import SbTeaseV2 from "theme/components/storyblok/sb-teaser-v2.vue";
 import axios from 'axios';
 import { SfLoader } from '@storefront-ui/vue';
 import { mapGetters } from 'vuex';
@@ -30,7 +34,8 @@ export const getStoryblokData = async () => {
 export default {
   name: 'Vehicle',
   components: {
-    SfLoader
+    SfLoader,
+    SbTeaseV2
   },
   data () {
     return {

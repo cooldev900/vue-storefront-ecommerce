@@ -1,4 +1,5 @@
 <template>
+<div>
   <div id="category">
       <OmCategoryHeader
         v-if="!!getCurrentCategory"
@@ -300,9 +301,12 @@
       </template>
     </SfSidebar>
   </div>
+  <SbTeaseV2 />
+  </div>
 </template>
 
 <script>
+import SbTeaseV2 from "theme/components/storyblok/sb-teaser-v2.vue";
 import LazyHydrate from "vue-lazy-hydration";
 import { mapGetters, mapActions } from "vuex";
 import castArray from "lodash-es/castArray";
@@ -340,7 +344,7 @@ import {
   SfBreadcrumbs,
   SfProductCard,
   SfSearchBar,
-  SfImage,
+  SfImage
 } from "@storefront-ui/vue";
 import omTyreFinder from "theme/components/omni/om-vehicle/om-tyre-finder";
 import OmCategoryHeader from "theme/components/omni/om-category-header";
@@ -416,7 +420,8 @@ export default {
     OmProductCardLoader,
     SfImage,
     OmAppointmentSelector,
-    OmProductCard
+    OmProductCard,
+    SbTeaseV2
   },
   mixins: [onBottomScroll, SearchPanelMixin],
   data() {

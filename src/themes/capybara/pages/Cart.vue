@@ -1,4 +1,5 @@
 <template>
+<div>
   <div id="detailed-cart">
     <div class="detailed-cart">
       <div v-if="totalItems" class="detailed-cart__aside">
@@ -99,8 +100,11 @@
       </div>
     </div>
   </div>
+  <SbTeaseV2 />
+  </div>
 </template>
 <script>
+import SbTeaseV2 from "theme/components/storyblok/sb-teaser-v2.vue";
 import {
   SfCollectedProduct,
   SfButton,
@@ -135,7 +139,8 @@ export default {
     OOrderSummary,
     OMicrocartPanelList,
     OmRadioCheckbox,
-    OmSvgViewer
+    OmSvgViewer,
+    SbTeaseV2
   },
   data () {
     return {

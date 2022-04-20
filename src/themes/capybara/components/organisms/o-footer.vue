@@ -1,4 +1,5 @@
 <template>
+<div>
   <footer class="o-footer">
     <div class="o-footer__inner">
       <SfFooter :column="5" :multiple="true">
@@ -47,6 +48,7 @@
       </ul>
     </div>
   </footer>
+</div>
 </template>
 
 <script>
@@ -58,6 +60,7 @@ import config from 'config';
 import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 import get from 'lodash-es/get';
 import { createSmoothscroll } from 'theme/helpers';
+
 
 export default {
   name: 'OFooter',

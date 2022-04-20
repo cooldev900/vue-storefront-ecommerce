@@ -1,4 +1,5 @@
 <template>
+<div>
   <div id="category">
     <lazy-hydrate :trigger-hydration="!loading">
       <OmCategoryHeader
@@ -60,9 +61,12 @@
       <div v-else>There is no data</div>
     </div>
   </div>
+<SbTeaseV2 />
+</div>
 </template>
 
 <script>
+import SbTeaseV2 from "theme/components/storyblok/sb-teaser-v2.vue";
 import LazyHydrate from "vue-lazy-hydration";
 import { mapGetters, mapActions } from "vuex";
 import castArray from "lodash-es/castArray";
@@ -143,7 +147,8 @@ export default {
     OmCategoryHeader,
     OmProductCardLoader,
     SfImage,
-    OmProductCard
+    OmProductCard,
+    SbTeaseV2
   },
   mixins: [onBottomScroll, SearchPanelMixin],
   data() {

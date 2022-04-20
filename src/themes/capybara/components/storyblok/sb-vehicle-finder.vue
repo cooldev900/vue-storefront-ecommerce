@@ -13,7 +13,7 @@
               @change="changeSelector('vehicle', index)"
               v-model="models['vehicle'][selectorName]"
             >
-            <option value="" disabled selected hidden>Select {{selectorName}}</option>
+            <option value="" disabled selected hidden>Select {{changeText(selectorName)}}</option>
               <option
                 v-for="label in options.vehicle[selectorName]"
                 :value="label"
@@ -42,7 +42,7 @@
               @change="changeSelector('size', index)"
               v-model="models['size'][selectorName]"
             >
-            <option value="" disabled selected hidden>Select {{selectorName}}</option>
+            <option value="" disabled selected hidden>Select {{changeText(selectorName)}}</option>
               <option
                 v-for="label in options.size[selectorName]"
                 :value="label"
@@ -120,6 +120,13 @@ export default {
     }
   },
   methods: {
+    changeText(text) {
+      console.log(text, 'text')
+      let texts = text.split("_");
+      let results = texts.map(text => text.charAt(0).toUpperCase() + text.slice(1));
+      console.log(results, 'texts')
+      return results.join(" ");
+    },
     async changeSelector (type, keyIndex) {
       console.log('changeSelector', type, 'type', keyIndex, 'keyIndex');
       if (type === 'vehicle') {

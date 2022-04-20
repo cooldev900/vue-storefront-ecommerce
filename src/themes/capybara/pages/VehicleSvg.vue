@@ -1,4 +1,5 @@
 <template>
+<div>
   <div class="vehicle-page">
     <SfSticky>
       <div class="vehicle-page__holder">
@@ -96,9 +97,12 @@
       />
     </div>
   </div>
+<SbTeaseV2/>
+</div>
 </template>
 
 <script>
+import SbTeaseV2 from "theme/components/storyblok/sb-teaser-v2.vue";
 import NewVehicle from 'theme/components/omni/om-hero/new-vehicle.vue';
 import OmVehicleTooltips from 'theme/components/omni/om-vehicle/om-vehicle-tooltips.vue';
 import SvgViewer from 'theme/components/svg-viewer.vue';
@@ -121,7 +125,8 @@ export default {
     SfSticky,
     OmVehicleTooltips,
     MProductAddToCart,
-    SfCheckbox
+    SfCheckbox,
+    SbTeaseV2
   },
   data () {
     return {

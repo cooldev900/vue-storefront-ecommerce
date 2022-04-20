@@ -1,4 +1,5 @@
 <template>
+<div>
   <div id="product" itemscope itemtype="http://schema.org/Product">
   <div class="product-container">
     <SfBreadcrumbs class="breadcrumbs desktop-only" :breadcrumbs="breadcrumbs">
@@ -18,9 +19,12 @@
     />
   </div>
   </div>
+  <SbTeaseV2/>
+</div>
 </template>
 
 <script>
+import SbTeaseV2 from "theme/components/storyblok/sb-teaser-v2.vue";
 import { mapGetters, mapState } from 'vuex';
 import {
   currentStoreView
@@ -40,7 +44,8 @@ export default {
   name: 'Product',
   components: {
     OProductDetails,
-    SfBreadcrumbs
+    SfBreadcrumbs,
+    SbTeaseV2
   },
   provide () {
     return {
