@@ -131,7 +131,7 @@ export default {
       )
         isFullWidth = true;
 
-      return !!existsNationCode && !isFullWidth;
+      return !!existsNationCode;
     },
     disableVehicleGoButton() {
       return Object.keys(this.models["vehicle"]).some(
