@@ -613,7 +613,7 @@ export default {
         isFullWidth = true;
 
       if (!Object.keys(this.availableFilters).length) return false;
-      return !!existsNationCode && !isFullWidth;
+      return !existsNationCode && !isFullWidth;
     },
   },
   watch: {
