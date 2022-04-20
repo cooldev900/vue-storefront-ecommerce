@@ -264,6 +264,7 @@ export default {
     },
     setMeeting (meeting) {
       if (this.isDisabled(meeting) || this.isAnotherPopUpDisplayed) return;
+      this.$store.dispatch("vehicles/saveSelectedTime", meeting);
       this.selected = meeting;
       this.$emit('input', this.selected);
     },

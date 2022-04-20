@@ -23,8 +23,12 @@ export const vehiclesStore = {
     pageSbData: null,
     storyblok: {},
     qty: 1,
+    selectedTime: {},
   },
   actions: {
+    async saveSelectedTime({commit}, meeting) {
+      commit('setSelectedTime', meeting);
+    },
     async saveQTY({commit}, qty) {
       commit('setQTY', qty);
     },
@@ -102,6 +106,9 @@ export const vehiclesStore = {
   mutations: {
     async setQTY(state, qty) {
       Vue.set(state, 'qty', qty);
+    },
+    async setSelectedTime(state, meeting) {
+      Vue.set(state, 'selected', meeting);
     },
     async loadMoreServiceVehicles (state) {
       let relatedProductsQuery = new SearchQuery();
