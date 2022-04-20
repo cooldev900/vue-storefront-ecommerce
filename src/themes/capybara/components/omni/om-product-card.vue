@@ -142,10 +142,10 @@
   </div>
     <div class="action-area__wrap--message2">
             <p>{{waranty || ' '}}</p>
-            <OmQuantitySelector :qty="qty" @update:qty="updateQTY" />
         </div>
 </div>
        <div class="action-area__wrap--stock">
+               <OmQuantitySelector :qty="qty" @update:qty="updateQTY" />
          <span class="stock-pill">In Stock</span>
         {{promotion || ' '}}
       </div>

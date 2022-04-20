@@ -269,12 +269,8 @@ export default {
     background-color: white;
     margin: 0 20px;
     padding: 20px;
-
-    &__text {
-    }
-
     &__button {
-      width: 100%;
+      flex: 1;
       height: 54px;
       border-radius: 4px;
       background-color: orange;
@@ -294,11 +290,15 @@ export default {
     padding: 4px;
     .sf-tabs {
       width: 100%;
+      box-shadow: #d6d5d5 0px 1px 3px 0px;
+      border-radius: 8px;
+      overflow: hidden;
       &__title {
         padding: 20px;
         background: orange;
         border: none;
         color: #fff;
+        flex: 1;
         font-weight: 700;
         margin: 0;
         &--active {
