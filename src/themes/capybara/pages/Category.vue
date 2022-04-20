@@ -7,7 +7,55 @@
         :description="getCurrentCategory.description"
         :parent-id="getCurrentCategory.parent_id"
       />
-        <div class="navbar section grid-container">
+    <div class="main section">
+      <div class="sidebar desktop-only">
+        <div>
+          <omTyreFinder v-if="shouldShowVehicleCard" />
+        </div>
+        <div class="filters">
+          <lazy-hydrate :trigger-hydration="!loading">
+            <SfAccordion
+              class="tyre-filters"
+              open="all"
+              :firstOpen="true"
+              :multiple="true"
+              transition=""
+              show-chevron
+            >
+              <template v-for="(filters, filterType) in availableFilters">
+                <SfAccordionItem :key="filterType" :header="title(filterType)">
+                  <template v-if="filterType === 'color_sfilter'">
+                    <div class="filters__colors" :key="filterType + 'filter'">
+                      <SfColor
+                        v-for="filter in filters"
+                        :key="filter.id"
+                        :color="filter.color"
+                        :selected="isFilterActive(filter)"
+                        class="filters__color"
+                        @click="changeFilter(filter)"
+                      />
+                    </div>
+                  </template>
+                  <template v-else>
+                    <SfFilter
+                      v-for="filter in filters"
+                      :key="filter.id"
+                      :label="filter.label"
+                      :count="filter.count"
+                      :color="filter.color"
+                      :selected="isFilterActive(filter)"
+                      class="filters__item"
+                      @change="changeFilter(filter)"
+                    />
+                  </template>
+                </SfAccordionItem>
+              </template>
+            </SfAccordion>
+          </lazy-hydrate>
+        </div>
+      </div>
+      <div class="products">
+        <div class="navbar section">
           <div class="navbar__main">
             <div class="navbar__filter mobile-only">
               <SfButton
@@ -76,54 +124,6 @@
             </div>
           </div>
         </div>
-    <div class="main section grid-container">
-      <div class="sidebar desktop-only">
-        <div>
-          <omTyreFinder />
-        </div>
-        <div class="filters">
-          <lazy-hydrate :trigger-hydration="!loading">
-            <SfAccordion
-              class="tyre-filters"
-              open="all"
-              :firstOpen="true"
-              :multiple="true"
-              transition=""
-              show-chevron
-            >
-              <template v-for="(filters, filterType) in availableFilters">
-                <SfAccordionItem :key="filterType" :header="title(filterType)">
-                  <template v-if="filterType === 'color_sfilter'">
-                    <div class="filters__colors" :key="filterType + 'filter'">
-                      <SfColor
-                        v-for="filter in filters"
-                        :key="filter.id"
-                        :color="filter.color"
-                        :selected="isFilterActive(filter)"
-                        class="filters__color"
-                        @click="changeFilter(filter)"
-                      />
-                    </div>
-                  </template>
-                  <template v-else>
-                    <SfFilter
-                      v-for="filter in filters"
-                      :key="filter.id"
-                      :label="filter.label"
-                      :count="filter.count"
-                      :color="filter.color"
-                      :selected="isFilterActive(filter)"
-                      class="filters__item"
-                      @change="changeFilter(filter)"
-                    />
-                  </template>
-                </SfAccordionItem>
-              </template>
-            </SfAccordion>
-          </lazy-hydrate>
-        </div>
-      </div>
-      <div class="products">
         <div v-if="loading">
           <transition-group
             appear
@@ -991,6 +991,8 @@ export default {
   }
 }
 .main {
+  max-width: 1600px;
+  padding: 0 15px !important;
   margin: auto !important;
   &.section {
     padding: var(--spacer-xs);
@@ -1155,10 +1157,10 @@ export default {
   margin: 0 0 0 30px;
   gap: 30px;
   padding-bottom: 20px;
-  @media (min-width: 700px) and (max-width: 1300px) {
-    grid-template-columns: 1fr 1fr;
+  @media (min-width: 1024px) and (max-width: 1200px) {
+    grid-template-columns: 1fr;
   }
-@media (min-width: 1px) and (max-width: 699px) {
+  @include for-mobile {
     grid-template-columns: 1fr;
     margin: 0;
     gap: 10px;
@@ -1332,9 +1334,6 @@ export default {
     a {
       width: 100%;
       height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
   }
   ::v-deep .products__product-card {
@@ -1375,7 +1374,7 @@ export default {
     padding-right: 0px !important;
   }
   .sidebar {
-    padding: 0 !important;
+    padding: 16px 16px 16px 0;
     border: none;
     .sidebar-wrapper {
       padding: var(--spacer-sm);
