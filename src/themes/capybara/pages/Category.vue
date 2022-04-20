@@ -165,6 +165,7 @@
               :regular-price="product.price.regular"
               :special-price="product.price.special"
               :link="product.link"
+              :qty1 = "product.qty"
               brandImage="/assets/continental_logo.svg"
               link-tag="router-link"
               :wishlist-icon="false"
@@ -442,6 +443,7 @@ export default {
       getAttributeLabelById: "vehicles/getAttributeLabelById",
       getAttributeIdByLabel: "vehicles/getAttributeIdByLabel",
       activeVehicle: "vehicles/activeVehicle",
+      qty: "vehicles/getQty"
     }),
     isLazyHydrateEnabled() {
       return config.ssr.lazyHydrateFor.includes("category-next.products");
@@ -694,7 +696,7 @@ export default {
         
         const productData = items[0] || null;
         await this.$store.dispatch('cart/addItem', {
-          productToAdd: Object.assign({}, productData, { qty: 1 })
+          productToAdd: Object.assign({}, productData, { qty: this.qty })
         });
   
         const cartItems = await StorageManager.get('cart').getItem('current-cart');
@@ -730,7 +732,7 @@ export default {
             }
           }
         })
-        console.log('hey cart')
+        
         await StorageManager.get('cart').setItem('current-cart', cartItems).catch((reason) => {
           Logger.error(reason)()
         })
@@ -742,7 +744,7 @@ export default {
           'notification/clearNotification',
           { root: true }
         );
-        console.log('hey modal')
+        
         this.openModal({
           name: ModalList.OmCartPopupModal,
           payload: {

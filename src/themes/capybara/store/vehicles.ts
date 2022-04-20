@@ -21,9 +21,13 @@ export const vehiclesStore = {
     showSetPrompt: false,
     globalSbData: {},
     pageSbData: null,
-    storyblok: {}
+    storyblok: {},
+    qty: 1,
   },
   actions: {
+    async saveQTY({commit}, qty) {
+      commit('setQTY', qty);
+    },
     async saveServiceVehicles ({ commit }, serviceVehicles) {
       await VehicleStorage.saveServiceVehicles(serviceVehicles);
       const vehicles = await VehicleStorage.getSavedServiceVehiclesData();
@@ -96,6 +100,9 @@ export const vehiclesStore = {
     }
   },
   mutations: {
+    async setQTY(state, qty) {
+      Vue.set(state, 'qty', qty);
+    },
     async loadMoreServiceVehicles (state) {
       let relatedProductsQuery = new SearchQuery();
       relatedProductsQuery = relatedProductsQuery
@@ -177,6 +184,9 @@ export const vehiclesStore = {
     }
   },
   getters: {
+    getQty: (state) => {
+      return state.qty;
+    },
     getServiceVehicles: (state, getters, rootState, rootGetters) => {
       return state.serviceVehicles;
     },
