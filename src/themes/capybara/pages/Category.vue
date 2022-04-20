@@ -10,7 +10,7 @@
     <div class="main section">
       <div class="sidebar desktop-only">
         <div>
-          <omTyreFinder v-if="shouldShowVehicleCard" />
+          <omTyreFinder />
         </div>
         <div class="filters">
           <lazy-hydrate :trigger-hydration="!loading">

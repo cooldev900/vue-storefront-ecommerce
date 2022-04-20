@@ -1,6 +1,11 @@
 <template>
   <div class="af-tyre-finder">
-    <div class="container">
+    <div class="my-tyre" v-if="shouldShowVehicleCard">
+      <span class="my-tyre__text">Your Tire {{ activeVehicle.make }}</span>
+      <SfButton class="my-tyre__button" @click="showTireSearch">
+        Start New Search</SfButton>
+    </div>
+    <div class="container" v-else>
       <SfTabs :open-tab="1">
         <SfTab title="Tire By Vehicle">
           <div class="selector-wrapper">
@@ -70,54 +75,81 @@
 </template>
 
 <script>
-import { SfTabs, SfButton } from '@storefront-ui/vue';
-import axios from 'axios';
-import config from 'config';
+import { SfTabs, SfButton } from "@storefront-ui/vue";
+import axios from "axios";
+import config from "config";
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'OmTyreFinder',
+  name: "OmTyreFinder",
   components: { SfTabs, SfButton },
-  data () {
+  data() {
     return {
+      isTireSearch: false,
       makeOptions: [],
       widthOptions: [],
       options: {
         vehicle: {
           make: [],
           model: [],
-          tire_size: []
+          tire_size: [],
         },
         size: {
           width: [],
           rim: [],
-          profile: []
-        }
+          profile: [],
+        },
       },
       models: {
         vehicle: {
-          make: '',
-          model: '',
-          tire_size: ''
+          make: "",
+          model: "",
+          tire_size: "",
         },
         size: {
-          width: '',
-          rim: '',
-          profile: ''
-        }
+          width: "",
+          rim: "",
+          profile: "",
+        },
       }
     };
   },
   computed: {
-    disableVehicleGoButton () {
-      return Object.keys(this.models['vehicle']).some(key => this.models['vehicle'][key] === null);
+    ...mapGetters({
+      activeVehicle: "vehicles/activeVehicle",
+      getCurrentCategory: "category-next/getCurrentCategory",
+    }),
+    shouldShowVehicleCard() {
+      let existsNationCode = false;
+      if (this.activeVehicle && this.activeVehicle.national_code)
+        existsNationCode = true;
+
+      let isFullWidth = false;
+      if (
+        this.getCurrentCategory &&
+        this.getCurrentCategory?.page_layout === "category-full-width"
+      )
+        isFullWidth = true;
+
+      return !!existsNationCode && !isFullWidth && !this.isTireSearch;
     },
-    disableSizeGoButton () {
-      return Object.keys(this.models['size']).some(key => this.models['size'][key] === null);
-    }
+    disableVehicleGoButton() {
+      return Object.keys(this.models["vehicle"]).some(
+        (key) => this.models["vehicle"][key] === null
+      );
+    },
+    disableSizeGoButton() {
+      return Object.keys(this.models["size"]).some(
+        (key) => this.models["size"][key] === null
+      );
+    },
   },
   methods: {
-    async changeSelector (type, keyIndex) {
-      if (type === 'vehicle') {
+    showTireSearch() {
+      this.isTireSearch = true;
+    },
+    async changeSelector(type, keyIndex) {
+      if (type === "vehicle") {
         if (keyIndex < 2) {
           const allKeys = Object.keys(this.models.vehicle);
           const key = allKeys[keyIndex + 1];
@@ -127,13 +159,15 @@ export default {
           }
           const payload = allKeys.reduce((result, key) => {
             if (this.models.vehicle[key]) {
-              result = { ...result, [key]: this.models.vehicle[key] }
+              result = { ...result, [key]: this.models.vehicle[key] };
             }
 
             return result;
           }, {});
 
-          const { data: { code, result } } = await axios.post(url, payload);
+          const {
+            data: { code, result },
+          } = await axios.post(url, payload);
           if (code === 200) {
             this.options.vehicle[key] = result;
             if (keyIndex === 0) {
@@ -151,13 +185,15 @@ export default {
           }
           const payload = allKeys.reduce((result, key) => {
             if (this.models.size[key]) {
-              result = { ...result, [key]: this.models.size[key] }
+              result = { ...result, [key]: this.models.size[key] };
             }
 
             return result;
-          }, {})
+          }, {});
 
-          const { data: { code, result } } = await axios.post(url, payload);
+          const {
+            data: { code, result },
+          } = await axios.post(url, payload);
           if (code === 200) {
             this.options.size[key] = result;
             if (keyIndex === 0) {
@@ -167,42 +203,45 @@ export default {
         }
       }
     },
-    async fetchNationalCode (type) {
-      const urlType = type === 'vehicle' ? 'vehicle-finder' : 'tire-size';
+    async fetchNationalCode(type) {
+      const urlType = type === "vehicle" ? "vehicle-finder" : "tire-size";
       const url = `${config.api.url}/api/ext/alfardan/${urlType}/national-code`;
 
-      const { data: { code, result } } = await axios.post(url, this.models[type]);
+      const {
+        data: { code, result },
+      } = await axios.post(url, this.models[type]);
       if (code === 200) {
-        this.$store.dispatch('vehicles/saveActiveVehicle', result);
-        this.$router.push('/tires');
+        this.$store.dispatch("vehicles/saveActiveVehicle", result);
+        this.$router.push("/tires");
         this.options = {
           vehicle: {
             make: this.makeOptions,
             model: [],
-            tire_size: []
+            tire_size: [],
           },
           size: {
             width: this.widthOptions,
             rim: [],
-            profile: []
-          }
+            profile: [],
+          },
         };
         this.models = {
           vehicle: {
-            make: '',
-            model: '',
-            tire_size: ''
+            make: "",
+            model: "",
+            tire_size: "",
           },
           size: {
-            width: '',
-            rim: '',
-            profile: ''
-          }
-        }
+            width: "",
+            rim: "",
+            profile: "",
+          },
+        };
+        this.isTireSearch = false;
       }
-    }
+    },
   },
-  async mounted () {
+  async mounted() {
     let response = await axios.post(
       `${config.api.url}/api/ext/alfardan/vehicle-finder/options/make`
     );
@@ -218,7 +257,7 @@ export default {
       this.options.size.width = response.data.result;
       this.widthOptions = response.data.result;
     }
-  }
+  },
 };
 </script>
 
@@ -226,6 +265,27 @@ export default {
 .af-tyre-finder {
   max-width: 1200px;
   margin: auto;
+
+  .my-tyre {
+    background-color: white;
+    margin: 0 20px;
+    padding: 20px;
+
+    &__text {
+    }
+
+    &__button {
+      width: 100%;
+      height: 54px;
+      border-radius: 4px;
+      background-color: orange;
+      margin-top: 20px;
+      font-size: 15px !important;
+      font-weight: 700;
+      font-family: var(--font-family-bold);
+    }
+  }
+
   .container {
     margin: 0 15px;
     display: flex;
@@ -235,26 +295,26 @@ export default {
     padding: 4px;
     .sf-tabs {
       width: 100%;
-      &__title{
-    padding: 20px;
-    background: orange;
-    border: none;
-    color: #fff;
-    font-weight: 700;
-    margin: 0;
-    &--active{
-      background: #fff;
-      color: #333;
-    }
+      &__title {
+        padding: 20px;
+        background: orange;
+        border: none;
+        color: #fff;
+        font-weight: 700;
+        margin: 0;
+        &--active {
+          background: #fff;
+          color: #333;
+        }
       }
-    &__content__tab{
-      padding: 20px;
+      &__content__tab {
+        padding: 20px;
+      }
     }
+    .sf-tabs__title--active + .sf-tabs__content {
+      --tabs-content-border-width: 0 0 0 0;
+      background: #fff;
     }
-.sf-tabs__title--active + .sf-tabs__content{
-   --tabs-content-border-width: 0 0 0 0;
-   background: #fff;
-}
     .selector-wrapper {
       display: flex;
       justify-content: space-between;
@@ -262,30 +322,30 @@ export default {
       flex-wrap: wrap;
       gap: 15px;
       select {
-           /* Reset */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    /* Add some styling */
+        /* Reset */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        /* Add some styling */
 
-    display: block;
-    width: 100%;
-    height: 54px;
-    float: right;
-    padding: 0px 24px;
-    border-radius: 8px;
-    font-size: 16px;
-    line-height: 1.75;
-    color: #333;
-    background-color: #ffffff;
-    background-image: none;
-    border: 1px solid #cccccc;
-    -ms-word-break: normal;
-    word-break: normal;
-    /* Remove IE arrow */
-    &::-ms-expand {
-      display: none;
-    }
+        display: block;
+        width: 100%;
+        height: 54px;
+        float: right;
+        padding: 0px 24px;
+        border-radius: 8px;
+        font-size: 16px;
+        line-height: 1.75;
+        color: #333;
+        background-color: #ffffff;
+        background-image: none;
+        border: 1px solid #cccccc;
+        -ms-word-break: normal;
+        word-break: normal;
+        /* Remove IE arrow */
+        &::-ms-expand {
+          display: none;
+        }
       }
     }
   }
