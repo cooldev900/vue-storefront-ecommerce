@@ -128,7 +128,7 @@ export default {
           const key = allKeys[keyIndex + 1];
           const url = `${config.api.url}/api/ext/alfardan/vehicle-finder/options/${key}`;
           for (let i = keyIndex + 1; i <= 2; i++) {
-            this.models.vehicle[allKeys[i]] = null;
+            // this.models.vehicle[allKeys[i]] = null;
           }
           const payload = allKeys.reduce((result, key) => {
             if (this.models.vehicle[key]) {
@@ -152,7 +152,7 @@ export default {
           const key = allKeys[keyIndex + 1];
           const url = `${config.api.url}/api/ext/alfardan/tire-size/options/${key}`;
           for (let i = keyIndex + 1; i <= 2; i++) {
-            this.models.size[allKeys[i]] = null;
+            // this.models.size[allKeys[i]] = null;
           }
           const payload = allKeys.reduce((result, key) => {
             if (this.models.size[key]) {
@@ -194,14 +194,14 @@ export default {
         };
         this.models = {
           vehicle: {
-            make: null,
-            model: null,
-            tire_size: null
+            make: '',
+            model: '',
+            tire_size: ''
           },
           size: {
-            width: null,
-            rim: null,
-            profile: null
+            width: '',
+            rim: '',
+            profile: ''
           }
         }
       }

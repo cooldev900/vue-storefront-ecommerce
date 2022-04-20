@@ -106,7 +106,7 @@ export default {
           if (keyIndex === 1) key = 'tire_size';
           const url = `${config.api.url}/api/ext/alfardan/vehicle-finder/options/${key}`;
           for (let i = keyIndex + 1; i <= 1; i++) {
-            this.models.vehicle[allKeys[i]] = null;
+            // this.models.vehicle[allKeys[i]] = null;
           }
           const payload = allKeys.reduce((result, key) => {
             if (this.models.vehicle[key]) {
