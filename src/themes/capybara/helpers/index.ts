@@ -88,7 +88,12 @@ export function prepareCategoryProduct (product) {
     description: product.description,
     product_group: product.product_group,
     enhanced_title: product.enhanced_title,
-    sku: product.sku
+    sku: product.sku,
+    brand_logo: product.brand_logo,
+    brand_colour: product.brand_colour,
+    usp1: product.usp1,
+    usp2: product.usp2,
+    secondary_title: product.secondary_title
   };
 }
 

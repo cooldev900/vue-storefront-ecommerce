@@ -1,6 +1,6 @@
 <template>
   <div class="sf-product-card">
-    <div class="sf-product-card__brand">
+    <div class="sf-product-card__brand" :style="{ background: `${brandColor}` }">
                <img class="brand-logo"
               :src="brandImage"
             />
@@ -87,6 +87,10 @@
           </SfCircleIcon>
         </slot>
       </template>
+      <h4 class="sub-title">{{ secondTitle || ' '}}</h4>
+      <div class="action-area__wrap--promobanner">
+       {{offer || ' '}}
+      </div>
     </div>
     <SfButton
       v-if="wishlistIcon !== false"
@@ -104,7 +108,7 @@
     </SfButton>
     <div class="action-area__wrap">
         <div class="action-area__wrap--message1">
-            <p>Free Fitting</p>
+            <p>{{usp2 || ' '}}</p>
         </div>
       <div class="action-area__wrap--price">
     <slot name="price" v-bind="{ specialPrice, regularPrice }">
@@ -141,9 +145,6 @@
             <OmQuantitySelector :qty="qty" @update:qty="updateQTY" />
         </div>
 </div>
-      <div class="action-area__wrap--promobanner">
-        This tire is available under buy 3 get 1 free promotion.
-      </div>
        <div class="action-area__wrap--stock">
          <span class="stock-pill">In Stock</span>
         {{promotion || ' '}}
@@ -185,6 +186,18 @@ export default {
         default: "",
     },
     promotion: {
+        type: String,
+        default: "",
+    },
+    offer: {
+        type: String,
+        default: "",
+    },
+    usp2: {
+        type: String,
+        default: "",
+    },
+    secondTitle: {
         type: String,
         default: "",
     },
@@ -420,4 +433,7 @@ export default {
 </script>
 <style lang="scss">
 @import "~@storefront-ui/shared/styles/components/organisms/SfProductCard.scss";
+.sub-title{
+  margin: 20px 0 40px 0;
+}
 </style>

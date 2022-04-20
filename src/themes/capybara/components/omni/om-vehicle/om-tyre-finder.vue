@@ -25,6 +25,7 @@
               </option>
             </select>
             <SfButton
+              class="om-btn--primary btn--full-width"
               :disabled="disableVehicleGoButton"
               @click="fetchNationalCode('vehicle')"
             >
@@ -55,6 +56,7 @@
               </option>
             </select>
             <SfButton
+              class="om-btn--primary btn--full-width"
               :disabled="disableSizeGoButton"
               @click="fetchNationalCode('size')"
             >

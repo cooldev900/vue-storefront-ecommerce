@@ -1,6 +1,5 @@
 <template>
   <div id="category">
-    <lazy-hydrate :trigger-hydration="!loading">
       <OmCategoryHeader
         v-if="!!getCurrentCategory"
         :title="getCategoryTitle"
@@ -8,19 +7,19 @@
         :description="getCurrentCategory.description"
         :parent-id="getCurrentCategory.parent_id"
       />
-    </lazy-hydrate>
     <div class="main section">
       <div class="sidebar desktop-only">
         <div>
-          <omTyreFinder />
+          <omTyreFinder v-if="shouldShowVehicleCard" />
         </div>
         <div class="filters">
           <lazy-hydrate :trigger-hydration="!loading">
             <SfAccordion
               class="tyre-filters"
-              :first-open="false"
-              :multiple="false"
-              transition="sf-collapse-top"
+              open="all"
+              :firstOpen="true"
+              :multiple="true"
+              transition=""
               show-chevron
             >
               <template v-for="(filters, filterType) in availableFilters">
@@ -166,9 +165,15 @@
               :special-price="product.price.special"
               :link="product.link"
               :qty1 = "product.qty"
-              brandImage="/assets/continental_logo.svg"
+              :brandImage="product.brand_logo"
+              :brandColor="product.brand_colour"
               link-tag="router-link"
               :wishlist-icon="false"
+              offer="Save 10% with code NEW10"
+              promotion="We come to your home or place of work"
+              :waranty="product.usp1"
+              :usp2="product.usp2"
+              :secondTitle="product.secondary_title"
               class="products__product-card"
             >
               <template #image>
@@ -240,8 +245,8 @@
       <div class="filters">
         <lazy-hydrate :trigger-hydration="!loading">
           <SfAccordion
-            open="Accessories"
             :first-open="true"
+            open="all"
             :multiple="true"
             transition=""
             show-chevron
@@ -351,7 +356,6 @@ import { ProductService } from '@vue-storefront/core/data-resolver/ProductServic
 import { Logger } from '@vue-storefront/core/lib/logger';
 import { notifications } from '@vue-storefront/core/modules/cart/helpers';
 import { StorageManager } from '@vue-storefront/core/lib/storage-manager';
-
 const THEME_PAGE_SIZE = 12;
 const LAZY_LOADING_ACTIVATION_BREAKPOINT = 1024;
 
@@ -763,20 +767,20 @@ export default {
       this.isAddingToCart = false;
     },
     title(filterType) {
-      if (filterType === "right_left_filter") {
-        return "Fitting Position (R / L)";
+      if (filterType === "oe_brand_filter") {
+        return "Brand";
       } else if (filterType === "price_filter") {
         return "Price";
-      } else if (filterType === "width_filter") {
-        return "Step 1 - Select Width";
-      } else if (filterType === "profile_filter") {
-        return "Step 2 - Select Profile";
-      } else if (filterType === "rim_filter") {
-        return "Step 3 - Select Rim";
-      } else if (filterType === "size_filter") {
-        return "Size";
-      } else if (filterType === "brand_filter") {
-        return "Brand";
+      } else if (filterType === "vehicle_type_filter") {
+        return "Vehicle Type";
+      } else if (filterType === "battery_capacity_filter") {
+        return "Battery Capacity";
+      } else if (filterType === "litres_filter") {
+        return "Litres";
+      } else if (filterType === "grade_filter") {
+        return "Grade";
+      } else if (filterType === "oil_type_filter") {
+        return "Oil Type";
       } else if (filterType === "color_filter") {
         return "Colour";
       } else return filterType;
@@ -964,7 +968,7 @@ export default {
       title: htmlDecode(meta_title || name),
       meta,
     };
-  }  
+  },
 };
 </script>
 
@@ -981,7 +985,7 @@ export default {
 
 #category {
   box-sizing: border-box;
-  background: #f2f2f2;
+  background: #f3f4f4;
   @include for-desktop {
     max-width: 100%;
   }
@@ -1233,11 +1237,11 @@ export default {
 }
 ::v-deep .sf-accordion-item__header {
   padding: 15px 10px;
-  background: #fff;
-  border: 1px solid #ccc;
+  background: #ddd;
+  font-weight: 700;
 }
 .filters {
-  margin: 30px 0 30px 30px;
+  margin: 15px;
   &__title {
     --heading-title-font-size: var(--font-xl);
     margin: var(--spacer-xl) 0 var(--spacer-base) 0;
@@ -1324,9 +1328,9 @@ export default {
   ::v-deep .sf-product-card__image-wrapper {
     padding: 10px;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
     a {
       width: 100%;
       height: 100%;
@@ -1342,8 +1346,11 @@ export default {
   ::v-deep .sf-product-card {
     &__title {
       --product-card-title-margin: 2px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 18px;
       @include for-mobile {
-        font-size: 12px !important;
+        font-size: 16px !important;
       }
     }
   }
@@ -1390,11 +1397,13 @@ export default {
   z-index: 1;
   width: 100%;
 }
-.tyre-filters {
-  .sf-accordion-item {
+.sf-accordion-item {
     position: relative;
+    margin: 20px 0;
+    box-shadow: rgb(214,213,213) 0px 1px 3px 0px;
+    border-radius: 8px;
+    overflow: hidden;
   }
-}
 ::v-deep .sf-product-card-horizontal {
   padding: 20px;
   border: 1px solid #ccc;
@@ -1426,10 +1435,11 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-right: 1px solid #fff;
+  border-right: 1px solid #eee;
   p {
     text-align: center;
     color: #fff;
+    font-size: 12px;
   }
 }
 
@@ -1438,10 +1448,11 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-left: 1px solid #fff;
+  border-left: 1px solid #eee;
   p {
     text-align: center;
     color: #fff;
+    font-size: 12px;
   }
 }
 ::v-deep .action-area__wrap--promobanner {
@@ -1450,6 +1461,8 @@ export default {
   background: grey;
   color: #fff;
   font-size: 12px;
+  position: absolute;
+  bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1474,5 +1487,8 @@ export default {
     color: #fff;
     margin-right: 15px;
   }
+}
+::v-deep .sf-product-card__price {
+justify-content: center;
 }
 </style>
