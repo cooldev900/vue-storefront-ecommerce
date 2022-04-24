@@ -16,13 +16,13 @@
         <div class="product-name">{{ modalData.payload.name }}</div>
         <div class="actions">
           <SfButton
-            class="sf-button--full-width"
+            class="sf-button--full-width om-btn--primary"
             @click="continueShipping"
           >
             Continue Shopping
           </SfButton>
           <SfButton
-            class="sf-button--full-width color-secondary"
+            class="sf-button--full-width om-btn--secondary"
             @click="goToCart"
           >
             Go to cart
@@ -99,6 +99,7 @@ export default {
 
     .actions {
       display: flex;
+      flex-wrap: wrap;
       gap: var(--spacer-base);
     }
   }

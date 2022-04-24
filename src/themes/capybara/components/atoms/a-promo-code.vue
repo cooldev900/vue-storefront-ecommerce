@@ -65,7 +65,7 @@ export default {
 .promo-code {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   padding: var(--spacer-lg) 0 0;
   &__circle-icon {
     --button-size: 2rem;

@@ -271,11 +271,14 @@ export default {
 </script>
 
 <style lang="scss">
+@import "~@storefront-ui/shared/styles/helpers/breakpoints";
 .af-vehicle-finder {
   max-width: 1200px;
   margin-top: -63px !important;
   margin: auto;
-
+@include for-mobile{
+  margin-top: 10px !important;
+}
   .container {
     margin: 0 15px;
     display: flex;
@@ -285,6 +288,9 @@ export default {
     padding: 4px;
     .sf-tabs {
       width: 100%;
+    @include for-mobile{
+      gap: 15px;
+    }
       &__title{
     padding: 20px;
     background: orange;
@@ -310,7 +316,9 @@ export default {
       justify-content: space-between;
       align-items: center;
       gap: 15px;
-
+      @include for-mobile{
+        flex-wrap: wrap;
+      }
       select {
            /* Reset */
     -webkit-appearance: none;

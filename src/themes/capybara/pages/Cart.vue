@@ -1,7 +1,7 @@
 <template>
 <div>
   <div id="detailed-cart">
-    <div class="detailed-cart">
+    <div class="detailed-cart grid-container">
       <div v-if="totalItems" class="detailed-cart__aside">
         <OOrderSummary />
           <SfButton class="om-btn--primary checkout--btn" @click="goToCheckout">
@@ -283,11 +283,7 @@ export default {
 
 #detailed-cart {
   box-sizing: border-box;
-  @include for-desktop {
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 0 15px;
-  }
+  background: #f3f4f4;
 }
 .breadcrumbs {
   padding: var(--spacer-base) 0;
@@ -302,7 +298,6 @@ export default {
   &__aside {
     box-sizing: border-box;
     width: 100%;
-    background: #fff;
     padding: var(--spacer-base) var(--spacer-sm);
   }
   @include for-desktop {
@@ -322,7 +317,9 @@ export default {
 .collected-product {
   --collected-product-padding: var(--spacer-sm) 0;
   --collected-product-actions-display: flex;
-  border: 1px solid var(--c-light);
+  background: #fff;
+  margin-bottom: 10px;
+  border-radius: 4px;
   border-width: 1px 0 0 0;
   align-items: center;
   &:first-of-type {

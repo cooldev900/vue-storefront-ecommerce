@@ -2,7 +2,7 @@
   <div class="o-header" :class="navigationItemColors">
     <SfOverlay
       class="overlay"
-      :visible="isHoveredMenu || isSearchPanelVisible"
+      :visible="isHoveredMenu || isSearchPanelVisible || isMobileMenu"
       @click="$store.commit('ui/setSearchpanel', false)"
     />
     <SfHeader
@@ -11,7 +11,7 @@
         'sf-header--has-mobile-search': isSearchPanelVisible,
         'sf-header--is-sticky': isSearchPanelVisible,
       }"
-      :style="{ 'z-index': isHoveredMenu ? 2 : 1 }"
+      :style="{ 'z-index': isHoveredMenu ? 2 : 1}"
     >
       <template #navigation>
        <SfHeaderNavigationItem
@@ -36,13 +36,13 @@
       </template>
       <template #header-icons>
         <div class="sf-header__icons">
-          <OmMobileTools class="sf-header__action" :menu-style="navigationItemColors" />
           <OmLanguageIcon class="sf-header__action" :menu-style="navigationItemColors" />
           <AAccountIcon class="sf-header__action desktop-only" :menu-style="navigationItemColors" />
           <AMicrocartIcon class="sf-header__action" :menu-style="navigationItemColors" />
         </div>
       </template>
       <template #logo>
+        <OmMobileTools class="sf-header__action" />
         <ALogo :menu-style="navigationItemColors" />
       </template>
     </SfHeader>
@@ -165,7 +165,11 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@storefront-ui/shared/styles/helpers/breakpoints";
-
+.sf-header{
+  @include for-mobile{
+    z-index: 0 !important;
+  }
+}
 .sf-header-navigation-item {
   a {
     font-size: var(--nav-font-size);
@@ -173,19 +177,25 @@ export default {
     font-weight: var(--nav-font-weight);
     text-transform: var(--nav-font-transform);
     color: #fff;
+     @media (min-width: 1px) and (max-width: 1350px) {
+      font-size: 11px;
+      padding-left: 8px;
+      padding-right: 8px;
+     }
+    &:hover {
+    color: var(--c-primary);
+    border-color: transparent;
+       }
+    &:focus{
+      border-color: transparent;
+    }
   }
   &::after {
     bottom: 0;
     width: 0;
   }
   &:hover {
-    .m-menu {
-      opacity: 1;
-      visibility: visible;
-    }
-    &::after {
-      width: 100%;
-    }
+   border: none;
   }
   &.navigation-transparent{
     a {
@@ -231,6 +241,8 @@ export default {
       visibility: visible;
       top: 0;
       z-index: 1;
+      width: 90%;
+      max-width: 400px;
       --mega-menu-aside-menu-height: calc(
         100vh - var(--bottom-navigation-height) - var(--bar-height)
       );

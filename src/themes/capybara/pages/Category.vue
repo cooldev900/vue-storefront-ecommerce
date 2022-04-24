@@ -224,16 +224,6 @@
         </template>
       </div>
     </div>
-    <SfBreadcrumbs class="breadcrumbs desktop-only" :breadcrumbs="breadcrumbs">
-      <template #link="{ breadcrumb }">
-        <router-link
-          :to="breadcrumb.route.link"
-          class="sf-breadcrumbs__breadcrumb"
-        >
-          {{ breadcrumb.text }}
-        </router-link>
-      </template>
-    </SfBreadcrumbs>
     <SfSidebar
       :visible="isFilterSidebarOpen"
       :title="$t('Filters')"
@@ -253,7 +243,7 @@
             show-chevron
           >
             <template v-for="(filters, filterType) in availableFilters">
-              <SfAccordionItem :key="filterType" :header="$t(filterType)">
+              <SfAccordionItem :key="filterType" :header="title(filterType)">
                 <template v-if="filterType === 'colour_filter'">
                   <div class="filters__colors" :key="filterType + 'filter'">
                     <SfColor
@@ -286,13 +276,13 @@
       <template #content-bottom>
         <div class="filters__buttons">
           <SfButton
-            class="sf-button--full-width"
+            class="sf-button--full-width om-btn--primary"
             @click="isFilterSidebarOpen = false"
           >
             {{ $t("Done") }}
           </SfButton>
           <SfButton
-            class="sf-button--full-width filters__button-clear"
+            class="sf-button--full-width filters__button-clear om-btn--secondary"
             @click="clearAllFilters"
           >
             {{ $t("Clear all") }}
@@ -618,7 +608,7 @@ export default {
         isFullWidth = true;
 
       if (!Object.keys(this.availableFilters).length) return false;
-      return !existsNationCode && !isFullWidth;
+      return !isFullWidth;
     },
   },
   watch: {
@@ -1372,6 +1362,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding-right: 0px !important;
+    padding-left: 15px;
   }
   .sidebar {
     padding: 0 !important;
@@ -1424,7 +1415,6 @@ export default {
   background: #000;
   padding: 15px;
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
 }
 ::v-deep .action-area__wrap--price {
   padding: 0 10px;
@@ -1434,11 +1424,11 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-right: 1px solid #eee;
   p {
     text-align: center;
     color: #fff;
     font-size: 12px;
+    margin: 5px 0;
   }
 }
 
@@ -1447,11 +1437,11 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-left: 1px solid #eee;
   p {
     text-align: center;
     color: #fff;
     font-size: 12px;
+    margin: 5px 0;
   }
 }
 ::v-deep .action-area__wrap--promobanner {

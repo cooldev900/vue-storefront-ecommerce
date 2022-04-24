@@ -1,6 +1,6 @@
 <template>
   <SfButton
-    class="sf-button--pure om-vehicle-icon navigation-icon"
+    class="sf-button--pure om-vehicle-icon navigation-icon desktop-only"
     @click="openVehicleCart({ type: 'vehiclecart' })"
   >
     <span class="sf-header__custom-icon">عربى</span>

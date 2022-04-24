@@ -110,6 +110,9 @@
         <div class="action-area__wrap--message1">
             <p>{{usp2 || ' '}}</p>
         </div>
+            <div class="action-area__wrap--message2">
+            <p>{{waranty || ' '}}</p>
+        </div>
       <div class="action-area__wrap--price">
     <slot name="price" v-bind="{ specialPrice, regularPrice }">
       <SfPrice
@@ -119,6 +122,7 @@
         :special="specialPrice"
       />
     </slot>
+    <OmQuantitySelector :qty="qty" @update:qty="updateQTY" />
     <slot name="reviews" v-bind="{ maxRating, scoreRating }">
       <div
         v-if="typeof scoreRating === 'number'"
@@ -140,12 +144,8 @@
       </div>
     </slot>
   </div>
-    <div class="action-area__wrap--message2">
-            <p>{{waranty || ' '}}</p>
-        </div>
 </div>
        <div class="action-area__wrap--stock">
-               <OmQuantitySelector :qty="qty" @update:qty="updateQTY" />
          <span class="stock-pill">In Stock</span>
         {{promotion || ' '}}
       </div>

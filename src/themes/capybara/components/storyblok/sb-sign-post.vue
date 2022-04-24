@@ -49,18 +49,18 @@ export default {
     theme () {
       if (this.variant === 'light') {
         return {
-          bgColor: 'var(--c-primary)',
-          color: 'white'
+          bgColor: 'none',
+          color: '#000'
         }
       } else if (this.variant === 'grey') {
         return {
-          bgColor: '#e9ecec',
-          color: '#0c121c'
+          bgColor: 'none',
+          color: '#000'
         }
       } else if (this.variant === 'dark') {
         return {
-          bgColor: '#000',
-          color: 'white'
+          bgColor: 'none',
+          color: '#000'
         }
       }
     }

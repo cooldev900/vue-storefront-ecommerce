@@ -77,7 +77,7 @@ description: 'Receive your item, whether it’s a floor mat or a brake disc, in 
   background: var(--c-primary);
   align-items: center;
   flex-direction: column;
-  margin: var(--spacer-lg) 0 0 0;
+  margin: 0;
   text-align: center;
   padding: 50px 20px;
 

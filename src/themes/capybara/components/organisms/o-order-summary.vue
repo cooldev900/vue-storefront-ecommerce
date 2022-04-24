@@ -88,7 +88,7 @@ export default {
 <style lang="scss" scoped>
 .o-order-summary{
   padding: 20px;
-  border: 1px solid #ccc;
+  background: #fff;
   border-radius: 10px;
 }
 ::v-deep .sf-heading__title{

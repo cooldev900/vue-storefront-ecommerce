@@ -14,7 +14,7 @@ style=" fill:#000000;"><path d="M 21 3 C 11.601563 3 4 10.601563 4 20 C 4 29.398
     <span class="sf-header__split">|</span>
     <span @click="goToAccount" class="sf-header__custom-icon">ACCOUNT</span>
     <span class="sf-header__split">|</span>
-    <span @click="goToAccount" class="sf-header__custom-icon">HELP</span>
+    <span class="sf-header__custom-icon--help">HELP</span>
   </SfButton>
 </template>
 
@@ -68,11 +68,20 @@ justify-content: center;
 align-items: center;
 position: relative;
 margin: 0 5px;
-  &.navigation-transparent{
-    color: #ffffff;
-  }
+@media (min-width: 1px) and (max-width: 1350px) {
+font-size: 11px;
+ }
+ &--help{
+font-size: 14px;
+@media (min-width: 1px) and (max-width: 1350px) {
+display: none;
+ }
+ }
 }
 .sf-header__split{
   padding: 0 10px;
+@media (min-width: 1px) and (max-width: 1350px) {
+display: none;
+ }
 }
 </style>

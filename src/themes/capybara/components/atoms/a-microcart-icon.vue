@@ -3,7 +3,7 @@
     class="sf-button--pure a-microcart-icon navigation-icon"
     @click="goToCart"
   >
-    <span class="sf-header__custom-icon">CART</span>
+    <span class="sf-header__custom-icon--text">CART</span>
     <div :class="menuStyle"
          class="sf-header__custom-icon"
          :aria-label="$t('Open microcart')"
@@ -65,6 +65,20 @@ export default {
   padding: 0 15px;
   font-size: 13px;
 }
+.sf-header__custom-icon--text{
+font-size: 14px;
+color: #fff;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+position: relative;
+margin: 0 0 0 5px;
+font-family: var(--font-family-primary);
+@media (min-width: 1px) and (max-width: 1350px) {
+display: none;
+ }
+}
 .sf-header__custom-icon{
 font-size: 14px;
 color: #fff;
@@ -75,9 +89,6 @@ align-items: center;
 position: relative;
 margin: 0 0 0 5px;
 font-family: var(--font-family-primary);
-  &.navigation-transparent{
-    color: #ffffff;
-  }
 }
 ::v-deep .sf-badge--number{
     position: relative !important;

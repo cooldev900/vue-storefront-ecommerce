@@ -40,7 +40,7 @@ export default {
 @import "~@storefront-ui/shared/styles/helpers/breakpoints";
 .sf-header__custom-icon{
 font-size: 48px;
-color: #0c121c;
+color: #ffffff;
 line-height: 48px;
   &.navigation-transparent{
     color: #ffffff;

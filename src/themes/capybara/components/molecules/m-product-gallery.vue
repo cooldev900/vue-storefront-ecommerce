@@ -235,24 +235,14 @@ export default {
 @import "~@storefront-ui/shared/styles/helpers/breakpoints";
 .m-product-gallery {
   flex: 1;
+  width: 65%;
   position: relative;
   background: #fff;
-  border: 1px solid #cfcfcf;
-  .fitting-position {
-    position: absolute;
-    bottom: 130px;
-    right: 0;
-    cursor: pointer;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    span{
-      font-size: 12px;
-      font-family: var(--font-family-bold);
-      margin-right: 10px;
-    }
-  }
+  border-radius: 4px;
+  overflow: hidden;
+@include for-mobile{
+  width: 100%;
+}
 }
 .product-menu{
   display: flex;
@@ -268,7 +258,7 @@ export default {
 }
 }
 .sf-gallery{
-width: calc(100% - 108px);
+width: 100%;
 @include for-mobile{
   width: 100%;
 }

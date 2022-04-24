@@ -56,6 +56,7 @@ export default {
   gap: 20px;
   @include for-mobile {
     flex-direction: column;
+      grid-template-columns: 1fr;
   }
   &__card {
     display: flex;

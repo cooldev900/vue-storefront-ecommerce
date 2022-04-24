@@ -1,0 +1,35 @@
+<template>
+ <div class="product__info--card product-usp">
+     <h4>Product Highlights</h4>
+    <div class="product-usp__message1">
+        <span> ✔ {{product.usp1}}</span>
+    </div>
+    <div class="product-usp__message2">
+        <span> ✔ {{product.usp2}}</span>
+    </div>
+      <div class="product-usp__message2">
+        <span> ✔ {{product.oil_type}}</span>
+    </div>
+      <div class="product-usp__message2">
+        <span> ✔ {{product.oe_brand}}</span>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  name: 'OmProductUsp',
+  props: {
+     product: {
+      type: Object,
+      default: () => ({})
+    },
+  }
+}
+</script>
+
+<style lang="scss">
+.product-usp{
+    margin-top: 30px;
+    padding: 15px !important;
+}
+</style>

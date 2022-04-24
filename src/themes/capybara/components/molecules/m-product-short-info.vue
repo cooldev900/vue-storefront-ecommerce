@@ -7,7 +7,7 @@
       />
       <div class="product__part-info">
         <Pill />
-      <span class="part-number">Part No: {{ title }}</span>
+      <span class="part-number">Product Code: {{ title }}</span>
     </div>
     </div>
   </div>
@@ -77,9 +77,8 @@ export default {
     animation: moveicon 1s ease-in-out infinite;
   }
   &__price-and-rating {
-    padding: 22px 30px 12px;
+    padding: 15px;
     background: #fff;
-    box-shadow: 0 0 16px 0 rgba(0,0,0,0.06);
     align-items: center;
     @include for-desktop {
       display: block;
@@ -98,6 +97,7 @@ export default {
   }
   &__part-info{
     display: flex;
+    align-items: center;
    .part-number{
     font-size: 12px;
     margin-left: 15px;

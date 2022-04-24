@@ -18,7 +18,7 @@
           "
           class="form__element"
         />
-        <SfButton class="sf-button--full-width form__submit">
+        <SfButton class="sf-button--full-width form__submit om-btn--primary">
           {{ $t("Reset password") }}
         </SfButton>
       </form>

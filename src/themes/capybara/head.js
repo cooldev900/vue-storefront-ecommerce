@@ -1,6 +1,6 @@
 export default {
-  title: 'Glyn Hopkin Shop',
-  titleTemplate: '%s - Glyn Hopkin Shop',
+  title: 'Al Fardan Commercial',
+  titleTemplate: '%s - Al Fardan Commercial',
   htmlAttrs: {
     lang: 'en'
   },

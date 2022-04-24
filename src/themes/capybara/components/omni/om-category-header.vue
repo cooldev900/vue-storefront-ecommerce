@@ -77,10 +77,10 @@ export default {
   margin: auto;
   background-position: center;
   background-size: cover;
-  min-height: 250px;
+  min-height: 200px;
  @include for-mobile{
-    margin: 5px;
     padding: 20px 15px 0 15px;
+    min-height: auto;
   }
  &__inner{
    max-width: 1600px;
@@ -90,12 +90,13 @@ export default {
    h2{
    font-weight: 700;
    text-align: center;
+   margin: 0;
    }
  }
   .description {
     display: flex;
     justify-content: center;
-    margin-bottom: 40px;
+    margin-bottom: 0;
     font-size: 14px;
     p{
       margin: 0;

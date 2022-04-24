@@ -61,8 +61,11 @@ export default {
     width: 240px;
     margin: var(--logo-margin);
     padding: 0 5px;
+    @media (min-width: 1px) and (max-width: 1350px) {
+    width: 200px;
+    }
     @include for-mobile{
-    width: 140px;
+    width: 160px;
     margin: var(--logo-margin-mobile);
     padding: 0 5px;
     }

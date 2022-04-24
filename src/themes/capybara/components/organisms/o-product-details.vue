@@ -17,6 +17,15 @@
     <meta itemProp="url" :content="product.url_path">
     <div class="product__header">
      <h1>{{ product.enhanced_title || product.name | htmlDecode }}</h1>
+    <div v-if="product.tyre_size" class="product__header--spec">
+    <p>Tire Size:</p><span>{{product.tyre_size}}</span>
+    </div>
+     <div v-else-if="product.oil_type" class="product__header--spec">
+    <p>Oil Type:</p><span>{{oilType}}</span>
+    </div>
+      <div v-else-if="product.battery_capacity" class="product__header--spec">
+    <p>Battery Capacity:</p><span>{{product.battery_capacity}}</span>
+    </div>
     </div>
     <div class="product__main">
       <MProductGallery
@@ -27,6 +36,12 @@
       />
       <div class="product__info">
         <SfSticky>
+          <div class="product__info--card">
+              <div class="product__brand" :style="{ background: `${product.brand_colour}` }">
+               <img class="brand-logo"
+              :src="product.brand_logo"
+            />
+          </div>
           <MProductShortInfo
             :product="product"
             :custom-options="productCustomOptions"
@@ -44,22 +59,6 @@
           :product-options="product.product_links"
         /> -->
           <div>
-            <div v-if="product.national_code">
-              <span class="subtitle-bold">
-                Check Compatibility
-              </span>
-              <OmNoSetVehicle v-if="noActiveVehicle" />
-              <OmAddCartStep1
-                v-if="activeVehicle && activeVehicle.national_code"
-                :is-fit="isFit"
-                :vehicle-info="vehicleInfo"
-                :vehicle-reg="vehicleRegistation"
-              />
-            </div>
-            <!-- <MProductOptionsCustom
-            v-if="product.custom_options && product.custom_options.length > 0"
-            :product="product"
-          /> -->
             <div>
               <MProductOptionsConfigurable
                 v-if="product.type_id =='configurable'"
@@ -108,35 +107,15 @@
                 v-if="isCollectionOnly"
               />
             </div>
-            <OmAlertBox
-              type="info" style="margin-top: 20px"
-            >
-              <template #message>
-                <div class="om-alert-box-message">
-                  <div>
-                    <p>If you are unsure as to whether an item is suitable for your vehicle, it’s important that you contact us before purchasing.</p>
-                  </div>
-                </div>
-              </template>
-            </OmAlertBox>
           </div>
+          </div>
+        <ProductUsp
+        :product="product"
+        />
         </SfSticky>
       </div>
-      <div class="product-description">
-        <h3>Product Description</h3>
-        <p>This {{ product.name }} has been made to fit the exact specification of your vehicle, giving you piece of mind. As an official OEM Dealer group, we are the experts you can trust. </p>
-        <div v-html="product.description" class="product-copy" />
-        <OmAlertBox
-          type="info"
-        >
-          <template #message>
-            <div class="om-alert-box-message">
-              <div>
-                <p>This product is for installation by trained technicians and not by an end user. Installation must be performed exclusively by a specialist workshop.</p>
-              </div>
-            </div>
-          </template>
-        </OmAlertBox>
+      <div v-if="product.description" class="product-description">
+     <div v-html="product.description" class="product-copy" />
       </div>
     </div>
   </div>
@@ -163,6 +142,7 @@ import * as VehicleStorage from 'theme/store/vehicles-storage.ts';
 import axios from 'axios';
 import config from 'config';
 import OmAlertBox from 'theme/components/omni/om-alert-box';
+import ProductUsp from 'theme/components/omni/products/product-usp'
 
 export default {
   components: {
@@ -182,7 +162,8 @@ export default {
     OmRadioCheckbox,
     OmNoSetVehicle,
     SfButton,
-    OmAlertBox
+    OmAlertBox,
+    ProductUsp
   },
   props: {
     product: {
@@ -459,10 +440,30 @@ export default {
         position: relative;
         width: 35%;
       }
+    &--card{
+    background: #fff;
+    border-radius: 4px;
+    overflow: hidden;
+    padding: 0
     }
-
+    }
+    &__brand{
+          height: 60px;
+    width: 100%;
+    margin-bottom: 15px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    align-items: center;
+    .brand-logo{
+      max-height: 30px;
+    }
+    }
     &__add-to-cart {
       margin: var(--spacer-base) 0 0;
+      padding: 0 15px 15px 15px;
       @include for-desktop {
         margin-top: var(--spacer-base);
       }
@@ -483,9 +484,6 @@ export default {
 
   .sf-sticky {
     top: var(--sticky-top, 20px);
-    background: #fff;
-    border: 1px solid #cfcfcf;
-    padding: 0
   }
 
   .section {
@@ -532,6 +530,24 @@ export default {
 .product__header{
   h1{
     font-size: 28px;
+    margin: 0;
+  }
+  &--spec{
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  p{
+    margin: 0;
+    font-weight: 700;
+  }
+  span{
+    background: grey;
+    border-radius: 30px;
+    padding: 5px 20px;
+    color: #fff;
+    font-weight: 700;;
+    margin-left: 10px;
+  }
   }
 }
 </style>
