@@ -11,11 +11,13 @@
         <span> ✔ {{product.oil_type}}</span>
     </div>
       <div class="product-usp__message2">
-        <span> ✔ {{product.oe_brand}}</span>
+        <span> ✔ {{getAttributeLabelById('oe_brand', product.oe_brand)}}</span>
     </div>
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'OmProductUsp',
   props: {
@@ -23,6 +25,11 @@ export default {
       type: Object,
       default: () => ({})
     },
+  },
+  computed: {
+    ...mapGetters({
+      getAttributeLabelById: 'vehicles/getAttributeLabelById'
+    })
   }
 }
 </script>
