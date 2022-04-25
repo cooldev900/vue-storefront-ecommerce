@@ -94,7 +94,6 @@ export default {
                 ? { link: '/my-account' }
                 : { clickHandler: () => this.openModal({ name: ModalList.Auth, payload: 'login' }) }
             },
-            { name: 'About Us', link: '/explore/about-us' },
             { name: 'Contact Us', clickHandler: () => this.openModal({ name: ModalList['OmContactModal']}) }
           ]
         },
@@ -106,18 +105,11 @@ export default {
           ]
         },
         about: {
-          name: 'More from AlFardan',
+          name: 'Our Services',
           children: [
-            {
-              name: 'New Cars',
-              link: 'https://www.glynhopkin.com/new-cars/'
-            },
-            {
-              name: 'Used Cars',
-              link: 'https://www.glynhopkin.com/ussed-cars/'
-            },
-            { name: 'Servicing', link: 'https://www.glynhopkin.com/service-parts-repair/' },
-            { name: 'Our Locations', link: 'https://www.glynhopkin.com/our-locations/' }
+             { name: 'Tires', link: '/tires' },
+             { name: 'Oils & Lubricants', link: '/oils-lubricants' },
+             { name: 'Batteries', link: '/batteries' }
           ]
         }
       };

@@ -8,7 +8,7 @@
         <span> ✔ {{product.usp2}}</span>
     </div>
       <div class="product-usp__message2">
-        <span> ✔ {{product.oil_type}}</span>
+        <span> ✔ {{getAttributeLabelById('oil_type', product.oil_type)}}</span>
     </div>
       <div class="product-usp__message2">
         <span> ✔ {{getAttributeLabelById('oe_brand', product.oe_brand)}}</span>
