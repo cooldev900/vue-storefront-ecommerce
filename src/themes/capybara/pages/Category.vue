@@ -171,7 +171,7 @@
               link-tag="router-link"
               :wishlist-icon="false"
               offer="Save 10% with code NEW10"
-              promotion="We come to your home or place of work"
+              promotion="Mobile Fitting Service Available"
               :waranty="product.usp1"
               :usp2="product.usp2"
               :secondTitle="product.secondary_title"
