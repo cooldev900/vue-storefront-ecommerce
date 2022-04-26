@@ -127,7 +127,7 @@
     "port": 8082
   },
   "api": {
-    "url": "http://localhost:8081",
+    "url": "https://alfardan-stage.omninext.co.uk",
     "saveBandwidthOverCache": true
   },
   "elasticsearch": {
