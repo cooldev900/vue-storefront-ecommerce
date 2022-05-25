@@ -4,6 +4,8 @@ import axios from 'axios';
 import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 import config from 'config';
 import { SearchQuery } from 'storefront-query-builder';
+// import { state } from 'core/modules/url/store/state';
+import { StorageManager } from '@vue-storefront/core/lib/storage-manager'
 
 export const vehiclesStore = {
   namespaced: true,
@@ -24,8 +26,45 @@ export const vehiclesStore = {
     storyblok: {},
     qty: 1,
     selectedTime: {},
+    appointmentTaken: [],
+    currentDay: '',
   },
   actions: {
+    async setAppointment({commit, dispatch, state}, payload) {
+      const res = await axios.post(
+        `${config.api.appointmentUrl}/api/appointments`, { ...payload }
+      );
+
+      if (res.status === 200 ) {
+        dispatch('fetchAppointmentTaken', state.currentDay);
+      }
+    },
+
+    async deleteAppointment({commit, dispatch, state}, payload) {
+      const res = await axios.delete(
+        `${config.api.appointmentUrl}/api/appointments`, { params: payload }
+      );
+
+      if (res.status === 200 ) {
+        dispatch('fetchAppointmentTaken', state.currentDay);
+      }
+    },
+
+    async fetchAppointmentTaken({commit}, date) {
+      let params = {
+        clientID: '25',
+        show: '5 days',
+        date,
+        timezone: ''
+      }
+      const res = await axios.get(
+        `${config.api.appointmentUrl}/api/appointments`, { params }
+      );
+
+      if (res.status === 200 ) {
+        commit('fetchAppointmentTakenSuccess', res.data.data);
+      }
+    },
     async saveSelectedTime({commit}, meeting) {
       commit('setSelectedTime', meeting);
     },
@@ -104,6 +143,16 @@ export const vehiclesStore = {
     }
   },
   mutations: {
+    async setCurrentDay(state, date) {
+      console.log(date, 'date');
+      await VehicleStorage.setCurrentDay(date);
+      state.currentDay = date;
+    },
+    async fetchAppointmentTakenSuccess(state, data) {
+      console.log(data, 'appointmentsTaken data');
+      await VehicleStorage.saveAppointmentTaken(data);
+      state.appointmentTaken = [...data];
+    },
     async setQTY(state, qty) {
       Vue.set(state, 'qty', qty);
     },
@@ -191,6 +240,12 @@ export const vehiclesStore = {
     }
   },
   getters: {
+    getCurrentDay(state) {
+      return state.currentDay;
+    },
+    getAppointmentsTaken(state) {
+      return state.appointmentTaken;
+    },
     getQty: (state) => {
       return state.qty;
     },

@@ -128,7 +128,8 @@
   },
   "api": {
     "url": "https://alfardan-stage.omninext.co.uk",
-    "saveBandwidthOverCache": true
+    "saveBandwidthOverCache": true,
+    "appointmentUrl": "http://localhost:8000"
   },
   "elasticsearch": {
     "httpAuth": "",
@@ -1082,5 +1083,11 @@
         "cmsUrl": "https://altayer.checkout.omninext.co.uk/landrover"
       }
     }
+  },
+  "clientIds": {
+    "1": 25,
+    "2": 11,
+    "3": 11,
+    "6": 11
   }
 }

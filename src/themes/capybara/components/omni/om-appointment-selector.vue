@@ -2,69 +2,34 @@
   <div class="appointment-selector">
     <div class="schedule-navigator">
       <div class="schedule-navigator__button" @click="prevWeek">
-        <
+        <--
       </div>
       <div>{{ schedulePeriod }}</div>
       <div class="schedule-navigator__button" @click="nextWeek">
-        >
+        -->
       </div>
     </div>
-    <div class="schedule">
-      <table>
-        <tbody v-for="(week, i) of weeks" :key="i">
-          <tr>
-            <th class="header-label relation-label">
-              {{ relationLabel }}
-            </th>
-            <th
-              v-for="(dayIndex, index) in new Array(period).fill(1)"
-              :key="dayIndex + '_' + index"
-              class="header-label week-day-label"
-            >
-              {{ `${getDayLabel(index)} ${week.days[index]}` }}
-            </th>
-          </tr>
-          <tr v-for="(subWeek, j) of week.week" :key="j">
-            <td class="cell cell-time">
-              {{ subWeek.label }}
-            </td>
-            <td class="cell" v-for="(schedule, k) of subWeek.schedule" :key="k">
-              <div
-                :class="[
-                  {
-                    'cell-selected':
-                      isSelected(schedule) ||
-                      getAppointmentTaken(schedule.start, schedule.end)
-                  },
-                  isDisabled(schedule) ? 'cell-disabled' : 'cell-available'
-                ]"
-                :disabled="isDisabled(schedule)"
-                @click="setMeeting(schedule)"
-              >
-                <div>{{ getCellLabel(schedule) }}</div>
-                <div class="info-label">
-                  <slot
-                    name="info"
-                    :schedule="schedule"
-                    :appointment="
-                      getAppointmentTaken(schedule.start, schedule.end)
-                    "
-                  />
-                </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="schedule-day-selector">
+      <div class="schedule-day-selector__button" :class=" today === date.payload ? 'selected' : '' " :key="date.date" v-for="date in weeks[0].days" @click="getAppointment(date.payload)">
+        <div class="schedule-day-selector__button--day">{{date.day}}</div>
+         <div class="schedule-day-selector__button--date">{{date.date}}</div>
+      </div>
+    </div>
+    <div class="slots">
+      <div class="anytime">
+        <OmRadio :key="index" :appointment="appointment" v-for="(appointment, index) in appointments"/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import dayjs from 'dayjs';
+import OmRadio from 'theme/components/omni/om-round-checkbox.vue';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  components: {},
+  components: { OmRadio },
   props: {
     value: Object,
     appointmentsTaken: {
@@ -97,10 +62,14 @@ export default {
     },
     period: {
       type: Number,
-      default: 3
+      default: 5
     }
   },
   computed: {
+    ...mapGetters({
+      appointments: 'vehicles/getAppointmentsTaken',
+      today: 'vehicles/getCurrentDay',
+    }),
     selectedSchedule () {
       if (!this.selected.start || !this.selected.end) return this.scheduleLabel;
 
@@ -127,10 +96,23 @@ export default {
     return {
       weeks: [],
       selected: {},
-      isAnotherPopUpDisplayed: false
+      isAnotherPopUpDisplayed: false,
+      days: [
+         'SUN', 'MON', 'THU', 'WED', 'TUE', 'FRI', 'SAT' 
+      ],
+      value1: 'something'
     };
   },
   methods: {
+    ...mapActions({
+      fetchAppointmentTaken: 'vehicles/fetchAppointmentTaken'
+    }),
+    async getAppointment (date) {
+      if (this.today !== date) {
+        this.$store.commit('vehicles/setCurrentDay', date);
+        this.fetchAppointmentTaken(date);
+      }
+    },
     nextWeek () {
       let newWeek = this.weeks.length
         ? dayjs(
@@ -138,7 +120,7 @@ export default {
             .end
         ).add(1, 'day')
         : dayjs();
-
+      
       let weeks = [];
       let weekDays = [];
       for (let w = 0; w <= this.period - 1; w++) {
@@ -171,7 +153,7 @@ export default {
             ) { currentSchedule = false; }
           }
         }
-        weekDays.push(newWeek.date());
+        weekDays.push({date: newWeek.date(), day: this.days[newWeek.day()], payload: new Date(newWeek.$d.toISOString().split('T')[0]).toISOString()});
         weeks.push(schedule);
       }
 
@@ -194,7 +176,8 @@ export default {
         });
       }
       schedule.days = weekDays;
-      this.weeks = [schedule];
+      this.weeks = [schedule];      
+      this.getAppointment(weekDays[0].payload);
     },
     prevWeek () {
       let newWeek = this.weeks.length
@@ -237,8 +220,9 @@ export default {
             ) { currentSchedule = false; }
           }
         }
-        weekDays.push(newWeek.date());
+        weekDays.push({date: newWeek.date(), day: this.days[newWeek.day()], payload: new Date(newWeek.$d.toISOString().split('T')[0]).toISOString()});
         weeks.push(schedule);
+        this.getAppointment(weekDays[0].payload);
       }
 
       let schedule = {
@@ -293,35 +277,6 @@ export default {
         this.nextWeek();
         min--;
       } while (min > 0);
-    },
-    showPopUpInfo (schedule) {
-      let appointment = this.getAppointmentTaken(schedule.start, schedule.end);
-      if (appointment === undefined) return false;
-      return (
-        appointment.text !== undefined ||
-        appointment.html !== undefined ||
-        appointment.data !== undefined
-      );
-    },
-    getTextFromAppointment (schedule) {
-      let appointment = this.getAppointmentTaken(schedule.start, schedule.end);
-      if (appointment === undefined) return undefined;
-      return appointment.text;
-    },
-    getHtmlFromAppointment (schedule) {
-      let appointment = this.getAppointmentTaken(schedule.start, schedule.end);
-      if (appointment === undefined) return undefined;
-      return appointment.html;
-    },
-    getDataFromAppointment (schedule) {
-      let appointment = this.getAppointmentTaken(schedule.start, schedule.end);
-      if (appointment === undefined) return undefined;
-      return appointment.data;
-    },
-    getCellLabel (schedule) {
-      if (this.isDisabled(schedule)) return;
-
-      return this.isSelected(schedule) ? 'Booked' : 'Available';
     }
   },
   created () {
@@ -341,6 +296,11 @@ export default {
       },
       deep: true
     }
+  },
+
+  mounted () {
+    let date = new Date(new Date().toISOString().split('T')[0]).toISOString();
+    this.getAppointment(date);
   }
 };
 </script>
@@ -486,6 +446,40 @@ export default {
   max-height: 500px !important;
   border: 1px solid #0071c0;
   animation: show-info 0.3s ease;
+}
+
+.schedule-day-selector {
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+
+    &__button {
+    padding: 0;
+    border: 1px solid gray;
+    border-radius: 8px;
+    font-size: 24px;
+    text-align: center;
+    width: 150px;
+    height: 150px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+
+      &--day {
+        font-weight: 400;
+      }
+
+      &--date {
+        font-weight: bold;
+      }
+    }
+}
+
+.selected {
+  background-color: green;
+  color: white;
 }
 
 @keyframes show-info {

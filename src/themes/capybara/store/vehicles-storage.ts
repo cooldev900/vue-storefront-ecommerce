@@ -28,6 +28,51 @@ export const availableLocalStorage = async () => {
   }
 };
 
+export const setCurrentDay = async data => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      await asyncLocalStorage?.setItem(
+        storeView.storeCode + '/currentday',
+        JSON.stringify(data)
+      );
+    }
+  } catch (e) {
+    console.log('localStorage error----', e)
+  }
+};
+
+export const getCurrentDay = async () => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      const location = await asyncLocalStorage?.getItem(
+        storeView.storeCode + '/currentday'
+      );
+      return location ? JSON.parse(location) : {};
+    }
+  } catch (e) {
+    console.log('localStorage error----', e);
+  }
+};
+
+export const saveAppointmentTaken = async data => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      await asyncLocalStorage?.setItem(
+        storeView.storeCode + '/appointments',
+        JSON.stringify(data)
+      );
+    }
+  } catch (e) {
+    console.log('localStorage error----', e)
+  }
+};
+
 export const saveVehicles = async data => {
   try {
     const existLocalStorage = await availableLocalStorage();

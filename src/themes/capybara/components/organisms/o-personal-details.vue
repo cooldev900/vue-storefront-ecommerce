@@ -6,7 +6,7 @@
       :appointments-taken="appointmentsTaken"
       :intervals="intervals"
       :non-working-days="[0, 5]"
-      :period="3"
+      :period="5"
     />
     <SfHeading
       :title="`1. ${$t('How Would You Like to Recieve Your Order?')}`"
