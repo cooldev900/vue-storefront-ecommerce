@@ -222,7 +222,6 @@ export default {
         }
         weekDays.push({date: newWeek.date(), day: this.days[newWeek.day()], payload: new Date(newWeek.$d.toISOString().split('T')[0]).toISOString()});
         weeks.push(schedule);
-        this.getAppointment(weekDays[0].payload);
       }
 
       let schedule = {
@@ -245,6 +244,7 @@ export default {
       }
       schedule.days = weekDays;
       this.weeks = [schedule];
+      this.getAppointment(weekDays[0].payload);
     },
     setMeeting (meeting) {
       if (this.isDisabled(meeting) || this.isAnotherPopUpDisplayed) return;
