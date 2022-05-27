@@ -105,7 +105,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      fetchAppointmentTaken: 'vehicles/fetchAppointmentTaken'
+      fetchAppointmentTaken: 'vehicles/fetchAppointmentTaken',
+      loadSlotID: 'vehicles/loadSlotID',
     }),
     async getAppointment (date) {
       if (this.today !== date) {
@@ -301,6 +302,7 @@ export default {
   mounted () {
     let date = new Date(new Date().toISOString().split('T')[0]).toISOString();
     this.getAppointment(date);
+    this.loadSlotID();
   }
 };
 </script>

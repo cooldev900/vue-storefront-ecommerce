@@ -28,6 +28,36 @@ export const availableLocalStorage = async () => {
   }
 };
 
+export const getSlotID = async () => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      const location = await asyncLocalStorage?.getItem(
+        storeView.storeCode + '/slot_id'
+      );
+      return location ? JSON.parse(location) : {};
+    }
+  } catch (e) {
+    console.log('localStorage error----', e);
+  }
+};
+
+export const setSlotID = async data => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      await asyncLocalStorage?.setItem(
+        storeView.storeCode + '/slot_id',
+        JSON.stringify(data)
+      );
+    }
+  } catch (e) {
+    console.log('localStorage error----', e)
+  }
+};
+
 export const setCurrentDay = async data => {
   try {
     const existLocalStorage = await availableLocalStorage();

@@ -28,8 +28,13 @@ export const vehiclesStore = {
     selectedTime: {},
     appointmentTaken: [],
     currentDay: '',
+    slot_id: '',
   },
   actions: {
+    async loadSlotID({state}) {
+      let slot_id = await VehicleStorage.getSlotID();
+      state.slot_id = slot_id;
+    },
     async setAppointment({commit, dispatch, state}, payload) {
       const res = await axios.post(
         `${config.api.appointmentUrl}/api/appointments`, { ...payload }
@@ -143,6 +148,10 @@ export const vehiclesStore = {
     }
   },
   mutations: {
+    async setSlotID(state, id) {
+      await VehicleStorage.setSlotID(id);
+      state.slot_id = id;
+    },
     async setCurrentDay(state, date) {
       console.log(date, 'date');
       await VehicleStorage.setCurrentDay(date);
@@ -240,6 +249,9 @@ export const vehiclesStore = {
     }
   },
   getters: {
+    getSlotID(state) {
+      return state.slot_id;
+    },
     getCurrentDay(state) {
       return state.currentDay;
     },

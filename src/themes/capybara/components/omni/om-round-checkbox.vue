@@ -9,8 +9,6 @@
 </template>
 <script>
 
-import config from 'config';
-import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 import { mapGetters } from 'vuex';
 import i18n from '@vue-storefront/i18n'
 
@@ -31,6 +29,7 @@ export default {
   computed: {
     ...mapGetters({
       cartToken: 'cart/getCartToken',
+      slot_id: 'vehicles/getSlotID'
     }),
     label () {
       let start_time = new Date(this.appointment.start_time).getHours();
@@ -41,26 +40,32 @@ export default {
     },
 
     available () {
-      return this.appointment?.available  ? true : false;
+      let now = new Date();
+      let endTime = new Date(this.appointment.end_time);
+      return this.appointment?.available && now.getTime() < endTime.getTime() ? true : false;
     },
 
     bookingStatus() {
-      return this.checked ? i18n.t('Booked') : i18n.t('Available');
+      if (!this.available) return 'Unavailable';
+      if (this.checked) return 'Selected';
+      if (this.available && !!this.appointment.technician_ids) return 'Booked';
+      return 'Available';
     }
   },
 
   methods: {
     setAppointment () {
-      let payload = {...this.appointment};
-      console.log(currentStoreView().storeId, 'storeId');
-      this.checked = !this.checked;
-      payload.booked_online = true;
-      payload.internal_booking = false;
-      payload.client_id = config.clientIds[currentStoreView().storeId];
-      payload.order_id = this.cartToken;
-      console.log(payload, 'appointment payload');
-      if (this.checked) this.$store.dispatch('vehicles/setAppointment', payload);
-      else this.$store.dispatch('vehicles/deleteAppointment', payload);
+      // let payload = {...this.appointment};
+      // console.log(currentStoreView().storeId, 'storeId');
+      // this.checked = !this.checked;
+      // payload.booked_online = true;
+      // payload.internal_booking = false;
+      // payload.client_id = config.clientIds[currentStoreView().storeId];
+      // payload.order_id = this.cartToken;
+      // console.log(payload, 'appointment payload');
+      // if (this.checked) this.$store.dispatch('vehicles/setAppointment', payload);
+      // else this.$store.dispatch('vehicles/deleteAppointment', payload);
+      this.$store.commit('vehicles/setSlotID', this.appointment.id);
     }
   },
 
@@ -80,8 +85,12 @@ export default {
       immediate: true,
       deep: true,
       handler(newValue, oldValue) {        
-          this.checked = !!newValue?.technician_ids;        
+          this.checked = newValue.id === this.slot_id;        
       }
+    },
+
+    slot_id(newValue) {
+      this.checked = newValue.id === this.appointment.id;
     }
   }
 };

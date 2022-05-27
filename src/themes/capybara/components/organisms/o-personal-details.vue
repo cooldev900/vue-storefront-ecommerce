@@ -162,6 +162,8 @@ import { mapActions, mapGetters } from 'vuex';
 import OmLocator from 'theme/components/omni/om-locator';
 import OmAppointmentSelector from 'theme/components/omni/om-appointment-selector.vue';
 import dayjs from 'dayjs';
+import config from 'config';
+import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 
 export default {
   name: 'OPersonalDetails',
@@ -177,7 +179,9 @@ export default {
   mixins: [PersonalDetails],
   computed: {
     ...mapGetters({
-      location: 'omLocator/location'
+      location: 'omLocator/location',
+      cartToken: 'cart/getCartToken',
+      slot_id: 'vehicles/getSlotID'
     })
   },
   data () {
@@ -279,7 +283,20 @@ export default {
       this.openModal({ name: ModalList.TermsAndConditions })
     },
     async goToShipping () {
+      this.setAppointment();
       this.sendDataToCheckout();
+    },
+    setAppointment () {
+      if (this.slot_id) {
+        let payload = {};
+        payload.booked_online = true;
+        payload.internal_booking = false;
+        payload.client_id = config.clientIds[currentStoreView().storeId];
+        payload.order_id = this.cartToken;
+        payload.id = this.slot_id;
+        this.$store.dispatch('vehicles/setAppointment', payload);
+        this.$store.commit('vehicles/setSlotID', 0);
+      }
     }
   }
 };
