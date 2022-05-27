@@ -41,8 +41,9 @@ export default {
 
     available () {
       let now = new Date();
-      let endTime = new Date(this.appointment.end_time);
-      return this.appointment?.available && now.getTime() < endTime.getTime() ? true : false;
+      let tomorrow = new Date(now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate()).getTime() + 86400000;
+      let startTime = new Date(this.appointment.start_time);
+      return this.appointment?.available && tomorrow <= startTime.getTime() ? true : false;
     },
 
     bookingStatus() {
