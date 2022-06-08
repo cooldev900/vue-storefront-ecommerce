@@ -758,7 +758,7 @@ export default {
           { root: true }
         );
       }
-      
+      this.$store.dispatch("vehicles/saveQTY", 1);
       this.isAddingToCart = false;
     },
     title(filterType) {
