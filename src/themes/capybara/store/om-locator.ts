@@ -11,20 +11,37 @@ export const omLocatorStore = {
   namespaced: true,
   state: {
     locationKind: 'delivery_estimate_free',
-    location: storeId ? Locations['locations'][storeId][0] : {}
+    location: storeId ? Locations['locations'][storeId][0] : {},
+    activeLocation: {}
   },
   actions: {
     async clearVehicles ({ commit }) {
       await VehicleStorage.clearVehicles();
       commit('clearVehicles');
+    },
+    async saveActiveLocation ({ commit }, location) {
+      await VehicleStorage.saveActiveLocation(location);
+      commit('setActiveLocation', location);
+    },
+    async fetchActiveLocation ({ commit }) {
+      const location = await VehicleStorage.getActiveLocation();
+      commit('setActiveLocation', location);
+    },
+    async fetchLocationKind({commit}) {
+      const location = await VehicleStorage.getLocationKind();
+      commit('setLocationKind', location);
     }
   },
   mutations: {
     setLocation (state, payload) {
       Vue.set(state, 'location', payload);
     },
-    setLocationKind (state, payload) {
+    async setLocationKind (state, payload) {
+      await VehicleStorage.saveLocationKind(payload);
       Vue.set(state, 'locationKind', payload);
+    },
+    setActiveLocation (state, location) {
+      Vue.set(state, 'activeLocation', location);
     }
   },
   getters: {
@@ -33,6 +50,9 @@ export const omLocatorStore = {
     },
     locationKind: (state) => {
       return state.locationKind;
+    },
+    activeLocation: state => {
+      return state.activeLocation;
     }
   }
 };

@@ -29,8 +29,39 @@ export const vehiclesStore = {
     appointmentTaken: [],
     currentDay: '',
     slot_id: '',
+    isComplete: {
+      order: false,
+      address: false,
+      payment: false
+    },
+    opens: ['order'],
+    step: -1,
   },
   actions: {
+    async saveStep ({ commit }, step) {
+      await VehicleStorage.saveStepData(step);
+      commit('setStep', step);
+    },
+    async fetchStep ({ commit }) {
+      let complete = await VehicleStorage.loadStepData(); console.log(complete, 'step')
+      commit('setStep', complete);
+    },
+    async saveCompete ({ commit }, complete) {
+      await VehicleStorage.saveCompleteData(complete);
+      commit('setComplete', complete);
+    },
+    async fetchComplete ({ commit }) {
+      let complete = await VehicleStorage.loadCompleteData();
+      commit('setComplete', complete);
+    },
+    async saveOpens ({ commit }, opens) {
+      await VehicleStorage.saveOpensData(opens);
+      commit('setOpens', opens);
+    },
+    async fetchOpens ({ commit }) {
+      let opens = await VehicleStorage.loadOpensData();
+      commit('setOpens', opens);
+    },
     async loadSlotID({state}) {
       let slot_id = await VehicleStorage.getSlotID();
       state.slot_id = slot_id;

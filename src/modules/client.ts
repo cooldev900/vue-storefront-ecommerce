@@ -14,7 +14,7 @@ import { CmsModule } from '@vue-storefront/core/modules/cms';
 // import { AmpRendererModule } from './amp-renderer';
 import { PaymentBackendMethodsModule } from './payment-backend-methods';
 // import { PaymentCashOnDeliveryModule } from './payment-cash-on-delivery';
-// import { Stripe } from './stripe';
+import { Stripe } from './stripe/index';
 // import { PaymentPaypalModule } from './payment-paypal';
 import { NewsletterModule } from '@vue-storefront/core/modules/newsletter';
 import { InitialResourcesModule } from '@vue-storefront/core/modules/initial-resources';
@@ -53,6 +53,6 @@ export function registerClientModules () {
 
 export const registerModules: VueStorefrontModule[] = [
   // other extensions
-  // Stripe
+  Stripe
   // InstantCheckout,
 ];

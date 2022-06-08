@@ -28,6 +28,146 @@ export const availableLocalStorage = async () => {
   }
 };
 
+export const saveLocationKind = async data => {
+  try {
+    const storeView = currentStoreView();
+    await asyncLocalStorage?.setItem(
+      storeView.storeCode + '/locationKind',
+      JSON.stringify(data)
+    );
+  } catch (e) {
+    console.log('localStorage error----', e)
+  }
+};
+
+export const saveActiveLocation = async data => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      asyncLocalStorage?.removeItem(storeView.storeCode + '/active-location');
+      asyncLocalStorage?.setItem(
+        storeView.storeCode + '/active-location',
+        JSON.stringify(data)
+      );
+    }
+  } catch (e) {
+    console.log('localStorage error----', e);
+  }
+}
+
+export const getActiveLocation = async () => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      const location = await asyncLocalStorage?.getItem(
+        storeView.storeCode + '/active-location'
+      );
+      return location ? JSON.parse(location) : {};
+    }
+  } catch (e) {
+    console.log('localStorage error----', e);
+  }
+}
+
+export const getLocationKind = async () => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      const location = await asyncLocalStorage?.getItem(
+        storeView.storeCode + '/locationKind'
+      );
+      return location ? JSON.parse(location) : null;
+    }
+  } catch (e) {
+    console.log('localStorage error----', e);
+  }
+}
+
+export const saveStepData = async data => {
+  try {
+    const storeView = currentStoreView();
+    await asyncLocalStorage?.setItem(
+      storeView.storeCode + '/step',
+      JSON.stringify(data)
+    );
+  } catch (e) {
+    console.log('localStorage error----', e)
+  }
+};
+
+export const loadStepData = async () => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      const location = await asyncLocalStorage?.getItem(
+        storeView.storeCode + '/step'
+      );
+      return location ? JSON.parse(location) : null;
+    }
+  } catch (e) {
+    console.log('localStorage error----', e);
+  }
+}
+
+export const saveCompleteData = async data => {
+  try {
+    const storeView = currentStoreView();
+    await asyncLocalStorage?.setItem(
+      storeView.storeCode + '/isComplete',
+      JSON.stringify(data)
+    );
+  } catch (e) {
+    console.log('localStorage error----', e)
+  }
+};
+
+export const loadCompleteData = async () => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      const location = await asyncLocalStorage?.getItem(
+        storeView.storeCode + '/isComplete'
+      );
+      return location ? JSON.parse(location) : null;
+    }
+  } catch (e) {
+    console.log('localStorage error----', e);
+  }
+}
+
+export const saveOpensData = async data => {
+  try {
+    const storeView = currentStoreView();
+    await asyncLocalStorage?.setItem(
+      storeView.storeCode + '/opens',
+      JSON.stringify(data)
+    );
+  } catch (e) {
+    console.log('localStorage error----', e)
+  }
+};
+
+export const loadOpensData = async () => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      const location = await asyncLocalStorage?.getItem(
+        storeView.storeCode + '/opens'
+      );
+      return location ? JSON.parse(location) : null;
+    }
+  } catch (e) {
+    console.log('localStorage error----', e);
+  }
+}
+
+
 export const getSlotID = async () => {
   try {
     const existLocalStorage = await availableLocalStorage();

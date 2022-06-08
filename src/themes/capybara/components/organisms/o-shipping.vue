@@ -1,10 +1,5 @@
 <template>
   <div class="o-shipping">
-    <SfHeading
-      :title="`3. ${$t('Shipping')}`"
-      :level="2"
-      class="sf-heading--left sf-heading--no-underline"
-    />
     <div class="form">
       <SfCheckbox
         v-if="currentUser && hasShippingDetails()"
@@ -144,17 +139,11 @@
       </div>
       <div class="form__action">
         <SfButton
-          class="sf-button--full-width form__action-button"
+          class="om-button wide btn"
           :disabled="$v.shipping.$invalid || !shippingMethods.length"
-          @click="sendDataToCheckout"
+          @click="clickContinuePayment"
         >
-          {{ $t("Continue to payment") }}
-        </SfButton>
-        <SfButton
-          class="sf-button--full-width sf-button--text form__action-button form__action-button--secondary"
-          @click="$bus.$emit('checkout-before-edit', 'personalDetails')"
-        >
-          {{ $t("Edit Details") }}
+      {{ $t("Continue to payment") }}
         </SfButton>
       </div>
     </div>
@@ -220,8 +209,35 @@ export default {
       }
     }
   },
+  props: {
+    nextAccordion: {
+      type: Function,
+      default: (Number) => {}
+    }
+  },
   mounted () {
-    createSmoothscroll(document.documentElement.scrollTop || document.body.scrollTop, 0);
+    // createSmoothscroll(document.documentElement.scrollTop || document.body.scrollTop, 0);
+  },
+  methods: {
+    clickContinuePayment () {
+      this.nextAccordion(1);
+      if (!this.getPaymentDetails?.firstName || !this.getPaymentDetails?.lastName)
+        this.$store.dispatch('checkout/savePaymentDetails', {
+          apartmentNumber: this.shipping.apartmentNumber,
+          city: this.shipping.city,
+          company: this.shipping.company,
+          country:this.shipping.country,
+          firstName:this.shipping.firstName,
+          lastName:this.shipping.lastName,
+          paymentMethod:"cnpayment",
+          phoneNumber:this.shipping.phoneNumber,
+          state:this.shipping.state,
+          streetAddress:this.shipping.streetAddress,
+          taxId:"",
+          zipCode:this.shipping.zipCode,
+        });
+      this.sendDataToCheckout();
+    }
   }
 };
 </script>
@@ -258,6 +274,7 @@ export default {
   }
   &__radio-group {
     flex: 0 0 100%;
+    margin: auto !important;
   }
   @include for-desktop {
     display: flex;
@@ -265,7 +282,7 @@ export default {
     align-items: center;
     margin: 0;
     &:last-of-type {
-      margin: 0 calc(var(--spacer-2xl) - var(--spacer-sm)) 0 0;
+      margin: 0;
     }
     &__element {
       margin: 0 0 var(--spacer-sm) 0;
@@ -291,11 +308,8 @@ export default {
   @include for-mobile {
     &__radio-group {
       position: relative;
-      left: 50%;
-      right: 50%;
-      margin-left: -50vw;
-      margin-right: -50vw;
-      width: 100vw;
+      left: 0;
+      right: 0;
     }
   }
 }
@@ -356,4 +370,46 @@ export default {
 ::v-deep #sfSelect {
   padding-top: var(--spacer-lg);
 }
+.manual-selector{
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  .dropdown-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+    padding: 20px 0;
+    width: 100%;
+    .sf-select {
+      width: 50%;
+    }
+  }
+}
+.vehicle-select {
+    /* Reset */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* Add some styling */
+
+    display: block;
+    width: 100%;
+    height: 54px;
+    float: right;
+    padding: 0px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    line-height: 1.75;
+    color: #333;
+    background-color: #ffffff;
+    background-image: none;
+    border: 1px solid #cccccc;
+    -ms-word-break: normal;
+    word-break: normal;
+    margin-bottom: 15px;
+    /* Remove IE arrow */
+    &::-ms-expand {
+      display: none;
+    }
+  }
 </style>

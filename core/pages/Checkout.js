@@ -8,8 +8,6 @@ import Composite from '@vue-storefront/core/mixins/composite'
 import { currentStoreView, localizedRoute } from '@vue-storefront/core/lib/multistore'
 import { isServer } from '@vue-storefront/core/helpers'
 import { Logger } from '@vue-storefront/core/lib/logger'
-import * as VehicleStorage from 'theme/store/vehicles-storage';
-import axios from 'axios';
 
 export default {
   name: 'Checkout',
@@ -43,9 +41,7 @@ export default {
   computed: {
     ...mapGetters({
       isVirtualCart: 'cart/isVirtualCart',
-      isThankYouPage: 'checkout/isThankYouPage',
-      cartToken: 'cart/getCartToken',
-      productsInCart: 'cart/getCartItems'
+      isThankYouPage: 'checkout/isThankYouPage'
     })
   },
   async beforeMount () {
@@ -147,31 +143,15 @@ export default {
       this.$forceUpdate()
     },
     async onAfterPlaceOrder (payload) {
-      const storeView = currentStoreView();
       this.confirmation = payload.confirmation
       this.$store.dispatch('checkout/setThankYouPage', true)
       this.$store.dispatch('user/getOrdersHistory', { refresh: true, useCache: true })
       Logger.debug(payload.order)()
-      localStorage.removeItem(storeView.code + '/fitting-products')
     },
     onBeforeEdit (section) {
       this.activateSection(section)
     },
-    async onBeforePlaceOrder (payload) {
-      const fittingProducts = await VehicleStorage.getFittingProducts();
-      await Promise.all(
-        fittingProducts.map(async product => {
-          if (product.status === true) {
-            const cartProduct = this.productsInCart.find(p => p.sku === product.sku)
-            await axios.post(
-              `${config.api.url}/api/ext/fitting-service/add-fitting-service/${
-                this.cartToken
-              }/${product.item_id}?addfitting=true&value=${product.price *
-                cartProduct.qty}`
-            );
-          }
-        })
-      );
+    onBeforePlaceOrder (payload) {
     },
     onAfterCartSummary (receivedData) {
       this.cartSummary = receivedData
@@ -188,7 +168,7 @@ export default {
     onAfterPaymentDetails (receivedData, validationResult) {
       this.payment = receivedData
       this.validationResults.payment = validationResult
-      // this.activateSection('orderReview')
+      this.activateSection('orderReview')
       this.savePaymentDetails()
     },
     onAfterShippingDetails (receivedData, validationResult) {
@@ -279,59 +259,64 @@ export default {
       return paymentMethod
     },
     prepareOrder () {
-      const products =
-        this.$store?.state?.cart?.cartItems &&
-        Array.isArray(this.$store?.state?.cart?.cartItems)
-          ? this.$store.state.cart.cartItems.map(item => {
-            const { national_code, fitVehicles, custom_options, ...product } = item;
-            const newCustomOptions = custom_options
-              ? [
-                ...custom_options,
-                {
-                  option_id: 'fitVehicles',
-                  options_value: fitVehicles
-                }
-              ]
-              : [
-                {
-                  option_id: 'fitVehicles',
-                  options_value: fitVehicles
-                }
-              ];
-            return {
-              ...product,
-              custom_options: newCustomOptions
-            };
-          }) : [];
-
-      this.order = {
-        user_id: this.$store.state.user.current ? this.$store.state.user.current.id.toString() : '',
-        cart_id: this.$store.state.cart.cartServerToken ? this.$store.state.cart.cartServerToken.toString() : '',
-        products,
-        addressInformation: {
-          billingAddress: {
-            region: this.payment.state,
-            region_id: this.payment.region_id ? this.payment.region_id : 0,
-            country_id: this.payment.country,
-            street: [this.payment.streetAddress, this.payment.apartmentNumber],
-            company: this.payment.company,
-            telephone: this.payment.phoneNumber,
-            postcode: this.payment.zipCode,
-            city: this.payment.city,
-            firstname: this.payment.firstName,
-            lastname: this.payment.lastName,
-            email: this.personalDetails.emailAddress,
-            region_code: this.payment.region_code ? this.payment.region_code : '',
-            vat_id: this.payment.taxId
-          },
-          shipping_method_code: this.shippingMethod.method_code ? this.shippingMethod.method_code : this.shipping.shippingMethod,
-          shipping_carrier_code: this.shippingMethod.carrier_code ? this.shippingMethod.carrier_code : this.shipping.shippingCarrier,
-          payment_method_code: this.getPaymentMethod(),
-          payment_method_additional: this.payment.paymentMethodAdditional,
-          shippingExtraFields: this.shipping.extraFields
+      if (this.locationKind === 'click_collect_free') {
+        this.order = {
+          user_id: this.$store.state.user.current ? this.$store.state.user.current.id.toString() : '',
+          cart_id: this.$store.state.cart.cartServerToken ? this.$store.state.cart.cartServerToken.toString() : '',
+          products: this.$store.state.cart.cartItems,
+          addressInformation: {
+            billingAddress: {
+              region: this.activeLocation.region,
+              region_id: 0,
+              country_id: 'GB',
+              street: [this.activeLocation.street],
+              company: this.activeLocation.location_name,
+              telephone: this.activeLocation.phone,
+              postcode: this.activeLocation.postcode,
+              city: this.activeLocation.city,
+              firstname: this.personalDetails.firstName,
+              lastname: this.personalDetails.lastName,
+              email: this.personalDetails.emailAddress,
+              region_code: this.shipping.region_code ? this.shipping.region_code : '',
+              vat_id: this.payment.taxId
+            },
+            shipping_method_code: 'collection',
+            shipping_carrier_code: 'collection',
+            payment_method_code: 'cnpayment',
+            payment_method_additional: this.payment.paymentMethodAdditional,
+            shippingExtraFields: 'locationid'
+          }
+        }
+      } else {
+        this.order = {
+          user_id: this.$store.state.user.current ? this.$store.state.user.current.id.toString() : '',
+          cart_id: this.$store.state.cart.cartServerToken ? this.$store.state.cart.cartServerToken.toString() : '',
+          products: this.$store.state.cart.cartItems,
+          addressInformation: {
+            billingAddress: {
+              region: this.shipping.state,
+              region_id: this.shipping.region_id ? this.shipping.region_id : 0,
+              country_id: this.shipping.country,
+              street: [this.shipping.streetAddress, this.shipping.apartmentNumber],
+              company: this.shipping.company,
+              telephone: this.shipping.phoneNumber,
+              postcode: this.shipping.zipCode,
+              city: this.shipping.city,
+              firstname: this.shipping.firstName,
+              lastname: this.shipping.lastName,
+              email: this.personalDetails.emailAddress,
+              region_code: this.shipping.region_code ? this.shipping.region_code : '',
+              vat_id: this.payment.taxId
+            },
+            shipping_method_code: this.shippingMethod.method_code ? this.shippingMethod.method_code : this.shipping.shippingMethod,
+            shipping_carrier_code: this.shippingMethod.carrier_code ? this.shippingMethod.carrier_code : this.shipping.shippingCarrier,
+            payment_method_code: 'cnpayment',
+            payment_method_additional: this.payment.paymentMethodAdditional,
+            shippingExtraFields: this.shipping.extraFields
+          }
         }
       }
-      if (!this.isVirtualCart) {
+      if (!this.isVirtualCart || !this.locationKind === 'click_collect_free') {
         this.order.addressInformation.shippingAddress = {
           region: this.shipping.state,
           region_id: this.shipping.region_id ? this.shipping.region_id : 0,
@@ -343,6 +328,22 @@ export default {
           city: this.shipping.city,
           firstname: this.shipping.firstName,
           lastname: this.shipping.lastName,
+          email: this.personalDetails.emailAddress,
+          region_code: this.shipping.region_code ? this.shipping.region_code : ''
+        }
+      }
+      if (this.locationKind === 'click_collect_free') {
+        this.order.addressInformation.shippingAddress = {
+          region: this.activeLocation.region,
+          region_id: this.shipping.region_id ? this.shipping.region_id : 0,
+          country_id: 'GB',
+          street: [this.activeLocation.street],
+          company: this.activeLocation.location_name,
+          telephone: this.activeLocation.phone,
+          postcode: this.activeLocation.postcode,
+          city: this.activeLocation.city,
+          firstname: this.personalDetails.firstName,
+          lastname: this.personalDetails.lastName,
           email: this.personalDetails.emailAddress,
           region_code: this.shipping.region_code ? this.shipping.region_code : ''
         }
@@ -388,7 +389,7 @@ export default {
   asyncData ({ store, route, context }) { // this is for SSR purposes to prefetch data
     return new Promise((resolve, reject) => {
       if (context) context.output.cacheTags.add(`checkout`)
-      if (context) context.server.response.redirect(localizedRoute('/'))
+      // if (context) context.server.response.redirect(localizedRoute('/'))
       resolve()
     })
   }

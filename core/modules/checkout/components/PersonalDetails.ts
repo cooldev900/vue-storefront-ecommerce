@@ -47,7 +47,7 @@ export const PersonalDetails = {
       } else {
         this.personalDetails.createAccount = false
       }
-      this.$bus.$emit('checkout-after-personalDetails', this.personalDetails, this.$v)
+      this.$bus.$emit('checkout-after-personalDetails', this.personalDetails, this.$v, { forceServerSync: true })
       this.isFilled = true
       this.isValidationError = false
     },

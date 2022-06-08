@@ -1,32 +1,6 @@
 <template>
   <div class="o-personal-details">
-    <OmAppointmentSelector
-      v-model="schedule"
-      :appointment-duration="120"
-      :appointments-taken="appointmentsTaken"
-      :intervals="intervals"
-      :non-working-days="[0, 5]"
-      :period="5"
-    />
-    <SfHeading
-      :title="`1. ${$t('How Would You Like to Recieve Your Order?')}`"
-      :level="2"
-      class="sf-heading--left sf-heading--no-underline"
-    />
     <OmLocator />
-    <div v-if="!currentUser" class="log-in desktop-only">
-      <SfButton class="log-in__button color-secondary" @click="login">
-        {{ $t('Log in to your account') }}
-      </SfButton>
-      <p class="log-in__info">
-        {{ $t('or fill the details below') }}:
-      </p>
-    </div>
-    <SfHeading
-      :title="`2. ${$t('Details')}`"
-      :level="2"
-      class="sf-heading--left sf-heading--no-underline"
-    />
     <div class="form">
       <!-- <SfInput
         v-model.trim="personalDetails.firstName"
@@ -66,88 +40,15 @@
         "
         @blur="$v.personalDetails.emailAddress.$touch()"
       />
-      <template v-if="!currentUser">
-        <div class="form__element">
-          <SfCheckbox
-            v-model="createAccount"
-            :label="$t('I want to create an account')"
-            class="form__checkbox"
-            name="createAccount"
-          />
-        </div>
-        <template v-if="createAccount">
-          <SfInput
-            v-model="password"
-            type="password"
-            class="form__element"
-            name="password"
-            :has-show-password="true"
-            :label="$t('Password')"
-            :required="true"
-            :valid="!$v.password.$error"
-            :error-message="
-              !$v.password.required
-                ? $t('Field is required')
-                : !$v.password.minLength
-                  ? $t('Password must have at least 8 letters.')
-                  : $t(
-                    'Password must contain at least 3 different character classes: lower case, upper case, digits, special characters.'
-                  )
-            "
-            @blur="$v.password.$touch()"
-          />
-          <SfInput
-            v-model="rPassword"
-            type="password"
-            class="form__element"
-            name="password-confirm"
-            :has-show-password="true"
-            :label="$t('Repeat password')"
-            :required="true"
-            :valid="!$v.rPassword.$error"
-            :error-message="
-              !$v.rPassword.required
-                ? $t('Field is required')
-                : $t('Passwords must be identical.')
-            "
-            @blur="$v.rPassword.$touch()"
-          />
-          <div class="form__element form__group">
-            <SfCheckbox
-              v-model="acceptConditions"
-              class="form__element form__checkbox"
-              name="acceptConditions"
-              :required="true"
-              @blur="$v.acceptConditions.$touch()"
-            >
-              <template #label>
-                <span class="sf-checkbox__label no-flex">
-                  {{ $t("I accept ") }}
-                </span>
-                <SfButton class="sf-button sf-button--text terms" @click.prevent="openTermsAndConditionsModal">
-                  {{ $t("Terms and conditions") }}
-                </SfButton>
-              </template>
-            </SfCheckbox>
-          </div>
-        </template>
-      </template>
       <div class="form__action">
         <SfButton
-          class="sf-button--full-width form__action-button"
-          :disabled="createAccount ? $v.$invalid : $v.personalDetails.$invalid"
+          class="sf-button--full-width om-btn--primary"
+          :disabled=" locationKind === '' || (locationKind === 'click_collect_free' && !activeLocation.id) ? true : createAccount ? $v.$invalid : $v.personalDetails.$invalid"
           @click="goToShipping"
         >
           {{
-            $t(isVirtualCart ? "Continue to payment" : "Continue to shipping")
+            $t(isVirtualCart || locationKind === 'click_collect_free' ? "Continue to payment" : "Continue to shipping")
           }}
-        </SfButton>
-        <SfButton
-          v-if="!currentUser"
-          class="sf-button--full-width sf-button--text form__action-button form__action-button--secondary mobile-only"
-          @click="login"
-        >
-          {{ $t("or login to your account") }}
         </SfButton>
       </div>
     </div>
@@ -160,10 +61,6 @@ import { SfInput, SfButton, SfHeading, SfCheckbox, SfCharacteristic } from '@sto
 import { ModalList } from 'theme/store/ui/modals'
 import { mapActions, mapGetters } from 'vuex';
 import OmLocator from 'theme/components/omni/om-locator';
-import OmAppointmentSelector from 'theme/components/omni/om-appointment-selector.vue';
-import dayjs from 'dayjs';
-import config from 'config';
-import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 
 export default {
   name: 'OPersonalDetails',
@@ -173,16 +70,22 @@ export default {
     SfHeading,
     SfCheckbox,
     SfCharacteristic,
-    OmLocator,
-    OmAppointmentSelector
+    OmLocator
   },
   mixins: [PersonalDetails],
   computed: {
     ...mapGetters({
       location: 'omLocator/location',
-      cartToken: 'cart/getCartToken',
-      slot_id: 'vehicles/getSlotID'
+      activeLocation: 'omLocator/activeLocation',
+      locationKind: 'omLocator/locationKind',
+      isVirtualCart: 'cart/isVirtualCart',
     })
+  },
+  props: {
+    nextAccordion: {
+      type: Function,
+      default: (Number) => {}
+    }
   },
   data () {
     return {
@@ -203,35 +106,7 @@ export default {
           description: this.$t('Manage your wishlist'),
           icon: 'heart'
         }
-      ],
-      schedule: {
-        start: dayjs()
-          .add(1, 'day')
-          .hour(14)
-          .minute(0)
-          .second(0)
-          .format('YYYY-MM-DD HH:mm:ss'),
-        end: dayjs()
-          .add(1, 'day')
-          .hour(16)
-          .minute(0)
-          .second(0)
-          .format('YYYY-MM-DD HH:mm:ss')
-      },
-      minWeeks: 2,
-      intervals: [
-        {
-          from: {
-            hour: 8,
-            minute: 0
-          },
-          to: {
-            hour: 20,
-            minute: 0
-          }
-        }
-      ],
-      appointmentsTaken: []
+      ]
     };
   },
   validations: {
@@ -282,21 +157,9 @@ export default {
     openTermsAndConditionsModal () {
       this.openModal({ name: ModalList.TermsAndConditions })
     },
-    async goToShipping () {
-      this.setAppointment();
+    async goToShipping () { 
+      this.nextAccordion(0);
       this.sendDataToCheckout();
-    },
-    setAppointment () {
-      if (this.slot_id) {
-        let payload = {};
-        payload.booked_online = true;
-        payload.internal_booking = false;
-        payload.client_id = config.clientIds[currentStoreView().storeId];
-        payload.order_id = this.cartToken;
-        payload.id = this.slot_id;
-        this.$store.dispatch('vehicles/setAppointment', payload);
-        this.$store.commit('vehicles/setSlotID', 0);
-      }
     }
   }
 };
@@ -348,6 +211,7 @@ export default {
   }
 }
 .form {
+  margin: 0 !important;
   &__checkbox {
     margin: var(--spacer-base) 0;
   }
