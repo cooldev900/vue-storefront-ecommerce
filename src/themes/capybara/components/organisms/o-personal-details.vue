@@ -1,6 +1,13 @@
 <template>
   <div class="o-personal-details">
-    <OmLocator />
+    <OmAppointmentSelector
+      v-model="schedule"
+      :appointment-duration="120"
+      :appointments-taken="appointmentsTaken"
+      :intervals="intervals"
+      :non-working-days="[0, 5]"
+      :period="5"
+    />
     <div class="form">
       <!-- <SfInput
         v-model.trim="personalDetails.firstName"
@@ -61,6 +68,10 @@ import { SfInput, SfButton, SfHeading, SfCheckbox, SfCharacteristic } from '@sto
 import { ModalList } from 'theme/store/ui/modals'
 import { mapActions, mapGetters } from 'vuex';
 import OmLocator from 'theme/components/omni/om-locator';
+import OmAppointmentSelector from 'theme/components/omni/om-appointment-selector.vue';
+import dayjs from 'dayjs';
+import config from 'config';
+import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 
 export default {
   name: 'OPersonalDetails',
@@ -70,7 +81,7 @@ export default {
     SfHeading,
     SfCheckbox,
     SfCharacteristic,
-    OmLocator
+    OmAppointmentSelector
   },
   mixins: [PersonalDetails],
   computed: {
@@ -106,7 +117,35 @@ export default {
           description: this.$t('Manage your wishlist'),
           icon: 'heart'
         }
-      ]
+      ],
+      schedule: {
+        start: dayjs()
+          .add(1, 'day')
+          .hour(14)
+          .minute(0)
+          .second(0)
+          .format('YYYY-MM-DD HH:mm:ss'),
+        end: dayjs()
+          .add(1, 'day')
+          .hour(16)
+          .minute(0)
+          .second(0)
+          .format('YYYY-MM-DD HH:mm:ss')
+      },
+      minWeeks: 2,
+      intervals: [
+        {
+          from: {
+            hour: 8,
+            minute: 0
+          },
+          to: {
+            hour: 20,
+            minute: 0
+          }
+        }
+      ],
+      appointmentsTaken: []
     };
   },
   validations: {
@@ -160,6 +199,18 @@ export default {
     async goToShipping () { 
       this.nextAccordion(0);
       this.sendDataToCheckout();
+    },    
+    setAppointment () {
+      if (this.slot_id) {
+        let payload = {};
+        payload.booked_online = true;
+        payload.internal_booking = false;
+        payload.client_id = config.clientIds[currentStoreView().storeId];
+        payload.order_id = this.cartToken;
+        payload.id = this.slot_id;
+        this.$store.dispatch('vehicles/setAppointment', payload);
+        this.$store.commit('vehicles/setSlotID', 0);
+      }
     }
   }
 };

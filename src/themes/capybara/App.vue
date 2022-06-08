@@ -25,14 +25,12 @@ export default {
   async mounted () {
     const storeId = currentStoreView().storeId
     document.documentElement.classList.add('theme-' + storeId);
-  },
-    async created () {
-    const storeId = currentStoreView().storeId
-    document.documentElement.classList.add('theme-' + storeId);
-    await Promise.all([
-      this.$store.dispatch('vehicles/fetchVehicles'),
-      this.$store.dispatch('vehicles/fetchActiveVehicle')
-    ]);
+    await this.$store.dispatch('vehicles/fetchVehicles')
+    await this.$store.dispatch('vehicles/fetchActiveVehicle')
+    await this.$store.dispatch('vehicles/fetchStoryblok')
+    await this.$store.dispatch('vehicles/fetchOpens')
+    await this.$store.dispatch('vehicles/fetchStep')
+    await this.$store.dispatch('vehicles/fetchComplete')
   }
 };
 </script>

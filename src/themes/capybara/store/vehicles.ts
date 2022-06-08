@@ -179,6 +179,20 @@ export const vehiclesStore = {
     }
   },
   mutations: {
+    setBackFlag (state, value) {
+      state.backFlag = value;
+    },
+    setStep (state, step) {
+      state.step = step;
+    },
+    setOpens (state, opens) {
+      state.opens = [...opens];
+      // Vue.set(state, 'opens', opens);
+    },
+    setComplete (state, completes) {
+      state.isComplete = { ...completes };
+      // Vue.set(state, 'isComplete', completes);
+    },
     async setSlotID(state, id) {
       await VehicleStorage.setSlotID(id);
       state.slot_id = id;
@@ -280,6 +294,18 @@ export const vehiclesStore = {
     }
   },
   getters: {
+    getBackFlag: (state)  => {
+      return state.backFlag;
+    },
+    isCompleteData: (state) => {
+      return state.isComplete;
+    },
+    opensData: (state) => {
+      return state.opens;
+    },
+    stepData: (state) => {
+      return state.step;
+    },
     getSlotID(state) {
       return state.slot_id;
     },

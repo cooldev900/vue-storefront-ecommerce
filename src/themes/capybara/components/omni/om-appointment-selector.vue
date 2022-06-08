@@ -10,14 +10,14 @@
       </div>
     </div>
     <div class="schedule-day-selector">
-      <div class="schedule-day-selector__button" :class=" today === date.payload ? 'selected' : '' " :key="date.date" v-for="date in weeks[0].days" @click="getAppointment(date.payload)">
+      <div class="schedule-day-selector__button" :class=" isHoliday(date.payload) ? 'disabled' : (today === date.payload ? 'selected' : '') " :key="date.date" v-for="date in weeks[0].days" @click="getAppointment(date.payload)">
         <div class="schedule-day-selector__button--day">{{date.day}}</div>
          <div class="schedule-day-selector__button--date">{{date.date}}</div>
       </div>
     </div>
     <div class="slots">
       <div class="anytime">
-        <OmRadio :key="index" :appointment="appointment" v-for="(appointment, index) in appointments"/>
+        <OmRadio :key="index" :appointment="appointment" v-for="(appointment, index) in appointmentsData"/>
       </div>
     </div>
   </div>
@@ -90,7 +90,10 @@ export default {
       ).format('dddd DD');
 
       return `${from} - ${to}`;
-    }
+    },
+    appointmentsData () {
+      return this.appointments.filter(appointment => new Date(appointment.start_time).getHours() >= 8 && new Date(appointment.start_time).getHours() < 20)
+    },
   },
   data () {
     return {
@@ -108,7 +111,13 @@ export default {
       fetchAppointmentTaken: 'vehicles/fetchAppointmentTaken',
       loadSlotID: 'vehicles/loadSlotID',
     }),
+    isHoliday (date) {
+      let day = new Date(date).getDay();
+      if (day === 6 || day === 5) return true;
+      return false;
+    },
     async getAppointment (date) {
+      if (this.isHoliday(date)) return;
       if (this.today !== date) {
         this.$store.commit('vehicles/setCurrentDay', date);
         this.fetchAppointmentTaken(date);
@@ -120,7 +129,7 @@ export default {
           this.weeks[this.weeks.length - 1].week[0].schedule[this.period - 1]
             .end
         ).add(1, 'day')
-        : dayjs();
+        : dayjs().add(1, 'day');
       
       let weeks = [];
       let weekDays = [];
@@ -186,7 +195,7 @@ export default {
           -this.period,
           'day'
         )
-        : dayjs();
+        : dayjs().add(1, 'day');
       // const startDayOfWeek = newWeek.day();
 
       let weeks = [];
@@ -309,6 +318,7 @@ export default {
 
 <style lang="scss" scoped>
 .appointment-selector {
+  margin-bottom: 25px;
   .header {
     margin-bottom: 0.5em;
 
@@ -482,6 +492,11 @@ export default {
 .selected {
   background-color: green;
   color: white;
+}
+
+.disabled {
+  background-color: gray;
+  color: black;
 }
 
 @keyframes show-info {
