@@ -1,12 +1,12 @@
 <template>
   <div class="o-search">
-    <SfSearchBar
+    <!-- <SfSearchBar
       v-model="search"
       :placeholder="$t('Search for Accessories')"
       class="sf-header__search"
       @input="startSearch"
       @click.native="$store.commit('ui/setSearchpanel', true)"
-    />
+    /> -->
     <component
       v-if="isSearchPanelVisible"
       :is="searchPanelAsyncComponent"
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { SfSearchBar } from '@storefront-ui/vue';
+// import { SfSearchBar } from '@storefront-ui/vue';
 import { mapState, mapGetters } from 'vuex';
 import SearchPanelMixin from '@vue-storefront/core/compatibility/components/blocks/SearchPanel/SearchPanel';
 import ALoadingSpinner from 'theme/components/atoms/a-loading-spinner';
@@ -36,7 +36,7 @@ const SearchPanel = () =>
 export default {
   name: 'OSearch',
   components: {
-    SfSearchBar
+    // SfSearchBar
   },
   data () {
     return {
@@ -57,11 +57,11 @@ export default {
     })
   },
   methods: {
-    startSearch () {
-      if (this.search.length >= 3) {
-        this.makeSearch();
-      }
-    },
+    // startSearch () {
+    //   if (this.search.length >= 3) {
+    //     this.makeSearch();
+    //   }
+    // },
     reloadComponent () {
       this.searchPanelAsyncComponent = () => ({
         component: SearchPanel(),
@@ -76,13 +76,13 @@ export default {
 <style lang="scss" scoped>
 .o-search {
   --search-bar-border-width: 0;
+  background-color: var(--c-light);
   display: flex;
   align-items: center;
-  padding: 0 10px;
-  width: 200px;
+  /* padding: 0 10px; */
+  width: 0;
 }
 ::v-deep .sf-search-bar__input[type="search"] {
-  display: none !important;
   &:focus {
     outline: none;
     border-width: 0 0 1px 0;

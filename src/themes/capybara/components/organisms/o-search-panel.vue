@@ -1,5 +1,21 @@
 <template>
   <div class="o-search-panel">
+    <SfButton class="sf-button--pure close-button" @click="$store.commit('ui/setSearchpanel', false)">
+      <SfIcon
+        icon="cross"
+        size="xxs"
+      />
+    </SfButton>
+    <div class="o-search">
+      <SfSearchBar
+        v-model="search"
+        :placeholder="$t('Search for Accessories')"
+        class="sf-header__search"
+        ref="searchInput"
+        @input="startSearch"
+        @click.native="$store.commit('ui/setSearchpanel', true)"
+      />
+    </div>
     <div
       v-if="noResultsMessage"
       class="no-results"
@@ -8,7 +24,7 @@
     </div>
     <div v-else class="container">
       <div class="categories">
-        <SfHeading :level="3" :title="$t('Categories')" class="categories__title sf-heading--left" />
+        <!-- <SfHeading :level="3" :title="$t('Categories')" class="categories__title sf-heading--left" /> -->
         <SfList v-if="visibleProducts.length && categories.length > 1" class="categories__listing">
           <SfListItem
             v-for="category in categories"
@@ -24,9 +40,9 @@
         </SfList>
       </div>
       <div class="products">
-        <SfHeading :level="3" :title="$t('Product suggestions')" class="products__title sf-heading--left" />
+        <!-- <SfHeading :level="3" :title="$t('Product suggestions')" class="products__title sf-heading--left" /> -->
         <div class="products__listing">
-          <OmProductCard
+          <SfProductCard
             v-for="product in visibleProducts"
             :key="product.id"
             :title="product.title"
@@ -48,11 +64,11 @@
                 :dom-id="product.id"
               />
             </template>
-          </OmProductCard>
+          </SfProductCard>
         </div>
         <SfButton
           v-if="OnlineOnly && readMore && visibleProducts.length >= pageSize"
-          class="sf-button--full-width mb-btn--primary load-more"
+          class="sf-button--full-width load-more"
           type="button"
           @click="$emit('see-more')"
         >
@@ -64,17 +80,12 @@
 </template>
 
 <script>
-import config from 'config';
-import { currentStoreView } from '@vue-storefront/core/lib/multistore';
-import { productThumbnailPath } from '@vue-storefront/core/helpers';
-import { htmlDecode } from '@vue-storefront/core/filters';
-import { formatProductLink } from '@vue-storefront/core/modules/url/helpers';
 import { prepareCategoryProduct } from 'theme/helpers';
 import VueOfflineMixin from 'vue-offline/mixin';
-import { SfHeading, SfButton, SfList, SfMenuItem, SfProductCard } from '@storefront-ui/vue';
+import { SfHeading, SfButton, SfList, SfSearchBar, SfMenuItem, SfProductCard, SfIcon } from '@storefront-ui/vue';
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
+import SearchPanelMixin from '@vue-storefront/core/compatibility/components/blocks/SearchPanel/SearchPanel';
 import SvgViewer from 'theme/components/svg-viewer.vue';
-import OmProductCard from "theme/components/omni/om-product-card.vue";
 
 export default {
   name: 'OSearchPanel',
@@ -84,35 +95,21 @@ export default {
     SfMenuItem,
     SfProductCard,
     SfHeading,
-    SvgViewer,
-    OmProductCard
+    SfSearchBar,
+    SfIcon,
+    SvgViewer
   },
-  mixins: [VueOfflineMixin],
+  mixins: [VueOfflineMixin, SearchPanelMixin],
   data () {
     return {
       selectedCategoryIds: []
     };
   },
   props: {
-    search: {
-      type: String,
-      required: true,
-      default: ''
-    },
     pageSize: {
       type: Number,
       required: true,
       default: 16
-    },
-    products: {
-      type: Array,
-      required: true,
-      default: () => ([])
-    },
-    readMore: {
-      type: Boolean,
-      required: true,
-      default: false
     }
   },
   computed: {
@@ -154,8 +151,17 @@ export default {
         this.selectedCategoryIds.push(category.category_id);
       }
     },
+    startSearch () {
+      if (this.search.length >= 3) {
+        this.makeSearch();
+      }
+    },
+    focusInput () {
+      this.$refs.searchInput.$el.children[0].focus();
+    },
     isJpgRender (product) {
-      if (product.main_image == null) return true;
+      if (product.main_image) return false
+      else return true;
     },
     getImageId (imageCode) {
       if (imageCode) {
@@ -172,7 +178,8 @@ export default {
     }
   },
   mounted () {
-    disableBodyScroll(this.$el)
+    disableBodyScroll(this.$el);
+    this.focusInput();
   },
   destroyed () {
     clearAllBodyScrollLocks()
@@ -187,7 +194,7 @@ export default {
   position: fixed;
   left: 0;
   right: 0;
-  top: 120px;
+  top: var(--_header-height);
   background: var(--c-light);
   overflow: auto;
   max-height: calc(66vh - var(--_header-height));
@@ -195,6 +202,12 @@ export default {
   @include for-mobile {
     top: auto;
     max-height: calc(100vh - var(--_header-height) - var(--bottom-navigation-height));
+  }
+
+  .close-button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
   }
 
   .container {
@@ -220,8 +233,7 @@ export default {
 
     &__title {
       padding: 0;
-      margin: 0;
-      font-size: 30px;
+      margin-top: var(--spacer-base);
       justify-content: start;
     }
     &__listing {
@@ -244,22 +256,18 @@ export default {
     &__title {
       padding: 0;
       justify-content: start;
-      margin: 0;
-      font-size: 30px;
+      margin-top: var(--spacer-base);
     }
     &__listing {
       display: flex;
       flex: 0 1 auto;
       flex-wrap: wrap;
-      gap: 20px;
-      margin-bottom: 30px;
+      gap: 10px;
     }
     &__product-card {
 
-      flex: 0 1 calc(25% - 15px);
+      flex: 0 1 24%;
       min-width: calc(var(--product-card-max-width) * 0.8);
-      border-radius: 8px;
-      box-shadow: var(--card-shadow);
     }
 
     @include for-desktop {
@@ -277,20 +285,45 @@ export default {
   .load-more {
     margin: var(--spacer-xl) 0;
   }
+
 }
- ::v-deep .sf-product-card__title{
-    font-family: var(--font-family-primary);
+
+.o-search {
+  --search-bar-border-width: 0;
+  background-color: var(--c-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10px;
+  width: 100%;
+
+  .sf-search-bar {
+    width: initial;
+    height: initial;
   }
- ::v-deep .sf-product-card__price{
-  font-family: var(--font-family-primary);
-    font-size: 16px;
-    font-weight: 700;
-    color: #333;
 }
-::v-deep .sf-price__regular{
-    font-family: var(--font-family-primary);
-    font-size: 16px;
-    font-weight: 700;
-    color: #333;
+::v-deep .sf-search-bar__icon {
+    --icon-size: 1.25rem;
+    position: absolute;
+    top: 45%;
+    transform: translateY(-50%);
+    bottom: 0;
+    right: 10px;
+}
+::v-deep .sf-search-bar__input[type="search"] {
+  text-transform: none;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  background: #fff;
+  padding-left: 20px;
+  
+  &:focus {
+    outline: none;
+    border-width: 0 0 1px 0;
+    border-color: #b1b1b1;
+    transition: border-width 1s linear;
+    font-size: 14px;
+    text-transform: none;
+  }
 }
 </style>

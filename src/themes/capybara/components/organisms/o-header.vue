@@ -45,6 +45,18 @@
         <OmMobileTools class="sf-header__action" />
         <ALogo :menu-style="navigationItemColors" />
       </template>
+      <template #search>
+        <div class="search-container">
+          <OSearch :class="{ 'desktop-only': !isSearchPanelVisible }" />
+          <SfButton
+            v-if="isSearchPanelVisible"
+            class="sf-button--text form__action-button form__action-button--secondary mobile-only"
+            @click="$store.commit('ui/setSearchpanel', false)"
+          >
+            {{ $t("Cancel") }}
+          </SfButton>
+        </div>
+      </template>
     </SfHeader>
     <OmMobileMenu
       v-if="isMobileMenu"
@@ -272,8 +284,5 @@ export default {
   max-width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
-}
-::v-deep .sf-search-bar{
-  display: none;
 }
 </style>
