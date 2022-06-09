@@ -92,7 +92,13 @@ export default {
       return `${from} - ${to}`;
     },
     appointmentsData () {
-      return this.appointments.filter(appointment => new Date(appointment.start_time).getHours() >= 8 && new Date(appointment.start_time).getHours() < 20)
+      let today = new Date();
+      return this.appointments.filter(appointment => {
+        if (today.getDate() === new Date(appointment.start_time).getDate()) {
+           return new Date(appointment.start_time).getHours() >= 12 && new Date(appointment.start_time).getHours() < 20
+        } else 
+           return new Date(appointment.start_time).getHours() >= 8 && new Date(appointment.start_time).getHours() < 20
+      })
     },
   },
   data () {
@@ -129,7 +135,7 @@ export default {
           this.weeks[this.weeks.length - 1].week[0].schedule[this.period - 1]
             .end
         ).add(1, 'day')
-        : dayjs().add(1, 'day');
+        : dayjs();
       
       let weeks = [];
       let weekDays = [];
@@ -195,7 +201,7 @@ export default {
           -this.period,
           'day'
         )
-        : dayjs().add(1, 'day');
+        : dayjs();
       // const startDayOfWeek = newWeek.day();
 
       let weeks = [];
@@ -309,7 +315,7 @@ export default {
   },
 
   mounted () {
-    let date = new Date(new Date(dayjs().add(1, 'day')).toISOString().split('T')[0]).toISOString();
+    let date = new Date(new Date().toISOString().split('T')[0]).toISOString();
     this.getAppointment(date);
     this.loadSlotID();
   }
