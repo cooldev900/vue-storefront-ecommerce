@@ -309,7 +309,7 @@ export default {
   },
 
   mounted () {
-    let date = new Date(new Date().toISOString().split('T')[0]).toISOString();
+    let date = new Date(new Date(dayjs().add(1, 'day')).toISOString().split('T')[0]).toISOString();
     this.getAppointment(date);
     this.loadSlotID();
   }

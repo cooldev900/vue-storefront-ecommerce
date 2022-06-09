@@ -13,6 +13,7 @@
             : $t('Please provide valid e-mail address.')
         "
         class="form__element"
+        tabindex="1"
       />
       <SfInput
         v-model="firstName"
@@ -22,6 +23,7 @@
         :valid="!$v.firstName.$error"
         :error-message="$t('Field is required.')"
         class="form__element"
+        tabindex="2"
       />
       <SfInput
         v-model="lastName"
@@ -31,6 +33,7 @@
         :valid="!$v.lastName.$error"
         :error-message="$t('Field is required.')"
         class="form__element"
+        tabindex="3"
       />
       <SfInput
         v-model="password"
@@ -41,12 +44,13 @@
         :error-message="$t('Field is required.')"
         type="password"
         class="form__element"
+        tabindex="4"
       />
-      <SfButton class="sf-button--full-width form__submit om-btn--primary">
+      <SfButton class="sf-button--full-width form__submit om-btn--primary" tabindex="5">
         {{ $t("Create an account") }}
       </SfButton>
     </form>
-    <SfButton class="sf-button--text action-button" @click.native="switchElem('login')">
+    <SfButton class="sf-button--text action-button" @click.native="switchElem('login')" tabindex="6">
       {{ `${$t("or")} ${$t("login in to your account")}` }}
     </SfButton>
   </div>

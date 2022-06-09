@@ -13,6 +13,7 @@
             : $t('Please provide valid e-mail address.')
         "
         class="form__element"
+        tabindex="1"
       />
       <SfInput
         v-model="password"
@@ -23,18 +24,20 @@
         :error-message="$t('Field is required.')"
         type="password"
         class="form__element"
+        tabindex="2"
       />
       <SfCheckbox
         v-model="rememberMe"
         name="remember-me"
         :label="$t('Remember me')"
         class="form__element form__checkbox"
+        tabindex="3"
       />
-      <SfButton class="sf-button--full-width form__submit om-btn--primary">
+      <SfButton class="sf-button--full-width form__submit om-btn--primary" tabindex="4">
         {{ $t("Login") }}
       </SfButton>
     </form>
-    <SfButton class="sf-button--text action-button" @click.native="switchElem('forgot-pass')">
+    <SfButton class="sf-button--text action-button" @click.native="switchElem('forgot-pass')" tabindex="5">
       {{ $t("Forgotten password?") }}
     </SfButton>
     <div class="aside">
@@ -43,7 +46,7 @@
         :level="3"
         class="aside__heading"
       />
-      <SfButton class="sf-button--text" @click.native="switchElem('register')">
+      <SfButton class="sf-button--text" @click.native="switchElem('register')" tabindex="6">
         {{ $t("Register now") }}
       </SfButton>
     </div>

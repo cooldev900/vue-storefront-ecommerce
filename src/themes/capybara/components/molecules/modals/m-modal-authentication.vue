@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { SfModal } from '@storefront-ui/vue';
+import SfModal from './m-modal-no-focusing.vue';
 import MLogin from 'theme/components/molecules/m-login'
 import MRegister from 'theme/components/molecules/m-register'
 import MResetPassword from 'theme/components/molecules/m-reset-password'
