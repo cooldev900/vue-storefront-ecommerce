@@ -196,6 +196,10 @@ export default {
       this.getAppointment(weekDays[0].payload);
     },
     prevWeek () {
+      let firstDay = new Date(new Date().toISOString().split('T')[0]).toISOString();
+      if (this.weeks.length)
+        firstDay = this.weeks[0].days[0].payload;
+      if ( new Date(firstDay).getTime() <= new Date(new Date(new Date().toISOString().split('T')[0]).toISOString()).getTime()) return;
       let newWeek = this.weeks.length
         ? dayjs(this.weeks[this.weeks.length - 1].week[0].schedule[0].end).add(
           -this.period,
