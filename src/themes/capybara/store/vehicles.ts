@@ -28,7 +28,7 @@ export const vehiclesStore = {
     selectedTime: {},
     appointmentTaken: [],
     currentDay: '',
-    slot_id: '',
+    slot_id: [],
     isComplete: {
       order: false,
       address: false,
@@ -36,6 +36,7 @@ export const vehiclesStore = {
     },
     opens: ['order'],
     step: -1,
+    slot_data: []
   },
   actions: {
     async saveStep ({ commit }, step) {
@@ -64,6 +65,10 @@ export const vehiclesStore = {
     },
     async loadSlotID({state}) {
       let slot_id = await VehicleStorage.getSlotID();
+      state.slot_id = slot_id;
+    },
+    async loadSlotData({state}) {
+      let slot_id = await VehicleStorage.getSlotData();
       state.slot_id = slot_id;
     },
     async setAppointment({commit, dispatch, state}, payload) {
@@ -195,7 +200,11 @@ export const vehiclesStore = {
     },
     async setSlotID(state, id) {
       await VehicleStorage.setSlotID(id);
-      state.slot_id = id;
+      state.slot_id = [...id];
+    },
+    async setSlotData(state, id) {
+      await VehicleStorage.setSlotData(id);
+      state.slot_data = [...id];
     },
     async setCurrentDay(state, date) {
       console.log(date, 'date');
@@ -308,6 +317,9 @@ export const vehiclesStore = {
     },
     getSlotID(state) {
       return state.slot_id;
+    },
+    getSlotData(state) {
+      return state.slot_data;
     },
     getCurrentDay(state) {
       return state.currentDay;

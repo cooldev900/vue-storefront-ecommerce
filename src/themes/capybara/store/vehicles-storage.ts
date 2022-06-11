@@ -176,7 +176,7 @@ export const getSlotID = async () => {
       const location = await asyncLocalStorage?.getItem(
         storeView.storeCode + '/slot_id'
       );
-      return location ? JSON.parse(location) : {};
+      return location ? JSON.parse(location) : [];
     }
   } catch (e) {
     console.log('localStorage error----', e);
@@ -190,6 +190,36 @@ export const setSlotID = async data => {
     if (existLocalStorage) {
       await asyncLocalStorage?.setItem(
         storeView.storeCode + '/slot_id',
+        JSON.stringify(data)
+      );
+    }
+  } catch (e) {
+    console.log('localStorage error----', e)
+  }
+};
+
+export const getSlotData = async () => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      const location = await asyncLocalStorage?.getItem(
+        storeView.storeCode + '/slot_data'
+      );
+      return location ? JSON.parse(location) : [];
+    }
+  } catch (e) {
+    console.log('localStorage error----', e);
+  }
+};
+
+export const setSlotData = async data => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      await asyncLocalStorage?.setItem(
+        storeView.storeCode + '/slot_data',
         JSON.stringify(data)
       );
     }

@@ -29,7 +29,8 @@ export default {
   computed: {
     ...mapGetters({
       cartToken: 'cart/getCartToken',
-      slot_id: 'vehicles/getSlotID'
+      slot_id: 'vehicles/getSlotID',
+      slot_data: 'vehicles/getSlotData'
     }),
     label () {
       let start_time = new Date(this.appointment.start_time).getHours();
@@ -66,7 +67,17 @@ export default {
       // console.log(payload, 'appointment payload');
       // if (this.checked) this.$store.dispatch('vehicles/setAppointment', payload);
       // else this.$store.dispatch('vehicles/deleteAppointment', payload);
-      this.$store.commit('vehicles/setSlotID', this.appointment.id);
+      let slot_id = this.slot_id;
+      let slot_data = this.slot_data;
+      if (!this.checked) {
+        slot_id.push(this.appointment.id);
+        slot_data.push(this.appointment);
+      } else {
+        slot_id = slot_id.filter(id => id !== this.appointment.id);
+        slot_data = slot_data.filter(data => data.id !== this.appointment.id);
+      }
+      this.$store.commit('vehicles/setSlotID', slot_id);
+      this.$store.commit('vehicles/setSlotData', slot_data);
     }
   },
 
@@ -86,12 +97,12 @@ export default {
       immediate: true,
       deep: true,
       handler(newValue, oldValue) {        
-          this.checked = newValue.id === this.slot_id;        
+          this.checked = this.slot_id.includes(newValue.id);
       }
     },
 
     slot_id(newValue) {
-      this.checked = newValue.id === this.appointment.id;
+      this.checked = newValue.includes(this.appointment.id);
     }
   }
 };

@@ -320,6 +320,10 @@ export default {
 
   mounted () {
     let date = new Date(new Date().toISOString().split('T')[0]).toISOString();
+    if (new Date().getDay() === 5 || new Date().getDay() === 6) {
+      date = new Date(new Date(dayjs().add(7 - new Date().getDay(), 'day').toISOString()).toISOString().split('T')[0]).toISOString()
+    }
+    console.log(date, 'date', dayjs().add(7 - new Date().getDay(), 'day').toISOString())
     this.getAppointment(date);
     this.loadSlotID();
   }

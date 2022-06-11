@@ -47,7 +47,11 @@
                 </div>
               </div>
               <div class="confirm">
-               Your Email: {{ getPersonalDetails.emailAddress }}
+               <div>Your Email: {{ getPersonalDetails.emailAddress }}</div>
+               <div>
+                  Your Appointment:
+                  <div v-for="appointment in appointments" class="appointment">{{appointment}}</div>
+               </div>
               </div>
             </div>
           </SfAccordionItem>
@@ -197,9 +201,20 @@ export default {
       activeLocation: 'omLocator/activeLocation',
       locationKind: 'omLocator/locationKind',
       isVirtualCart: 'cart/isVirtualCart',
+      slot_data: 'vehicles/getSlotData'
     }),
     currentStep () {
       return this.steps.findIndex((step) => this.activeSection[step.key]);
+    },
+    appointments () {
+      let slot_data = this.slot_data;
+      slot_data = slot_data.sort((a, b) => a.id - b.id);
+      return slot_data.map(slot => {
+        let date = slot.start_time.slice(0, 10);
+        let start_time = slot.start_time.slice(11, 13);
+        let end_time = slot.end_time.slice(11, 13);
+        return date + ' ' + (start_time > 12 ? (start_time - 12) + ':00 PM' : start_time + ':00 AM') + ' ~ ' + (end_time > 12 ? (end_time - 12) + ':00 PM' : end_time + ':00 AM')
+      });
     }
   },
   methods: {
@@ -478,5 +493,8 @@ export default {
 ::v-deep .sf-accordion-item__content{
   padding: 10px 0 !important;
   border: none !important
+}
+.appointment {
+  margin: 5px 15px;
 }
 </style>

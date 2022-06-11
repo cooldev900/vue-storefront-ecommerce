@@ -32,6 +32,7 @@ export default {
       change(value) {
           console.log(value.target.value, 'value')
           this.$emit('update:qty', value.target.value)
+          this.$store.commit("vehicles/saveQTY1", value.target.value);
       }
   }
 };

@@ -27,10 +27,10 @@ import config from 'config';
 Object.keys(sbComponents).map(key => {
   Vue.component(sbComponents[key].name, sbComponents[key]);
 })
-
+console.log(config, 'config');
 Vue.use(VueAwesomeSwiper /* { default options with global component } */);
-Vue.use(VueReCaptcha, { siteKey: config.recaptcha.siteKey });
-
+// Vue.use(VueReCaptcha, { siteKey: config.recaptcha.siteKey });
+Vue.use(VueReCaptcha, { siteKey: '6LeMJLkZAAAAADcLY2qurohjqjDcZszw98_u1MSE' });
 Vue.component('OmPanZoom', OmPanZoom);
 
 once('__VUE_EXTEND_DROPPOINT_VPB__', () => {
