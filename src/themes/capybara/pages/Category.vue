@@ -694,6 +694,7 @@ export default {
         });
         
         const productData = items[0] || null;
+        productData.qty = this.qty;
         await this.$store.dispatch('cart/addItem', {
           productToAdd: Object.assign({}, productData, { qty: this.qty })
         });
@@ -743,11 +744,11 @@ export default {
           'notification/clearNotification',
           { root: true }
         );
-        
+    
         this.openModal({
           name: ModalList.OmCartPopupModal,
           payload: {
-            qty: 1,
+            qty: this.qty,
             name: productData.name
           }
         });
