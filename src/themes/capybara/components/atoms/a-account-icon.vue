@@ -12,7 +12,7 @@ viewBox="0 0 50 50"
 style=" fill:#000000;"><path d="M 21 3 C 11.601563 3 4 10.601563 4 20 C 4 29.398438 11.601563 37 21 37 C 24.355469 37 27.460938 36.015625 30.09375 34.34375 L 42.375 46.625 L 46.625 42.375 L 34.5 30.28125 C 36.679688 27.421875 38 23.878906 38 20 C 38 10.601563 30.398438 3 21 3 Z M 21 7 C 28.199219 7 34 12.800781 34 20 C 34 27.199219 28.199219 33 21 33 C 13.800781 33 8 27.199219 8 20 C 8 12.800781 13.800781 7 21 7 Z"></path></svg>
     </div>
     <span class="sf-header__split">|</span>
-    <span @click="goToAccount" class="sf-header__custom-icon">ACCOUNT</span>
+    <div @click="goToAccount" class="sf-header__custom-icon">ACCOUNT</div>
     <span class="sf-header__split">|</span>
     <span class="sf-header__custom-icon--help">HELP</span>
   </SfButton>
@@ -51,7 +51,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 30px;
   font-weight: 700;
   background: #fff;
   border-radius: 20px 0 0 20px;
@@ -64,19 +63,27 @@ font-family: var(--font-family-primary);
 color: #000000;
 display: flex;
 flex-direction: column;
+line-height: 30px;
 justify-content: center;
 align-items: center;
 position: relative;
-margin: 0 5px;
+margin: 0;
 @media (min-width: 1px) and (max-width: 1350px) {
 font-size: 11px;
+margin: 0 5px;
  }
  &--help{
 font-size: 14px;
 @media (min-width: 1px) and (max-width: 1350px) {
 display: none;
  }
+ &:hover{
+  color: var(--c-primary)
+}
  }
+&:hover{
+  color: var(--c-primary)
+}
 }
 .sf-header__split{
   padding: 0 10px;

@@ -182,6 +182,9 @@ export default {
     z-index: 0 !important;
   }
 }
+.router-link-active{
+  color: var(--c-primary) !important;
+}
 .sf-header-navigation-item {
   a {
     font-size: var(--nav-font-size);
@@ -189,6 +192,7 @@ export default {
     font-weight: var(--nav-font-weight);
     text-transform: var(--nav-font-transform);
     color: #fff;
+    border-bottom: 0;
      @media (min-width: 1px) and (max-width: 1350px) {
       font-size: 11px;
       padding-left: 8px;
@@ -274,9 +278,6 @@ export default {
   @include for-desktop {
     &__icons {
       display: flex;
-      .sf-header__icon {
-        cursor: pointer;
-      }
     }
   }
 }

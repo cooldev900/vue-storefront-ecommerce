@@ -64,6 +64,9 @@ export default {
   margin-left: -20px !important;
   padding: 0 15px;
   font-size: 13px;
+&:hover {
+  background: grey;
+}
 }
 .sf-header__custom-icon--text{
 font-size: 14px;
@@ -97,6 +100,7 @@ font-family: var(--font-family-primary);
     font-weight: 700;
     font-size: 14px;
     right: 0 !important;
+    min-width: auto !important;
 }
 .sf-header__split{
   padding: 0 10px;

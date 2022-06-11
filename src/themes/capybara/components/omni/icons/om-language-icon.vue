@@ -41,8 +41,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;  
-  height: 100%;
+  align-items: center;
 }
 .sf-header__custom-icon{
 font-size: 14px;
@@ -57,5 +56,8 @@ font-family: var(--font-family-primary);
   &.navigation-transparent{
     color: #ffffff;
   }
+&:hover{
+  color: var(--c-primary);
+}
 }
 </style>

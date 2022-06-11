@@ -129,7 +129,7 @@
   "api": {
     "url": "https://alfardan-stage.omninext.co.uk",
     "saveBandwidthOverCache": true,
-    "appointmentUrl": "http://localhost:8000"
+    "appointmentUrl": "https://portal-api.omninext.app"
   },
   "elasticsearch": {
     "httpAuth": "",
@@ -222,10 +222,10 @@
       },
       "i18n": {
         "fullCountryName": "UK",
-        "fullLanguageName": "UK",
-        "defaultLanguage": "EN",
+        "fullLanguageName": "AR",
+        "defaultLanguage": "AR",
         "defaultCountry": "US",
-        "defaultLocale": "en-US",
+        "defaultLocale": "ar-SY",
         "currencyCode": "£",
         "currencySign": "£",
         "dateFormat": "HH:mm D-M-YYYY"
@@ -940,7 +940,8 @@
     "defaultCountry": "US",
     "defaultLanguage": "EN",
     "availableLocale": [
-      "en-US"
+      "en-US",
+      "ar-SY"
     ],
     "defaultLocale": "en-US",
     "currencyCode": "QAR",
