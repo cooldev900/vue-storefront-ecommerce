@@ -107,10 +107,10 @@ export default {
   computed: {
     ...mapGetters({activeVehicle: 'vehicles/activeVehicle'}),
     disableVehicleGoButton () {
-      return Object.keys(this.models['vehicle']).some(key => this.models['vehicle'][key] === null);
+      return Object.keys(this.models['vehicle']).some(key => !this.models['vehicle'][key]);
     },
     disableSizeGoButton () {
-      return Object.keys(this.models['size']).some(key => this.models['size'][key] === null);
+      return Object.keys(this.models['size']).some(key => !this.models['size'][key]);
     },
     selectedTab () {
       return this.activeVehicle?.width ? 2 : 1;
