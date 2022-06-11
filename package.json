@@ -97,6 +97,7 @@
     "vue-no-ssr": "^0.2.2",
     "vue-observe-visibility": "^0.4.1",
     "vue-offline": "^1.0.8",
+    "vue-recaptcha-v3": "1.9.0",
     "vue-router": "^3.0.1",
     "vue-server-renderer": "^2.6.11",
     "vuelidate": "^0.7.5",

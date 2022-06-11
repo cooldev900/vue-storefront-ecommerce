@@ -76,11 +76,21 @@ export default {
       openModal: 'openModal',
       closeModal: 'closeModal'
     }),
+    async recaptcha() {
+      // (optional) Wait until recaptcha has been loaded.
+      await this.$recaptchaLoaded()
+
+      // Execute reCAPTCHA with action "login".
+      const token = await this.$recaptcha('login')
+
+      // Do stuff with the received token.
+      return token;
+    },
     switchElem (to) {
       this.$v.$reset();
       this.openModal({ name: ModalList.Auth, payload: to })
     },
-    login () {
+    async login () {
       this.$v.$touch();
       if (this.$v.$invalid) {
         this.$store.dispatch('notification/spawnNotification', {
@@ -90,6 +100,8 @@ export default {
         });
         return;
       }
+      const token = await this.recaptcha();
+      console.log(token, 'recaptcha token');
       this.$bus.$emit(
         'notification-progress-start',
         this.$t('Authorization in progress ...')
@@ -97,7 +109,8 @@ export default {
       this.$store
         .dispatch('user/login', {
           username: this.email,
-          password: this.password
+          password: this.password,
+          token
         })
         .then(result => {
           this.$bus.$emit('notification-progress-stop', {});

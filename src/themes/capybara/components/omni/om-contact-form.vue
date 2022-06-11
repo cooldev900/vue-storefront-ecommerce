@@ -156,9 +156,20 @@ export default {
       const regex = /(.+)@(.+){2,}\.(.+){2,}/;
       return regex.test(email.toLowerCase());
     },
+    async recaptcha() {
+      // (optional) Wait until recaptcha has been loaded.
+      await this.$recaptchaLoaded()
+
+      // Execute reCAPTCHA with action "login".
+      const token = await this.$recaptcha('login')
+
+      // Do stuff with the received token.
+      return token;
+    },
     async submit () {
       this.validate();
       if (this.valid) {
+        const token = await this.recaptcha();
         const baseUrl = 'http://34.247.218.222/api';
         const payload = {
           first_name: this.firstName,
@@ -169,7 +180,8 @@ export default {
           vin: this.vin,
           item_required: this.item_required,
           client_id: config.clientIds[currentStoreView().storeId],
-          store_id: currentStoreView().storeId
+          store_id: currentStoreView().storeId,
+          token
         }
         this.loading = true;
         this.submitted = true;

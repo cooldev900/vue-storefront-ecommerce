@@ -17,18 +17,19 @@ import { instagramStore } from 'theme/store/instagram-images';
 import { FulfillmentStore } from 'theme/store/fulfillment';
 import { defaultContentStore } from 'theme/store/default-content';
 import { StorageManager } from '@vue-storefront/core/lib/storage-manager';
-// import { VueReCaptcha } from 'vue-recaptcha-v3';
+import { VueReCaptcha } from 'vue-recaptcha-v3';
 import VueAwesomeSwiper from 'vue-awesome-swiper';
 import OmPanZoom from 'theme/components/omni/om-panzoom.vue';
 import * as sbComponents from 'theme/components/storyblok/index.js';
 import VueGtm from '@gtm-support/vue2-gtm';
+import config from 'config';
 
 Object.keys(sbComponents).map(key => {
   Vue.component(sbComponents[key].name, sbComponents[key]);
 })
 
 Vue.use(VueAwesomeSwiper /* { default options with global component } */);
-// Vue.use(VueReCaptcha, { siteKey: '6LeMJLkZAAAAADcLY2qurohjqjDcZszw98_u1MSE' });
+Vue.use(VueReCaptcha, { siteKey: config.recaptcha.siteKey });
 
 Vue.component('OmPanZoom', OmPanZoom);
 
