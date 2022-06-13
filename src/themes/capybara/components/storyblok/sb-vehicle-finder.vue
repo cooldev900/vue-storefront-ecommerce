@@ -30,6 +30,11 @@
               {{ isModelSet ? 'Start New Search' :  'Find My Tires' }}
             </SfButton>
           </div>
+          <div class="cta">
+            <div class="notSure"><span class="infoIcon">i</span>
+              <a class="fancypop" href="/help/how-to-find-your-tyre-size">How do I find my Tire Size</a>
+            </div>
+          </div>
         </SfTab>
         <SfTab title="By Tire Size">
           <div class="selector-wrapper">
@@ -58,6 +63,11 @@
             >
               Go
             </SfButton>
+          </div>
+          <div class="cta">
+            <div class="notSure"><span class="infoIcon">i</span>
+              <a class="fancypop" href="/help/how-to-find-your-tyre-size">How do I find my Tire Size</a>
+            </div>
           </div>
         </SfTab>
       </SfTabs>
@@ -131,6 +141,13 @@ export default {
       console.log('changeSelector', type, 'type', keyIndex, 'keyIndex');
       if (type === 'vehicle') {
         if (keyIndex < 2) {
+          if (keyIndex === 0) {
+            this.models.vehicle = {
+              ...this.models.vehicle,
+              model: '',
+              tire_size: ''
+            }
+          }
           const allKeys = Object.keys(this.models.vehicle);
           const key = allKeys[keyIndex + 1];
           const url = `${config.api.url}/api/ext/alfardan/vehicle-finder/options/${key}`;
@@ -155,6 +172,13 @@ export default {
         }
       } else {
         if (keyIndex < 2) {
+          if (keyIndex === 0) {
+            this.models.size = {
+              ...this.models.size,
+              rim: '',
+              profile: ''
+            }
+          }
           const allKeys = Object.keys(this.models.size);
           const key = allKeys[keyIndex + 1];
           const url = `${config.api.url}/api/ext/alfardan/tire-size/options/${key}`;
@@ -310,6 +334,7 @@ export default {
 .sf-tabs__title--active + .sf-tabs__content{
    --tabs-content-border-width: 0 0 0 0;
    background: #fff;
+   position: relative;
 }
     .selector-wrapper {
       display: flex;
@@ -345,6 +370,42 @@ export default {
       display: none;
     }
       }
+    }
+  }
+
+  .cta {
+    display: flex;
+    justify-content: end;
+
+    .notSure {
+      margin: 5px 0;
+      
+      a {
+        color: red;
+      }
+    }
+  }
+
+  
+
+  span.infoIcon {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    font-size: 1.25em;
+    font-family: georgia,serif;
+    font-style: italic;
+    font-weight: 700;
+    color: #00ab04;
+    background: #fff;
+    border: 1px solid #00ab04;
+    border-radius: 20px;
+    text-align: center;
+    line-height: 21px;
+    margin: 0;
+
+    @include for-mobile{
+      
     }
   }
 }
