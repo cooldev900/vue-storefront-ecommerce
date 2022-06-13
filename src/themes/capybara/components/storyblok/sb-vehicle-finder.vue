@@ -32,7 +32,7 @@
           </div>
           <div class="cta">
             <div class="notSure"><span class="infoIcon">i</span>
-              <a class="fancypop" href="/help/how-to-find-your-tyre-size">How do I find my Tire Size</a>
+              <a class="fancypop" @click="updateVisible(true)">How do I find my Tire Size</a>
             </div>
           </div>
         </SfTab>
@@ -66,12 +66,14 @@
           </div>
           <div class="cta">
             <div class="notSure"><span class="infoIcon">i</span>
-              <a class="fancypop" href="/help/how-to-find-your-tyre-size">How do I find my Tire Size</a>
+              <a class="fancypop" @click="updateVisible(true)">How do I find my Tire Size</a>
             </div>
           </div>
         </SfTab>
       </SfTabs>
     </div>
+    
+    <OmFindTireModal :isVisible="isVisible" @update="updateVisible"/>
   </div>
 </template>
 
@@ -80,10 +82,11 @@ import { SfTabs, SfButton } from '@storefront-ui/vue';
 import axios from 'axios';
 import config from 'config';
 import { mapGetters } from 'vuex';
+import OmFindTireModal from 'theme/components/omni/modals/om-find-tire-modal.vue'
 
 export default {
   name: 'SbVehicleFinder',
-  components: { SfTabs, SfButton },
+  components: { SfTabs, SfButton, OmFindTireModal },
   data () {
     return {
       makeOptions: [],
@@ -111,7 +114,8 @@ export default {
           rim: '',
           profile: ''
         }
-      }
+      },
+      isVisible: false
     };
   },
   computed: {
@@ -130,6 +134,10 @@ export default {
     }
   },
   methods: {
+    updateVisible(value) {
+      console.log('updateModal', value);
+      this.isVisible = value;
+    },
     changeText(text) {
       console.log(text, 'text')
       let texts = text.split("_");
@@ -379,7 +387,7 @@ export default {
 
     .notSure {
       margin: 5px 0;
-      
+
       a {
         color: red;
       }
