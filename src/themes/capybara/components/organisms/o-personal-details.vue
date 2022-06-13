@@ -9,7 +9,7 @@
       :period="5"
     />
     <div class="form">
-      <!-- <SfInput
+      <SfInput
         v-model.trim="personalDetails.firstName"
         class="form__element form__element--half"
         name="first-name"
@@ -32,7 +32,7 @@
         :valid="!$v.personalDetails.lastName.$error"
         :error-message="$t('Field is required')"
         @blur="$v.personalDetails.lastName.$touch()"
-      /> -->
+      />
       <SfInput
         v-model.trim="personalDetails.emailAddress"
         class="form__element"
@@ -42,6 +42,20 @@
         :valid="!$v.personalDetails.emailAddress.$error"
         :error-message="
           !$v.personalDetails.emailAddress.required
+            ? $t('Field is required')
+            : $t('Please provide valid e-mail address.')
+        "
+        @blur="$v.personalDetails.emailAddress.$touch()"
+      />
+      <SfInput
+        v-model.trim="personalDetails.telephone"
+        class="form__element"
+        name="telephone"
+        :label="$t('Telephone')"
+        :required="true"
+        :valid="!$v.personalDetails.telephone.$error"
+        :error-message="
+          !$v.personalDetails.telephone.required
             ? $t('Field is required')
             : $t('Please provide valid e-mail address.')
         "
@@ -150,17 +164,20 @@ export default {
   },
   validations: {
     personalDetails: {
-      // firstName: {
-      //   required,
-      //   minLength: minLength(2)
-      // },
-      // lastName: {
-      //   required
-      // },
+      firstName: {
+        required,
+        minLength: minLength(2)
+      },
+      lastName: {
+        required
+      },
       emailAddress: {
         required,
         email
-      }
+      },
+      telephone: {
+        required
+      },
     },
     password: {
       required,

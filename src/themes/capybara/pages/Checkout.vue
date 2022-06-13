@@ -29,13 +29,13 @@
                 :is-complete="isComplete.order"
               />
             </template>
-            <div class="form" v-if="!isComplete.order">
+            <div class="form" v-show="!isComplete.order">
               <OPersonalDetails
                 :is-active="true"
                 :next-accordion="nextAccordion"
               />
             </div>
-            <div v-else>
+            <div  v-show="!isComplete.order">
               <div class="edit" v-if="editable">
                 <div
                   role="button"
@@ -64,10 +64,10 @@
                 :is-complete="isComplete.address"
               />
             </template>
-            <div v-if="!isComplete.address">
+            <div v-show="!isComplete.address">
               <OShipping :next-accordion="nextAccordion" />
             </div>
-            <div v-else>
+            <div v-show="isComplete.address">
               <div class="edit" v-if="editable">
                 <div
                   role="button"

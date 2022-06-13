@@ -8,7 +8,7 @@
         name="shipToMyAddress"
         :label="$t('Ship to my default address')"
       />
-      <SfInput
+      <!-- <SfInput
         v-model.trim="shipping.firstName"
         class="form__element form__element--half"
         name="first-name"
@@ -31,7 +31,7 @@
         :valid="!$v.shipping.lastName.$error"
         :error-message="$t('Field is required')"
         @blur="$v.shipping.lastName.$touch()"
-      />
+      /> -->
       <SfInput
         v-model.trim="shipping.apartmentNumber"
         class="form__element"
@@ -100,7 +100,7 @@
           {{ country.name }}
         </SfSelectOption>
       </SfSelect>
-      <SfInput
+      <!-- <SfInput
         v-model.trim="shipping.phoneNumber"
         class="form__element"
         name="phone"
@@ -109,7 +109,7 @@
         :valid="!$v.shipping.phoneNumber.$error"
         @blur="$v.shipping.phoneNumber.$touch()"
         :error-message="$t('Field is required')"
-      />
+      /> -->
     </div>
     <SfHeading
       :title="$t('Shipping method')"

@@ -44,7 +44,9 @@ export const Shipping = {
       currentUser: (state: RootState) => state.user.current
     }),
     ...mapGetters({
-      shippingMethods: 'checkout/getShippingMethods'
+      shippingMethods: 'checkout/getShippingMethods',
+      getPaymentDetails: 'checkout/getPaymentDetails',
+      personalDetails: 'checkout/getPersonalDetails',
     }),
     checkoutShippingDetails () {
       return this.$store.state.checkout.shippingDetails
@@ -64,6 +66,12 @@ export const Shipping = {
         this.useMyAddress()
       },
       immediate: true
+    },    
+    personalDetails (value) {
+      console.log(value, 'value');
+      this.shipping.firstName = value.firstName;
+      this.shipping.lastName = value.lastName;
+      this.shipping.phoneNumber = value.telephone;
     }
   },
   mounted () {
