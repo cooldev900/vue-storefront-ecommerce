@@ -28,7 +28,7 @@ export const vehiclesStore = {
     selectedTime: {},
     appointmentTaken: [],
     currentDay: '',
-    slot_id: [],
+    slot_id: -1,
     isComplete: {
       order: false,
       address: false,
@@ -200,7 +200,7 @@ export const vehiclesStore = {
     },
     async setSlotID(state, id) {
       await VehicleStorage.setSlotID(id);
-      state.slot_id = [...id];
+      state.slot_id = id;
     },
     async setSlotData(state, id) {
       await VehicleStorage.setSlotData(id);

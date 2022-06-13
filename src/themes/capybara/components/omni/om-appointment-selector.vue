@@ -11,7 +11,7 @@
     </div>
     <div class="schedule-day-selector">
       <div class="schedule-day-selector__button" :class=" isHoliday(date.payload) ? 'disabled' : (today === date.payload ? 'selected' : '') " :key="date.date" v-for="date in weeks[0].days" @click="getAppointment(date.payload)">
-        <div class="schedule-day-selector__button--day">{{date.day}}</div>
+        <div class="schedule-day-selector__button--day">{{$t(date.day)}}</div>
          <div class="schedule-day-selector__button--date">{{date.date}}</div>
       </div>
     </div>
