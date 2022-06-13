@@ -56,8 +56,8 @@ const actions: ActionTree<UserState, RootState> = {
   /**
    * Login user and return user profile and current token
    */
-  async login ({ commit, dispatch }, { username, password }) {
-    const resp = await UserService.login(username, password)
+  async login ({ commit, dispatch }, { username, password, token }) {
+    const resp = await UserService.login(username, password, token)
     userHooksExecutors.afterUserAuthorize(resp)
 
     if (resp.code === 200) {

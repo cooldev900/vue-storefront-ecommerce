@@ -33,14 +33,14 @@ const createPassword = async (email: string, newPassword: string, resetToken: st
     }
   })
 
-const login = async (username: string, password: string): Promise<Task> =>
+const login = async (username: string, password: string, token: string): Promise<Task> =>
   TaskQueue.execute({
     url: processLocalizedURLAddress(getApiEndpointUrl(config.users, 'login_endpoint')),
     payload: {
       method: 'POST',
       mode: 'cors',
       headers,
-      body: JSON.stringify({ username, password })
+      body: JSON.stringify({ username, password, token })
     }
   })
 

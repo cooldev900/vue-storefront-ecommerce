@@ -1090,5 +1090,8 @@
     "2": 11,
     "3": 11,
     "6": 11
+  },
+  "recaptcha": {
+    "siteKey": "6LeMJLkZAAAAADcLY2qurohjqjDcZszw98_u1MSE"
   }
 }
