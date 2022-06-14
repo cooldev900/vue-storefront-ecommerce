@@ -44,7 +44,7 @@ export const Shipping = {
       currentUser: (state: RootState) => state.user.current
     }),
     ...mapGetters({
-      shippingMethods: 'checkout/getShippingMethods',
+      getPersonalDetails: 'checkout/getPersonalDetails',
       getPaymentDetails: 'checkout/getPaymentDetails',
       personalDetails: 'checkout/getPersonalDetails',
     }),
@@ -67,7 +67,7 @@ export const Shipping = {
       },
       immediate: true
     },    
-    personalDetails (value) {
+    getPersonalDetails (value) {
       console.log(value, 'value');
       this.shipping.firstName = value.firstName;
       this.shipping.lastName = value.lastName;
@@ -84,8 +84,8 @@ export const Shipping = {
       this.shipToMyAddress = this.hasShippingDetails()
     },
     checkDefaultShippingMethod () {
-      if (!this.shipping.shippingMethod || this.notInMethods(this.shipping.shippingMethod)) {
-        let shipping = this.shippingMethods.find(item => item.default)
+      if ((!this.shipping.shippingMethod || this.notInMethods(this.shipping.shippingMethod)) && this.shippingMethods?.length) {
+        let shipping = this.shippingMethods?.find(item => item.default)
         if (!shipping && this.shippingMethods && this.shippingMethods.length > 0) {
           shipping = this.shippingMethods[0]
         }

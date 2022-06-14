@@ -35,7 +35,7 @@
                 :next-accordion="nextAccordion"
               />
             </div>
-            <div  v-show="!isComplete.order">
+            <div  v-show="isComplete.order">
               <div class="edit" v-if="editable">
                 <div
                   role="button"

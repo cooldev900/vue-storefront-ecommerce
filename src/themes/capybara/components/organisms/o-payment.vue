@@ -269,15 +269,15 @@ export default {
   },
   validations () {
     const rules = {
-      firstName: {
-        required,
-        minLength: minLength(2),
-        unicodeAlpha
-      },
-      lastName: {
-        required,
-        unicodeAlpha
-      },
+      // firstName: {
+      //   required,
+      //   minLength: minLength(2),
+      //   unicodeAlpha
+      // },
+      // lastName: {
+      //   required,
+      //   unicodeAlpha
+      // },
       country: {
         required
       },
@@ -298,9 +298,9 @@ export default {
         required,
         unicodeAlpha
       },
-      phoneNumber: {
-        required
-      },
+      // phoneNumber: {
+      //   required
+      // },
       paymentMethod: {
         required
       }
