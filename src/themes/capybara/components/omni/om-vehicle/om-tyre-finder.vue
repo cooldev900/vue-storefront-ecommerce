@@ -144,12 +144,12 @@ export default {
     },
     disableVehicleGoButton() {
       return Object.keys(this.models["vehicle"]).some(
-        (key) => this.models["vehicle"][key] === null
+        (key) => !this.models["vehicle"][key]
       );
     },
     disableSizeGoButton() {
       return Object.keys(this.models["size"]).some(
-        (key) => this.models["size"][key] === null
+        (key) => !this.models["size"][key]
       );
     },
   },

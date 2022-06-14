@@ -66,13 +66,8 @@ export const Shipping = {
         this.useMyAddress()
       },
       immediate: true
-    },    
-    getPersonalDetails (value) {
-      console.log(value, 'value');
-      this.shipping.firstName = value.firstName;
-      this.shipping.lastName = value.lastName;
-      this.shipping.phoneNumber = value.telephone;
     }
+      
   },
   mounted () {
     this.checkDefaultShippingAddress()

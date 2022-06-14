@@ -73,7 +73,7 @@ export const vehiclesStore = {
     },
     async setAppointment({commit, dispatch, state}, payload) {
       const res = await axios.post(
-        `${config.api.appointmentUrl}/api/appointments`, { ...payload }
+        `${config.api.url}/api/appointments`, { ...payload }
       );
 
       if (res.status === 200 ) {
@@ -83,7 +83,7 @@ export const vehiclesStore = {
 
     async deleteAppointment({commit, dispatch, state}, payload) {
       const res = await axios.delete(
-        `${config.api.appointmentUrl}/api/appointments`, { params: payload }
+        `${config.api.url}/api/appointments`, { params: payload }
       );
 
       if (res.status === 200 ) {
@@ -99,7 +99,7 @@ export const vehiclesStore = {
         timezone: ''
       }
       const res = await axios.get(
-        `${config.api.appointmentUrl}/api/appointments`, { params }
+        `${config.api.url}/api/appointments`, { params }
       );
 
       if (res.status === 200 ) {
