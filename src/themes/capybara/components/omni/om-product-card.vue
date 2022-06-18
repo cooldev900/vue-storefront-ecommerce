@@ -58,7 +58,7 @@
             class="sf-product-card__add-button"
             :aria-label="`Add to Cart ${title}`"
             :has-badge="showAddedToCartBadge"
-            :disabled="addToCartDisabled"
+            :disabled="addToCartDisabled || !isAvailable"
             @click="onAddToCart"
           >
             <div class="sf-product-card__add-button--icons">
@@ -146,7 +146,7 @@
   </div>
 </div>
        <div class="action-area__wrap--stock">
-         <span class="stock-pill">In Stock</span>
+         <span class="stock-pill" :class="{'stock-red': !isAvailable }">In Stock</span>
         {{promotion || ' '}}
       </div>
 </div>
@@ -165,6 +165,7 @@ import SfBadge from "@storefront-ui/vue/src/components/atoms/SfBadge/SfBadge.vue
 import SfButton from "@storefront-ui/vue/src/components/atoms/SfButton/SfButton.vue";
 import OmQuantitySelector from "./om-quantity-selector.vue";
 import { mapGetters } from "vuex";
+import { onlineHelper } from '@vue-storefront/core/helpers';
 
 export default {
   name: "OmProductCard",
@@ -181,6 +182,10 @@ export default {
   },
   directives: { focus },
   props: {
+    product: {
+        type: Object,
+        default: {},
+    },
     waranty: {
         type: String,
         default: "",
@@ -361,6 +366,7 @@ export default {
     return {
       isAddingToCart: false,
       qty: 1,
+      isAvailable: true
     };
   },
   computed: {
@@ -410,18 +416,29 @@ export default {
     },
     onAddToCart(event) {
       event.preventDefault();
-      this.isAddingToCart = true;
-      setTimeout(() => {
-        this.isAddingToCart = false;
-      }, 1000);
-      this.$emit("click:add-to-cart");
+      if (this.isAvailable)  {
+        this.isAddingToCart = true;
+        setTimeout(() => {
+          this.isAddingToCart = false;
+        }, 1000);
+        this.$emit("click:add-to-cart");
+      }    
     },
     updateQTY(value) {
       this.qty = value;
     },
   },
-  mounted() {
+  async mounted() {
     if (this.qty1) this.qty = this.qty1;
+    const res = await this.$store.dispatch('stock/check', {
+      product: this.product,
+      qty: this.product.qty
+    });
+    let manageQuantity = res.isManageStock;
+    let max = res.qty || res.isManageStock ? res.qty : null;
+    this.isAvailable = !onlineHelper.isOnline || !!max || !manageQuantity || ['simple', 'configurable'].includes(
+        this.product.type_id
+      );
   },
   watch: {
     qty(value) {
@@ -435,5 +452,9 @@ export default {
 @import "~@storefront-ui/shared/styles/components/organisms/SfProductCard.scss";
 .sub-title{
   margin: 20px 0 40px 0;
+}
+
+.stock-red {
+  background: red !important;
 }
 </style>

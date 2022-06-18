@@ -158,6 +158,7 @@
           >
             <OmProductCard
               v-for="product in currentPageProducts"
+              :product="product"
               :key="product.id"
               :title="product.enhanced_title || product.title"
               :description="product.description"
@@ -680,6 +681,17 @@ export default {
       openModal: "ui/openModal",
     }),
     async addToCart (product) {
+      const res = await this.$store.dispatch('stock/check', {
+        product: product,
+        qty: product.qty
+      });
+      let manageQuantity = res.isManageStock;
+      let max = res.qty || res.isManageStock ? res.qty : null;
+      let isAvailable = !onlineHelper.isOnline || !!max || !manageQuantity || ['simple', 'configurable'].includes(
+          this.product.type_id
+        );
+      if (!isAvailable) return;
+      
       this.isAddingToCart = true;
       const query = buildQuery([product.sku]);
       try {
