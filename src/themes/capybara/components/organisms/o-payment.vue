@@ -222,14 +222,13 @@
       </div>
       <div class="form__action">
         <!-- it's epdq form -->
-        <form
+        <!-- <form
           class="sf-button--full-width"
           method="post"
           action="https://testsecureacceptance.cybersource.com/pay"
           id="form1"
           name="form1"
         >
-          <!-- general parameters: see Form parameters -->
           <input type="hidden" name="ACCEPTURL" :value="edpqForm.acceptUrl">
           <input type="hidden" name="AMOUNT" :value="edpqForm.amount">
           <input type="hidden" name="CURRENCY" :value="edpqForm.currency">
@@ -237,9 +236,9 @@
           <input type="hidden" name="ORDERID" :value="edpqForm.orderId">
           <input type="hidden" name="PSPID" :value="edpqForm.pspId">
 
-          <!-- check before the payment: see Security: Check before the payment -->
+          
           <input type="hidden" name="SHASIGN" :value="shaSign">
-          <!-- layout information: see Look and feel of the payment page -->
+          
 
           <SfButton
             class="sf-button--full-width form__action-button"
@@ -249,7 +248,8 @@
           >
             {{ $t("Continue to Payment") }}
           </SfButton>
-        </form>
+        </form> -->
+        <CybersourcePayVue />
       </div>
     </div>
     <!-- This dummy container below is needed because src\modules\payment-cash-on-delivery\index.ts
@@ -281,6 +281,7 @@ import { createSmoothscroll } from 'theme/helpers';
 // import PaymentStripe from 'src/modules/stripe/components/PaymentStripe';
 // import MixinStripe from 'src/modules/stripe/components/MixinStripe';
 import { getShaSignature } from 'theme/helpers/index.ts';
+import CybersourcePayVue from './o-cybersource-pay.vue';
 
 export default {
   name: 'OPayment',
@@ -291,7 +292,8 @@ export default {
     SfSelect,
     SfHeading,
     SfCheckbox,
-    OmAlertBox
+    OmAlertBox,
+    CybersourcePayVue
     // PaymentStripe
   },
   mixins: [Payment, OrderReview],

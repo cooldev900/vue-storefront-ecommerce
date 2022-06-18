@@ -351,6 +351,7 @@ import { ProductService } from '@vue-storefront/core/data-resolver/ProductServic
 import { Logger } from '@vue-storefront/core/lib/logger';
 import { notifications } from '@vue-storefront/core/modules/cart/helpers';
 import { StorageManager } from '@vue-storefront/core/lib/storage-manager';
+import { onlineHelper } from '@vue-storefront/core/helpers'
 const THEME_PAGE_SIZE = 12;
 const LAZY_LOADING_ACTIVATION_BREAKPOINT = 1024;
 

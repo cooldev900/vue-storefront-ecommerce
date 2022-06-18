@@ -8,24 +8,23 @@
         name="form1"
     >
         <!-- general parameters: see Form parameters -->
-        <input type="hidden" name="AMOUNT" :value="edpqForm.amount" />
         <input type="hidden" name="access_key" :value="edpqForm.access_key" />
-        <input type="hidden" name="profile_id" :value="edpqForm.profile_id" />
-        <input type="hidden" name="transaction_uuid" :value="edpqForm.transaction_uuid">
-        <input type="hidden" name="locale" :value="edpqForm.locale" />
-        <input type="hidden" name="signed_field_names" :value="edpqForm.signed_field_names" />
+        <input type="hidden" name="amount" :value="edpqForm.amount" />        
         <input type="hidden" name="currency" :value="edpqForm.currency" />
-        <input type="hidden" name="transaction_type" :value="edpqForm.transaction_type" />
+        <input type="hidden" name="locale" :value="edpqForm.locale" />
+        <input type="hidden" name="profile_id" :value="edpqForm.profile_id" />        
         <input type="hidden" name="reference_number" :value="edpqForm.reference_number"/>
+        <input type="hidden" name="signed_date_time" :value="edpqForm.signed_date_time" />
+        <input type="hidden" name="signed_field_names" :value="edpqForm.signed_field_names" />
+        <input type="hidden" name="transaction_type" :value="edpqForm.transaction_type" />
+        <input type="hidden" name="transaction_uuid" :value="edpqForm.transaction_uuid">
 
         <!-- check before the payment: see Security: Check before the payment -->
-        <input type="hidden" name="signed_date_time" :value="edpqForm.signed_date_time" />
         <input type="hidden" name="signature" :value="edpqForm.signature" />
         <!-- layout information: see Look and feel of the payment page -->
 
         <SfButton
         class="sf-button--full-width form__action-button"
-        :disabled="$v.payment.$invalid"
         type="submit"
         @click="epdqSubmit"
         >
@@ -39,6 +38,7 @@ import {
   SfButton
 } from '@storefront-ui/vue';
 import { getShaSignatureBase64 } from 'theme/helpers/index.ts';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'OCybersourcepay',
@@ -53,10 +53,15 @@ export default {
     this.edpqForm.amount = this.prices.grand_total * 100;    
     this.edpqForm.signed_date_time = new Date().toISOString();
     this.edpqForm.transaction_uuid = Math.floor(Math.random() * 100000000);
-    const shaSignature = `ammount=${this.edpqForm.ammount}${passPhrase}access_key=${this.edpqForm.access_key}${passPhrase}profile_id=${this.edpqForm.profile_id}${passPhrase}transaction_uuid=${this.edpqForm.transaction_uuid}${passPhrase}locale=${this.edpqForm.locale}${passPhrase}signed_field_names=${this.edpqForm.signed_field_names}${passPhrase}currency=${this.edpqForm.currency}${passPhrase}transaction_type=${this.edpqForm.transaction_type}${passPhrase}reference_number=${this.edpqForm.ref_number}${passPhrase}signed_date_time=${this.edpqForm.signed_date_time}${passPhrase}`;
-    const hashHex = await getShaSignatureBase64(shaSignature);
-    this.shaSign = hashHex.toUpperCase();
-    this.edpqForm.signature = this.shaSign;
+
+    let signedFieldNames = this.edpqForm.split(",");
+    let data = [];
+    signedFieldNames.forEach(function (item) {
+        data.push(item + "=" + this.edpqForm[key]);
+    });
+    data = data?.length ? data.join(",") : "";
+    const secretKey = "9f8f91900c274d37925c0be4beebed23b8bc48776e4f4f63a2aa1a0b001dea0140bcac7ae391456989e90ae5e37c6b18c6caca3b5ef64b55a6395a7d0cc0a8d7511c9dae3b8748859c1153206009ad4582e70787acd7488584e6dd7a6ce0f1a3834ade1543da40758044c4fc3849ca0fba812aeca1e0487ebdf04ae2749c1729";
+    this.edpqForm.signature = CryptoJS.HmacSHA256(dataToSign, secretKey).toString(CryptoJS.enc.Base64);
   },
   computed: {
     ...mapGetters({
@@ -75,16 +80,17 @@ export default {
     return {
       shaSign: '',
       edpqForm: {
-        amount: 2000,
         access_key: 'a0b2da90c5d433f6892066d11b97e059',
-        transaction_uuid: "fcfc212e92d23be881d1299ef3c3b314",
-        locale: "en-US",
-        signed_field_names: "ammount,access_key,profile_id,transaction_uuid,locale,signed_field_names,transaction_type,ref_number,signed_date_time",
+        amount: 0,
         currency: "QAR",
-        transaction_type: "sale",
-        reference_number: "00900",
+        locale: "en-US",
+        profile_id: '95937600-7A9B-425E-A47C-4F012E77487F',
+        reference_number: "",        
         signed_date_time: "",
-        signature: ""
+        signed_field_names: "access_key,ammount,currency,locale,profile_id,reference_number,signed_date_time,signed_field_names,transaction_type,transaction_type,transaction_uuid",
+        transaction_type: "sale",
+        transaction_uuid: "fcfc212e92d23be881d1299ef3c3b314",             
+        signature: "123"
       }      
     };
   }
