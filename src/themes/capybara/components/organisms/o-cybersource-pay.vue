@@ -47,10 +47,10 @@ export default {
   },
   async mounted () {
     const passPhrase = ',3p%LhsENFp44Wn@ycK';
-    this.edpqForm.reference_number = this.cartToken;
+    // this.edpqForm.reference_number = this.cartToken;
     const cartTotalPrice = this.prices.grand_total;
     this.edpqForm.amount = this.prices.grand_total * 100;    
-    this.edpqForm.signed_date_time = new Date().toISOString();
+    this.edpqForm.signed_date_time = new Date().toISOString().substring(0, 19) + 'Z';
     this.edpqForm.transaction_uuid = Math.floor(Math.random() * 100000000);
 
     let signedFieldNames = this.edpqForm.signed_field_names.split(",");
@@ -84,16 +84,16 @@ export default {
       shaSign: '',
       edpqForm: {
         access_key: 'a0b2da90c5d433f6892066d11b97e059',
-        amount: 0,
+        amount: 200,
         currency: "QAR",
         locale: "en-US",
         profile_id: '95937600-7A9B-425E-A47C-4F012E77487F',
-        reference_number: "",        
+        reference_number: "100",        
         signed_date_time: "",
         signed_field_names: "access_key,amount,currency,locale,profile_id,reference_number,signed_date_time,signed_field_names,transaction_type,transaction_uuid",
         transaction_type: "sale",
         transaction_uuid: "fcfc212e92d23be881d1299ef3c3b314",             
-        signature: "123"
+        signature: ""
       }      
     };
   }
