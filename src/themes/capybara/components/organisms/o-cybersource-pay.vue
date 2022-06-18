@@ -63,6 +63,7 @@ export default {
     this.edpqForm.bill_to_email = this.getPersonalDetails.emailAddress;
     this.edpqForm.bill_to_address_line1 = this.getPaymentDetails.streetAddress;
     this.edpqForm.bill_to_address_country = this.getPaymentDetails.country;
+    this.edpqForm.bill_to_address_city = this.getPaymentDetails.city;
 
     let signedFieldNames = this.edpqForm.signed_field_names.split(",");
     let data = [];
@@ -102,7 +103,7 @@ export default {
         profile_id: '95937600-7A9B-425E-A47C-4F012E77487F',
         reference_number: "100",        
         signed_date_time: "",
-        signed_field_names: "access_key,amount,currency,locale,profile_id,reference_number,signed_date_time,signed_field_names,transaction_type,transaction_uuid,bill_to_forename,bill_to_surname,bill_to_email,bill_to_address_line1,bill_to_address_country",
+        signed_field_names: "access_key,amount,currency,locale,profile_id,reference_number,signed_date_time,signed_field_names,transaction_type,transaction_uuid,bill_to_forename,bill_to_surname,bill_to_email,bill_to_address_line1,bill_to_address_country,bill_to_address_city",
         transaction_type: "sale",
         transaction_uuid: "fcfc212e92d23be881d1299ef3c3b314",             
         signature: "",
@@ -110,7 +111,8 @@ export default {
         bill_to_surname: "",
         bill_to_email: "",
         bill_to_address_line1: "",
-        bill_to_address_country: ""
+        bill_to_address_country: "",
+        bill_to_address_city: ""
       }      
     };
   }
