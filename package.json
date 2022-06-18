@@ -89,6 +89,7 @@
     "vue-apollo": "^3.0.3",
     "vue-carousel": "^0.18",
     "vue-click-outside": "^1.1.0",
+    "vue-cryptojs": "^2.3.0",
     "vue-gtm": "^2.0.0",
     "vue-i18n": "^8.0.0",
     "vue-lazy-hydration": "^1.0.0-beta.9",

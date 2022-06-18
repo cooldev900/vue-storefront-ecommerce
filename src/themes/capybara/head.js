@@ -96,14 +96,6 @@ export default {
     {
       src: 'https://code.tidio.co/ouxfybu7oftz1t7n3fwbhm5yk7yrupum.js',
       async: true
-    },
-    {
-      src: 'http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-sha256.js',
-      async: true
-    },
-    {
-      src: 'http://crypto-js.googlecode.com/svn/tags/3.1.2/build/components/enc-base64-min.js',
-      async: true
     }
   ]
 };
