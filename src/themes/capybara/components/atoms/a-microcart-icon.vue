@@ -3,7 +3,7 @@
     class="sf-button--pure a-microcart-icon navigation-icon"
     @click="goToCart"
   >
-    <span class="sf-header__custom-icon--text">CART</span>
+    <span class="sf-header__custom-icon--text">{{ $t('Cart') }}</span>
     <div :class="menuStyle"
          class="sf-header__custom-icon"
          :aria-label="$t('Open microcart')"
@@ -69,8 +69,9 @@ export default {
 }
 }
 .sf-header__custom-icon--text{
-font-size: 14px;
+font-size: 13px;
 color: #fff;
+text-transform: uppercase;
 display: flex;
 flex-direction: column;
 justify-content: center;
@@ -83,10 +84,11 @@ display: none;
  }
 }
 .sf-header__custom-icon{
-font-size: 14px;
+font-size: 13px;
 color: #fff;
 display: flex;
 flex-direction: column;
+text-transform: uppercase;
 justify-content: center;
 align-items: center;
 position: relative;

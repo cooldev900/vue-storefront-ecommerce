@@ -42,7 +42,7 @@
         "
         class="form__element form__element--half form__element--half-even"
       />
-      <SfButton class="form__button" @click.native="updatePassword">
+      <SfButton class="form__button om-btn--primary" @click.native="updatePassword">
         {{ $t('Update password') }}
       </SfButton>
     </div>

@@ -43,6 +43,25 @@
         </div>
       </transition>
     </div>
+    <div class="sf-gallery__thumbs">
+      <slot name="thumbs" v-bind="{ images, active: activeIndex, go }">
+        <SfButton
+          v-for="(image, index) in images"
+          :key="'img-' + index"
+          class="sf-button--pure sf-gallery__item"
+          :class="{ 'sf-gallery__item--selected': index === activeIndex }"
+          @click="go(index)"
+        >
+          <SfImage
+            class="sf-gallery__thumb"
+            :src="image.mobile.url"
+            :alt="image.alt"
+            :width="thumbWidth"
+            :height="thumbHeight"
+          />
+        </SfButton>
+      </slot>
+    </div>
   </div>
 </template>
 <script>
@@ -232,4 +251,13 @@ export default {
 </script>
 <style lang="scss">
 @import "@storefront-ui/shared/styles/components/molecules/SfGallery.scss";
+.sf-gallery__thumbs{
+  padding: 20px;
+}
+.sf-gallery__item--selected{
+  border: 1px solid var(--c-primary);
+}
+.sf-gallery__item{
+  border: 1px solid var(--c-primary);
+}
 </style>

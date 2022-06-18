@@ -86,7 +86,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1600px;
+  max-width: 1400px;
   margin: auto;
   }
   .status-item {

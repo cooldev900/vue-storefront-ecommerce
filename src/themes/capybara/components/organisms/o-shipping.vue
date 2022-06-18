@@ -8,7 +8,7 @@
         name="shipToMyAddress"
         :label="$t('Ship to my default address')"
       />
-      <!-- <SfInput
+      <SfInput
         v-model.trim="shipping.firstName"
         class="form__element form__element--half"
         name="first-name"
@@ -31,7 +31,7 @@
         :valid="!$v.shipping.lastName.$error"
         :error-message="$t('Field is required')"
         @blur="$v.shipping.lastName.$touch()"
-      /> -->
+      />
       <SfInput
         v-model.trim="shipping.apartmentNumber"
         class="form__element"
@@ -82,9 +82,9 @@
         "
         @blur="$v.shipping.zipCode.$touch()"
       />
-      <SfSelect
+      <select
         v-model="shipping.country"
-        class="form__element form__element--half form__element--half-even form__select sf-select--underlined"
+        class="vehicle-select"
         name="countries"
         :label="$t('Country')"
         required
@@ -92,15 +92,15 @@
         :error-message="$t('Field is required')"
         @change="changeCountry"
       >
-        <SfSelectOption
+        <option
           v-for="country in countries"
           :key="country.code"
           :value="country.code"
         >
           {{ country.name }}
-        </SfSelectOption>
-      </SfSelect>
-      <!-- <SfInput
+        </option>
+      </select>
+      <SfInput
         v-model.trim="shipping.phoneNumber"
         class="form__element"
         name="phone"
@@ -109,7 +109,7 @@
         :valid="!$v.shipping.phoneNumber.$error"
         @blur="$v.shipping.phoneNumber.$touch()"
         :error-message="$t('Field is required')"
-      /> -->
+      />
     </div>
     <SfHeading
       :title="$t('Shipping method')"
@@ -139,11 +139,10 @@
       </div>
       <div class="form__action">
         <SfButton
-          class="om-button wide btn"
-          :disabled="$v.shipping.$invalid || !shippingMethods.length"
+          class="sf-button--full-width form__action-button"
           @click="clickContinuePayment"
         >
-      {{ $t("Continue to payment") }}
+          {{ $t("Continue to payment") }}
         </SfButton>
       </div>
     </div>
@@ -221,21 +220,6 @@ export default {
   methods: {
     clickContinuePayment () {
       this.nextAccordion(1);
-      if (!this.getPaymentDetails?.firstName || !this.getPaymentDetails?.lastName)
-        this.$store.dispatch('checkout/savePaymentDetails', {
-          apartmentNumber: this.shipping.apartmentNumber,
-          city: this.shipping.city,
-          company: this.shipping.company,
-          country:this.shipping.country,
-          firstName:this.shipping.firstName,
-          lastName:this.shipping.lastName,
-          paymentMethod:"cnpayment",
-          phoneNumber:this.shipping.phoneNumber,
-          state:this.shipping.state,
-          streetAddress:this.shipping.streetAddress,
-          taxId:"",
-          zipCode:this.shipping.zipCode,
-        });
       this.sendDataToCheckout();
     }
   }
@@ -308,8 +292,11 @@ export default {
   @include for-mobile {
     &__radio-group {
       position: relative;
-      left: 0;
-      right: 0;
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
+      width: 100vw;
     }
   }
 }

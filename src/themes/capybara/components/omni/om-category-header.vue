@@ -83,7 +83,7 @@ export default {
     min-height: auto;
   }
  &__inner{
-   max-width: 1600px;
+   max-width: 1400px;
    margin: auto;
  }
  .title{

@@ -6,7 +6,7 @@
       v-for="(card, index) in serviceCard"
       :key="index"
     >
-      <div class="cart--icon"><img :src="card.icon" /></div>
+      <div class="icon"><img :src="card.image.filename || '' " /></div>
       <h2 class="title">
         {{ card.title }}
       </h2>
@@ -64,6 +64,7 @@ export default {
     align-items: center;
     justify-content: center;
     height: 100%;
+    border: 1px solid #ccc;
     background-color: white;
     border-radius: 8px;
     box-sizing: border-box;
@@ -75,12 +76,21 @@ export default {
     font-size: 0.875rem;
     line-height: 1.375rem;
     cursor: pointer;
+    &:hover{
+      border: 1px solid var(--c-primary);
+    }
     .sf-button {
       width: fit-content;
       margin: var(--spacer-lg) 0;
     }
     .description{
         font-weight: normal;
+    }
+    .icon{
+      padding-bottom: 14px;
+      img{
+        max-width: 100px;
+      }
     }
   }
   .image-wrapper {

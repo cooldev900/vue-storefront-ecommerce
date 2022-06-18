@@ -46,7 +46,7 @@
         :level="3"
         class="aside__heading"
       />
-      <SfButton class="sf-button--text" @click.native="switchElem('register')" tabindex="6">
+      <SfButton class="sf-button--full-width om-btn--secondary" @click.native="switchElem('register')" tabindex="6">
         {{ $t("Register now") }}
       </SfButton>
     </div>
@@ -171,7 +171,7 @@ export default {
     margin: var(--spacer-base) 0;
   }
   &__checkbox {
-    margin: var(--spacer-xl) 0 var(--spacer-2xl) 0;
+    margin: var(--spacer-xl) 0 var(--spacer-xl) 0;
   }
   &__submit {
     margin: var(--spacer-xl) 0 0 0;
@@ -182,6 +182,7 @@ export default {
 }
 .aside {
   margin: 0 0 var(--spacer-xl) 0;
+  width: 100%;
   &__heading {
     --heading-title-color: var(--c-primary);
     margin: 0 0 var(--spacer-sm) 0;

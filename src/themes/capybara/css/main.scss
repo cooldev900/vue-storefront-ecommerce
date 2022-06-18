@@ -79,7 +79,8 @@
   .sf-input--has-text{
     .sf-input__label{
       padding: 5px;
-      font-size: 12px;
+      font-size: 14px;
+      font-weight: 700;
     }
   }
   .sf-input__label{
@@ -210,7 +211,13 @@
     }
   }
   .sf-gallery__stage{
-    max-width: 100%;
+    max-width: calc(100% - 160px);
+    @include for-mobile{
+      max-width: 100%;
+    }
+    @include for-tablet{
+      max-width: 100% ;
+    }
   }
   .sf-header-navigation-item {
     flex: none;
@@ -250,7 +257,7 @@
     margin: 0 25px 0 30px;
   }
   .sf-header header {
-    max-width: 1600px;
+    max-width: 1400px;
     padding: 0 20px;
     height: var(--height-header);
     margin: auto;

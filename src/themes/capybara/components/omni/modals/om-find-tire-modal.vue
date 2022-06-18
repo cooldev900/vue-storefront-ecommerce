@@ -6,44 +6,66 @@
       <div id="findSizeOuter">
         <div id="findSizeInner">
           <div id="content01">
-            <h2>How to find your tyre size</h2>
-            <h4>Use our guide below to easily and quickly find your tyre size from the side of your existing tyres. Alternatively you can perform a search using your vehicle registration.</h4>
+            <h3>How to find your tire size</h3>
+            <h4>
+              Use our guide below to easily and quickly find your tire size from
+              the side of your existing tires.
+            </h4>
           </div>
-          
-          <div id="content02">
-            <div class="boxContent">
-                      <div class="circleslot"><img src="//images.blackcircles.com/find-tyre-size/one-circle.png"></div>
-                      <div class="columnTitle"><h3>Width</h3></div>
-                      <div class="imageslot"><img src="//images.blackcircles.com/find-tyre-size/circle-width.png"></div>
-                      <div class="textslot"><p>You’re looking for a three digit number – i.e. <b>205</b></p></div>
+
+          <div class="tire-finder__process">
+            <div class="process-item">
+              <div class="number-holder">
+                <span class="number">1</span>
+              </div>
+              <div class="columnTitle"><h5>Width</h5></div>
+              <div class="imageslot">
+                <img
+                  src="/assets/tire-width.png"
+                />
+              </div>
+              <div class="textslot">
+                <p>You’re looking for a three digit number – i.e. <b>245</b></p>
+              </div>
             </div>
-            
-            <div class="boxContent">
-                      <div class="circleslot"><img src="//images.blackcircles.com/find-tyre-size/two-circle.png"></div>
-                      <div class="columnTitle"><h3>Profile</h3></div>
-                      <div class="imageslot"><img src="//images.blackcircles.com/find-tyre-size/circle-profile.png"></div>
-                      <div class="textslot"><p>Followed by a two digit number – i.e. <b>55</b> </p></div>
+
+            <div class="process-item">
+              <div class="number-holder">
+                <span class="number">2</span>
+              </div>
+              <div class="columnTitle"><h5>Profile</h5></div>
+              <div class="imageslot">
+                <img
+                  src="/assets/tire-profile.png"
+                />
+              </div>
+              <div class="textslot">
+                <p>Followed by a two digit number – i.e. <b>45</b></p>
+              </div>
             </div>
-            
-            <div class="boxContent">
-                      <div class="circleslot"><img src="//images.blackcircles.com/find-tyre-size/three-circle.png"></div>
-                      <div class="columnTitle"><h3>Rim Size</h3></div>
-                      <div class="imageslot"><img src="//images.blackcircles.com/find-tyre-size/circle-rim.png"></div>
-                      <div class="textslot"><p>The rim size is represented next to an ‘R’ – i.e. <b>16</b></p></div>
+
+            <div class="process-item">
+              <div class="number-holder">
+                <span class="number">3</span>
+              </div>
+              <div class="columnTitle"><h5>Rim Size</h5></div>
+              <div class="imageslot">
+                <img
+                  src="/assets/tire-rim.png"
+                />
+              </div>
+              <div class="textslot">
+                <p>
+                  The rim size is represented next to an ‘R’ – i.e. <b>17</b>
+                </p>
+              </div>
             </div>
-            
-            <div class="boxContent">
-                      <div class="circleslot"><img src="//images.blackcircles.com/find-tyre-size/four-circle.png"></div>
-                      <div class="columnTitle"><h3>Speed Ratings</h3></div>	
-                      <div class="imageslot"><img src="//images.blackcircles.com/find-tyre-size/circle-speed.png"></div>
-                      <div class="textslot"><p>Finally, the speed rating will be a single letter – i.e. <b>V</b></p></div>
-            </div>
-            <div style="clear:both;"></div>
           </div>
-          <div id="content03">
-            <img src="//images.blackcircles.com/find-tyre-size/find-tyre-size.png">
+          <div class="tire-finder__diagram">
+            <img
+              src="//images.blackcircles.com/find-tyre-size/find-tyre-size.png"
+            />
           </div>
-          
         </div>
       </div>
     </SfModal>
@@ -51,29 +73,29 @@
 </template>
 
 <script>
-import { SfModal, SfLoader } from '@storefront-ui/vue';
+import { SfModal, SfLoader } from "@storefront-ui/vue";
 
 export default {
-  name: 'OmFindTireModal',
+  name: "OmFindTireModal",
   components: { SfModal, SfLoader },
   props: {
     isVisible: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  data () {
+  data() {
     return {
       content: null,
-      loading: false
-    }
+      loading: false,
+    };
   },
   methods: {
-    closeModal () {
-      console.log('clost modal');
-      this.$emit('update', false);
-    }
-  }
+    closeModal() {
+      console.log("clost modal");
+      this.$emit("update", false);
+    },
+  },
 };
 </script>
 
@@ -85,6 +107,7 @@ export default {
     width: 900px;
     height: calc(100vh - 100px);
     border-radius: 10px;
+    background: #f9f9f9;
     @include for-mobile {
       width: 100vw;
       height: 100vh;
@@ -97,29 +120,26 @@ export default {
 }
 
 #findSizeOuter {
-    width: 100%;
-    max-width: 780px;
-    height: auto;
-    position: relative;
-    display: block;
-    margin: 0 auto;
-    padding: 0;
-    background: #f9f9f9;
+  width: 100%;
+  height: auto;
+  position: relative;
+  display: block;
+  margin: 0 auto;
+  padding: 0;
+  background: #f9f9f9;
 }
 
 #findSizeInner {
-    width: 98%;
-    height: auto;
-    position: relative;
-    margin: 0 auto;
-    text-align: center;
-    padding: 0 01%;
+  height: auto;
+  position: relative;
+  margin: 0 auto;
+  text-align: center;
+  padding: 0 01%;
 
-   h2 {
-      font-weight: 200;
-      font-size: 2.4em;
-      padding: 2% 2% 0%;
-      -webkit-font-smoothing: antialiased;
+  h3 {
+    font-size: 30px;
+    padding: 2% 2% 0%;
+    margin-bottom: 10px;
   }
 
   h4 {
@@ -130,49 +150,108 @@ export default {
     max-width: 650px;
     margin: 0 auto;
     padding: 1% 4% 3%;
-}
+  }
 }
 
-#content01, #content02, #content03 {
-    width: 100%;
-    position: relative;
-    display: block;
-    margin: 0;
-    clear: both;
-    overflow: hidden;
+#content01,
+#content02,
+#content03 {
+  width: 100%;
+  position: relative;
+  display: block;
+  margin: 0;
+  clear: both;
+  overflow: hidden;
 
-   .boxContent {
-      width: 24%;
-      margin: 0.5%;
-      background: #ffffff;
-      display: inline-block;
-      float: left;
-      border: 1px solid gainsboro;
+  .boxContent {
+    width: 24%;
+    margin: 0.5%;
+    background: #ffffff;
+    display: inline-block;
+    float: left;
+    border: 1px solid gainsboro;
+    box-sizing: border-box;
+    border-radius: 0 0 20px 20px;
+
+    .circleslot {
+      width: 100%;
       box-sizing: border-box;
-      border-radius: 0 0 20px 20px;
-
-      .circleslot, .columnTitle {
-          width: 100%;
-          box-sizing: border-box;
-          background: #f2f2f2;
-      }
-
-      .imageslot {
-          background: #ffffff;
-          display: block;
-      }
-
-      .textslot {
-          padding: 0 3%;
-          min-height: 3.5em;
-      }
+      background: #f2f2f2;
+    }
+    .imageslot {
+      background: #ffffff;
+      display: block;
+    }
+    .textslot {
+      padding: 0 3%;
+      min-height: 3.5em;
+    }
   }
 
   #content03 img {
-      border: 0px none;
-      width: 100%;
-      display: block;
-      padding: 2% 0 0;
+    border: 0px none;
+    width: 100%;
+    display: block;
+    padding: 2% 0 0;
+  }
+}
+.tire-finder {
+  &__process {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    @include for-mobile{
+      grid-template-columns: 1fr;
+    }
+    .process-item {
+      margin: 10px;
+      background: #ffffff;
+      display: inline-block;
+      overflow: hidden;
+      float: left;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      .number-holder {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #f2f2f2;
+        height: 70px;
+        .number {
+          background-color: var(--c-primary);
+          border-radius: 50%;
+          color: #ffffff;
+          width: 3rem;
+          height: 3rem;
+          margin: 0 auto;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 0;
+          font-weight: 700;
+          font-size: 20px;
+        }
+      }
+      .circleslot,
+      .columnTitle {
+        width: 100%;
+        box-sizing: border-box;
+        background: #f2f2f2;
+      }
+      .imageslot {
+        background: #ffffff;
+        display: block;
+      }
+
+      .textslot {
+        padding: 0 3%;
+        min-height: 3.5em;
+      }
+    }
+  }
+  &__diagram{
+    img{
+      max-width: 100%;
+    }
   }
 }
 </style>

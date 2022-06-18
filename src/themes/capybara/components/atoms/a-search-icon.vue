@@ -9,7 +9,18 @@
     @click="toggleSearchpanel"
   />
 </template>
-
+<style lang="scss" scoped>
+::v-deep .sf-header__custom-icon{
+  &:hover{
+    color: var(--c-primary);
+  }
+svg{
+  &:hover{
+    color: var(--c-primary);
+  }
+  }
+}
+</style>
 <script>
 import { SfCircleIcon } from '@storefront-ui/vue';
 import SearchIcon from '@vue-storefront/core/compatibility/components/blocks/Header/SearchIcon';

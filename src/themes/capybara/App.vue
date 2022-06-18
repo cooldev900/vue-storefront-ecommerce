@@ -22,9 +22,11 @@ export default {
       return `${get(this.$route, 'meta.layout', 'default')}-layout`
     }
   },
-  async mounted () {
+  beforeMount () {
     const storeId = currentStoreView().storeId
     document.documentElement.classList.add('theme-' + storeId);
+  },
+  async mounted () {
     await this.$store.dispatch('vehicles/fetchVehicles')
     await this.$store.dispatch('vehicles/fetchActiveVehicle')
     await this.$store.dispatch('vehicles/fetchStoryblok')

@@ -1,13 +1,5 @@
 <template>
   <div class="o-personal-details">
-    <OmAppointmentSelector
-      v-model="schedule"
-      :appointment-duration="120"
-      :appointments-taken="appointmentsTaken"
-      :intervals="intervals"
-      :non-working-days="[0, 5]"
-      :period="5"
-    />
     <div class="form">
       <SfInput
         v-model.trim="personalDetails.firstName"
@@ -61,6 +53,15 @@
         "
         @blur="$v.personalDetails.emailAddress.$touch()"
       />
+      <h3>Your appointment</h3>
+      <OmAppointmentSelector
+        v-model="schedule"
+        :appointment-duration="120"
+        :appointments-taken="appointmentsTaken"
+        :intervals="intervals"
+        :non-working-days="[0, 5]"
+        :period="5"
+      />
       <div class="form__action">
         <SfButton
           class="sf-button--full-width om-btn--primary"
@@ -103,7 +104,7 @@ export default {
       location: 'omLocator/location',
       activeLocation: 'omLocator/activeLocation',
       locationKind: 'omLocator/locationKind',
-      isVirtualCart: 'cart/isVirtualCart',
+      isVirtualCart: 'cart/isVirtualCart'
     })
   },
   props: {
@@ -177,7 +178,7 @@ export default {
       },
       telephone: {
         required
-      },
+      }
     },
     password: {
       required,
@@ -213,10 +214,10 @@ export default {
     openTermsAndConditionsModal () {
       this.openModal({ name: ModalList.TermsAndConditions })
     },
-    async goToShipping () { 
+    async goToShipping () {
       this.nextAccordion(0);
       this.sendDataToCheckout();
-    },    
+    },
     setAppointment () {
       if (this.slot_id) {
         let payload = {};

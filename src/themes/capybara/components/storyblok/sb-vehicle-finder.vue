@@ -32,7 +32,7 @@
           </div>
           <div class="cta">
             <div class="notSure"><span class="infoIcon">i</span>
-              <a class="fancypop" @click="updateVisible(true)">How do I find my Tire Size</a>
+              <a @click="updateVisible(true)">How do I find my Tire Size?</a>
             </div>
           </div>
         </SfTab>
@@ -386,10 +386,13 @@ export default {
     justify-content: end;
 
     .notSure {
-      margin: 5px 0;
-
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 15px 0 0 0;
       a {
-        color: red;
+        font-weight: 700;
+        margin-left: 10px;
       }
     }
   }
@@ -404,9 +407,9 @@ export default {
     font-family: georgia,serif;
     font-style: italic;
     font-weight: 700;
-    color: #00ab04;
+    color: var(--c-primary);
     background: #fff;
-    border: 1px solid #00ab04;
+    border: 1px solid var(--c-primary);
     border-radius: 20px;
     text-align: center;
     line-height: 21px;

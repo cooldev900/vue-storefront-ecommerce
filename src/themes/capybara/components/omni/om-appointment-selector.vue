@@ -11,8 +11,8 @@
     </div>
     <div class="schedule-day-selector">
       <div class="schedule-day-selector__button" :class=" isHoliday(date.payload) ? 'disabled' : (today === date.payload ? 'selected' : '') " :key="date.date" v-for="date in weeks[0].days" @click="getAppointment(date.payload)">
-        <div class="schedule-day-selector__button--day">{{$t(date.day)}}</div>
-         <div class="schedule-day-selector__button--date">{{date.date}}</div>
+        <div class="schedule-day-selector__button--day">{{date.day}}</div>
+        <div class="schedule-day-selector__button--date">{{date.date}}</div>
       </div>
     </div>
     <div class="slots">
@@ -405,7 +405,7 @@ export default {
 
 .appointment-selector {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
+  width: 100%;
 
 .schedule-header {
   margin-top: 15px;
@@ -483,10 +483,10 @@ export default {
     padding: 0;
     border: 1px solid gray;
     border-radius: 8px;
-    font-size: 24px;
+    font-size: 20px;
     text-align: center;
     width: 150px;
-    height: 150px;
+    height: 100px;
     align-items: center;
     justify-content: center;
     display: flex;
@@ -504,13 +504,16 @@ export default {
 }
 
 .selected {
-  background-color: green;
+  background-color: var(--c-primary);
   color: white;
+  border: 1px solid transparent;
 }
-
 .disabled {
   background-color: gray;
   color: black;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 }
 
 @keyframes show-info {

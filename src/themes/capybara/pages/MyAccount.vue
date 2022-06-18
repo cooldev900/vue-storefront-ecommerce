@@ -20,20 +20,11 @@
         <SfContentPage :title="$t('Shipping details')">
           <OMyAccountShippingDetails />
         </SfContentPage>
-        <SfContentPage :title="$t('Loyalty Card')">
-          <OMyAccountPlaceholder :title="$t('Loyalty Card')" />
-        </SfContentPage>
-        <SfContentPage :title="$t('My newsletter')">
-          <OMyAccountPlaceholder :title="$t('My newsletter')" />
-        </SfContentPage>
       </SfContentCategory>
       <SfContentPage :title="$t('Log out')" />
       <SfContentCategory :title="$t('Order details')">
         <SfContentPage :title="$t('Order history')">
           <OMyAccountOrdersHistory />
-        </SfContentPage>
-        <SfContentPage :title="$t('My reviews')">
-          <OMyAccountPlaceholder :title="$t('My reviews')" />
         </SfContentPage>
       </SfContentCategory>
     </SfContentPages>
@@ -101,9 +92,10 @@ export default {
 #my-account {
   box-sizing: border-box;
   @include for-desktop {
-    max-width: 1272px;
+    max-width: 1400px;
     padding: 0 var(--spacer-sm);
     margin: 0 auto;
+    margin-bottom: 40px;
   }
 }
 .my-account {

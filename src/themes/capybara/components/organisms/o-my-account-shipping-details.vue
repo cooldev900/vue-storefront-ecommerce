@@ -103,7 +103,7 @@
               :label="$t('Phone number')"
               class="form__element"
             />
-            <SfButton class="action-button" @click="updateAddress">
+            <SfButton class="action-button om-btn--primary" @click="updateAddress">
               {{ $t('Update the address') }}
             </SfButton>
           </div>
@@ -157,7 +157,7 @@
               </div>
             </div>
           </transition-group>
-          <SfButton class="action-button" @click="changeAddress(-1)">
+          <SfButton class="action-button om-btn--primary" @click="changeAddress(-1)">
             {{ $t('Add new address') }}
           </SfButton>
         </SfTab>

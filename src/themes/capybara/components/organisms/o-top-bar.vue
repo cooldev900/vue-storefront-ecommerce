@@ -69,7 +69,7 @@ export default {
       display: none;
     }
   &__inner{
-    max-width: 1600px;
+    max-width: 1400px;
     margin: auto;
     position: relative;
     display: flex;

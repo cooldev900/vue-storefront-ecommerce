@@ -291,7 +291,7 @@ export default {
 <style lang="scss" scoped>
 @import "~@storefront-ui/shared/styles/helpers/breakpoints";
 .loader {
-  max-width: 1600px;
+  max-width: 1400px;
   padding: 0 15px !important;
   margin: auto !important;
   display: flex;
@@ -302,7 +302,7 @@ export default {
   }
 }
 .service-vehicles {
-  max-width: 1600px;
+  max-width: 1400px;
   padding: 0 15px !important;
   margin: auto !important;
   display: grid;

@@ -20,8 +20,9 @@ export default {
 .o-header-checkout {
   height: var(--height-header);
   box-shadow: var(--header-shadow);
+  background: #000;
   &__inner{
-    max-width: 1600px;
+    max-width: 1400px;
     margin: auto;
     height: 100%;
     display: flex;

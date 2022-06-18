@@ -10,9 +10,6 @@
             <p class="no-orders__title">
               {{ $t('You currently have no orders') }}
             </p>
-            <SfButton class="no-orders__button">
-              {{ $t('Start shopping') }}
-            </SfButton>
           </div>
           <SfTable v-else class="orders">
             <SfTableHeading>
@@ -55,13 +52,6 @@
         <template v-else>
           <OMyAccountOrderDetails :order="activeOrder" @close="setActiveOrder(null)" />
         </template>
-      </SfTab>
-      <SfTab :title="$t('Returns')">
-        <p class="message">
-          {{ $t('This feature is not implemented yet! Please take a look at') }}
-          <a href="https://github.com/DivanteLtd/vue-storefront"> https://github.com/DivanteLtd/vue-storefront </a>
-          {{ $t('for our Roadmap!') }}
-        </p>
       </SfTab>
     </SfTabs>
   </div>

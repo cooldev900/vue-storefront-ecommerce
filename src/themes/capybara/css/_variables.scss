@@ -14,19 +14,7 @@
  --nav-font-transform: uppercase;
 }
 :root.theme-2{
-  //global
-  --c-primary: #bc1430 !important;
-  // header
-  --height-header: 70px;
-  --header-shadow: 0 2px 3px rgba(0,0,0,0.1);
-  // Confidence Bar
-  --height-confidence-bar: 40px;
-  --c-confidence-bar: #222;
-  --button-background: #bc1430;
-   /* Navigation */
- --nav-font-weight: 700;
- --nav-font-size: 16px;
- --nav-font-transform: none;
+  direction: rtl;
 }
 :root.theme-3{
   //global

@@ -36,14 +36,10 @@
         "
         class="form__element"
       />
-      <SfButton class="form__button" @click.native="updatePersonalData">
+      <SfButton class="form__button om-btn--primary" @click.native="updatePersonalData">
         {{ $t('Update personal data') }}
       </SfButton>
     </div>
-    <p class="notice">
-      {{ $t('At Brand name, we attach great importance to privacy issues and are committed to protecting the personal data of our users. Learn more about how we care and use your personal data in the') }}
-      <a :href="localizedRoute('/privacy')">{{ $t('Privacy Policy') }}</a>.
-    </p>
   </div>
 </template>
 

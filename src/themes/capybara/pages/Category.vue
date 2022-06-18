@@ -1332,6 +1332,7 @@ export default {
     margin: 0;
     border-radius: 8px;
     padding: 0 !important;
+    box-shadow: #d6d5d5 0px 1px 3px 0px;
     overflow: hidden;
   }
   ::v-deep .sf-product-card {

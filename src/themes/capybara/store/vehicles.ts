@@ -170,10 +170,10 @@ export const vehiclesStore = {
     },
     /** ***  Storyblok *****/
     async fetchSbData ({ commit }, pageId) {
+      const storeId = currentStoreView().storeId;
       const res = await axios.get(
-        `${config.api.url}/api/storyblok/storyblok-1/${pageId}`
+        `${config.api.url}/api/storyblok/storyblok-${storeId}/${pageId}`
       );
-
       if (res.data.success) {
         if (pageId === 'global') {
           commit('setGlobalSbData', res.data.result.content);
