@@ -98,9 +98,9 @@ export default {
           tire_size: []
         },
         size: {
-          width: [],
+          width: [],          
+          profile: [],
           rim: [],
-          profile: []
         }
       },
       models: {
@@ -110,9 +110,9 @@ export default {
           tire_size: ''
         },
         size: {
-          width: '',
-          rim: '',
-          profile: ''
+          width: '',          
+          profile: '',
+          rim: ''
         }
       },
       isVisible: false
@@ -183,8 +183,8 @@ export default {
           if (keyIndex === 0) {
             this.models.size = {
               ...this.models.size,
-              rim: '',
-              profile: ''
+              profile: '',
+              rim: ''
             }
           }
           const allKeys = Object.keys(this.models.size);
@@ -239,8 +239,8 @@ export default {
           },
           size: {
             width: '',
-            rim: '',
-            profile: ''
+            profile: '',            
+            rim: ''
           }
         }
       }
@@ -274,9 +274,9 @@ export default {
       if (this.activeVehicle?.width) {
         this.models.size.width = this.activeVehicle.width;
         await this.changeSelector('size', 0);
-        this.models.size.rim = this.activeVehicle.rim;
-        await this.changeSelector('size', 1);
         this.models.size.profile = this.activeVehicle.profile;
+        await this.changeSelector('size', 1);
+        this.models.size.rim = this.activeVehicle.rim;        
       }           
   },
   // watch: {
