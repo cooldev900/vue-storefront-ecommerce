@@ -17,7 +17,12 @@
         <input type="hidden" name="signed_date_time" :value="edpqForm.signed_date_time" />
         <input type="hidden" name="signed_field_names" :value="edpqForm.signed_field_names" />
         <input type="hidden" name="transaction_type" :value="edpqForm.transaction_type" />
-        <input type="hidden" name="transaction_uuid" :value="edpqForm.transaction_uuid">
+        <input type="hidden" name="transaction_uuid" :value="edpqForm.transaction_uuid"/>
+        <input type="hidden" name="bill_to_forename" :value="edpqForm.bill_to_forename"/>
+        <input type="hidden" name="bill_to_surname" :value="edpqForm.bill_to_surname"/>
+        <input type="hidden" name="bill_to_email" :value="edpqForm.bill_to_email"/>
+        <input type="hidden" name="bill_to_address_line1" :value="edpqForm.bill_to_address_line1"/>
+        <input type="hidden" name="bill_to_address_country" :value="edpqForm.bill_to_address_country"/>
 
         <!-- check before the payment: see Security: Check before the payment -->
         <input type="hidden" name="signature" :value="edpqForm.signature" />
@@ -53,6 +58,12 @@ export default {
     this.edpqForm.signed_date_time = new Date().toISOString().substring(0, 19) + 'Z';
     this.edpqForm.transaction_uuid = Math.floor(Math.random() * 100000000);
 
+    this.edpqForm.bill_to_forename = this.getPersonalDetails.firstName;
+    this.edpqForm.bill_to_surname = this.getPersonalDetails.lastName;
+    this.edpqForm.bill_to_email = this.getPersonalDetails.emailAddress;
+    this.edpqForm.bill_to_address_line1 = this.getPaymentDetails.streetAddress;
+    this.edpqForm.bill_to_address_country = this.getPaymentDetails.country;
+
     let signedFieldNames = this.edpqForm.signed_field_names.split(",");
     let data = [];
     let edpqForm = this.edpqForm;
@@ -68,7 +79,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      paymentDetails: 'checkout/getPaymentDetails',
+      getPaymentDetails: 'checkout/getPaymentDetails',
+      getPersonalDetails: "checkout/getPersonalDetails",
       cartToken: 'cart/getCartToken',
       totals: 'cart/getTotals'
     }),
@@ -90,10 +102,15 @@ export default {
         profile_id: '95937600-7A9B-425E-A47C-4F012E77487F',
         reference_number: "100",        
         signed_date_time: "",
-        signed_field_names: "access_key,amount,currency,locale,profile_id,reference_number,signed_date_time,signed_field_names,transaction_type,transaction_uuid",
+        signed_field_names: "access_key,amount,currency,locale,profile_id,reference_number,signed_date_time,signed_field_names,transaction_type,transaction_uuid,bill_to_forename,bill_to_surname,bill_to_email,bill_to_address_line1,bill_to_address_country",
         transaction_type: "sale",
         transaction_uuid: "fcfc212e92d23be881d1299ef3c3b314",             
-        signature: ""
+        signature: "",
+        bill_to_forename: "",
+        bill_to_surname: "",
+        bill_to_email: "",
+        bill_to_address_line1: "",
+        bill_to_address_country: ""
       }      
     };
   }
