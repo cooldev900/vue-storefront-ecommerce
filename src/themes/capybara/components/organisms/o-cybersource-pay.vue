@@ -23,6 +23,7 @@
         <input type="hidden" name="bill_to_email" :value="edpqForm.bill_to_email"/>
         <input type="hidden" name="bill_to_address_line1" :value="edpqForm.bill_to_address_line1"/>
         <input type="hidden" name="bill_to_address_country" :value="edpqForm.bill_to_address_country"/>
+        <input type="hidden" name="bill_to_address_city" :value="edpqForm.bill_to_address_city"/>
 
         <!-- check before the payment: see Security: Check before the payment -->
         <input type="hidden" name="signature" :value="edpqForm.signature" />
