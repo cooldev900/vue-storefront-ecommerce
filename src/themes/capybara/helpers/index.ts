@@ -157,3 +157,13 @@ export async function getShaSignature (shaSignature: string) {
 
   return hashHex;
 }
+
+export async function getShaSignatureBase64 (shaSignature: string) {
+  const msgBuffer = new TextEncoder().encode(shaSignature);
+  const SHASIGN = await window.crypto.subtle.digest(
+    'SHA-256',
+    msgBuffer
+  );
+
+  return btoa(String.fromCharCode.apply(null, new Uint8Array(SHASIGN)));
+}
