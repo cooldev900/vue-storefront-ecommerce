@@ -23,6 +23,9 @@ import OmPanZoom from 'theme/components/omni/om-panzoom.vue';
 import * as sbComponents from 'theme/components/storyblok/index.js';
 import VueGtm from '@gtm-support/vue2-gtm';
 import config from 'config';
+import VueCryptojs from 'vue-cryptojs'
+
+Vue.use(VueCryptojs);
 
 Object.keys(sbComponents).map(key => {
   Vue.component(sbComponents[key].name, sbComponents[key]);

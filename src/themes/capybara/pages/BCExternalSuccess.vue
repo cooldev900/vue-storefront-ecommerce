@@ -196,9 +196,9 @@ export default {
   },
   async mounted () {
     const { orderID, STATUS, PAYID, NCERROR, SHASIGN } = this.$route.query;
-    const passPhrase = ',3p%LhsENFp44Wn@ycK';
-    const shaSignature = `NCERROR=${NCERROR}${passPhrase}ORDERID=${orderID}${passPhrase}PAYID=${PAYID}${passPhrase}STATUS=${STATUS}${passPhrase}`;
-    const checkSumShaSign = await getShaSignature(shaSignature);
+    const secretKey = "9f8f91900c274d37925c0be4beebed23b8bc48776e4f4f63a2aa1a0b001dea0140bcac7ae391456989e90ae5e37c6b18c6caca3b5ef64b55a6395a7d0cc0a8d7511c9dae3b8748859c1153206009ad4582e70787acd7488584e6dd7a6ce0f1a3834ade1543da40758044c4fc3849ca0fba812aeca1e0487ebdf04ae2749c1729";
+    const shaSignature = `NCERROR=${NCERROR},ORDERID=${orderID},PAYID=${PAYID},STATUS=${STATUS},`;
+    const checkSumShaSign = this.$CryptoJS.HmacSHA256(shaSignature, secretKey).toString(this.$CryptoJS.enc.Base64);
     if (checkSumShaSign.toUpperCase() === SHASIGN) {
       let newOrder = await this.prepareOrder();
 
