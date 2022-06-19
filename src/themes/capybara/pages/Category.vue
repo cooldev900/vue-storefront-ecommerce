@@ -63,7 +63,7 @@
                 </SfSelectOption>
               </SfSelect> -->
               <select
-                class="navbar__select sort-by"
+                class="navbar__select select-mobile"
                 ref="SortBy"
                 @change="changeSortOder"
                 :value="sortOrder"
@@ -76,7 +76,7 @@
                   {{ option.label }}
                 </option>
               </select>
-              <SfButton
+              <!-- <SfButton
                 class="
                   sf-button--text
                   navbar__filters-button
@@ -87,7 +87,7 @@
               >
                 {{ $t("Sort By") }}
                 <ASortIcon />
-              </SfButton>
+              </SfButton> -->
             </div>
           </div>
         </div>
@@ -1510,5 +1510,11 @@ export default {
 }
 ::v-deep .sf-product-card__price {
 justify-content: center;
+}
+
+.select-mobile {
+  @include for-mobile {
+    margin-bottom: 16px;
+  }
 }
 </style>
