@@ -47,7 +47,7 @@
               <span class="navbar__label desktop-only"
                 >{{ $t("Sort By") }}:</span
               >
-              <SfSelect
+              <!-- <SfSelect
                 class="navbar__select sort-by"
                 ref="SortBy"
                 :selected="sortOrder"
@@ -61,7 +61,21 @@
                 >
                   {{ option.label }}
                 </SfSelectOption>
-              </SfSelect>
+              </SfSelect> -->
+              <select
+                class="navbar__select sort-by"
+                ref="SortBy"
+                @change="changeSortOder"
+                :value="sortOrder"
+              >
+                <option
+                  v-for="option in sortOptions"
+                  :value="option.id"
+                  :key="option.id"
+                >
+                  {{ option.label }}
+                </option>
+              </select>
               <SfButton
                 class="
                   sf-button--text
@@ -426,6 +440,7 @@ export default {
       isFilterSidebarOpen: false,
       unsubscribeFromStoreAction: null,
       aggregations: null,
+      sortOrderValue: ''
     };
   },
   computed: {
@@ -905,7 +920,8 @@ export default {
     initPagination() {
       this.currentPage = 1;
     },
-    changeSortOder(sortOrder) {
+    changeSortOder(event) {
+      let sortOrder = event.target.value;
       if (this.getCurrentSearchQuery.sort !== sortOrder) {
         this.$store.dispatch("category-next/switchSearchFilters", [
           { id: sortOrder, type: "sort" },
