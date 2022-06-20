@@ -13,22 +13,20 @@
           Billing address
         </div>
       </div>
-      <div class="billing-address-content" v-if="(locationKind !== 'click_collect_free') || (locationKind === 'click_collect_free' && !sendToBillingAddress)">
+      <div class="billing-address-content">
         {{ billingAddress }}
       </div>
-      <!-- <div class="form__element form__checkbox form_button" v-if="sendToBillingAddress" @click="sendToBillingAddress = sendToBillingAddress">
+      <!-- <div class="form__element form__checkbox form_button" v-if="sendToBillingAddress" @click="sendToBillingAddress = !sendToBillingAddress">
         Change Billing Address
       </div> -->
-      <span
-        class="form__billing"
+      <SfCheckbox
+        v-model="sendToBillingAddress"
+        class="form__element form__checkbox"
         name="sendToBillingAddress"
-        @click="handleClick"
-        v-show="!sendToBillingAddress"
-      >
-        {{ locationKind === 'click_collect_free' ? $t('Edit Billing Address') : $t('Change Billing Address') }}
-      </span>
+        :label="$t('Change Billing Address')"
+      />
       <SfInput
-        v-if="sendToBillingAddress"
+        v-if="!sendToBillingAddress"
         v-model.trim="payment.firstName"
         class="form__element form__element--half"
         name="first-name"
@@ -43,7 +41,7 @@
         @blur="$v.payment.firstName.$touch()"
       />
       <SfInput
-        v-if="sendToBillingAddress"
+        v-if="!sendToBillingAddress"
         v-model.trim="payment.lastName"
         class="form__element form__element--half form__element--half-even"
         name="last-name"
@@ -54,7 +52,7 @@
         @blur="$v.payment.lastName.$touch()"
       />
       <SfInput
-        v-if="sendToBillingAddress"
+        v-if="!sendToBillingAddress"
         v-model.trim="payment.streetAddress"
         class="form__element"
         name="street-address"
@@ -65,14 +63,18 @@
         @blur="$v.payment.streetAddress.$touch()"
       />
       <SfInput
-        v-if="sendToBillingAddress"
+        v-if="!sendToBillingAddress"
         v-model.trim="payment.apartmentNumber"
         class="form__element"
         name="apartment-number"
-        :label="$t('Address line 2')"
+        :label="$t('House/Apartment number')"
+        required
+        :valid="!$v.payment.apartmentNumber.$error"
+        :error-message="$t('Field is required')"
+        @blur="$v.payment.apartmentNumber.$touch()"
       />
       <SfInput
-        v-if="sendToBillingAddress"
+        v-if="!sendToBillingAddress"
         v-model.trim="payment.city"
         class="form__element form__element--half"
         name="city"
@@ -83,14 +85,14 @@
         @blur="$v.payment.city.$touch()"
       />
       <SfInput
-        v-if="sendToBillingAddress"
+        v-if="!sendToBillingAddress"
         v-model.trim="payment.state"
         class="form__element form__element--half form__element--half-even"
         name="state"
         :label="$t('State / Province')"
       />
       <SfInput
-        v-if="sendToBillingAddress"
+        v-if="!sendToBillingAddress"
         v-model.trim="payment.zipCode"
         class="form__element form__element--half"
         name="zipCode"
@@ -105,7 +107,7 @@
         @blur="$v.payment.zipCode.$touch()"
       />
       <SfSelect
-        v-if="sendToBillingAddress"
+        v-if="!sendToBillingAddress"
         v-model="payment.country"
         class="
           form__element
@@ -120,7 +122,6 @@
         :valid="!$v.payment.country.$error"
         :error-message="$t('Field is required')"
         @change="changeCountry"
-        @blur="$v.payment.country.$touch()"
       >
         <SfSelectOption
           v-for="country in countries"
@@ -130,9 +131,8 @@
           {{ country.name }}
         </SfSelectOption>
       </SfSelect>
-      <!-- <VuePhoneNumberInput
-        :default-country-code="defaultCountry"
-        v-if="sendToBillingAddress"
+      <SfInput
+        v-if="!sendToBillingAddress"
         v-model.trim="payment.phoneNumber"
         class="form__element"
         name="phone"
@@ -141,16 +141,15 @@
         :valid="!$v.payment.phoneNumber.$error"
         @blur="$v.payment.phoneNumber.$touch()"
         :error-message="$t('Field is required')"
-        @update="updatePhoneNumber"
-      /> -->
-      <!-- <SfCheckbox
-        v-if="locationKind !== 'click_collect_free'"
+      />
+      <SfCheckbox
+        v-if="!sendToBillingAddress"
         v-model="generateInvoice"
         class="form__element form__checkbox"
         name="generateInvoice"
         :label="$t('I want to generate an invoice for the company')"
-      /> -->
-      <template v-if="generateInvoice && sendToBillingAddress">
+      />
+      <template v-if="generateInvoice && !sendToBillingAddress">
         <SfInput
           v-model.trim="payment.company"
           class="form__element form__element--half"
@@ -180,7 +179,7 @@
         </p>
       </template>
       <SfButton
-        v-if="sendToBillingAddress"
+        v-if="!sendToBillingAddress"
         class="sf-button--full-width form__action-button"
         :disabled="$v.payment.$invalid"
         type="submit"
@@ -190,43 +189,72 @@
       </SfButton>
     </div>
     <SfHeading
-      v-show="!sendToBillingAddress"
       :title="$t('Payment method')"
       :level="3"
       class="sf-heading--left sf-heading--no-underline title"
     />
-    <div class="form" v-show="!sendToBillingAddress">
-      <div class="form__radio-group" style="width: 100%" v-if="isShowPaymentMethod">
-        <div v-for="method in paymentMethods">
-          <SfRadio
-            :key="method.code"
-            v-model="payment.paymentMethod"
-            :label="method.title ? method.title : method.name"
-            :value="method.code"
-            name="payment-method"
-            class="form__radio payment-method"
-            @input="changePaymentMethod(method.code)"
-            :selected=" method.code === payment.paymentMethod "
-            v-show="method.code !== 'cnpayment' || (method.code !== payment.paymentMethod && method.code === 'cnpayment')"
-          />
-          <payment-stripe v-show=" method.code === payment.paymentMethod && method.code === 'cnpayment'" />
+    <OmAlertBox type="info" style="margin-bottom: 20px">
+      <template #message>
+        <div class="om-alert-box-message">
+          <div>
+            <p>
+              You will be redirected to BarclayCard to make a secure payment.
+            </p>
+          </div>
         </div>
+      </template>
+    </OmAlertBox>
+    <img style="max-width: 350px" src="/assets/supported-cards.png">
+    <div class="form">
+      <div class="form__radio-group" style="display: none">
+        <SfRadio
+          v-for="method in paymentMethods"
+          :key="method.code"
+          v-model="payment.paymentMethod"
+          :label="method.title ? method.title : method.name"
+          :value="method.code"
+          name="payment-method"
+          class="form__radio payment-method"
+          @input="changePaymentMethod"
+        />
+        <!-- <payment-stripe v-if="payment.paymentMethod === 'cnpayment'" /> -->
+        <div id="checkout-order-review-additional-container" />
       </div>
       <div class="form__action">
         <!-- it's epdq form -->
-
-        <SfButton
-          class="sf-button--full-width form__action-button"
-          :disabled="disableOrder"
-          v-show="payment.paymentMethod && !$v.payment.$invalid && showSaveButton && !sendToBillingAddress"
-          @click="goToReviewOrder"
+        <!-- <form
+          class="sf-button--full-width"
+          method="post"
+          action="https://testsecureacceptance.cybersource.com/pay"
+          id="form1"
+          name="form1"
         >
-          <SfLoader v-if="disableOrder" :loading="disableOrder" />
-          <span v-else>{{ $t("Place Order") }}</span>
-        </SfButton>
+          <input type="hidden" name="ACCEPTURL" :value="edpqForm.acceptUrl">
+          <input type="hidden" name="AMOUNT" :value="edpqForm.amount">
+          <input type="hidden" name="CURRENCY" :value="edpqForm.currency">
+          <input type="hidden" name="LANGUAGE" :value="edpqForm.language">
+          <input type="hidden" name="ORDERID" :value="edpqForm.orderId">
+          <input type="hidden" name="PSPID" :value="edpqForm.pspId">
+
+          
+          <input type="hidden" name="SHASIGN" :value="shaSign">
+          
+
+          <SfButton
+            class="sf-button--full-width form__action-button"
+            :disabled="$v.payment.$invalid"
+            type="submit"
+            @click="epdqSubmit"
+          >
+            {{ $t("Continue to Payment") }}
+          </SfButton>
+        </form> -->
+        <CybersourcePayVue />
       </div>
     </div>
-    <OmCheckoutModal :errors="errors" :isVisible="isVisible" @update=" value => isVisible = value" />
+    <!-- This dummy container below is needed because src\modules\payment-cash-on-delivery\index.ts
+         tries to inject here a component with payment description -->
+    <div v-show="false" id="checkout-order-review-additional-container" />
   </div>
 </template>
 <script>
@@ -241,22 +269,19 @@ import { OrderReview } from '@vue-storefront/core/modules/checkout/components/Or
 import { registerModule } from '@vue-storefront/core/lib/modules';
 import { OrderModule } from '@vue-storefront/core/modules/order';
 import OmAlertBox from 'theme/components/omni/om-alert-box';
-import { Logger } from '@vue-storefront/core/lib/logger'
-import OmCheckoutModal from '../omni/modals/om-checkout-modal';
-
 import {
   SfInput,
   SfRadio,
   SfButton,
   SfSelect,
   SfHeading,
-  SfCheckbox,
-  SfLoader
+  SfCheckbox
 } from '@storefront-ui/vue';
 import { createSmoothscroll } from 'theme/helpers';
-import PaymentStripe from 'src/modules/stripe/components/PaymentStripe';
+// import PaymentStripe from 'src/modules/stripe/components/PaymentStripe';
 // import MixinStripe from 'src/modules/stripe/components/MixinStripe';
-import config from 'config';
+import { getShaSignature } from 'theme/helpers/index.ts';
+import CybersourcePayVue from './o-cybersource-pay.vue';
 
 export default {
   name: 'OPayment',
@@ -268,17 +293,12 @@ export default {
     SfHeading,
     SfCheckbox,
     OmAlertBox,
-    PaymentStripe,
-    SfLoader,
-    OmCheckoutModal
+    CybersourcePayVue
+    // PaymentStripe
   },
   mixins: [Payment, OrderReview],
   props: {
     nextAccordion: {
-      type: Function,
-      default: (Number) => {}
-    },
-    validateOrderBeforeSending: {
       type: Function,
       default: (Number) => {}
     }
@@ -295,10 +315,13 @@ export default {
         unicodeAlpha
       },
       country: {
-        required,
-        minLength: minLength(2),
+        required
       },
       streetAddress: {
+        required,
+        unicodeAlphaNum
+      },
+      apartmentNumber: {
         required,
         unicodeAlphaNum
       },
@@ -311,9 +334,9 @@ export default {
         required,
         unicodeAlpha
       },
-      // phoneNumber: {
-      //   required
-      // },
+      phoneNumber: {
+        required
+      },
       paymentMethod: {
         required
       }
@@ -347,15 +370,12 @@ export default {
     const cartTotalPrice = this.prices.grand_total;
     this.edpqForm.amount = this.prices.grand_total * 100;
     const shaSignature = `ACCEPTURL=${this.edpqForm.acceptUrl}${passPhrase}AMOUNT=${this.edpqForm.amount}${passPhrase}CURRENCY=${this.edpqForm.currency}${passPhrase}LANGUAGE=${this.edpqForm.language}${passPhrase}ORDERID=${this.edpqForm.orderId}${passPhrase}PSPID=${this.edpqForm.pspId}${passPhrase}`;
-    // const hashHex = await getShaSignature(shaSignature);
-    // this.shaSign = hashHex.toUpperCase();
+    const hashHex = await getShaSignature(shaSignature);
+    this.shaSign = hashHex.toUpperCase();
     // createSmoothscroll(
     //   document.documentElement.scrollTop || document.body.scrollTop,
     //   0
     // );
-    if (this.locationKind === 'click_collect_free') {
-      this.sendToBillingAddress = true;
-    }
   },
   computed: {
     ...mapGetters({
@@ -370,15 +390,9 @@ export default {
       }, {});
     },
     billingAddress () {
-      let excludeFields = ['paymentMethod', 'taxId', 'isThankYouPage', 'modifiedAt', 'paymentMethodAdditional', 'country', 'phoneNumber', 'telephone'];
-      return Object.keys(this.paymentDetails).filter(payment => !excludeFields.includes(payment) && this.paymentDetails[payment]).map(key => this.paymentDetails[key]).join(', ');
-      // else return Object.keys(this.getShippingDetails).filter(payment => !excludeFields.includes(payment) && this.getShippingDetails[payment]).map(key => this.getShippingDetails[key]).join(', ');
-    },
-    showSaveButton () {
-      return this.locationKind !== 'click_collect_free' || (!!this.payment.phoneNumber && this.locationKind === 'click_collect_free');
-    },
-    isShowPaymentMethod () {
-      return (!this.sendToBillingAddress && this.payment?.firstName) || this.locationKind === 'click_collect_free';
+      let excludeFields = ['paymentMethod', 'taxId', 'isThankYouPage', 'modifiedAt'];
+      if (this.paymentDetails.firstName) return Object.keys(this.paymentDetails).filter(payment => !excludeFields.includes(payment)).map(key => this.paymentDetails[key]).join(', ');
+      else return Object.keys(this.getShippingDetails).filter(payment => !excludeFields.includes(payment)).map(key => this.getShippingDetails[key]).join(', ');
     }
   },
   beforeCreate () {
@@ -394,58 +408,22 @@ export default {
         language: 'en_US',
         orderId: '1010',
         pspId: 'epdq1611513'
-      },
-      disableOrder: false,
-      defaultCountry: config.tax.defaultCountry,
-      isValid: false,      
-      isVisible: false,
-      errors: []
+      }
     };
   },
-  methods: {    
-    updatePhoneNumber (data) {
-      this.isValid = data.isValid;
-    },
-    handleClick () {
-      this.sendToBillingAddress = !this.sendToBillingAddress;
-    },
+  methods: {
     async goToReviewOrder () {
-      this.disableOrder = true;
-      this.errors = this.validateOrderBeforeSending();
-      // if (this.errors?.length) {
-      //   this.disableOrder = false;
-      //   this.isVisible = true;
-      // } else {
-        this.sendDataToCheckout();
-        await this.$store.dispatch('cart/pullMethods', { forceServerSync: true })
-        this.placeOrder();
-      // }      
+      this.sendDataToCheckout();
+      this.placeOrder();
+      this.nextAccordion(2);
     },
     epdqSubmit () {
       this.sendDataToCheckout();
     },
-    async saveBillingAddress () {
-      this.sendToBillingAddress = false;
+    saveBillingAddress () {
+      this.sendToBillingAddress = true;
       this.sendDataToCheckout();
-      await this.$store.dispatch('cart/pullMethods', { forceServerSync: true })
-    },
-    setDisableOrder () {
-      this.disableOrder = false;
     }
-  },
-  watch: {
-    isShowBillingAddress (value) {
-      console.log(value, 'locationKind');
-      if (value) this.sendToBillingAddress = true;
-    }
-  },
-  beforeMount () {
-    this.$bus.$on('notification-progress-stop', this.setDisableOrder);
-    this.$bus.$on('stripe-info-error', this.setDisableOrder);
-  },
-  beforeDestroy () {
-    this.$bus.$off('notification-progress-stop', this.setDisableOrder);
-    this.$bus.$off('stripe-info-error', this.setDisableOrder);
   }
 };
 </script>
@@ -481,16 +459,12 @@ export default {
       }
     }
   }
-  &__billing {
-    color: #000000;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-  }
+
   &_button {
     color: #654855;
     cursor: pointer;
   }
+
   @include for-desktop {
     display: flex;
     flex-wrap: wrap;
@@ -522,24 +496,25 @@ export default {
     --radio-container-padding: var(--spacer-sm);
   }
 }
+
 .billing-address-container {
   display: flex;
   justify-content: space-between;
   margin-bottom: var(--spacer-sm);
   width: 100%;
+
   &__title {
     font-weight: bold;
   }
+
   &__description {
     text-decoration: underline;
   }
 }
+
 .billing-address-content {
   width: 100%;
-  padding: 15px 0;
+  padding: 15px;
   line-break: anywhere;
 }
-::v-deep .sf-icon{
-    --icon-size: 12px !important;
-    }
 </style>
