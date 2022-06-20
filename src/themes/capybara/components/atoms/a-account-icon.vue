@@ -2,7 +2,7 @@
   <SfButton
     class="sf-button--pure a-account-ico navigation-icon" :class="direction"
   >
-    <div @click="$store.commit('ui/setSearchpanel', true)" class="sf-header__custom-icon search-icon" :class="[{
+    <div class="sf-header__custom-icon search-icon" :class="[{
       'sf-header__icon--is-active': isLoggedIn
     }, menuStyle]"
     >

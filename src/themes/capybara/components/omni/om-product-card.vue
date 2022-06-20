@@ -1,11 +1,11 @@
 <template>
   <div class="sf-product-card">
     <div class="sf-product-card__brand" :style="{ background: `${brandColor}` }">
-               <img class="brand-logo"
-              :src="brandImage"
-            />
+      <img class="brand-logo"
+           :src="brandImage"
+      >
     </div>
-        <SfLink class="sf-product-card__link" :link="link">
+    <SfLink class="sf-product-card__link" :link="link">
       <slot name="title" v-bind="{ title }">
         <h3 class="sf-product-card__title">
           {{ title }}
@@ -41,8 +41,9 @@
           v-if="badgeLabel"
           class="sf-product-card__badge"
           :class="badgeColorClass"
-          >{{ badgeLabel }}</SfBadge
         >
+          {{ badgeLabel }}
+        </SfBadge>
       </slot>
       <template v-if="showAddToCartButton">
         <slot
@@ -87,9 +88,14 @@
           </SfCircleIcon>
         </slot>
       </template>
-      <h4 class="sub-title">{{ secondTitle || ' '}}</h4>
+      <div class="stock-status">
+        <span class="stock-pill" :class="{'stock-red': !isAvailable }">{{ isAvailable ? $t('In Stock') : $t('Out of Stock') }}</span>
+      </div>
+      <h4 class="sub-title">
+        {{ secondTitle || ' ' }}
+      </h4>
       <div class="action-area__wrap--promobanner">
-       {{offer || ' '}}
+        {{ offer || ' ' }}
       </div>
     </div>
     <SfButton
@@ -107,68 +113,82 @@
       </slot>
     </SfButton>
     <div class="action-area__wrap">
-        <div class="action-area__wrap--message1">
-            <p>{{usp2 || ' '}}</p>
-        </div>
-            <div class="action-area__wrap--message2">
-            <p>{{waranty || ' '}}</p>
-        </div>
+      <div class="action-area__wrap--message1">
+        <p>{{ usp2 || ' ' }}</p>
+      </div>
+      <div class="action-area__wrap--message2">
+        <p>{{ waranty || ' ' }}</p>
+      </div>
       <div class="action-area__wrap--price">
-    <slot name="price" v-bind="{ specialPrice, regularPrice }">
-      <SfPrice
-        v-if="regularPrice"
-        class="sf-product-card__price"
-        :regular="regularPrice"
-        :special="specialPrice"
-      />
-    </slot>
-    <OmQuantitySelector :qty="qty" @update:qty="updateQTY" />
-    <slot name="reviews" v-bind="{ maxRating, scoreRating }">
-      <div
-        v-if="typeof scoreRating === 'number'"
-        class="sf-product-card__reviews"
-      >
-        <SfRating
-          class="sf-product-card__rating"
-          :max="maxRating"
-          :score="scoreRating"
-        />
-        <SfButton
-          v-if="reviewsCount"
-          :aria-label="`Read ${reviewsCount} reviews about ${title}`"
-          class="sf-button--pure sf-product-card__reviews-count"
-          @click="$emit('click:reviews')"
-        >
-          ({{ reviewsCount }})
-        </SfButton>
+        <slot name="price" v-bind="{ specialPrice, regularPrice }">
+          <SfPrice
+            v-if="regularPrice"
+            class="sf-product-card__price"
+            :regular="regularPrice"
+            :special="specialPrice"
+          />
+        </slot>
       </div>
-    </slot>
+      <div class="action-area__wrap--addtocart">
+        <OmQuantitySelector v-if="isAvailable" :qty="qty" @update:qty="updateQTY" />
+        <div v-if="!isAvailable" class="product-card__action-area">
+          <SfButton
+            :disabled="isProductDisabled || loading"
+            class="
+                      a-add-to-cart
+                      om-btn--primary
+                      btn--narrow
+                      sf-button--full-width
+                    "
+            @click="showEnquiryModal"
+          >
+            <SfLoader v-if="loading" :loading="loading" />
+            <span>{{ $t("Enquire") }}</span>
+          </SfButton>
+        </div>
+        <slot v-else name="reviews" v-bind="{ maxRating, scoreRating }">
+          <div
+            v-if="typeof scoreRating === 'number'"
+            class="sf-product-card__reviews"
+          >
+            <SfRating
+              class="sf-product-card__rating"
+              :max="maxRating"
+              :score="scoreRating"
+            />
+            <SfButton
+              v-if="reviewsCount"
+              :aria-label="`Read ${reviewsCount} reviews about ${title}`"
+              class="sf-button--pure sf-product-card__reviews-count"
+              @click="$emit('click:reviews')"
+            >
+              ({{ reviewsCount }})
+            </SfButton>
+          </div>
+        </slot>
+      </div>
+    </div>
   </div>
-</div>
-       <div class="action-area__wrap--stock">
-         <span class="stock-pill" :class="{'stock-red': !isAvailable }">In Stock</span>
-        {{promotion || ' '}}
-      </div>
-</div>
 </template>
 <script>
-import { focus } from "@storefront-ui/vue/src/utilities/directives";
-import { colorsValues as SF_COLORS } from "@storefront-ui/shared/variables/colors";
-import { deprecationWarning } from "@storefront-ui/vue/src/utilities/helpers";
-import SfIcon from "@storefront-ui/vue/src/components/atoms/SfIcon/SfIcon.vue";
-import SfLink from "@storefront-ui/vue/src/components/atoms/SfLink/SfLink.vue";
-import SfPrice from "@storefront-ui/vue/src/components/atoms/SfPrice/SfPrice.vue";
-import SfRating from "@storefront-ui/vue/src/components/atoms/SfRating/SfRating.vue";
-import SfImage from "@storefront-ui/vue/src/components/atoms/SfImage/SfImage.vue";
-import SfCircleIcon from "@storefront-ui/vue/src/components/atoms/SfCircleIcon/SfCircleIcon.vue";
-import SfBadge from "@storefront-ui/vue/src/components/atoms/SfBadge/SfBadge.vue";
-import SfButton from "@storefront-ui/vue/src/components/atoms/SfButton/SfButton.vue";
-import OmQuantitySelector from "./om-quantity-selector.vue";
-import { mapGetters } from "vuex";
+import { focus } from '@storefront-ui/vue/src/utilities/directives';
+import { colorsValues as SF_COLORS } from '@storefront-ui/shared/variables/colors';
+import { deprecationWarning } from '@storefront-ui/vue/src/utilities/helpers';
+import SfIcon from '@storefront-ui/vue/src/components/atoms/SfIcon/SfIcon.vue';
+import SfLink from '@storefront-ui/vue/src/components/atoms/SfLink/SfLink.vue';
+import SfPrice from '@storefront-ui/vue/src/components/atoms/SfPrice/SfPrice.vue';
+import SfRating from '@storefront-ui/vue/src/components/atoms/SfRating/SfRating.vue';
+import SfImage from '@storefront-ui/vue/src/components/atoms/SfImage/SfImage.vue';
+import SfCircleIcon from '@storefront-ui/vue/src/components/atoms/SfCircleIcon/SfCircleIcon.vue';
+import SfBadge from '@storefront-ui/vue/src/components/atoms/SfBadge/SfBadge.vue';
+import SfButton from '@storefront-ui/vue/src/components/atoms/SfButton/SfButton.vue';
+import { ModalList } from 'theme/store/ui/modals';
+import OmQuantitySelector from './om-quantity-selector.vue';
+import { mapGetters, mapActions } from 'vuex';
 import { onlineHelper } from '@vue-storefront/core/helpers';
 
 export default {
-  name: "OmProductCard",
+  name: 'OmProductCard',
   components: {
     SfPrice,
     SfRating,
@@ -183,36 +203,36 @@ export default {
   directives: { focus },
   props: {
     product: {
-        type: Object,
-        default: {},
+      type: Object,
+      default: {}
     },
     waranty: {
-        type: String,
-        default: "",
+      type: String,
+      default: ''
     },
     promotion: {
-        type: String,
-        default: "",
+      type: String,
+      default: ''
     },
     offer: {
-        type: String,
-        default: "",
+      type: String,
+      default: ''
     },
     usp2: {
-        type: String,
-        default: "",
+      type: String,
+      default: ''
     },
     secondTitle: {
-        type: String,
-        default: "",
+      type: String,
+      default: ''
     },
     brandColor: {
       type: [Array, Object, String],
-      default: "",
+      default: ''
     },
     brandImage: {
       type: [Array, Object, String],
-      default: "",
+      default: ''
     },
     /**
      * Product image
@@ -220,28 +240,28 @@ export default {
      */
     image: {
       type: [Array, Object, String],
-      default: "",
+      default: ''
     },
     /**
      * Product image width, without unit
      */
     imageWidth: {
       type: [String, Number],
-      default: 216,
+      default: 216
     },
     /**
      * Product image height, without unit
      */
     imageHeight: {
       type: [String, Number],
-      default: 326,
+      default: 326
     },
     /**
      * Badge label
      */
     badgeLabel: {
       type: String,
-      default: "",
+      default: ''
     },
     /**
      * Badge color
@@ -250,21 +270,21 @@ export default {
      */
     badgeColor: {
       type: String,
-      default: "",
+      default: ''
     },
     /**
      * Product title
      */
     title: {
       type: String,
-      default: "",
+      default: ''
     },
     /**
      * Link to product page
      */
     link: {
       type: [String, Object],
-      default: "",
+      default: ''
     },
     /**
      * Link element tag
@@ -274,42 +294,42 @@ export default {
      */
     linkTag: {
       type: String,
-      default: undefined,
+      default: undefined
     },
     /**
      * Product rating
      */
     scoreRating: {
       type: [Number, Boolean],
-      default: false,
+      default: false
     },
     /**
      * Product reviews count
      */
     reviewsCount: {
       type: [Number, Boolean],
-      default: false,
+      default: false
     },
     /**
      * Maximum product rating
      */
     maxRating: {
       type: [Number, String],
-      default: 5,
+      default: 5
     },
     /**
      * Product regular price
      */
     regularPrice: {
       type: [Number, String],
-      default: null,
+      default: null
     },
     /**
      * Product special price
      */
     specialPrice: {
       type: [Number, String],
-      default: null,
+      default: null
     },
     /**
      * Wish list icon
@@ -318,7 +338,7 @@ export default {
      */
     wishlistIcon: {
       type: [String, Array, Boolean],
-      default: "heart",
+      default: 'heart'
     },
     /**
      * Wish list icon for product which has been added to wish list
@@ -327,42 +347,42 @@ export default {
      */
     isOnWishlistIcon: {
       type: [String, Array],
-      default: "heart_fill",
+      default: 'heart_fill'
     },
     /**
      * Status of whether product is on wish list or not
      */
     isOnWishlist: {
       type: Boolean,
-      default: false,
+      default: false
     },
     /**
      * Status of showing add to cart button
      */
     showAddToCartButton: {
       type: Boolean,
-      default: false,
+      default: false
     },
     /**
      * isAddedToCart status of whether button is showed, product is added or not
      */
     isAddedToCart: {
       type: Boolean,
-      deafult: false,
+      deafult: false
     },
     /**
      * addToCartDisabled status of whether button is disabled when out of stock
      */
     addToCartDisabled: {
       type: Boolean,
-      default: false,
+      default: false
     },
     qty1: {
       type: Number,
-      default: 1,
+      default: 1
     }
   },
-  data() {
+  data () {
     return {
       isAddingToCart: false,
       qty: 1,
@@ -371,30 +391,30 @@ export default {
   },
   computed: {
     ...mapGetters({
-      previewQty: "vehicles/qty"
+      previewQty: 'vehicles/qty'
     }),
-    isSFColors() {
+    isSFColors () {
       return SF_COLORS.includes(this.badgeColor.trim());
     },
-    badgeColorClass() {
-      return this.isSFColors ? `${this.badgeColor.trim()}` : "";
+    badgeColorClass () {
+      return this.isSFColors ? `${this.badgeColor.trim()}` : '';
     },
-    currentWishlistIcon() {
+    currentWishlistIcon () {
       return this.isOnWishlist ? this.isOnWishlistIcon : this.wishlistIcon;
     },
-    showAddedToCartBadge() {
+    showAddedToCartBadge () {
       return !this.isAddingToCart && this.isAddedToCart;
     },
-    ariaLabel() {
-      return this.isOnWishlist ? "Remove from wishlist" : "Add to wishlist";
+    ariaLabel () {
+      return this.isOnWishlist ? 'Remove from wishlist' : 'Add to wishlist';
     },
-    wishlistIconClasses() {
-      const defaultClass = "sf-button--pure sf-product-card__wishlist-icon";
+    wishlistIconClasses () {
+      const defaultClass = 'sf-button--pure sf-product-card__wishlist-icon';
       return `${defaultClass} ${
-        this.isOnWishlist ? "sf-product-card--on-wishlist" : ""
+        this.isOnWishlist ? 'sf-product-card--on-wishlist' : ''
       }`;
     },
-    linkComponentTag() {
+    linkComponentTag () {
       deprecationWarning(
         this.$options.name,
         "Prop 'linkTag' has been deprecated and will be removed in v1.0.0. Use 'SfLink' instead."
@@ -403,32 +423,40 @@ export default {
         return this.linkTag;
       }
       if (this.link) {
-        return typeof this.link === "object" || this.$router
-          ? "router-link"
-          : "a";
+        return typeof this.link === 'object' || this.$router
+          ? 'router-link'
+          : 'a';
       }
-      return "div";
-    },
+      return 'div';
+    }
   },
   methods: {
-    toggleIsOnWishlist() {
-      this.$emit("click:wishlist", !this.isOnWishlist);
+    ...mapActions('ui', {
+      openModal: 'openModal'
+    }),
+    showEnquiryModal () {
+      this.openModal({
+        name: ModalList.OmEnquiryModal
+      })
     },
-    onAddToCart(event) {
+    toggleIsOnWishlist () {
+      this.$emit('click:wishlist', !this.isOnWishlist);
+    },
+    onAddToCart (event) {
       event.preventDefault();
-      if (this.isAvailable)  {
+      if (this.isAvailable) {
         this.isAddingToCart = true;
         setTimeout(() => {
           this.isAddingToCart = false;
         }, 1000);
-        this.$emit("click:add-to-cart");
-      }    
+        this.$emit('click:add-to-cart');
+      }
     },
-    updateQTY(value) {
+    updateQTY (value) {
       this.qty = value;
-    },
+    }
   },
-  async mounted() {
+  async mounted () {
     if (this.qty1) this.qty = this.qty1;
     const res = await this.$store.dispatch('stock/check', {
       product: this.product,
@@ -437,13 +465,12 @@ export default {
     let manageQuantity = res.isManageStock;
     let max = res.qty || res.isManageStock ? res.qty : null;
     this.isAvailable = !onlineHelper.isOnline || !!max || !manageQuantity || ['simple', 'configurable'].includes(
-        this.product.type_id
-      );
+      this.product.type_id
+    );
   },
   watch: {
-    qty(value) {
-      if (this.previewQty !== value)
-        this.$store.dispatch("vehicles/saveQTY", value);
+    qty (value) {
+      if (this.previewQty !== value) { this.$store.dispatch('vehicles/saveQTY', value); }
     }
   }
 };

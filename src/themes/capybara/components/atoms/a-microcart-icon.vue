@@ -3,7 +3,7 @@
     class="sf-button--pure a-microcart-icon navigation-icon"
     @click="goToCart"
   >
-    <span class="sf-header__custom-icon--text">{{ $t('Cart') }}</span>
+    <span class="sf-header__custom-icon--text">{{ $t('Shopping cart') }}</span>
     <div :class="menuStyle"
          class="sf-header__custom-icon"
          :aria-label="$t('Open microcart')"

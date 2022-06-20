@@ -45,7 +45,6 @@ export default {
     width: 100%;
     padding: 8px 5px;
     border-radius: 4px;
-    margin-bottom: 10px;  
         option {
             padding: 10px 15px;
         }

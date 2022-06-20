@@ -185,6 +185,18 @@
     font-weight: 700;
     font-family: var(--font-family-bold);
   }
+  .sf-price__special{
+    color: orange;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: var(--font-family-bold);
+  }
+  .sf-price__old{
+    color: orange;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: var(--font-family-primary);
+  }
   .sf-loader__overlay {
     background-color: transparent;
   }

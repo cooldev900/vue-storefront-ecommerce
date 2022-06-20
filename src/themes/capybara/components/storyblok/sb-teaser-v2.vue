@@ -73,7 +73,7 @@ description: 'Receive your item, whether it’s a floor mat or a brake disc, in 
 @import "~@storefront-ui/shared/styles/helpers/breakpoints";
 .sb-key-info {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   background: var(--c-primary);
   align-items: center;
   flex-direction: column;
@@ -108,7 +108,7 @@ description: 'Receive your item, whether it’s a floor mat or a brake disc, in 
 
   &__card {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     position: relative;
     align-items: center;
     flex-direction: column;

@@ -6,34 +6,38 @@
       class="sf-property--full-width property"
       :class="{'sf-property--large': isLarge}"
     />
-    <SfProperty
-      v-if="prices.subtotal"
-      :name="$t('Subtotal')"
-      :value="prices.subtotal | price"
-      class="sf-property--full-width property"
-      :class="{'sf-property--large': isLarge}"
-    />
-    <SfProperty
-      v-if="prices.subtotal_incl_tax"
-      :name="$t('Subtotal Incl Tax')"
-      :value="prices.subtotal_incl_tax | price"
-      class="sf-property--full-width property"
-      :class="{'sf-property--large': isLarge}"
-    />
-    <SfProperty
-      v-if="prices.tax || prices.tax === 0"
-      :name="$t('Tax')"
-      :value="prices.tax | price"
-      class="sf-property--full-width property"
-      :class="{'sf-property--large': isLarge}"
-    />
-    <SfProperty
-      v-if="prices.shipping || prices.shipping === 0"
-      :name="$t('Shipping')"
-      :value="prices.shipping | price"
-      class="sf-property--full-width property"
-      :class="{'sf-property--large': isLarge}"
-    />
+    <div v-if="!!prices.subtotal">
+      <SfProperty
+        :name="$t('Subtotal')"
+        :value="prices.subtotal | price"
+        class="sf-property--full-width property"
+        :class="{'sf-property--large': isLarge}"
+      />
+    </div>
+    <div v-if="!!prices.subtotal_incl_tax">
+      <SfProperty
+        :name="$t('Subtotal Incl Tax')"
+        :value="prices.subtotal_incl_tax | price"
+        class="sf-property--full-width property"
+        :class="{'sf-property--large': isLarge}"
+      />
+    </div>
+    <div v-if="!!prices.tax || prices.tax === 0">
+      <SfProperty
+        :name="$t('Tax')"
+        :value="prices.tax | price"
+        class="sf-property--full-width property"
+        :class="{'sf-property--large': isLarge}"
+      />
+    </div>
+    <div v-if="!!prices.shipping || prices.shipping === 0">
+      <SfProperty
+        :name="$t('Shipping')"
+        :value="prices.shipping | price"
+        class="sf-property--full-width property"
+        :class="{'sf-property--large': isLarge}"
+      />
+    </div>
     <template v-if="prices.discount">
       <SfProperty
         :name="$t('Discount')"
@@ -55,13 +59,14 @@
       class="sf-property--full-width property"
       :class="{'sf-property--large': isLarge}"
     />
-    <SfProperty
-      v-if="fittingProducts.length"
-      :name="$t('Fitment')"
-      :value="totalFittingPrice | price"
-      class="sf-property--full-width property"
-      :class="{'sf-property--large': isLarge}"
-    />
+    <div v-if="fittingProducts.length">
+      <SfProperty
+        :name="$t('Fitment')"
+        :value="totalFittingPrice | price"
+        class="sf-property--full-width property"
+        :class="{'sf-property--large': isLarge}"
+      />
+    </div>
   </div>
 </template>
 
