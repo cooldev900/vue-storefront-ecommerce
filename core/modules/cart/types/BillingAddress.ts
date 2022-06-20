@@ -6,4 +6,5 @@ export default interface BillingAddress {
   street: string[],
   countryId: string,
   telephone: string,
+  email: string,
 }

@@ -358,8 +358,8 @@ export default {
           telephone: this.getPersonalDetails.telephone,
           postcode: this.shippingDetails.zipCode,
           city: this.shippingDetails.city,
-          firstname: this.shippingDetails.firstName,
-          lastname: this.shippingDetails.lastName,
+          firstname: this.getPersonalDetails.firstName,
+          lastname: this.getPersonalDetails.lastName,
           email: this.getPersonalDetails.emailAddress,
           region_code: this.shippingDetails.region_code ? this.shippingDetails.region_code : ''
         }

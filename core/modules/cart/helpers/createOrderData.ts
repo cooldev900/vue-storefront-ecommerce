@@ -41,6 +41,7 @@ const createOrderData = ({
       telephone: personalDetails.telephone,
     },
     billingAddress: {
+      email: personalDetails.emailAddress,
       firstname: paymentDetails.firstName,
       lastname: paymentDetails.lastName,
       city: paymentDetails.city,

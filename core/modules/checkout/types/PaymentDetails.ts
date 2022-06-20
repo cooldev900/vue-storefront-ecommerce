@@ -1,4 +1,5 @@
 export default interface PaymentDetails {
+  email: string,
   firstName: string,
   lastName: string,
   company: string,
