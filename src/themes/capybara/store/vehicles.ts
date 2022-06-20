@@ -39,6 +39,22 @@ export const vehiclesStore = {
     slot_data: []
   },
   actions: {
+    async fetchStoryblok ({ commit }) {
+      const result = { global: {}, home: {}, about: {} };
+      const storeId = currentStoreView().storeId;
+
+      await Promise.all(Object.keys(result).map(async (key) => {
+        const res: any = await axios.get(
+          `${config.api.url}/api/storyblok/storyblok-${storeId}/${key}`
+        );
+
+        if (res?.data?.success) {
+          result[key] = res?.data?.result
+        }
+      }))
+
+      commit('setStoryblok', result);
+    },
     async saveStep ({ commit }, step) {
       await VehicleStorage.saveStepData(step);
       commit('setStep', step);
@@ -61,6 +77,7 @@ export const vehiclesStore = {
     },
     async fetchOpens ({ commit }) {
       let opens = await VehicleStorage.loadOpensData();
+      console.log(opens, 'opens');
       commit('setOpens', opens);
     },
     async loadSlotID({state}) {
@@ -184,6 +201,9 @@ export const vehiclesStore = {
     }
   },
   mutations: {
+    setStoryblok (state, payload) {
+      Vue.set(state, 'storyblok', payload);
+    },
     setBackFlag (state, value) {
       state.backFlag = value;
     },

@@ -1,6 +1,6 @@
 <template>
   <h2 class="step-heading heading heading-sm" :id="id">
-    <span class="progress-step" v-if="!isComplete"><span class="checkout__step-title">Step</span> {{ step }} of 3
+    <span class="progress-step" v-if="!isComplete"><span class="checkout__step-title">Step</span> {{ step }} of {{allStep}}
     </span>
     <span v-else class="progress-step progress-step--complete"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
 width="16" height="16"
@@ -13,6 +13,10 @@ style=" fill:#fff;"><path d="M9.293,23.707a1,1,0,0,0,1.414,0l17-17a1,1,0,1,0-1.4
 export default {
   name: 'OmCheckoutAccordionHeader',
   props: {
+    allStep: {
+      type: String,
+      default: '3'
+    },
     step: {
       type: String,
       default: '1'

@@ -217,6 +217,7 @@ export default {
     async goToShipping () {
       this.nextAccordion(0);
       this.sendDataToCheckout();
+      await this.$store.dispatch('cart/pullMethods', { forceServerSync: true });
     },
     setAppointment () {
       if (this.slot_id) {

@@ -41,7 +41,12 @@ export default {
   computed: {
     ...mapGetters({
       isVirtualCart: 'cart/isVirtualCart',
-      isThankYouPage: 'checkout/isThankYouPage'
+      isThankYouPage: 'checkout/isThankYouPage',
+      getPersonalDetails: 'checkout/getPersonalDetails',
+      shippingMethods: 'checkout/getShippingMethods',
+      paymentMethod: 'checkout/getPaymentMethods',
+      shippingDetails: 'checkout/getShippingDetails',
+      getPaymentDetails: 'checkout/getPaymentDetails'
     })
   },
   async beforeMount () {
@@ -62,6 +67,7 @@ export default {
     this.$bus.$on('checkout-before-shippingMethods', this.onBeforeShippingMethods)
     this.$bus.$on('checkout-after-shippingMethodChanged', this.onAfterShippingMethodChanged)
     this.$bus.$on('checkout-after-validationError', this.focusField)
+    this.$bus.$on('send-sync-totals', this.sendAsyncTotals)
     if (!this.isThankYouPage) {
       this.$store.dispatch('cart/load', { forceClientState: true }).then(() => {
         if (this.$store.state.cart.cartItems.length === 0) {
@@ -104,7 +110,7 @@ export default {
     const storeView = currentStoreView()
     let country = this.$store.state.checkout.shippingDetails.country
     if (!country) country = storeView.i18n.defaultCountry
-    this.$bus.$emit('checkout-before-shippingMethods', country)
+    // this.$bus.$emit('checkout-before-shippingMethods', country)
   },
   beforeDestroy () {
     this.$store.dispatch('checkout/setModifiedAt', 0) // exit checkout
@@ -121,12 +127,29 @@ export default {
     this.$bus.$off('checkout-before-shippingMethods', this.onBeforeShippingMethods)
     this.$bus.$off('checkout-after-shippingMethodChanged', this.onAfterShippingMethodChanged)
     this.$bus.$off('checkout-after-validationError', this.focusField)
+    this.$bus.$off('send-sync-totals', this.sendAsyncTotals)
   },
   watch: {
     '$route': 'activateHashSection',
     'OnlineOnly': 'onNetworkStatusCheck'
   },
   methods: {
+    changeShippingMethod (method_code) {
+      let currentShippingMethod = this.shippingMethods.find(method => method.method_code === method_code);
+      console.log(currentShippingMethod, 'current shipping method');
+      if (currentShippingMethod) {
+        this.shipping = Object.assign(this.shipping, { shippingCarrier: currentShippingMethod.carrier_code, shippingMethod: currentShippingMethod.method_code })
+        this.$bus.$emit('checkout-after-shippingMethodChanged', {
+          country: this.shipping.country,
+          method_code: currentShippingMethod.method_code,
+          carrier_code: currentShippingMethod.carrier_code,
+          payment_method: this.paymentMethod[0].code
+        })
+      }
+    },
+    sendAsyncTotals () {
+      this.changeShippingMethod(this.shippingDetails.shippingMethod);
+    },
     onCartAfterUpdate (payload) {
       if (this.$store.state.cart.cartItems.length === 0) {
         this.notifyEmptyCart()
@@ -134,12 +157,12 @@ export default {
       }
     },
     async onAfterShippingMethodChanged (payload) {
-      await this.$store.dispatch('cart/syncTotals', { forceServerSync: true, methodsData: payload })
+      // await this.$store.dispatch('cart/syncTotals', { forceServerSync: true })
       this.shippingMethod = payload
     },
     onBeforeShippingMethods (country) {
       this.$store.dispatch('checkout/updatePropValue', ['country', country])
-      this.$store.dispatch('cart/syncTotals', { forceServerSync: true })
+      // this.$store.dispatch('cart/syncTotals', { forceServerSync: true })
       this.$forceUpdate()
     },
     async onAfterPlaceOrder (payload) {
@@ -156,13 +179,13 @@ export default {
     onAfterCartSummary (receivedData) {
       this.cartSummary = receivedData
     },
-    onDoPlaceOrder (additionalPayload) {
+    async onDoPlaceOrder (additionalPayload) {
       if (this.$store.state.cart.cartItems.length === 0) {
         this.notifyEmptyCart()
         this.$router.push(this.localizedRoute('/'))
       } else {
         this.payment.paymentMethodAdditional = additionalPayload
-        this.placeOrder()
+        await this.placeOrder()
       }
     },
     onAfterPaymentDetails (receivedData, validationResult) {
@@ -170,6 +193,7 @@ export default {
       this.validationResults.payment = validationResult
       this.activateSection('orderReview')
       this.savePaymentDetails()
+      // this.$bus.$emit('send-sync-totals')
     },
     onAfterShippingDetails (receivedData, validationResult) {
       this.shipping = receivedData
@@ -179,6 +203,7 @@ export default {
 
       const storeView = currentStoreView()
       storeView.tax.defaultCountry = this.shipping.country
+      // this.$bus.$emit('send-sync-totals')
     },
     onAfterPersonalDetails (receivedData, validationResult) {
       this.personalDetails = receivedData
@@ -191,10 +216,17 @@ export default {
       }
       this.savePersonalDetails()
       this.focusedField = null
+      // this.$bus.$emit('send-sync-totals')
     },
     onNetworkStatusCheck (isOnline) {
       this.checkConnection(isOnline)
     },
+    changeShipping  (value) {
+      this.shipping.firstName = value.firstName;
+      this.shipping.lastName = value.lastName;
+      this.shipping.phoneNumber = value.telephone;
+    },
+
     checkStocks () {
       let isValid = true
       for (let child of this.$children) {
@@ -266,19 +298,19 @@ export default {
           products: this.$store.state.cart.cartItems,
           addressInformation: {
             billingAddress: {
-              region: this.activeLocation.region,
+              region: this.getPaymentDetails.state,
               region_id: 0,
-              country_id: 'GB',
-              street: [this.activeLocation.street],
-              company: this.activeLocation.location_name,
-              telephone: this.activeLocation.phone,
-              postcode: this.activeLocation.postcode,
-              city: this.activeLocation.city,
-              firstname: this.personalDetails.firstName,
-              lastname: this.personalDetails.lastName,
-              email: this.personalDetails.emailAddress,
+              country_id: this.getPaymentDetails.country,
+              street: [this.getPaymentDetails?.streetAddress],
+              company: '',
+              telephone: this.getPersonalDetails.telephone,
+              postcode: this.getPaymentDetails.zipCode,
+              city: this.getPaymentDetails.city,
+              firstname: this.getPaymentDetails.firstName,
+              lastname: this.getPaymentDetails.lastName,
+              email: this.getPersonalDetails.emailAddress,
               region_code: this.shipping.region_code ? this.shipping.region_code : '',
-              vat_id: this.payment.taxId
+              vat_id: this.getPaymentDetails.taxId
             },
             shipping_method_code: 'collection',
             shipping_carrier_code: 'collection',
@@ -294,19 +326,19 @@ export default {
           products: this.$store.state.cart.cartItems,
           addressInformation: {
             billingAddress: {
-              region: this.shipping.state,
-              region_id: this.shipping.region_id ? this.shipping.region_id : 0,
-              country_id: this.shipping.country,
-              street: [this.shipping.streetAddress, this.shipping.apartmentNumber],
-              company: this.shipping.company,
-              telephone: this.shipping.phoneNumber,
-              postcode: this.shipping.zipCode,
-              city: this.shipping.city,
-              firstname: this.shipping.firstName,
-              lastname: this.shipping.lastName,
-              email: this.personalDetails.emailAddress,
-              region_code: this.shipping.region_code ? this.shipping.region_code : '',
-              vat_id: this.payment.taxId
+              region: this.getPaymentDetails.state,
+              region_id: this.getPaymentDetails.region_id ? this.getPaymentDetails.region_id : 0,
+              country_id: this.getPaymentDetails.country,
+              street: [this.getPaymentDetails.streetAddress, this.getPaymentDetails.apartmentNumber],
+              company: this.getPaymentDetails.company,
+              telephone: this.getPersonalDetails.telephone,
+              postcode: this.getPaymentDetails.zipCode,
+              city: this.getPaymentDetails.city,
+              firstname: this.getPaymentDetails.firstName,
+              lastname: this.getPaymentDetails.lastName,
+              email: this.getPersonalDetails.emailAddress,
+              region_code: this.getPaymentDetails.region_code ? this.getPaymentDetails.region_code : '',
+              vat_id: this.getPaymentDetails.taxId
             },
             shipping_method_code: this.shippingMethod.method_code ? this.shippingMethod.method_code : this.shipping.shippingMethod,
             shipping_carrier_code: this.shippingMethod.carrier_code ? this.shippingMethod.carrier_code : this.shipping.shippingCarrier,
@@ -318,42 +350,82 @@ export default {
       }
       if (!this.isVirtualCart || !this.locationKind === 'click_collect_free') {
         this.order.addressInformation.shippingAddress = {
-          region: this.shipping.state,
-          region_id: this.shipping.region_id ? this.shipping.region_id : 0,
-          country_id: this.shipping.country,
-          street: [this.shipping.streetAddress, this.shipping.apartmentNumber],
+          region: this.shippingDetails.state,
+          region_id: this.shippingDetails.region_id ? this.shippingDetails.region_id : 0,
+          country_id: this.shippingDetails.country,
+          street: [this.shippingDetails.streetAddress, this.shippingDetails.apartmentNumber],
           company: '',
-          telephone: this.shipping.phoneNumber,
-          postcode: this.shipping.zipCode,
-          city: this.shipping.city,
-          firstname: this.shipping.firstName,
-          lastname: this.shipping.lastName,
-          email: this.personalDetails.emailAddress,
-          region_code: this.shipping.region_code ? this.shipping.region_code : ''
+          telephone: this.getPersonalDetails.telephone,
+          postcode: this.shippingDetails.zipCode,
+          city: this.shippingDetails.city,
+          firstname: this.shippingDetails.firstName,
+          lastname: this.shippingDetails.lastName,
+          email: this.getPersonalDetails.emailAddress,
+          region_code: this.shippingDetails.region_code ? this.shippingDetails.region_code : ''
         }
       }
       if (this.locationKind === 'click_collect_free') {
         this.order.addressInformation.shippingAddress = {
           region: this.activeLocation.region,
-          region_id: this.shipping.region_id ? this.shipping.region_id : 0,
-          country_id: 'GB',
+          region_id: this.shippingDetails.region_id ? this.shippingDetails.region_id : 0,
+          country_id: this.activeLocation?.country ? this.activeLocation.country : 'GB',
           street: [this.activeLocation.street],
           company: this.activeLocation.location_name,
-          telephone: this.activeLocation.phone,
+          telephone: this.getPersonalDetails.telephone,
           postcode: this.activeLocation.postcode,
           city: this.activeLocation.city,
-          firstname: this.personalDetails.firstName,
-          lastname: this.personalDetails.lastName,
-          email: this.personalDetails.emailAddress,
-          region_code: this.shipping.region_code ? this.shipping.region_code : ''
+          firstname: this.getPersonalDetails.firstName,
+          lastname: this.getPersonalDetails.lastName,
+          email: this.getPersonalDetails.emailAddress,
+          region_code: this.shippingDetails.region_code ? this.shippingDetails.region_code : ''
         }
       }
+      console.log(this.order, 'prepare order');
       return this.order
     },
-    placeOrder () {
+    validateOrderBeforeSending () {
+      let order = this.prepareOrder();
+      const requiedFields = ['city', 'country_id', 'email', 'firstname', 'lastname', 'postcode', 'region', 'region_code', 'region_id', 'street', 'telephone'];
+      let errors = [];
+      // Object.keys(order).map(key => {
+      //   if (key === 'addressInformation') return;
+      //   if (!order[key]) errors.push(`The ${key} item is blank. Please check again`);
+      // })
+      Object.keys(order.addressInformation.shippingAddress).map(key => {
+        if (!requiedFields.includes(key)) return;
+        if (key === 'street') {
+          let street = order.addressInformation.shippingAddress[key];
+          let flag = true;
+          if (!street?.length) flag = false;
+          else {
+            flag = !street.some(str => !str);
+          }
+          if (!flag) {
+            errors.push(`The street field in Billing Address is blank. Please check again`)
+          }
+        } else if (!order.addressInformation.shippingAddress[key]) { errors.push(`The ${key} field in Billing Address is blank. Please check again`); }
+      })
+      Object.keys(order.addressInformation.billingAddress).map(key => {
+        if (!requiedFields.includes(key)) return;
+        if (key === 'street') {
+          let street = order.addressInformation.billingAddress[key];
+          let flag = true;
+          if (!street?.length) flag = false;
+          else {
+            flag = !street.some(str => !str);
+          }
+          if (!flag) {
+            errors.push(`The street field in Billing Address is blank. Please check again`)
+          }
+        } else if (!order.addressInformation.billingAddress[key]) { errors.push(`The ${key} field in Billing Address is blank. Please check again`); }
+      })
+      return errors;
+    },
+    async placeOrder () {
       this.checkConnection({ online: typeof navigator !== 'undefined' ? navigator.onLine : true })
       if (this.checkStocks()) {
-        this.$store.dispatch('checkout/placeOrder', { order: this.prepareOrder() })
+        await this.$store.dispatch('checkout/placeOrder', { order: this.prepareOrder() })
+        this.$bus.$emit('notification-progress-stop');
       } else {
         this.notifyNotAvailable()
       }

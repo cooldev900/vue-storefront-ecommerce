@@ -51,7 +51,7 @@ export const Payment = {
       }
     }
     this.changePaymentMethod()
-    this.copyShippingToBillingAddress()
+    // this.copyShippingToBillingAddress()
   },
   beforeDestroy () {
     this.$bus.$off('checkout-after-load', this.onCheckoutLoad)
@@ -64,8 +64,8 @@ export const Payment = {
     },
     shippingDetails: {
       handler () {
-        if (this.sendToShippingAddress) {
-          this.copyShippingToBillingAddress()
+        if (this.sendToShippingAddress ) {
+          // this.copyShippingToBillingAddress()
         }
       },
       deep: true
@@ -134,6 +134,7 @@ export const Payment = {
                 phoneNumber: addresses[i].telephone,
                 paymentMethod: this.paymentMethods[0].code
               }
+              console.log(this.payment, 'billing payment');
               this.generateInvoice = true
               this.sendToBillingAddress = true
               initialized = true
@@ -259,7 +260,7 @@ export const Payment = {
       }
     },
     changeCountry () {
-      this.$store.dispatch('checkout/updatePaymentDetails', { country: this.payment.country })
+      this.$store.dispatch('checkout/updatePaymentDetails', this.payment)
       this.$store.dispatch('cart/syncPaymentMethods', { forceServerSync: true })
     },
     onCheckoutLoad () {

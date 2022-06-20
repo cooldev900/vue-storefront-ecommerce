@@ -30,9 +30,11 @@ export default {
     await this.$store.dispatch('vehicles/fetchVehicles')
     await this.$store.dispatch('vehicles/fetchActiveVehicle')
     await this.$store.dispatch('vehicles/fetchStoryblok')
+    await this.$store.dispatch('vehicles/fetchComplete')
     await this.$store.dispatch('vehicles/fetchOpens')
     await this.$store.dispatch('vehicles/fetchStep')
-    await this.$store.dispatch('vehicles/fetchComplete')
+    const storeId = currentStoreView().storeId
+    document.documentElement.classList.add('theme-' + storeId);
   }
 };
 </script>

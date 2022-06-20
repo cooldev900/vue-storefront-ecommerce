@@ -8,7 +8,7 @@
         name="shipToMyAddress"
         :label="$t('Ship to my default address')"
       />
-      <SfInput
+      <!-- <SfInput
         v-model.trim="shipping.firstName"
         class="form__element form__element--half"
         name="first-name"
@@ -31,17 +31,7 @@
         :valid="!$v.shipping.lastName.$error"
         :error-message="$t('Field is required')"
         @blur="$v.shipping.lastName.$touch()"
-      />
-      <SfInput
-        v-model.trim="shipping.apartmentNumber"
-        class="form__element"
-        name="apartment-number"
-        required
-        :label="$t('House/Apartment number')"
-        :valid="!$v.shipping.apartmentNumber.$error"
-        :error-message="$t('Field is required')"
-        @blur="$v.shipping.apartmentNumber.$touch()"
-      />
+      /> -->
       <SfInput
         v-model.trim="shipping.streetAddress"
         class="form__element"
@@ -51,6 +41,12 @@
         :valid="!$v.shipping.streetAddress.$error"
         :error-message="$t('Field is required')"
         @blur="$v.shipping.streetAddress.$touch()"
+      />
+      <SfInput
+        v-model.trim="shipping.apartmentNumber"
+        class="form__element"
+        name="apartment-number"
+        :label="$t('Address line 2')"
       />
       <SfInput
         v-model.trim="shipping.city"
@@ -82,25 +78,26 @@
         "
         @blur="$v.shipping.zipCode.$touch()"
       />
-      <select
+      <SfSelect
         v-model="shipping.country"
-        class="vehicle-select"
+        class="form__element form__element--half form__element--half-even form__select sf-select--underlined"
         name="countries"
         :label="$t('Country')"
         required
         :valid="!$v.shipping.country.$error"
         :error-message="$t('Field is required')"
         @change="changeCountry"
+        @blur="$v.shipping.country.$touch()"
       >
-        <option
+        <SfSelectOption
           v-for="country in countries"
           :key="country.code"
           :value="country.code"
         >
           {{ country.name }}
-        </option>
-      </select>
-      <SfInput
+        </SfSelectOption>
+      </SfSelect>
+      <!-- <SfInput
         v-model.trim="shipping.phoneNumber"
         class="form__element"
         name="phone"
@@ -109,37 +106,13 @@
         :valid="!$v.shipping.phoneNumber.$error"
         @blur="$v.shipping.phoneNumber.$touch()"
         :error-message="$t('Field is required')"
-      />
+      /> -->
     </div>
-    <SfHeading
-      :title="$t('Shipping method')"
-      :level="4"
-      class="sf-heading--left sf-heading--no-underline title"
-    />
     <div class="form">
-      <div class="form__radio-group">
-        <SfRadio
-          v-for="method in shippingMethods"
-          :key="method.method_code"
-          v-model="shipping.shippingMethod"
-          :value="method.method_code"
-          name="shipping-method"
-          class="form__radio shipping"
-          @input="changeShippingMethod()"
-        >
-          <template #label>
-            <div class="sf-radio__label shipping__label">
-              <div>{{ method.method_title }}</div>
-              <div class="shipping__label-price">
-                {{ method.amount | price }}
-              </div>
-            </div>
-          </template>
-        </SfRadio>
-      </div>
       <div class="form__action">
         <SfButton
-          class="sf-button--full-width form__action-button"
+          class="om-button wide btn"
+          :disabled="($v.shipping.$invalid || !shippingMethods.length)"
           @click="clickContinuePayment"
         >
           {{ $t("Continue to payment") }}
@@ -161,6 +134,8 @@ import {
   SfCheckbox
 } from '@storefront-ui/vue';
 import { createSmoothscroll } from 'theme/helpers';
+import OmLocator from 'theme/components/omni/om-locator';
+
 export default {
   name: 'OShipping',
   components: {
@@ -169,28 +144,26 @@ export default {
     SfButton,
     SfSelect,
     SfHeading,
-    SfCheckbox
+    SfCheckbox,
+    OmLocator
   },
   mixins: [Shipping],
   validations: {
     shipping: {
-      firstName: {
+      // firstName: {
+      //   required,
+      //   minLength: minLength(2),
+      //   unicodeAlpha
+      // },
+      // lastName: {
+      //   required,
+      //   unicodeAlpha
+      // },
+      country: {
         required,
         minLength: minLength(2),
-        unicodeAlpha
-      },
-      lastName: {
-        required,
-        unicodeAlpha
-      },
-      country: {
-        required
       },
       streetAddress: {
-        required,
-        unicodeAlphaNum
-      },
-      apartmentNumber: {
         required,
         unicodeAlphaNum
       },
@@ -203,9 +176,9 @@ export default {
         required,
         unicodeAlpha
       },
-      phoneNumber: {
-        required
-      }
+      // phoneNumber: {
+      //   required
+      // }
     }
   },
   props: {
@@ -218,9 +191,24 @@ export default {
     // createSmoothscroll(document.documentElement.scrollTop || document.body.scrollTop, 0);
   },
   methods: {
-    clickContinuePayment () {
-      this.nextAccordion(1);
-      this.sendDataToCheckout();
+    async clickContinuePayment () {
+      this.nextAccordion(1);      
+      this.$store.dispatch('checkout/savePaymentDetails', {
+        apartmentNumber: this.shipping.apartmentNumber,
+        city: this.shipping.city,
+        company: this.shipping.company,
+        country: this.shipping.country,
+        firstName: this.shipping.firstName,
+        lastName: this.shipping.lastName,
+        paymentMethod: 'cnpayment',
+        phoneNumber: this.shipping.phoneNumber,
+        state: this.shipping.state,
+        streetAddress: this.shipping.streetAddress,
+        taxId: '',
+        zipCode: this.shipping.zipCode
+      });
+      this.sendShippingDataToCheckout();
+      await this.$store.dispatch('cart/pullMethods', { forceServerSync: true })
     }
   }
 };
@@ -292,11 +280,8 @@ export default {
   @include for-mobile {
     &__radio-group {
       position: relative;
-      left: 50%;
-      right: 50%;
-      margin-left: -50vw;
-      margin-right: -50vw;
-      width: 100vw;
+      left: 0;
+      right: 0;
     }
   }
 }

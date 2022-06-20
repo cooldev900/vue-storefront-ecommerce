@@ -1,11 +1,30 @@
 <template>
   <div id="checkout">
+    <div class="mercedes__cart-header">
+      <div class="mb-container">
+        <div class="cart-header">
+          <div class="cart-header__title">
+            <h1 v-if="!isThankYouPage">Checkout</h1>
+            <h1 v-else>Thank You!</h1>
+          </div>
+          <div class="cart-header__illustration-img desktop-only">
+            <SfImage
+              src="/assets/checkout-header-image.png"
+              :width="auto"
+              :height="326"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
     <div v-if="!isThankYouPage" class="checkout grid">
       <div class="checkout__main">
         <SfAccordion :open="opens" class="accordion">
           <SfAccordionItem header="order" ref="personalDetails" id="order">
             <template v-slot:header>
               <OmCheckoutAccordionHeader
+                :allStep="4"
+                :step="1"
                 step="1"
                 title="Your Details"
                 id="order1"
@@ -18,8 +37,8 @@
                 :next-accordion="nextAccordion"
               />
             </div>
-            <div  v-show="isComplete.order">
-              <div class="edit" v-if="editable">
+            <div v-show="isComplete.order">
+              <div class="edit" v-show="editable">
                 <div
                   role="button"
                   tabindex="0"
@@ -30,20 +49,19 @@
                 </div>
               </div>
               <div class="confirm">
-               <div>Your Email: {{ getPersonalDetails.emailAddress }}</div>
-               <div>
-                  Your Appointment:
-                  <div v-for="appointment in appointments" class="appointment">{{appointment}}</div>
-               </div>
+                <div>Your Email: {{getPersonalDetails.emailAddress}}</div>
+                <div>Your Name: {{getPersonalDetails.firstName + ' ' + getPersonalDetails.lastName}}</div>
+                <div>Phone Number: {{getPersonalDetails.telephone}}</div>
               </div>
             </div>
           </SfAccordionItem>
           <SfAccordionItem header="address" ref="shipping" id="address">
             <template v-slot:header>
               <OmCheckoutAccordionHeader
-                step="2"
+                :allStep="4"
+                :step="2"
                 id="address1"
-                title="Fitting Location"
+                title="Delivery Address"
                 :is-complete="isComplete.address"
               />
             </template>
@@ -51,7 +69,7 @@
               <OShipping :next-accordion="nextAccordion" />
             </div>
             <div v-show="isComplete.address">
-              <div class="edit" v-if="editable">
+              <div class="edit" v-show="editable">
                 <div
                   role="button"
                   tabindex="0"
@@ -61,30 +79,62 @@
                   Edit <span>delivery address</span>
                 </div>
               </div>
-              <div class="confirm">
-                Shipping : {{ Object.values(getShippingDetails).join(", ") }}
+              <div class="confirm">                
+                <div v-show="locationKind !== 'click_collect_free'">Shipping Address : {{ shippingAddressText }}</div>
+               <div v-show="locationKind === 'click_collect_free'">Collection from: {{activeLocation.location_name}}</div>
+              </div>
+            </div>
+          </SfAccordionItem>
+          <SfAccordionItem header="delivery" ref="delivery" id="delivery" v-show="locationKind !== 'click_collect_free'">
+            <template v-slot:header>
+              <OmCheckoutAccordionHeader
+                :allStep="4"
+                :step="3"
+                id="delivery"
+                title="Delivery Options"
+                :is-complete="isComplete.delivery"
+              />
+            </template>
+            <div v-show="!isComplete.delivery">
+              <OShippingMethod :next-accordion="nextAccordion" />
+            </div>
+            <div v-show="isComplete.delivery">
+              <div class="edit" v-show="editable">
+                <div
+                  role="button"
+                  tabindex="0"
+                  class="edit__inner"
+                  @click="editAccordion(2)"
+                >
+                  Edit <span>delivery address</span>
+                </div>
+              </div>
+              <div class="confirm">                
+                <div v-show="locationKind !== 'click_collect_free'">Shipping Address : {{ shippingAddressText }}</div>
+               <div v-show="locationKind === 'click_collect_free'">Collection from: {{activeLocation.location_name}}</div>
               </div>
             </div>
           </SfAccordionItem>
           <SfAccordionItem header="payment" ref="payment" id="payment">
             <template v-slot:header>
               <OmCheckoutAccordionHeader
-                step="3"
+                :allStep="4"
+                :step="4"
                 title="Payment"
                 id="payment1"
                 :is-complete="isComplete.payment"
               />
             </template>
             <div v-show="!isComplete.payment">
-              <OPayment :next-accordion="nextAccordion" />
+              <OPayment :next-accordion="nextAccordion" :validateOrderBeforeSending="validateOrderBeforeSending"/>
             </div>
             <div v-show="isComplete.payment">
-              <div class="edit" v-if="editable">
+              <div class="edit" v-show="editable">
                 <div
                   role="button"
                   tabindex="0"
                   class="edit__inner"
-                  @click="editAccordion(2)"
+                  @click="editAccordion(3)"
                 >
                   Edit <span>delivery payment</span>
                 </div>
@@ -106,6 +156,7 @@ import Checkout from '@vue-storefront/core/pages/Checkout';
 import { SfSteps, SfButton, SfAccordion, SfInput, SfImage } from '@storefront-ui/vue';
 import OPayment from 'theme/components/organisms/o-payment';
 import OShipping from 'theme/components/organisms/o-shipping';
+import OShippingMethod from 'theme/components/organisms/o-shipping-method';
 import OConfirmOrder from 'theme/components/organisms/o-confirm-order';
 import OOrderReview from 'theme/components/organisms/o-order-review';
 import OOrderSummary from 'theme/components/organisms/o-order-summary';
@@ -115,6 +166,7 @@ import { mapActions, mapGetters } from 'vuex';
 import OmCheckoutAccordionHeader from 'theme/components/om-checkout/om-checkout-accordion-header.vue';
 import OmLocator from 'theme/components/omni/om-locator.vue';
 import APromoCode from 'theme/components/atoms/a-promo-code';
+import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 
 export default {
   name: 'Checkout',
@@ -133,7 +185,8 @@ export default {
     OmLocator,
     SfInput,
     SfImage,
-    APromoCode
+    APromoCode,
+    OShippingMethod
   },
   mixins: [Checkout],
   data () {
@@ -160,11 +213,13 @@ export default {
           email: ''
         },
         address: {},
+        delivery: {},
         payment: {}
       },
       isComplete: {
         order: false,
         address: false,
+        delivery: false,
         payment: false
       },
       step: -1,
@@ -184,20 +239,16 @@ export default {
       activeLocation: 'omLocator/activeLocation',
       locationKind: 'omLocator/locationKind',
       isVirtualCart: 'cart/isVirtualCart',
-      slot_data: 'vehicles/getSlotData'
     }),
     currentStep () {
       return this.steps.findIndex((step) => this.activeSection[step.key]);
     },
-    appointments () {
-      let slot_data = this.slot_data;
-      slot_data = slot_data.sort((a, b) => a.id - b.id);
-      return slot_data.map(slot => {
-        let date = slot.start_time.slice(0, 10);
-        let start_time = slot.start_time.slice(11, 13);
-        let end_time = slot.end_time.slice(11, 13);
-        return date + ' ' + (start_time > 12 ? (start_time - 12) + ':00 PM' : start_time + ':00 AM') + ' ~ ' + (end_time > 12 ? (end_time - 12) + ':00 PM' : end_time + ':00 AM')
-      });
+    storeview () {
+      return currentStoreView();
+    },
+    shippingAddressText () {
+      let excludeFields = ['firstName', 'lastName', 'emailAddress', 'shippingCarrier', 'shippingMethod', 'region_id', 'telephone', 'phoneNumber', 'country'];
+      return Object.keys(this.getShippingDetails).filter(payment => !excludeFields.includes(payment) && this.getShippingDetails[payment]).map(key => this.getShippingDetails[key]).join(', ');
     }
   },
   methods: {
@@ -208,31 +259,31 @@ export default {
       saveStep: 'vehicles/saveStep',
     }),
     nextAccordion (index) {
-      if (index === 0 && this.locationKind === 'click_collect_free') {
-         this.isComplete[Object.keys(this.models)[index]] = true;
-         this.isComplete = {
-           order: true,
-           address: false,
-           payment: false
-         }
-        //  this.isComplete[Object.keys(this.models)[index + 1]] = true;
-         this.opens = ['order','payment'];
-         this.step = 2;
-         this.saveCompete(this.isComplete);
-         this.saveOpens(this.opens);
-         this.goto();
-         this.saveStep(this.step);
-         this.editable = true;
-         return;
-      }
+      // if (index === 0 && this.locationKind === 'click_collect_free') {
+      //    this.isComplete[Object.keys(this.models)[index]] = true;
+      //    this.isComplete = {
+      //      order: true,
+      //      address: false,
+      //      payment: false
+      //    }
+      //   //  this.isComplete[Object.keys(this.models)[index + 1]] = true;
+      //    this.opens = ['order','payment'];
+      //    this.step = 2;
+      //    this.saveCompete(this.isComplete);
+      //    this.saveOpens(this.opens);
+      //    this.goto();
+      //    this.saveStep(this.step);
+      //    this.editable = true;
+      //    return;
+      // }
       this.isComplete[Object.keys(this.models)[index]] = true;
-      if (this.isComplete[Object.keys(this.models)[index + 1]] === true) index++;
+      // if (this.isComplete[Object.keys(this.models)[index + 1]] === true) index++;
 
-      if (index < 2) {
-        this.step = index + 1;
+      if (index < 3) { 
+          this.step = index + 1;
         this.opens = [...this.opens, Object.keys(this.models)[this.step]];
       }
-      if (index < 3) {
+      if (index < 4) {
         this.isComplete[Object.keys(this.models)[index]] = true;
         this.saveCompete(this.isComplete);
         this.saveOpens(this.opens);
@@ -242,15 +293,25 @@ export default {
       this.editable = true;
     },
     editAccordion (index) {
-      if (this.locationKind === 'click_collect_free' && index === 1) return;
+      // if (this.locationKind === 'click_collect_free' && index === 1) return;
       // this.opens = [...this.opens, Object.keys(this.models)[index]];
       this.editable = false;
-      this.isComplete[Object.keys(this.models)[this.step]] = false;
-      let opens = this.opens.filter(
-        (open) => open !== Object.keys(this.models)[this.step]
-      );
+      let opens = [];
+      for (let i = 0; i < index; i++) {
+        this.isComplete[Object.keys(this.models)[i]] = true;
+        opens.push(Object.keys(this.models)[i]);
+      }
+
+      for (let i = index ; i < 4; i++) {
+        this.isComplete[Object.keys(this.models)[i]] = false;
+      }
+
+      // this.isComplete[Object.keys(this.models)[this.step]] = false;
+      // let opens = this.opens.filter(
+      //   (open) => open !== Object.keys(this.models)[this.step]
+      // );
       this.opens = [...opens, Object.keys(this.models)[index]];
-      this.isComplete[Object.keys(this.models)[index]] = false;
+      // this.isComplete[Object.keys(this.models)[index]] = false;
       this.saveOpens(this.opens);
       this.saveCompete(this.isComplete);
       this.step = index;
@@ -312,7 +373,8 @@ export default {
       if (this.step !== -1) setTimeout(() => { document.getElementById(Object.keys(this.models)[this.step]).scrollIntoView({ behavior: 'smooth' }); }, 0);
     }
   },
-  mounted () { console.log('mounted');
+  async mounted () { 
+    await this.$store.commit('omLocator/setLocationKind', 'delivery_estimate_free');
     if (Object.keys(this.isCompleteData).length > 2) {
       this.isComplete = { ...this.isCompleteData };
     }
@@ -476,8 +538,5 @@ export default {
 ::v-deep .sf-accordion-item__content{
   padding: 10px 0 !important;
   border: none !important
-}
-.appointment {
-  margin: 5px 15px;
 }
 </style>
