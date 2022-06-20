@@ -630,8 +630,8 @@ export default {
         this.changePage();
       }
     },
-    activeVehicle () {
-      this.$store.dispatch('category-next/switchSearchFilters', [
+    activeVehicle (value) {
+      if (value?.national_code) this.$store.dispatch('category-next/switchSearchFilters', [
         { id: 'updated_at:desc', type: 'sort' }
       ]);
     },
