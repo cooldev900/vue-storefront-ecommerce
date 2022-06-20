@@ -133,7 +133,7 @@ export const loadCompleteData = async () => {
       const location = await asyncLocalStorage?.getItem(
         storeView.storeCode + '/isComplete'
       );
-      return location ? JSON.parse(location) : null;
+      return location ? JSON.parse(location) : {};
     }
   } catch (e) {
     console.log('localStorage error----', e);
@@ -160,7 +160,7 @@ export const loadOpensData = async () => {
       const location = await asyncLocalStorage?.getItem(
         storeView.storeCode + '/opens'
       );
-      return location ? JSON.parse(location) : null;
+      return location ? JSON.parse(location) : [];
     }
   } catch (e) {
     console.log('localStorage error----', e);

@@ -4,7 +4,7 @@
     <div class="detailed-cart grid-container">
       <div v-if="totalItems" class="detailed-cart__aside">
         <OOrderSummary />
-          <SfButton class="om-btn--primary checkout--btn" @click="goToCheckouts">
+          <SfButton class="om-btn--primary checkout--btn" @click="goToCheckout">
       Go to checkout
     </SfButton>
       </div>

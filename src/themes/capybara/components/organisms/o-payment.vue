@@ -8,12 +8,12 @@
         name="sendToShippingAddress"
         :label="$t('Copy address data from shipping')"
       /> -->
-      <div class="billing-address-container">
+      <div class="billing-address-container" v-show="sendToBillingAddress">
         <div class="billing-address-container__title">
           Billing address
         </div>
       </div>
-      <div class="billing-address-content">
+      <div class="billing-address-content" v-show="sendToBillingAddress">
         {{ billingAddress }}
       </div>
       <!-- <div class="form__element form__checkbox form_button" v-if="sendToBillingAddress" @click="sendToBillingAddress = !sendToBillingAddress">
@@ -131,7 +131,7 @@
           {{ country.name }}
         </SfSelectOption>
       </SfSelect>
-      <SfInput
+      <!-- <SfInput
         v-if="!sendToBillingAddress"
         v-model.trim="payment.phoneNumber"
         class="form__element"
@@ -141,7 +141,7 @@
         :valid="!$v.payment.phoneNumber.$error"
         @blur="$v.payment.phoneNumber.$touch()"
         :error-message="$t('Field is required')"
-      />
+      /> -->
       <SfCheckbox
         v-if="!sendToBillingAddress"
         v-model="generateInvoice"
@@ -192,8 +192,9 @@
       :title="$t('Payment method')"
       :level="3"
       class="sf-heading--left sf-heading--no-underline title"
+      v-show="sendToBillingAddress"
     />
-    <OmAlertBox type="info" style="margin-bottom: 20px">
+    <OmAlertBox type="info" style="margin-bottom: 20px" v-show="sendToBillingAddress">
       <template #message>
         <div class="om-alert-box-message">
           <div>
@@ -204,8 +205,8 @@
         </div>
       </template>
     </OmAlertBox>
-    <img style="max-width: 350px" src="/assets/supported-cards.png">
-    <div class="form">
+    <img style="max-width: 350px" src="/assets/supported-cards.png" v-show="sendToBillingAddress">
+    <div class="form" v-show="sendToBillingAddress">
       <div class="form__radio-group" style="display: none">
         <SfRadio
           v-for="method in paymentMethods"
@@ -220,7 +221,7 @@
         <!-- <payment-stripe v-if="payment.paymentMethod === 'cnpayment'" /> -->
         <div id="checkout-order-review-additional-container" />
       </div>
-      <div class="form__action">
+      <div class="form__action" v-show="sendToBillingAddress">
         <!-- it's epdq form -->
         <!-- <form
           class="sf-button--full-width"
