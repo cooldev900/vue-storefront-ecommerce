@@ -4,7 +4,7 @@
     <div class="detailed-cart grid-container">
       <div v-if="totalItems" class="detailed-cart__aside">
         <OOrderSummary />
-          <SfButton class="om-btn--primary checkout--btn" @click="goToCheckout">
+          <SfButton class="om-btn--primary checkout--btn" @click="goToCheckouts">
       Go to checkout
     </SfButton>
       </div>
@@ -284,6 +284,7 @@ export default {
 #detailed-cart {
   box-sizing: border-box;
   background: #f3f4f4;
+  padding-bottom: 10px;
 }
 .breadcrumbs {
   padding: var(--spacer-base) 0;
@@ -431,5 +432,8 @@ position: relative;
 ::v-deep .svg-container {
   min-width: 40px !important;
   min-height: auto;
+}
+::v-deep .sf-collected-product__more-actions{
+  display: none;
 }
 </style>

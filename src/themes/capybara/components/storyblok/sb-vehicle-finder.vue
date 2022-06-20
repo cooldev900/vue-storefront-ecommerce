@@ -2,7 +2,7 @@
   <div class="af-vehicle-finder">
     <div class="container">
       <SfTabs :open-tab="selectedTab">
-        <SfTab title="Tire By Vehicle">
+        <SfTab :title="$t('Tire By Vehicle')">
           <div class="selector-wrapper">
             <select
               v-for="(selectorName, index) in Object.keys(options.vehicle)"
@@ -27,16 +27,16 @@
               :disabled="disableVehicleGoButton"
               @click="fetchNationalCode('vehicle')"
             >
-              {{ isModelSet ? 'Start New Search' :  'Find My Tires' }}
+              {{ isModelSet ? $t('Start New Search') : $t('Find My Tires') }}
             </SfButton>
           </div>
           <div class="cta">
             <div class="notSure"><span class="infoIcon">i</span>
-              <a @click="updateVisible(true)">How do I find my Tire Size?</a>
+              <a @click="updateVisible(true)">{{ $t('How Do I Find Tire Size') }}</a>
             </div>
           </div>
         </SfTab>
-        <SfTab title="By Tire Size">
+        <SfTab :title="$t('By Tire Size')">
           <div class="selector-wrapper">
             <select
               v-for="(selectorName, index) in Object.keys(options.size)"
@@ -66,7 +66,7 @@
           </div>
           <div class="cta">
             <div class="notSure"><span class="infoIcon">i</span>
-              <a class="fancypop" @click="updateVisible(true)">How do I find my Tire Size</a>
+              <a class="fancypop" @click="updateVisible(true)">{{ $t('How Do I Find Tire Size') }}</a>
             </div>
           </div>
         </SfTab>
@@ -328,6 +328,7 @@ export default {
     background: orange;
     border: none;
     color: #fff;
+    z-index: 0;
     font-weight: 700;
     margin: 0;
     &--active{

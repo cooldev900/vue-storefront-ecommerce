@@ -1,9 +1,8 @@
 <template>
   <SfButton
     class="sf-button--pure om-vehicle-icon navigation-icon desktop-only"
-    @click="openVehicleCart({ type: 'vehiclecart' })"
   >
-    <span class="sf-header__custom-icon">عربى</span>
+    <span class="sf-header__custom-icon">{{ $t('Language') }}</span>
   </SfButton>
 </template>
 

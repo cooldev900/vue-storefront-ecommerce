@@ -139,7 +139,7 @@ export default {
           name: 'Our Services',
           children: [
              { name: 'Tires', link: '/tires' },
-             { name: 'Oils & Lubricants', link: '/oils-lubricants' },
+             { name: 'Lubricants', link: '/oils-lubricants' },
              { name: 'Batteries', link: '/batteries' }
           ]
         }

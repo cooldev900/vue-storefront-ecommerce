@@ -1,6 +1,6 @@
 <template>
-<div>
-  <div id="category">
+  <div>
+    <div id="category">
       <OmCategoryHeader
         v-if="!!getCurrentCategory"
         :title="getCategoryTitle"
@@ -8,46 +8,44 @@
         :description="getCurrentCategory.description"
         :parent-id="getCurrentCategory.parent_id"
       />
-        <div class="navbar section grid-container">
-          <div class="navbar__main">
-            <div class="navbar__filter mobile-only">
-              <SfButton
-                class="sf-button--text navbar__filters-button"
-                @click="isFilterSidebarOpen = true"
+      <div class="navbar section grid-container">
+        <div class="navbar__main">
+          <div class="navbar__filter mobile-only">
+            <SfButton
+              class="sf-button--text navbar__filters-button"
+              @click="isFilterSidebarOpen = true"
+            >
+              <SfIcon
+                size="18px"
+                class="navbar__filters-icon"
+                color="#BEBFC4"
+                icon="filter"
+              />
+              {{ $t("Filters") }}
+            </SfButton>
+            <template v-if="activeFiltersCount">
+              ({{ activeFiltersCount }})
+              <span> &nbsp;&mdash;&nbsp;</span>
+              <button
+                @click="clearAllFilters"
+                class="sf-button sf-button--text navbar__filters-clear-all"
               >
-                <SfIcon
-                  size="18px"
-                  class="navbar__filters-icon"
-                  color="#BEBFC4"
-                  icon="filter"
-                />
-                {{ $t("Filters") }}
-              </SfButton>
-              <template v-if="activeFiltersCount">
-                ({{ activeFiltersCount }})
-                <span> &nbsp;&mdash;&nbsp;</span>
-                <button
-                  @click="clearAllFilters"
-                  class="sf-button sf-button--text navbar__filters-clear-all"
-                >
-                  {{ $t("Clear all") }}
-                </button>
-              </template>
-            </div>
-            <div class="navbar__counter">
-              <span class="navbar__label desktop-only">
-                {{ $t("Products found") }}:
-              </span>
-              <strong class="desktop-only">{{ productTotalCount }}</strong>
-              <span class="navbar__label mobile-only">
-                {{ $t("{count} items", { count: productTotalCount }) }}
-              </span>
-            </div>
-            <div class="navbar__sort">
-              <span class="navbar__label desktop-only"
-                >{{ $t("Sort By") }}:</span
-              >
-              <!-- <SfSelect
+                {{ $t("Clear all") }}
+              </button>
+            </template>
+          </div>
+          <div class="navbar__counter">
+            <span class="navbar__label desktop-only">
+              {{ $t("Products found") }}:
+            </span>
+            <strong class="desktop-only">{{ productTotalCount }}</strong>
+            <span class="navbar__label mobile-only">
+              {{ $t("{count} items", { count: productTotalCount }) }}
+            </span>
+          </div>
+          <div class="navbar__sort">
+            <span class="navbar__label desktop-only">{{ $t("Sort By") }}:</span>
+            <!-- <SfSelect
                 class="navbar__select sort-by"
                 ref="SortBy"
                 :selected="sortOrder"
@@ -62,21 +60,21 @@
                   {{ option.label }}
                 </SfSelectOption>
               </SfSelect> -->
-              <select
-                class="navbar__select select-mobile"
-                ref="SortBy"
-                @change="changeSortOder"
-                :value="sortOrder"
+            <select
+              class="navbar__select select-mobile"
+              ref="SortBy"
+              @change="changeSortOder"
+              :value="sortOrder"
+            >
+              <option
+                v-for="option in sortOptions"
+                :value="option.id"
+                :key="option.id"
               >
-                <option
-                  v-for="option in sortOptions"
-                  :value="option.id"
-                  :key="option.id"
-                >
-                  {{ option.label }}
-                </option>
-              </select>
-              <!-- <SfButton
+                {{ option.label }}
+              </option>
+            </select>
+            <!-- <SfButton
                 class="
                   sf-button--text
                   navbar__filters-button
@@ -88,27 +86,178 @@
                 {{ $t("Sort By") }}
                 <ASortIcon />
               </SfButton> -->
-            </div>
           </div>
         </div>
-    <div class="main grid-container">
-      <div class="sidebar desktop-only">
-        <div>
-          <omTyreFinder v-if="shouldShowVehicleCard" />
+      </div>
+      <div class="main grid-container">
+        <div class="sidebar desktop-only">
+          <div>
+            <omTyreFinder v-if="shouldShowVehicleCard" />
+          </div>
+          <div class="filters">
+            <lazy-hydrate :trigger-hydration="!loading">
+              <SfAccordion
+                class="tyre-filters"
+                open="all"
+                :first-open="true"
+                :multiple="true"
+                transition=""
+                show-chevron
+              >
+                <template v-for="(filters, filterType) in availableFilters">
+                  <SfAccordionItem :key="filterType" :header="title(filterType)">
+                    <template v-if="filterType === 'color_sfilter'">
+                      <div class="filters__colors" :key="filterType + 'filter'">
+                        <SfColor
+                          v-for="filter in filters"
+                          :key="filter.id"
+                          :color="filter.color"
+                          :selected="isFilterActive(filter)"
+                          class="filters__color"
+                          @click="changeFilter(filter)"
+                        />
+                      </div>
+                    </template>
+                    <template v-else>
+                      <SfFilter
+                        v-for="filter in filters"
+                        :key="filter.id"
+                        :label="filter.label"
+                        :count="filter.count"
+                        :color="filter.color"
+                        :selected="isFilterActive(filter)"
+                        class="filters__item"
+                        @change="changeFilter(filter)"
+                      />
+                    </template>
+                  </SfAccordionItem>
+                </template>
+              </SfAccordion>
+            </lazy-hydrate>
+          </div>
+        </div>
+        <div class="products">
+          <div v-if="loading">
+            <transition-group
+              appear
+              name="products__slide"
+              tag="div"
+              class="products__grid"
+            >
+              <OmProductCardLoader
+                v-for="(value, index) in new Array(9).fill('')"
+                :key="index"
+              />
+            </transition-group>
+          </div>
+          <SfHeading
+            v-if="isCategoryEmpty && !loading"
+            :title="$t('No products found!')"
+            :subtitle="
+              $t(
+                'Please change Your search criteria and try again. If still not finding anything relevant, please visit the Home page and try out some of our bestsellers!'
+              )
+            "
+          />
+          <template v-if="!isCategoryEmpty && !loading">
+            <!-- <lazy-hydrate :trigger-hydration="!loading"> -->
+
+            <transition-group
+              appear
+              name="products__slide"
+              tag="div"
+              class="products__grid"
+            >
+              <OmProductCard
+                v-for="product in currentPageProducts"
+                :product="product"
+                :key="product.id"
+                :title="product.enhanced_title || product.title"
+                :description="product.description"
+                :image="product.image"
+                :regular-price="product.price.regular"
+                :special-price="product.price.special"
+                :link="product.link"
+                :qty1="product.qty"
+                :brand-image="product.brand_logo"
+                :brand-color="product.brand_colour"
+                link-tag="router-link"
+                :wishlist-icon="false"
+                offer="Save 10% with code NEW10"
+                promotion="Mobile Fitting Service Available"
+                :waranty="product.usp1"
+                :usp2="product.usp2"
+                :second-title="product.secondary_title"
+                class="products__product-card"
+              >
+                <template #image>
+                  <SfImage
+                    class="sf-product-card__image"
+                    :src="product.image"
+                    :alt="product.enhanced_title || product.title"
+                    :width="216"
+                    :height="326"
+                    lazy
+                    :threshold="0.2"
+                  />
+                </template>
+                <template
+                  v-if="!product.price.regular && !product.price.special"
+                  #price
+                >
+                  <b :style="{ color: 'black' }">Not Available Online</b>
+                </template>
+                <template #reviews>
+                  <div class="product-card__action-area">
+                    <SfButton
+                      :disabled="isProductDisabled || loading"
+                      class="
+                      a-add-to-cart
+                      om-btn--primary
+                      btn--narrow
+                      sf-button--full-width
+                    "
+                      @click.native="addToCart(product)"
+                    >
+                      <SfLoader v-if="loading" :loading="loading" />
+                      <span v-else>{{ $t("Add to cart") }}</span>
+                    </SfButton>
+                  </div>
+                </template>
+              </OmProductCard>
+            </transition-group>
+            <!-- </lazy-hydrate> -->
+            <SfPagination
+              v-if="totalPages > 1"
+              class="products__pagination desktop-only"
+              :current="currentPage"
+              :total="totalPages"
+              :visible="3"
+            />
+          </template>
+        </div>
+      </div>
+      <SfSidebar
+        :visible="isFilterSidebarOpen"
+        :title="$t('Filters')"
+        class="sidebar-filters"
+        @close="isFilterSidebarOpen = false"
+      >
+        <div v-if="shouldShowVehicleCard">
+          <OmVehicleCartCard :vehicle="activeVehicle" :active="true" />
         </div>
         <div class="filters">
           <lazy-hydrate :trigger-hydration="!loading">
             <SfAccordion
-              class="tyre-filters"
+              :first-open="true"
               open="all"
-              :firstOpen="true"
               :multiple="true"
               transition=""
               show-chevron
             >
               <template v-for="(filters, filterType) in availableFilters">
                 <SfAccordionItem :key="filterType" :header="title(filterType)">
-                  <template v-if="filterType === 'color_sfilter'">
+                  <template v-if="filterType === 'colour_filter'">
                     <div class="filters__colors" :key="filterType + 'filter'">
                       <SfColor
                         v-for="filter in filters"
@@ -137,202 +286,51 @@
             </SfAccordion>
           </lazy-hydrate>
         </div>
-      </div>
-      <div class="products">
-        <div v-if="loading">
-          <transition-group
-            appear
-            name="products__slide"
-            tag="div"
-            class="products__grid"
-          >
-            <OmProductCardLoader
-              v-for="(value, index) in new Array(9).fill('')"
-              :key="index"
-            />
-          </transition-group>
-        </div>
-        <SfHeading
-          v-if="isCategoryEmpty && !loading"
-          :title="$t('No products found!')"
-          :subtitle="
-            $t(
-              'Please change Your search criteria and try again. If still not finding anything relevant, please visit the Home page and try out some of our bestsellers!'
-            )
-          "
-        />
-        <template v-if="!isCategoryEmpty && !loading">
-          <!-- <lazy-hydrate :trigger-hydration="!loading"> -->
-
-          <transition-group
-            appear
-            name="products__slide"
-            tag="div"
-            class="products__grid"
-          >
-            <OmProductCard
-              v-for="product in currentPageProducts"
-              :product="product"
-              :key="product.id"
-              :title="product.enhanced_title || product.title"
-              :description="product.description"
-              :image="product.image"
-              :regular-price="product.price.regular"
-              :special-price="product.price.special"
-              :link="product.link"
-              :qty1 = "product.qty"
-              :brandImage="product.brand_logo"
-              :brandColor="product.brand_colour"
-              link-tag="router-link"
-              :wishlist-icon="false"
-              offer="Save 10% with code NEW10"
-              promotion="Mobile Fitting Service Available"
-              :waranty="product.usp1"
-              :usp2="product.usp2"
-              :secondTitle="product.secondary_title"
-              class="products__product-card"
+        <template #content-bottom>
+          <div class="filters__buttons">
+            <SfButton
+              class="sf-button--full-width om-btn--primary"
+              @click="isFilterSidebarOpen = false"
             >
-              <template #image>
-                <SfImage
-                  class="sf-product-card__image"
-                  :src="product.image"
-                  :alt="product.enhanced_title || product.title"
-                  :width="216"
-                  :height="326"
-                  lazy
-                  :threshold="0.2"
-                />
-              </template>
-              <template
-                v-if="!product.price.regular && !product.price.special"
-                #price
-              >
-                <b :style="{ color: 'black' }">Not Available Online</b>
-              </template>
-              <template #reviews>
-                <div class="product-card__action-area">
-                  <SfButton
-                    :disabled="isProductDisabled || loading"
-                    class="
-                      a-add-to-cart
-                      om-btn--primary
-                      btn--narrow
-                      sf-button--full-width
-                    "
-                    @click.native="addToCart(product)"
-                  >
-                    <SfLoader v-if="loading" :loading="loading" />
-                    <span v-else>{{ $t("Add to cart") }}</span>
-                  </SfButton>
-                </div>
-              </template>
-            </OmProductCard>
-          </transition-group>
-          <!-- </lazy-hydrate> -->
-          <SfPagination
-            v-if="totalPages > 1"
-            class="products__pagination desktop-only"
-            :current="currentPage"
-            :total="totalPages"
-            :visible="3"
-          />
+              {{ $t("Done") }}
+            </SfButton>
+            <SfButton
+              class="sf-button--full-width filters__button-clear om-btn--secondary"
+              @click="clearAllFilters"
+            >
+              {{ $t("Clear all") }}
+            </SfButton>
+          </div>
         </template>
-      </div>
+      </SfSidebar>
     </div>
-    <SfSidebar
-      :visible="isFilterSidebarOpen"
-      :title="$t('Filters')"
-      class="sidebar-filters"
-      @close="isFilterSidebarOpen = false"
-    >
-      <div v-if="shouldShowVehicleCard">
-        <OmVehicleCartCard :vehicle="activeVehicle" :active="true" />
-      </div>
-      <div class="filters">
-        <lazy-hydrate :trigger-hydration="!loading">
-          <SfAccordion
-            :first-open="true"
-            open="all"
-            :multiple="true"
-            transition=""
-            show-chevron
-          >
-            <template v-for="(filters, filterType) in availableFilters">
-              <SfAccordionItem :key="filterType" :header="title(filterType)">
-                <template v-if="filterType === 'colour_filter'">
-                  <div class="filters__colors" :key="filterType + 'filter'">
-                    <SfColor
-                      v-for="filter in filters"
-                      :key="filter.id"
-                      :color="filter.color"
-                      :selected="isFilterActive(filter)"
-                      class="filters__color"
-                      @click="changeFilter(filter)"
-                    />
-                  </div>
-                </template>
-                <template v-else>
-                  <SfFilter
-                    v-for="filter in filters"
-                    :key="filter.id"
-                    :label="filter.label"
-                    :count="filter.count"
-                    :color="filter.color"
-                    :selected="isFilterActive(filter)"
-                    class="filters__item"
-                    @change="changeFilter(filter)"
-                  />
-                </template>
-              </SfAccordionItem>
-            </template>
-          </SfAccordion>
-        </lazy-hydrate>
-      </div>
-      <template #content-bottom>
-        <div class="filters__buttons">
-          <SfButton
-            class="sf-button--full-width om-btn--primary"
-            @click="isFilterSidebarOpen = false"
-          >
-            {{ $t("Done") }}
-          </SfButton>
-          <SfButton
-            class="sf-button--full-width filters__button-clear om-btn--secondary"
-            @click="clearAllFilters"
-          >
-            {{ $t("Clear all") }}
-          </SfButton>
-        </div>
-      </template>
-    </SfSidebar>
-  </div>
-  <SbTeaseV2 />
+    <SbTeaseV2 />
   </div>
 </template>
 
 <script>
-import SbTeaseV2 from "theme/components/storyblok/sb-teaser-v2.vue";
-import LazyHydrate from "vue-lazy-hydration";
-import { mapGetters, mapActions } from "vuex";
-import castArray from "lodash-es/castArray";
-import config from "config";
+import SbTeaseV2 from 'theme/components/storyblok/sb-teaser-v2.vue';
+import LazyHydrate from 'vue-lazy-hydration';
+import { mapGetters, mapActions } from 'vuex';
+import castArray from 'lodash-es/castArray';
+import config from 'config';
 import {
   buildFilterProductsQuery,
-  isServer,
-} from "@vue-storefront/core/helpers";
-import i18n from "@vue-storefront/i18n";
-import onBottomScroll from "@vue-storefront/core/mixins/onBottomScroll";
-import { htmlDecode } from "@vue-storefront/core/filters";
-import { quickSearchByQuery } from "@vue-storefront/core/lib/search";
-import { getSearchOptionsFromRouteParams } from "@vue-storefront/core/modules/catalog-next/helpers/categoryHelpers";
-import { catalogHooksExecutors } from "@vue-storefront/core/modules/catalog-next/hooks";
+  isServer
+} from '@vue-storefront/core/helpers';
+import i18n from '@vue-storefront/i18n';
+import onBottomScroll from '@vue-storefront/core/mixins/onBottomScroll';
+import { htmlDecode } from '@vue-storefront/core/filters';
+import { quickSearchByQuery } from '@vue-storefront/core/lib/search';
+import { getSearchOptionsFromRouteParams } from '@vue-storefront/core/modules/catalog-next/helpers/categoryHelpers';
+import { catalogHooksExecutors } from '@vue-storefront/core/modules/catalog-next/hooks';
 import {
   getTopLevelCategories,
   prepareCategoryMenuItem,
-  prepareCategoryProduct,
-} from "theme/helpers";
-import { currentStoreView } from "@vue-storefront/core/lib/multistore";
-import ASortIcon from "theme/components/atoms/a-sort-icon";
+  prepareCategoryProduct
+} from 'theme/helpers';
+import { currentStoreView } from '@vue-storefront/core/lib/multistore';
+import ASortIcon from 'theme/components/atoms/a-sort-icon';
 import {
   SfIcon,
   SfList,
@@ -350,16 +348,16 @@ import {
   SfProductCard,
   SfSearchBar,
   SfImage
-} from "@storefront-ui/vue";
-import omTyreFinder from "theme/components/omni/om-vehicle/om-tyre-finder";
-import OmCategoryHeader from "theme/components/omni/om-category-header";
-import OmProductCardLoader from "theme/components/omni/skeletons/om-product-card-loader.vue";
-import SvgViewer from "theme/components/svg-viewer.vue";
-import { ModalList } from "theme/store/ui/modals";
-import { createSmoothscroll } from "theme/helpers";
-import SearchPanelMixin from "@vue-storefront/core/compatibility/components/blocks/SearchPanel/SearchPanel";
-import OmAppointmentSelector from "theme/components/omni/om-appointment-selector.vue";
-import OmProductCard from "theme/components/omni/om-product-card.vue";
+} from '@storefront-ui/vue';
+import omTyreFinder from 'theme/components/omni/om-vehicle/om-tyre-finder';
+import OmCategoryHeader from 'theme/components/omni/om-category-header';
+import OmProductCardLoader from 'theme/components/omni/skeletons/om-product-card-loader.vue';
+import SvgViewer from 'theme/components/svg-viewer.vue';
+import { ModalList } from 'theme/store/ui/modals';
+import { createSmoothscroll } from 'theme/helpers';
+import SearchPanelMixin from '@vue-storefront/core/compatibility/components/blocks/SearchPanel/SearchPanel';
+import OmAppointmentSelector from 'theme/components/omni/om-appointment-selector.vue';
+import OmProductCard from 'theme/components/omni/om-product-card.vue';
 import buildQuery from '@vue-storefront/core/modules/catalog/helpers/associatedProducts/buildQuery.ts';
 import { ProductService } from '@vue-storefront/core/data-resolver/ProductService';
 import { Logger } from '@vue-storefront/core/lib/logger';
@@ -372,24 +370,24 @@ const LAZY_LOADING_ACTIVATION_BREAKPOINT = 1024;
 const composeInitialPageState = async (store, route, forceLoad = false) => {
   try {
     const filters = getSearchOptionsFromRouteParams(route.params);
-    const cachedCategory = store.getters["category-next/getCategoryFrom"](
+    const cachedCategory = store.getters['category-next/getCategoryFrom'](
       route.path
     );
     const currentCategory =
       cachedCategory && !forceLoad
         ? cachedCategory
-        : await store.dispatch("category-next/loadCategory", { filters });
-    await store.dispatch("category-next/loadCategoryProducts", {
+        : await store.dispatch('category-next/loadCategory', { filters });
+    await store.dispatch('category-next/loadCategoryProducts', {
       route,
       category: currentCategory,
-      pageSize: THEME_PAGE_SIZE,
+      pageSize: THEME_PAGE_SIZE
     });
     const breadCrumbsLoader = store.dispatch(
-      "category-next/loadCategoryBreadcrumbs",
+      'category-next/loadCategoryBreadcrumbs',
       {
         category: currentCategory,
         currentRouteName: currentCategory.name,
-        omitCurrent: true,
+        omitCurrent: true
       }
     );
 
@@ -401,7 +399,7 @@ const composeInitialPageState = async (store, route, forceLoad = false) => {
 };
 
 export default {
-  name: "CategoryPage",
+  name: 'CategoryPage',
   components: {
     LazyHydrate,
     ASortIcon,
@@ -430,7 +428,7 @@ export default {
     SbTeaseV2
   },
   mixins: [onBottomScroll, SearchPanelMixin],
-  data() {
+  data () {
     return {
       loading: true,
       loadingProducts: false,
@@ -445,103 +443,103 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getCurrentSearchQuery: "category-next/getCurrentSearchQuery",
-      getCategoryProducts: "category-next/getCategoryProducts",
-      getCurrentCategory: "category-next/getCurrentCategory",
-      getCategoryProductsTotal: "category-next/getCategoryProductsTotal",
-      getAvailableFilters: "category-next/getAvailableFilters",
-      getCurrentFilters: "category-next/getCurrentFilters",
-      hasActiveFilters: "category-next/hasActiveFilters",
-      getSystemFilterNames: "category-next/getSystemFilterNames",
-      getCategories: "category/getCategories",
-      getBreadcrumbsRoutes: "breadcrumbs/getBreadcrumbsRoutes",
-      getBreadcrumbsCurrent: "breadcrumbs/getBreadcrumbsCurrent",
-      getAttributeLabelById: "vehicles/getAttributeLabelById",
-      getAttributeIdByLabel: "vehicles/getAttributeIdByLabel",
-      activeVehicle: "vehicles/activeVehicle",
-      qty: "vehicles/getQty"
+      getCurrentSearchQuery: 'category-next/getCurrentSearchQuery',
+      getCategoryProducts: 'category-next/getCategoryProducts',
+      getCurrentCategory: 'category-next/getCurrentCategory',
+      getCategoryProductsTotal: 'category-next/getCategoryProductsTotal',
+      getAvailableFilters: 'category-next/getAvailableFilters',
+      getCurrentFilters: 'category-next/getCurrentFilters',
+      hasActiveFilters: 'category-next/hasActiveFilters',
+      getSystemFilterNames: 'category-next/getSystemFilterNames',
+      getCategories: 'category/getCategories',
+      getBreadcrumbsRoutes: 'breadcrumbs/getBreadcrumbsRoutes',
+      getBreadcrumbsCurrent: 'breadcrumbs/getBreadcrumbsCurrent',
+      getAttributeLabelById: 'vehicles/getAttributeLabelById',
+      getAttributeIdByLabel: 'vehicles/getAttributeIdByLabel',
+      activeVehicle: 'vehicles/activeVehicle',
+      qty: 'vehicles/getQty'
     }),
-    isLazyHydrateEnabled() {
-      return config.ssr.lazyHydrateFor.includes("category-next.products");
+    isLazyHydrateEnabled () {
+      return config.ssr.lazyHydrateFor.includes('category-next.products');
     },
-    isCategoryEmpty() {
+    isCategoryEmpty () {
       return this.getCategoryProductsTotal === 0;
     },
-    productTotalCount() {
+    productTotalCount () {
       return this.getCategoryProductsTotal;
     },
-    isLazyLoadingEnabled() {
+    isLazyLoadingEnabled () {
       return this.browserWidth < LAZY_LOADING_ACTIVATION_BREAKPOINT;
     },
-    breadcrumbs() {
+    breadcrumbs () {
       const items = this.getBreadcrumbsRoutes
         .map((route) => ({
           text: htmlDecode(route.name),
           route: {
-            link: route.route_link,
-          },
+            link: route.route_link
+          }
         }))
         .concat({
-          text: htmlDecode(this.getBreadcrumbsCurrent),
+          text: htmlDecode(this.getBreadcrumbsCurrent)
         });
 
       items.shift();
 
       return items;
     },
-    categories() {
+    categories () {
       return getTopLevelCategories(this.getCategories)
         .map((category) => {
           const viewAllMenuItem = {
             ...category,
-            name: i18n.t("View all"),
-            position: 0,
+            name: i18n.t('View all'),
+            position: 0
           };
 
           const subCategories = category.children_data
             ? category.children_data
-                .map((subCategory) =>
-                  prepareCategoryMenuItem(
-                    this.getCategories.find(
-                      (category) => category.id === subCategory.id
-                    )
+              .map((subCategory) =>
+                prepareCategoryMenuItem(
+                  this.getCategories.find(
+                    (category) => category.id === subCategory.id
                   )
                 )
-                .filter(Boolean)
+              )
+              .filter(Boolean)
             : [];
 
           return {
             ...prepareCategoryMenuItem(category),
             items: [prepareCategoryMenuItem(viewAllMenuItem)]
               .concat(subCategories)
-              .sort((a, b) => a.position - b.position),
+              .sort((a, b) => a.position - b.position)
           };
         })
         .sort((a, b) => a.position - b.position);
     },
-    currentPageProducts() {
+    currentPageProducts () {
       // lazy loading is disabled for desktop screen width (>= 1024px)
       // so products from store have to be filtered out because there could
       // be more than THEME_PAGE_SIZE of them - they could be fetched earlier
       // when lazy loading was enabled
       return this.isLazyLoadingEnabled || this.currentPage === 1
         ? this.getCategoryProducts
-            .filter((product, i) => {
-              return this.isLazyLoadingEnabled || i < THEME_PAGE_SIZE;
-            })
-            .map(prepareCategoryProduct)
+          .filter((product, i) => {
+            return this.isLazyLoadingEnabled || i < THEME_PAGE_SIZE;
+          })
+          .map(prepareCategoryProduct)
         : this.getMoreCategoryProducts.map(prepareCategoryProduct);
     },
-    totalPages() {
+    totalPages () {
       return Math.ceil(this.getCategoryProductsTotal / THEME_PAGE_SIZE);
     },
-    sortOrder() {
+    sortOrder () {
       return (
         this.getCurrentSearchQuery.sort ||
         `${config.products.defaultSortBy.attribute}:${config.products.defaultSortBy.order}`
       );
     },
-    sortOptions() {
+    sortOptions () {
       return Object.entries(config.products.sortByAttributes).map(
         (attribute) => {
           const [label, id] = attribute;
@@ -549,14 +547,14 @@ export default {
         }
       );
     },
-    sortLabel() {
+    sortLabel () {
       const selectedSortOrder =
         this.sortOptions.find(
           (sortOption) => sortOption.id === this.sortOrder
         ) || {};
-      return selectedSortOrder.label || "";
+      return selectedSortOrder.label || '';
     },
-    availableFilters() {
+    availableFilters () {
       const result = Object.entries(this.getAvailableFilters || {})
         .filter(([filterType, filters]) => {
           return (
@@ -564,7 +562,7 @@ export default {
           );
         })
         .reduce((result, [filterType, filters]) => {
-          if (!filterType.includes("national_code")) {
+          if (!filterType.includes('national_code')) {
             result[`${filterType}_filter`] = filters.reduce(
               (result, filter) => {
                 result = [
@@ -572,14 +570,14 @@ export default {
                   {
                     ...filter,
                     label: filter.label,
-                    count: this.getFilterCount(filter) || "",
+                    count: this.getFilterCount(filter) || '',
                     color:
-                      filterType === "coulor"
+                      filterType === 'coulor'
                         ? (config.products.colorMappings &&
                             config.products.colorMappings[filter.label]) ||
                           filter.label
-                        : undefined,
-                  },
+                        : undefined
+                  }
                 ];
                 return result;
               },
@@ -591,72 +589,70 @@ export default {
 
       return result;
     },
-    activeFiltersCount() {
+    activeFiltersCount () {
       let counter = 0;
       Object.keys(this.getCurrentFilters).forEach((key) => {
-        if (!key.includes("national_code")) {
+        if (!key.includes('national_code')) {
           counter += this.getCurrentFilters[key].length;
         }
       });
       return counter;
     },
-    isFilterActive() {
+    isFilterActive () {
       return (filter) =>
         castArray(this.getCurrentFilters[filter.type]).find(
           (variant) => variant && variant.id === filter.id
         ) !== undefined;
     },
-    getCategoryTitle() {
+    getCategoryTitle () {
       return (
         this.breadcrumbs?.length &&
         this.breadcrumbs[this.breadcrumbs.length - 1].text
       );
     },
-    shouldShowVehicleCard() {
+    shouldShowVehicleCard () {
       let existsNationCode = false;
-      if (this.activeVehicle && this.activeVehicle.national_code)
-        existsNationCode = true;
+      if (this.activeVehicle && this.activeVehicle.national_code) { existsNationCode = true; }
 
       let isFullWidth = false;
       if (
         this.getCurrentCategory &&
-        this.getCurrentCategory?.page_layout === "category-full-width"
-      )
-        isFullWidth = true;
+        this.getCurrentCategory?.page_layout === 'category-full-width'
+      ) { isFullWidth = true; }
 
       if (!Object.keys(this.availableFilters).length) return false;
       return !isFullWidth;
-    },
+    }
   },
   watch: {
-    sortOrder() {
+    sortOrder () {
       if (this.currentPage > 1) {
         this.changePage();
       }
     },
-    activeVehicle() {
-      this.$store.dispatch("category-next/switchSearchFilters", [
-        { id: "updated_at:desc", type: "sort" },
+    activeVehicle () {
+      this.$store.dispatch('category-next/switchSearchFilters', [
+        { id: 'updated_at:desc', type: 'sort' }
       ]);
     },
     $route: {
       immediate: true,
-      handler(to, from) {
-        this.$store.commit("vehicles/toggleSetPrompt", false);
+      handler (to, from) {
+        this.$store.commit('vehicles/toggleSetPrompt', false);
         if (to.query?.page && to?.path === from?.path) {
           this.changePage(parseInt(to.query.page) || 1);
         } else {
           this.initPagination();
         }
-      },
-    },
+      }
+    }
   },
-  async asyncData({ store, route, context }) {
+  async asyncData ({ store, route, context }) {
     // this is for SSR purposes to prefetch data - and it's always executed before parent component methods
-    if (context) context.output.cacheTags.add("category");
+    if (context) context.output.cacheTags.add('category');
     await composeInitialPageState(store, route);
   },
-  async beforeRouteEnter(to, from, next) {
+  async beforeRouteEnter (to, from, next) {
     if (isServer) next();
     // SSR no need to invoke SW caching here
     else if (!from.name) {
@@ -664,37 +660,37 @@ export default {
       next(async (vm) => {
         vm.loading = true;
         await composeInitialPageState(vm.$store, to, true);
-        await vm.$store.dispatch("category-next/cacheProducts", { route: to }); // await here is because we must wait for the hydration
+        await vm.$store.dispatch('category-next/cacheProducts', { route: to }); // await here is because we must wait for the hydration
         vm.loading = false;
       });
     } else {
       // Pure CSR, with no initial category state
       next(async (vm) => {
         vm.loading = true;
-        vm.$store.dispatch("category-next/cacheProducts", { route: to });
+        vm.$store.dispatch('category-next/cacheProducts', { route: to });
         vm.loading = false;
       });
     }
   },
-  mounted() {
+  mounted () {
     this.unsubscribeFromStoreAction = this.$store.subscribeAction((action) => {
-      if (action.type === "category-next/loadAvailableFiltersFrom") {
+      if (action.type === 'category-next/loadAvailableFiltersFrom') {
         this.aggregations = action.payload.aggregations;
       }
     });
-    this.$bus.$on("product-after-list", this.initPagination);
-    window.addEventListener("resize", this.getBrowserWidth);
+    this.$bus.$on('product-after-list', this.initPagination);
+    window.addEventListener('resize', this.getBrowserWidth);
     this.getBrowserWidth();
   },
-  beforeDestroy() {
+  beforeDestroy () {
     this.unsubscribeFromStoreAction();
-    this.$bus.$off("product-after-list", this.initPagination);
-    window.removeEventListener("resize", this.getBrowserWidth);
+    this.$bus.$off('product-after-list', this.initPagination);
+    window.removeEventListener('resize', this.getBrowserWidth);
   },
   methods: {
     ...mapActions({
-      openVehicleCart: "ui/toggleSidebar",
-      openModal: "ui/openModal",
+      openVehicleCart: 'ui/toggleSidebar',
+      openModal: 'ui/openModal'
     }),
     async addToCart (product) {
       const res = await this.$store.dispatch('stock/check', {
@@ -704,10 +700,10 @@ export default {
       let manageQuantity = res.isManageStock;
       let max = res.qty || res.isManageStock ? res.qty : null;
       let isAvailable = !onlineHelper.isOnline || !!max || !manageQuantity || ['simple', 'configurable'].includes(
-          this.product.type_id
-        );
+        this.product.type_id
+      );
       if (!isAvailable) return;
-      
+
       this.isAddingToCart = true;
       const query = buildQuery([product.sku]);
       try {
@@ -720,13 +716,13 @@ export default {
             assignProductConfiguration: true
           }
         });
-        
+
         const productData = items[0] || null;
         productData.qty = this.qty;
         await this.$store.dispatch('cart/addItem', {
           productToAdd: Object.assign({}, productData, { qty: this.qty })
         });
-  
+
         const cartItems = await StorageManager.get('cart').getItem('current-cart');
         cartItems.forEach(item => {
           if (item.groupedParents) {
@@ -760,7 +756,7 @@ export default {
             }
           }
         })
-        
+
         await StorageManager.get('cart').setItem('current-cart', cartItems).catch((reason) => {
           Logger.error(reason)()
         })
@@ -772,7 +768,7 @@ export default {
           'notification/clearNotification',
           { root: true }
         );
-    
+
         this.openModal({
           name: ModalList.OmCartPopupModal,
           payload: {
@@ -787,76 +783,76 @@ export default {
           { root: true }
         );
       }
-      this.$store.dispatch("vehicles/saveQTY", 1);
+      this.$store.dispatch('vehicles/saveQTY', 1);
       this.isAddingToCart = false;
     },
-    title(filterType) {
-      if (filterType === "oe_brand_filter") {
-        return "Brand";
-      } else if (filterType === "price_filter") {
-        return "Price";
-      } else if (filterType === "vehicle_type_filter") {
-        return "Vehicle Type";
-      } else if (filterType === "battery_capacity_filter") {
-        return "Battery Capacity";
-      } else if (filterType === "litres_filter") {
-        return "Litres";
-      } else if (filterType === "grade_filter") {
-        return "Grade";
-      } else if (filterType === "oil_type_filter") {
-        return "Oil Type";
-      } else if (filterType === "color_filter") {
-        return "Colour";
+    title (filterType) {
+      if (filterType === 'oe_brand_filter') {
+        return 'Brand';
+      } else if (filterType === 'price_filter') {
+        return 'Price';
+      } else if (filterType === 'vehicle_type_filter') {
+        return 'Vehicle Type';
+      } else if (filterType === 'battery_capacity_filter') {
+        return 'Battery Capacity';
+      } else if (filterType === 'litres_filter') {
+        return 'Litres';
+      } else if (filterType === 'grade_filter') {
+        return 'Grade';
+      } else if (filterType === 'oil_type_filter') {
+        return 'Oil Type';
+      } else if (filterType === 'color_filter') {
+        return 'Colour';
       } else return filterType;
     },
-    getBrowserWidth() {
+    getBrowserWidth () {
       return (this.browserWidth = window.innerWidth);
     },
-    async startSearch() {
+    async startSearch () {
       if (this.search.length >= 3) {
-        await this.$store.dispatch("category-next/switchSearchFilters", [
-          { id: "search", value: this.search },
+        await this.$store.dispatch('category-next/switchSearchFilters', [
+          { id: 'search', value: this.search }
         ]);
       } else if (this.search.length === 0) {
-        await this.$store.dispatch("category-next/switchSearchFilters", [
-          { id: "search", value: "" },
+        await this.$store.dispatch('category-next/switchSearchFilters', [
+          { id: 'search', value: '' }
         ]);
       }
     },
-    openSvgViewer() {
+    openSvgViewer () {
       this.openModal({
         name: ModalList.OmVehicleViewerModal,
         payload: {
           nationalCode: this.activeVehicle.national_code,
-          visualGroup: "14",
-        },
+          visualGroup: '14'
+        }
       });
     },
-    getSvgImageData(product) {
+    getSvgImageData (product) {
       if (product.available_images && product.available_images.length) {
-        const imageAry = product.available_images[0].split("_");
+        const imageAry = product.available_images[0].split('_');
 
         return {
           id: imageAry[0],
-          code: imageAry[1],
+          code: imageAry[1]
         };
       }
 
       return {
         id: null,
-        code: null,
+        code: null
       };
     },
-    async onBottomScroll() {
+    async onBottomScroll () {
       if (!this.isLazyLoadingEnabled || this.loadingProducts) {
         return;
       }
 
       this.loadingProducts = true;
-      await this.$store.dispatch("category-next/loadMoreCategoryProducts");
+      await this.$store.dispatch('category-next/loadMoreCategoryProducts');
       this.loadingProducts = false;
     },
-    async changePage(page = this.currentPage) {
+    async changePage (page = this.currentPage) {
       this.loading = true;
       const start = (page - 1) * THEME_PAGE_SIZE;
 
@@ -872,19 +868,19 @@ export default {
       const { filters } = this.getCurrentSearchQuery;
       if (
         this.getCurrentCategory?.page_layout &&
-        this.getCurrentCategory?.page_layout === "category-full-width"
+        this.getCurrentCategory?.page_layout === 'category-full-width'
       ) {
         // Nothing to do
       } else {
         if (this?.activeVehicle && Object.keys(this.activeVehicle).length) {
           let national_code = [];
           national_code.push({
-            attribute_code: "national_code.keyword",
+            attribute_code: 'national_code.keyword',
             id: this.activeVehicle.national_code,
             label: this.activeVehicle.national_code,
-            type: "national_code.keyword",
+            type: 'national_code.keyword'
           });
-          filters["national_code.keyword"] = national_code;
+          filters['national_code.keyword'] = national_code;
         }
       }
 
@@ -899,14 +895,14 @@ export default {
         start: start,
         size: THEME_PAGE_SIZE,
         includeFields: includeFields,
-        excludeFields: excludeFields,
+        excludeFields: excludeFields
       });
 
       this.getMoreCategoryProducts = await this.$store.dispatch(
-        "category-next/processCategoryProducts",
+        'category-next/processCategoryProducts',
         {
           products: searchResult.items,
-          filters: filters,
+          filters: filters
         }
       );
 
@@ -917,28 +913,28 @@ export default {
       this.currentPage = page;
       this.loading = false;
     },
-    initPagination() {
+    initPagination () {
       this.currentPage = 1;
     },
-    changeSortOder(event) {
+    changeSortOder (event) {
       let sortOrder = event.target.value;
       if (this.getCurrentSearchQuery.sort !== sortOrder) {
-        this.$store.dispatch("category-next/switchSearchFilters", [
-          { id: sortOrder, type: "sort" },
+        this.$store.dispatch('category-next/switchSearchFilters', [
+          { id: sortOrder, type: 'sort' }
         ]);
       }
     },
-    changeFilter(filter) {
-      this.$store.dispatch("category-next/switchSearchFilters", [filter]);
+    changeFilter (filter) {
+      this.$store.dispatch('category-next/switchSearchFilters', [filter]);
     },
-    clearAllFilters() {
-      this.$store.dispatch("category-next/resetSearchFilters");
+    clearAllFilters () {
+      this.$store.dispatch('category-next/resetSearchFilters');
     },
-    getFilterCount(filter) {
+    getFilterCount (filter) {
       const aggregations = [
         `agg_range_${filter.type}`,
         `agg_terms_${filter.type}`,
-        `agg_terms_${filter.type}_options`,
+        `agg_terms_${filter.type}_options`
       ];
 
       return aggregations.reduce((result, aggregation) => {
@@ -952,7 +948,7 @@ export default {
         return bucket ? result + bucket.doc_count : result;
       }, 0);
     },
-    isCategoryActive(category) {
+    isCategoryActive (category) {
       if (!this.getCurrentCategory.path) {
         return false;
       }
@@ -963,37 +959,37 @@ export default {
         ? this.getCurrentCategory.path === category.path
         : this.getCurrentCategory.path.startsWith(category.path);
     },
-    isJpgRender(product) {
+    isJpgRender (product) {
       if (product.main_image == null) return true;
     },
-    getImageId(imageCode) {
+    getImageId (imageCode) {
       if (imageCode) {
-        const imageCodeAry = imageCode.split("_");
+        const imageCodeAry = imageCode.split('_');
         return imageCodeAry[0];
       } else {
         return null;
       }
-    },
+    }
   },
-  metaInfo() {
+  metaInfo () {
     const storeView = currentStoreView();
     const { meta_title, meta_description, name, slug } =
       this.getCurrentCategory;
     const meta = meta_description
       ? [
-          {
-            vmid: "description",
-            name: "description",
-            content: htmlDecode(meta_description),
-          },
-        ]
+        {
+          vmid: 'description',
+          name: 'description',
+          content: htmlDecode(meta_description)
+        }
+      ]
       : [];
 
     return {
       title: htmlDecode(meta_title || name),
-      meta,
+      meta
     };
-  },
+  }
 };
 </script>
 
@@ -1105,6 +1101,10 @@ export default {
     }
   }
   &__select {
+    padding: 10px 5px;
+    margin-left: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     --select-padding: 0 var(--spacer-lg) 0 var(--spacer-2xs);
     --select-margin: 0;
     --select-selected-padding: 0 var(--spacer-xl) 0 0;
@@ -1350,7 +1350,7 @@ export default {
     justify-content: center;
     a {
       width: 100%;
-      height: 100%;
+      height: auto;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -1360,6 +1360,8 @@ export default {
     --product-card-max-width: 100%;
     margin: 0;
     border-radius: 8px;
+    display: grid;
+    height: 100%;
     padding: 0 !important;
     box-shadow: #d6d5d5 0px 1px 3px 0px;
     overflow: hidden;
@@ -1450,6 +1452,13 @@ export default {
 ::v-deep .action-area__wrap--price {
   padding: 0 10px;
 }
+::v-deep .action-area__wrap--addtocart {
+  display: flex;
+  gap: 10px;
+}
+::v-deep .product-card__action-area {
+  flex: 1;
+}
 ::v-deep .action-area__wrap--message1 {
   color: #fff;
   display: flex;
@@ -1488,6 +1497,20 @@ export default {
   align-items: center;
   text-align: center;
 }
+::v-deep .stock-status{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+  .stock-pill {
+    background: green;
+    padding: 5px 10px;
+    border-radius: 25px;
+    font-size: 11px;
+    color: #fff;
+    margin-right: 0;
+  }
+}
 ::v-deep .action-area__wrap--stock {
   height: 45px;
   padding: 0 5px;
@@ -1510,6 +1533,7 @@ export default {
 }
 ::v-deep .sf-product-card__price {
 justify-content: center;
+gap: 15px;
 }
 
 .select-mobile {

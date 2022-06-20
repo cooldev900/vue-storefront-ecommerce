@@ -216,7 +216,7 @@
       },
       "tax": {
         "sourcePriceIncludesTax": false,
-        "defaultCountry": "GB",
+        "defaultCountry": "QA",
         "defaultRegion": "",
         "calculateServerSide": true
       },
@@ -224,10 +224,10 @@
         "fullCountryName": "UK",
         "fullLanguageName": "AR",
         "defaultLanguage": "AR",
-        "defaultCountry": "US",
+        "defaultCountry": "QA",
         "defaultLocale": "ar-SY",
-        "currencyCode": "£",
-        "currencySign": "£",
+        "currencyCode": "QAR",
+        "currencySign": "QR",
         "dateFormat": "HH:mm D-M-YYYY"
       },
       "seo": {
@@ -246,7 +246,7 @@
       },
       "tax": {
         "sourcePriceIncludesTax": false,
-        "defaultCountry": "GB",
+        "defaultCountry": "QA",
         "defaultRegion": "",
         "calculateServerSide": true
       },
@@ -254,7 +254,7 @@
         "fullCountryName": "UK",
         "fullLanguageName": "UK",
         "defaultLanguage": "EN",
-        "defaultCountry": "US",
+        "defaultCountry": "QA",
         "defaultLocale": "en-US",
         "currencyCode": "£",
         "currencySign": "£",
@@ -911,7 +911,7 @@
   },
   "demomode": false,
   "tax": {
-    "defaultCountry": "GB",
+    "defaultCountry": "QA",
     "defaultRegion": "",
     "sourcePriceIncludesTax": false,
     "calculateServerSide": false,
@@ -937,7 +937,7 @@
     "disablePersistentTaskQueue": true
   },
   "i18n": {
-    "defaultCountry": "US",
+    "defaultCountry": "QA",
     "defaultLanguage": "EN",
     "availableLocale": [
       "en-US",
