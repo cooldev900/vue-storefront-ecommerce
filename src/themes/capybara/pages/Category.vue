@@ -630,8 +630,8 @@ export default {
         this.changePage();
       }
     },
-    activeVehicle (value) {
-      if (value?.national_code) this.$store.dispatch('category-next/switchSearchFilters', [
+    activeVehicle () {
+      this.$store.dispatch('category-next/switchSearchFilters', [
         { id: 'updated_at:desc', type: 'sort' }
       ]);
     },
@@ -678,6 +678,9 @@ export default {
         this.aggregations = action.payload.aggregations;
       }
     });
+    this.$store.dispatch('category-next/switchSearchFilters', [
+        { id: 'updated_at:desc', type: 'sort' }
+      ]);
     this.$bus.$on('product-after-list', this.initPagination);
     window.addEventListener('resize', this.getBrowserWidth);
     this.getBrowserWidth();
