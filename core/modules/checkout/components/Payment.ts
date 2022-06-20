@@ -58,7 +58,7 @@ export const Payment = {
   },
   watch: {
     locationKind(value) {
-      if (value === 'click_collect_free') {
+      if (value !== 'click_collect_free') {
         this.sendToBillingAddress = true;
       }
     },

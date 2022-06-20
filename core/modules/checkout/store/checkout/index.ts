@@ -33,6 +33,7 @@ export const checkoutModule: Module<CheckoutState, RootState> = {
       shippingMethod: ''
     },
     paymentDetails: {
+      email: '',
       firstName: '',
       lastName: '',
       company: '',
