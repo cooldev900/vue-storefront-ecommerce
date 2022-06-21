@@ -19,12 +19,14 @@
       <!-- <div class="form__element form__checkbox form_button" v-if="sendToBillingAddress" @click="sendToBillingAddress = !sendToBillingAddress">
         Change Billing Address
       </div> -->
-      <SfCheckbox
-        v-model="sendToBillingAddress"
-        class="form__element form__checkbox"
+      <span
+        class="form__billing"
         name="sendToBillingAddress"
-        :label="$t('Change Billing Address')"
-      />
+        @click="handleClick"
+        v-show="sendToBillingAddress"
+      >
+        {{ locationKind === 'click_collect_free' ? $t('Edit Billing Address') : $t('Change Billing Address') }}
+      </span>
       <SfInput
         v-if="!sendToBillingAddress"
         v-model.trim="payment.firstName"
@@ -424,7 +426,10 @@ export default {
     saveBillingAddress () {
       this.sendToBillingAddress = true;
       this.sendDataToCheckout();
-    }
+    },
+    handleClick () {
+      this.sendToBillingAddress = !this.sendToBillingAddress;
+    },
   }
 };
 </script>
@@ -459,6 +464,13 @@ export default {
         margin: var(--spacer-base) 0;
       }
     }
+  }
+
+  &__billing {
+    color: #000000;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
   }
 
   &_button {

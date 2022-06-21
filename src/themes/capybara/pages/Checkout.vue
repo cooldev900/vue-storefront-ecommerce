@@ -23,7 +23,7 @@
           <SfAccordionItem header="order" ref="personalDetails" id="order">
             <template v-slot:header>
               <OmCheckoutAccordionHeader
-                :allStep="4"
+                :allStep="3"
                 :step="1"
                 step="1"
                 title="Your Details"
@@ -58,7 +58,7 @@
           <SfAccordionItem header="address" ref="shipping" id="address">
             <template v-slot:header>
               <OmCheckoutAccordionHeader
-                :allStep="4"
+                :allStep="3"
                 :step="2"
                 id="address1"
                 title="Delivery Address"
@@ -85,41 +85,11 @@
               </div>
             </div>
           </SfAccordionItem>
-          <SfAccordionItem header="delivery" ref="delivery" id="delivery" v-show="locationKind !== 'click_collect_free'">
-            <template v-slot:header>
-              <OmCheckoutAccordionHeader
-                :allStep="4"
-                :step="3"
-                id="delivery"
-                title="Delivery Options"
-                :is-complete="isComplete.delivery"
-              />
-            </template>
-            <div v-show="!isComplete.delivery">
-              <OShippingMethod :next-accordion="nextAccordion" />
-            </div>
-            <div v-show="isComplete.delivery">
-              <div class="edit" v-show="editable">
-                <div
-                  role="button"
-                  tabindex="0"
-                  class="edit__inner"
-                  @click="editAccordion(2)"
-                >
-                  Edit <span>delivery address</span>
-                </div>
-              </div>
-              <div class="confirm">                
-                <div v-show="locationKind !== 'click_collect_free'">Shipping Address : {{ shippingAddressText }}</div>
-               <div v-show="locationKind === 'click_collect_free'">Collection from: {{activeLocation.location_name}}</div>
-              </div>
-            </div>
-          </SfAccordionItem>
           <SfAccordionItem header="payment" ref="payment" id="payment">
             <template v-slot:header>
               <OmCheckoutAccordionHeader
-                :allStep="4"
-                :step="4"
+                :allStep="3"
+                :step="3"
                 title="Payment"
                 id="payment1"
                 :is-complete="isComplete.payment"
@@ -213,13 +183,11 @@ export default {
           email: ''
         },
         address: {},
-        delivery: {},
         payment: {}
       },
       isComplete: {
         order: false,
         address: false,
-        delivery: false,
         payment: false
       },
       step: -1,
@@ -279,11 +247,11 @@ export default {
       this.isComplete[Object.keys(this.models)[index]] = true;
       // if (this.isComplete[Object.keys(this.models)[index + 1]] === true) index++;
 
-      if (index < 3) { 
+      if (index < 2) { 
           this.step = index + 1;
         this.opens = [...this.opens, Object.keys(this.models)[this.step]];
       }
-      if (index < 4) {
+      if (index < 3) {
         this.isComplete[Object.keys(this.models)[index]] = true;
         this.saveCompete(this.isComplete);
         this.saveOpens(this.opens);
