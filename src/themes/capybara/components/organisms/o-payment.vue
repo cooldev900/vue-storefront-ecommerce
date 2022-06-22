@@ -388,22 +388,20 @@ export default {
       console.log(process.env, 'secret_key', config.secret_key);
       const checkSumShaSign = this.$CryptoJS.HmacSHA256(shaSignature1, secretKey).toString(this.$CryptoJS.enc.Base64);
       console.log(SHASIGN ===  checkSumShaSign,'is valid sha', SHASIGN, checkSumShaSign);
-      this.$bus.$emit('notification-progress-start');
-      this.$bus.$emit('place-order-after-cybersource-pay');
-      // if (SHASIGN ===  checkSumShaSign && decision === 'ACCEPTED') {
-      //   // let newOrder = await this.prepareOrder();
+      if (SHASIGN ===  checkSumShaSign && decision === 'ACCEPTED') {
+        // let newOrder = await this.prepareOrder();
 
-      //   // newOrder.addressInformation.payment_method_additional = {
-      //   //   paymentID: PAYID
-      //   // }
-      //   // await this.$store.dispatch('checkout/placeOrder', { order: newOrder });
-      //   // EventBus.$emit('notification-progress-stop')
-      //   this.$bus.$emit('notification-progress-start');
-      //   this.$bus.$emit('place-order-after-cybersource-pay');
-      // } else {
-      //   this.isMessage = true;
-      //   this.message = message;
-      // }
+        // newOrder.addressInformation.payment_method_additional = {
+        //   paymentID: PAYID
+        // }
+        // await this.$store.dispatch('checkout/placeOrder', { order: newOrder });
+        // EventBus.$emit('notification-progress-stop')
+        this.$bus.$emit('notification-progress-start');
+        this.$bus.$emit('place-order-after-cybersource-pay');
+      } else {
+        this.isMessage = true;
+        this.message = message;
+      }
     } else {
       this.isMessage = false;
       this.message = '';
