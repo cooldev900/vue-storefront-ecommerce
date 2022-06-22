@@ -68,6 +68,7 @@ export default {
     this.$bus.$on('checkout-after-shippingMethodChanged', this.onAfterShippingMethodChanged)
     this.$bus.$on('checkout-after-validationError', this.focusField)
     this.$bus.$on('send-sync-totals', this.sendAsyncTotals)
+    this.$bus.$on('place-order-after-cybersource-pay', this.placeOrder);
     if (!this.isThankYouPage) {
       this.$store.dispatch('cart/load', { forceClientState: true }).then(() => {
         if (this.$store.state.cart.cartItems.length === 0) {
@@ -128,6 +129,7 @@ export default {
     this.$bus.$off('checkout-after-shippingMethodChanged', this.onAfterShippingMethodChanged)
     this.$bus.$off('checkout-after-validationError', this.focusField)
     this.$bus.$off('send-sync-totals', this.sendAsyncTotals)
+    this.$bus.$off('place-order-after-cybersource-pay', this.placeOrder)
   },
   watch: {
     '$route': 'activateHashSection',
