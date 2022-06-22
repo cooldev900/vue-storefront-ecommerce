@@ -36,7 +36,7 @@
         v-model.trim="shipping.streetAddress"
         class="form__element"
         name="street-address"
-        :label="$t('Street name')"
+        :label="$t('Address Line 1')"
         required
         :valid="!$v.shipping.streetAddress.$error"
         :error-message="$t('Field is required')"

@@ -58,7 +58,7 @@
         v-model.trim="payment.streetAddress"
         class="form__element"
         name="street-address"
-        :label="$t('Street name')"
+        :label="$t('Address Line 1')"
         required
         :valid="!$v.payment.streetAddress.$error"
         :error-message="$t('Field is required')"
@@ -69,11 +69,7 @@
         v-model.trim="payment.apartmentNumber"
         class="form__element"
         name="apartment-number"
-        :label="$t('House/Apartment number')"
-        required
-        :valid="!$v.payment.apartmentNumber.$error"
-        :error-message="$t('Field is required')"
-        @blur="$v.payment.apartmentNumber.$touch()"
+        :label="$t('Address Line 2')"
       />
       <SfInput
         v-if="!sendToBillingAddress"
@@ -144,7 +140,7 @@
         @blur="$v.payment.phoneNumber.$touch()"
         :error-message="$t('Field is required')"
       /> -->
-      <SfCheckbox
+      <!-- <SfCheckbox
         v-if="!sendToBillingAddress"
         v-model="generateInvoice"
         class="form__element form__checkbox"
@@ -179,7 +175,7 @@
         <p class="mb40 mt0">
           {{ $t("We will send you the invoice to given e-mail address") }}
         </p>
-      </template>
+      </template> -->
       <SfButton
         v-if="!sendToBillingAddress"
         class="sf-button--full-width form__action-button"
@@ -325,10 +321,10 @@ export default {
         required,
         unicodeAlphaNum
       },
-      apartmentNumber: {
-        required,
-        unicodeAlphaNum
-      },
+      // apartmentNumber: {
+      //   required,
+      //   unicodeAlphaNum
+      // },
       // zipCode: {
       //   required,
       //   minLength: minLength(3),
