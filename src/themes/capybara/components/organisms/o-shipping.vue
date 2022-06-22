@@ -64,7 +64,7 @@
         name="state"
         :label="$t('State / Province')"
       />
-      <SfInput
+      <!-- <SfInput
         v-model.trim="shipping.zipCode"
         class="form__element form__element--half"
         name="zipCode"
@@ -77,7 +77,7 @@
             : $t('Zip-code must have at least 3 letters.')
         "
         @blur="$v.shipping.zipCode.$touch()"
-      />
+      /> -->
       <SfSelect
         v-model="shipping.country"
         class="form__element form__element--half form__element--half-even form__select sf-select--underlined"
@@ -167,11 +167,11 @@ export default {
         required,
         unicodeAlphaNum
       },
-      zipCode: {
-        required,
-        minLength: minLength(3),
-        unicodeAlphaNum
-      },
+      // zipCode: {
+      //   required,
+      //   minLength: minLength(3),
+      //   unicodeAlphaNum
+      // },
       city: {
         required,
         unicodeAlpha

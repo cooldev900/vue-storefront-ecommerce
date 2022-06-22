@@ -93,7 +93,7 @@
         name="state"
         :label="$t('State / Province')"
       />
-      <SfInput
+      <!-- <SfInput
         v-if="!sendToBillingAddress"
         v-model.trim="payment.zipCode"
         class="form__element form__element--half"
@@ -107,7 +107,7 @@
             : $t('Zip-code must have at least 3 letters.')
         "
         @blur="$v.payment.zipCode.$touch()"
-      />
+      /> -->
       <SfSelect
         v-if="!sendToBillingAddress"
         v-model="payment.country"
@@ -329,11 +329,11 @@ export default {
         required,
         unicodeAlphaNum
       },
-      zipCode: {
-        required,
-        minLength: minLength(3),
-        unicodeAlphaNum
-      },
+      // zipCode: {
+      //   required,
+      //   minLength: minLength(3),
+      //   unicodeAlphaNum
+      // },
       city: {
         required,
         unicodeAlpha
