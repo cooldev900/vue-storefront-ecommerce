@@ -285,6 +285,7 @@ import { createSmoothscroll } from 'theme/helpers';
 // import MixinStripe from 'src/modules/stripe/components/MixinStripe';
 import { getShaSignature } from 'theme/helpers/index.ts';
 import CybersourcePayVue from './o-cybersource-pay.vue';
+import config from 'config';
 
 export default {
   name: 'OPayment',
@@ -379,25 +380,30 @@ export default {
     //   document.documentElement.scrollTop || document.body.scrollTop,
     //   0
     // );
-    // const { decision, transaction_id, req_transaction_uuid, message, SHASIGN } = this.$route.query;
-    const { decision } = this.$route.query;
-    if (decision) {
-      // const secretKey = "9f8f91900c274d37925c0be4beebed23b8bc48776e4f4f63a2aa1a0b001dea0140bcac7ae391456989e90ae5e37c6b18c6caca3b5ef64b55a6395a7d0cc0a8d7511c9dae3b8748859c1153206009ad4582e70787acd7488584e6dd7a6ce0f1a3834ade1543da40758044c4fc3849ca0fba812aeca1e0487ebdf04ae2749c1729";
-      // const shaSignature1 = `${transaction_id}${decision}${req_transaction_uuid}${message}`;
-      // const checkSumShaSign = this.$CryptoJS.HmacSHA256(shaSignature1, secretKey).toString(this.$CryptoJS.enc.Base64);
-      if (decision === 'ACCEPTED') {
-        // let newOrder = await this.prepareOrder();
+    const { decision, transaction_id, req_transaction_uuid, message, SHASIGN } = this.$route.query;
+    // const { decision } = this.$route.query;
+    if (SHASIGN) {
+      const secretKey = config.secret_key;
+      const shaSignature1 = `${transaction_id}${decision}${req_transaction_uuid}`;
+      console.log(process.env, 'secret_key', config.secret_key);
+      const checkSumShaSign = this.$CryptoJS.HmacSHA256(shaSignature1, secretKey).toString(this.$CryptoJS.enc.Base64);
+      console.log(SHASIGN ===  checkSumShaSign,'is valid sha', SHASIGN, checkSumShaSign);
+      this.$bus.$emit('notification-progress-start');
+      this.$bus.$emit('place-order-after-cybersource-pay');
+      // if (SHASIGN ===  checkSumShaSign && decision === 'ACCEPTED') {
+      //   // let newOrder = await this.prepareOrder();
 
-        // newOrder.addressInformation.payment_method_additional = {
-        //   paymentID: PAYID
-        // }
-        // await this.$store.dispatch('checkout/placeOrder', { order: newOrder });
-        // EventBus.$emit('notification-progress-stop')
-        this.$bus.$emit('place-order-after-cybersource-pay');
-      } else {
-        this.isMessage = true;
-        this.message = 'declined';
-      }
+      //   // newOrder.addressInformation.payment_method_additional = {
+      //   //   paymentID: PAYID
+      //   // }
+      //   // await this.$store.dispatch('checkout/placeOrder', { order: newOrder });
+      //   // EventBus.$emit('notification-progress-stop')
+      //   this.$bus.$emit('notification-progress-start');
+      //   this.$bus.$emit('place-order-after-cybersource-pay');
+      // } else {
+      //   this.isMessage = true;
+      //   this.message = message;
+      // }
     } else {
       this.isMessage = false;
       this.message = '';
