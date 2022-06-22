@@ -59,14 +59,13 @@ export default {
 
   methods: {
     setAppointment () {
-      // let payload = {...this.appointment};
+      let payload = {...this.appointment};
       // console.log(currentStoreView().storeId, 'storeId');
       // this.checked = !this.checked;
-      // payload.booked_online = true;
-      // payload.internal_booking = false;
-      // payload.client_id = config.clientIds[currentStoreView().storeId];
-      // payload.order_id = this.cartToken;
-      // console.log(payload, 'appointment payload');
+      payload.booked_online = true;
+      payload.internal_booking = false;
+      payload.client_id = config.clientIds[currentStoreView().storeId];
+      payload.order_id = this.cartToken;
       // if (this.checked) this.$store.dispatch('vehicles/setAppointment', payload);
       // else this.$store.dispatch('vehicles/deleteAppointment', payload);
       let slot_id = this.appointment.id;
@@ -79,7 +78,7 @@ export default {
       //   slot_data = slot_data.filter(data => data.id !== this.appointment.id);
       // }
       this.$store.commit('vehicles/setSlotID', slot_id);
-      this.$store.commit('vehicles/setSlotData', slot_data);
+      this.$store.commit('vehicles/setSlotData', payload);
     }
   },
 

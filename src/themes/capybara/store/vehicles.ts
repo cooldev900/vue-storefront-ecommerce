@@ -36,7 +36,7 @@ export const vehiclesStore = {
     },
     opens: ['order'],
     step: -1,
-    slot_data: []
+    slot_data: {}
   },
   actions: {
     async fetchStoryblok ({ commit }) {
@@ -88,9 +88,9 @@ export const vehiclesStore = {
       let slot_id = await VehicleStorage.getSlotData();
       state.slot_id = slot_id;
     },
-    async setAppointment({commit, dispatch, state}, payload) {
+    async setAppointment({commit, dispatch, state}) {
       const res = await axios.post(
-        `${config.api.url}/api/appointments`, { ...payload }
+        `${config.api.url}/api/appointments`, state.slot_data 
       );
 
       if (res.status === 200 ) {

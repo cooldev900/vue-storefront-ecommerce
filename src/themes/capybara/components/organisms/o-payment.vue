@@ -388,7 +388,7 @@ export default {
       console.log(process.env, 'secret_key', config.secret_key);
       const checkSumShaSign = this.$CryptoJS.HmacSHA256(shaSignature1, secretKey).toString(this.$CryptoJS.enc.Base64);
       console.log(SHASIGN ===  checkSumShaSign,'is valid sha', SHASIGN, checkSumShaSign);
-      if (SHASIGN ===  checkSumShaSign && decision === 'ACCEPTED') {
+      if (SHASIGN ===  checkSumShaSign && decision === 'ACCEPT') {
         // let newOrder = await this.prepareOrder();
 
         // newOrder.addressInformation.payment_method_additional = {
@@ -398,6 +398,7 @@ export default {
         // EventBus.$emit('notification-progress-stop')
         this.$bus.$emit('notification-progress-start');
         this.$bus.$emit('place-order-after-cybersource-pay');
+        this.$store.dispatch('vehicles/setAppointment');
       } else {
         this.isMessage = true;
         this.message = message;
