@@ -293,96 +293,49 @@ export default {
       return paymentMethod
     },
     prepareOrder () {
-      if (this.locationKind === 'click_collect_free') {
-        this.order = {
-          user_id: this.$store.state.user.current ? this.$store.state.user.current.id.toString() : '',
-          cart_id: this.$store.state.cart.cartServerToken ? this.$store.state.cart.cartServerToken.toString() : '',
-          products: this.$store.state.cart.cartItems,
-          addressInformation: {
-            billingAddress: {
-              region: this.getPaymentDetails.state,
-              region_id: 0,
-              country_id: this.getPaymentDetails.country,
-              street: [this.getPaymentDetails?.streetAddress],
-              company: '',
-              telephone: this.getPersonalDetails.telephone,
-              postcode: this.getPaymentDetails.zipCode,
-              city: this.getPaymentDetails.city,
-              firstname: this.getPaymentDetails.firstName,
-              lastname: this.getPaymentDetails.lastName,
-              email: this.getPersonalDetails.emailAddress,
-              region_code: this.shipping.region_code ? this.shipping.region_code : '',
-              vat_id: this.getPaymentDetails.taxId
-            },
-            shipping_method_code: 'collection',
-            shipping_carrier_code: 'collection',
-            payment_method_code: 'cnpayment',
-            payment_method_additional: this.payment.paymentMethodAdditional,
-            shippingExtraFields: 'locationid'
-          }
-        }
-      } else {
-        this.order = {
-          user_id: this.$store.state.user.current ? this.$store.state.user.current.id.toString() : '',
-          cart_id: this.$store.state.cart.cartServerToken ? this.$store.state.cart.cartServerToken.toString() : '',
-          products: this.$store.state.cart.cartItems,
-          addressInformation: {
-            billingAddress: {
-              region: this.getPaymentDetails.state,
-              region_id: this.getPaymentDetails.region_id ? this.getPaymentDetails.region_id : 0,
-              country_id: this.getPaymentDetails.country,
-              street: [this.getPaymentDetails.streetAddress, this.getPaymentDetails.apartmentNumber],
-              company: this.getPaymentDetails.company,
-              telephone: this.getPersonalDetails.telephone,
-              postcode: this.getPaymentDetails.zipCode,
-              city: this.getPaymentDetails.city,
-              firstname: this.getPaymentDetails.firstName,
-              lastname: this.getPaymentDetails.lastName,
-              email: this.getPersonalDetails.emailAddress,
-              region_code: this.getPaymentDetails.region_code ? this.getPaymentDetails.region_code : '',
-              vat_id: this.getPaymentDetails.taxId
-            },
-            shipping_method_code: this.shippingMethod.method_code ? this.shippingMethod.method_code : this.shipping.shippingMethod,
-            shipping_carrier_code: this.shippingMethod.carrier_code ? this.shippingMethod.carrier_code : this.shipping.shippingCarrier,
-            payment_method_code: 'cnpayment',
-            payment_method_additional: this.payment.paymentMethodAdditional,
-            shippingExtraFields: this.shipping.extraFields
-          }
+      this.order = {
+        user_id: this.$store.state.user.current ? this.$store.state.user.current.id.toString() : '',
+        cart_id: this.$store.state.cart.cartServerToken ? this.$store.state.cart.cartServerToken.toString() : '',
+        products: this.$store.state.cart.cartItems,
+        addressInformation: {
+          billingAddress: {
+            region: this.getPaymentDetails.state,
+            region_id: this.getPaymentDetails.region_id ? this.getPaymentDetails.region_id : 0,
+            country_id: this.getPaymentDetails.country,
+            street: [this.getPaymentDetails.streetAddress, this.getPaymentDetails.apartmentNumber],
+            company: this.getPaymentDetails.company,
+            telephone: this.getPersonalDetails.telephone,
+            postcode: this.getPaymentDetails.zipCode,
+            city: this.getPaymentDetails.city,
+            firstname: this.getPaymentDetails.firstName,
+            lastname: this.getPaymentDetails.lastName,
+            email: this.getPersonalDetails.emailAddress,
+            region_code: this.getPaymentDetails.region_code ? this.getPaymentDetails.region_code : '',
+            vat_id: this.getPaymentDetails.taxId
+          },
+          shipping_method_code: 'freeshipping',
+          shipping_carrier_code: 'freeshipping',
+          payment_method_code: 'cnpayment',
+          payment_method_additional: this.payment.paymentMethodAdditional,
+          shippingExtraFields: this.shipping.extraFields
         }
       }
-      if (!this.isVirtualCart || !this.locationKind === 'click_collect_free') {
-        this.order.addressInformation.shippingAddress = {
-          region: this.shippingDetails.state,
-          region_id: this.shippingDetails.region_id ? this.shippingDetails.region_id : 0,
-          country_id: this.shippingDetails.country,
-          street: [this.shippingDetails.streetAddress, this.shippingDetails.apartmentNumber],
-          company: '',
-          telephone: this.getPersonalDetails.telephone,
-          postcode: this.shippingDetails.zipCode,
-          city: this.shippingDetails.city,
-          firstname: this.getPersonalDetails.firstName,
-          lastname: this.getPersonalDetails.lastName,
-          email: this.getPersonalDetails.emailAddress,
-          region_code: this.shippingDetails.region_code ? this.shippingDetails.region_code : ''
-        }
+
+      this.order.addressInformation.shippingAddress = {
+        region: this.shippingDetails.state,
+        region_id: this.shippingDetails.region_id ? this.shippingDetails.region_id : 0,
+        country_id: this.shippingDetails.country,
+        street: [this.shippingDetails.streetAddress, this.shippingDetails.apartmentNumber],
+        company: '',
+        telephone: this.getPersonalDetails.telephone,
+        postcode: this.shippingDetails.zipCode,
+        city: this.shippingDetails.city,
+        firstname: this.getPersonalDetails.firstName,
+        lastname: this.getPersonalDetails.lastName,
+        email: this.getPersonalDetails.emailAddress,
+        region_code: this.shippingDetails.region_code ? this.shippingDetails.region_code : ''
       }
-      if (this.locationKind === 'click_collect_free') {
-        this.order.addressInformation.shippingAddress = {
-          region: this.activeLocation.region,
-          region_id: this.shippingDetails.region_id ? this.shippingDetails.region_id : 0,
-          country_id: this.activeLocation?.country ? this.activeLocation.country : 'GB',
-          street: [this.activeLocation.street],
-          company: this.activeLocation.location_name,
-          telephone: this.getPersonalDetails.telephone,
-          postcode: this.activeLocation.postcode,
-          city: this.activeLocation.city,
-          firstname: this.getPersonalDetails.firstName,
-          lastname: this.getPersonalDetails.lastName,
-          email: this.getPersonalDetails.emailAddress,
-          region_code: this.shippingDetails.region_code ? this.shippingDetails.region_code : ''
-        }
-      }
-      console.log(this.order, 'prepare order');
+
       return this.order
     },
     validateOrderBeforeSending () {

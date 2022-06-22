@@ -50,9 +50,8 @@ const createOrderData = ({
       countryId: paymentDetails.country,
       telephone: personalDetails.telephone,
     },
-    method_code: shippingDetails && shippingDetails.shippingMethod ? shippingDetails.shippingMethod : shipping.method_code,
-    carrier_code:
-    shippingDetails && shippingDetails.shippingMethod ? shippingDetails.shippingMethod : shipping.carrier_code,
+    method_code: 'freeshipping',
+    carrier_code: 'freeshipping',
     payment_method: payment && payment.code ? payment.code : null
   };
 }
