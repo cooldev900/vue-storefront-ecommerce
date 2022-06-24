@@ -33,6 +33,8 @@ export default {
     await this.$store.dispatch('vehicles/fetchComplete')
     await this.$store.dispatch('vehicles/fetchOpens')
     await this.$store.dispatch('vehicles/fetchStep')
+    await this.$store.dispatch('vehicles/loadSlotID')
+    await this.$store.dispatch('vehicles/loadSlotData')
     const storeId = currentStoreView().storeId
     document.documentElement.classList.add('theme-' + storeId);
   }

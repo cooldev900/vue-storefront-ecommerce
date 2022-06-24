@@ -11,6 +11,8 @@
 
 import { mapGetters } from 'vuex';
 import i18n from '@vue-storefront/i18n'
+import config from 'config';
+import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 
 export default {
   name: 'OmRadio',

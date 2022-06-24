@@ -6,6 +6,7 @@
         action="https://testsecureacceptance.cybersource.com/pay"
         id="form1"
         name="form1"
+         ref="form"
     >
         <!-- general parameters: see Form parameters -->
         <input type="hidden" name="access_key" :value="edpqForm.access_key" />
@@ -31,7 +32,7 @@
 
         <SfButton
         class="sf-button--full-width form__action-button"
-        type="submit"
+        @click.prevent="process"
         >
         {{ $t("Continue to Payment") }}
         </SfButton>
@@ -44,6 +45,8 @@ import {
 } from '@storefront-ui/vue';
 import { mapGetters } from 'vuex';
 import { currentStoreView } from '@vue-storefront/core/lib/multistore';
+import axios from 'axios';
+import config from 'config';
 
 export default {
   name: 'OCybersourcepay',
@@ -55,6 +58,42 @@ export default {
     this.makeform();
   },
   methods: {
+    async process() {
+      try {
+        // let params = {
+        //   client_id: this.getSlotData.client_id,
+        //   id: this.getSlotData.id,
+        //   available: this.getSlotData.available,
+        //   appointment_id: this.getSlotData.appointment_id,
+        //   end_time: this.getSlotData.end_time,
+        //   order_id: this.getSlotData.order_id,
+        //   start_time: this.getSlotData.start_time,
+        //   technician_ids: this.getSlotData.technician_ids,
+        //   total: this.getSlotData.total,
+        // }
+        let { data } = await axios.post(`${config.api.url}/api/ext/appointments`, this.getSlotData, {
+          params: this.getSlotData
+        } );
+        console.log( data, 'result');
+        if (data.success) {
+          let bookingId = data.result.data[0].id;
+  
+          let cartId = this.cartToken;
+          let body = {
+            giftMessage: {
+              sender: "customer",
+              recipient: "vehicle_data",
+              message: `cartId: ${cartId}, appointmentId: ${bookingId}`,
+            }
+          };
+          await axios({method: 'POST', url: `${config.api.url}/api/cart/additional-order-data?cartId=${cartId}`, headers: {}, data: body});
+          this.$refs.form.$el.submit();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+      
+    },
     makeform() {
       const storeId = currentStoreView().storeId
 
@@ -99,7 +138,9 @@ export default {
       getPaymentDetails: 'checkout/getPaymentDetails',
       getPersonalDetails: "checkout/getPersonalDetails",
       cartToken: 'cart/getCartToken',
-      totals: 'cart/getTotals'
+      totals: 'cart/getTotals',
+      getSlotData: 'vehicles/getSlotData',
+      cartToken: 'cart/getCartToken',
     }),
     prices () {
       return this.totals.reduce((result, price) => {

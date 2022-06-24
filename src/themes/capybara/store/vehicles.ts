@@ -85,12 +85,12 @@ export const vehiclesStore = {
       state.slot_id = slot_id;
     },
     async loadSlotData({state}) {
-      let slot_id = await VehicleStorage.getSlotData();
-      state.slot_id = slot_id;
+      let slot_data = await VehicleStorage.getSlotData();
+      state.slot_data = slot_data;
     },
     async setAppointment({commit, dispatch, state}) {
       const res = await axios.post(
-        `${config.api.url}/api/appointments`, state.slot_data 
+        `${config.api.url}/api/ext/appointments`, state.slot_data 
       );
 
       if (res.status === 200 ) {
@@ -100,7 +100,7 @@ export const vehiclesStore = {
 
     async deleteAppointment({commit, dispatch, state}, payload) {
       const res = await axios.delete(
-        `${config.api.url}/api/appointments`, { params: payload }
+        `${config.api.url}/api/ext/appointments`, { params: payload }
       );
 
       if (res.status === 200 ) {
@@ -116,11 +116,11 @@ export const vehiclesStore = {
         timezone: ''
       }
       const res = await axios.get(
-        `${config.api.url}/api/appointments`, { params }
+        `${config.api.url}/api/ext/appointments`, { params }
       );
 
       if (res.status === 200 ) {
-        commit('fetchAppointmentTakenSuccess', res.data.data);
+        commit('fetchAppointmentTakenSuccess', res.data.result.data);
       }
     },
     async saveSelectedTime({commit}, meeting) {
@@ -224,7 +224,7 @@ export const vehiclesStore = {
     },
     async setSlotData(state, id) {
       await VehicleStorage.setSlotData(id);
-      state.slot_data = [...id];
+      state.slot_data = id;
     },
     async setCurrentDay(state, date) {
       console.log(date, 'date');
