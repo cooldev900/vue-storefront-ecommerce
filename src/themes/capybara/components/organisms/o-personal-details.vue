@@ -64,7 +64,7 @@
           </div>
         </template>
       </OmAlertBox>
-      <h3>Your appointment</h3>
+      <h3>{{ $t('Your appointment') }}</h3>
       <OmAppointmentSelector
         v-model="schedule"
         :appointment-duration="120"
