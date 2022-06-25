@@ -104,7 +104,7 @@ export default {
       this.edpqForm.signed_field_names = "access_key,amount,currency,locale,profile_id,reference_number,signed_date_time,signed_field_names,transaction_type,transaction_uuid,bill_to_forename,bill_to_surname,bill_to_email,bill_to_address_line1,bill_to_address_country,bill_to_address_city";
       this.edpqForm.transaction_type = "sale";
       this.edpqForm.reference_number = this.cartToken;
-      this.edpqForm.amount = this.prices.grand_total * 100;    
+      this.edpqForm.amount = this.prices.grand_total;    
       this.edpqForm.signed_date_time = new Date().toISOString().substring(0, 19) + 'Z';
       this.edpqForm.transaction_uuid = Math.floor(Math.random() * 100000000);
       this.edpqForm.bill_to_forename = this.getPersonalDetails.firstName;
