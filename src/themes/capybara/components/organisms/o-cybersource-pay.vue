@@ -68,8 +68,7 @@ export default {
           start_time: this.getSlotData.start_time,          
           booked_online: true,
           internal_booking: false,
-          duration: 2,
-          note: ''
+          duration: 2
         }
         let { data } = await axios.post(`${config.api.url}/api/ext/appointments`, params, {
           params
