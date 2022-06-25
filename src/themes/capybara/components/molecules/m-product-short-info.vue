@@ -6,7 +6,10 @@
         :custom-options="customOptions"
       />
       <div class="product__part-info">
-        <Pill />
+        <!-- <Pill /> -->
+        <div class="pill-wrap">
+          <div class="pill" :class="{'pill-red': !isAvailable}">{{ isAvailable ? $t('In Stock') : $t('Out of Stock')}}</div>
+        </div>
       <span class="part-number">Product Code: {{ title }}</span>
     </div>
     </div>
@@ -18,6 +21,7 @@ import { SfHeading, SfIcon } from '@storefront-ui/vue';
 import AProductPrice from 'theme/components/atoms/a-product-price';
 import Pill from 'theme/components/omni/ui/pill'
 import { createSmoothscroll } from 'theme/helpers'
+import { onlineHelper } from '@vue-storefront/core/helpers';
 export default {
   name: 'MProductShortInfo',
   components: {
@@ -38,6 +42,10 @@ export default {
     reviews: {
       type: Array,
       default: () => []
+    },
+    stock: {
+      type: Object,
+      default: () => ({})
     }
   },
   computed: {
@@ -46,6 +54,17 @@ export default {
     },
     title () {
     return this.product.sku;
+    },
+    isOnline () {
+      return onlineHelper.isOnline;
+    },
+    isAvailable () {
+      return !this.isOnline || !!this.stock.max || !this.stock.manageQuantity || !this.isSimpleOrConfigurable
+    },
+    isSimpleOrConfigurable () {
+      return ['simple', 'configurable'].includes(
+        this.product.type_id
+      );
     }
   },
   methods: {
@@ -114,5 +133,22 @@ export default {
   100% {
     transform: translate3d(0, 0, 0);
   }
+}
+
+.pill-wrap{
+    display: flex;
+}
+.pill{
+    border-radius: 999px;
+    padding: 3px 8px;
+    display: inline-block;
+    font-size: 11px;
+    color: #ffffff;
+    text-transform: uppercase;
+    background: green;
+
+    &-red {
+      background: red;
+    }
 }
 </style>
