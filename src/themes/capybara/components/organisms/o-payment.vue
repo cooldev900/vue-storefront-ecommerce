@@ -8,13 +8,13 @@
         name="sendToShippingAddress"
         :label="$t('Copy address data from shipping')"
       /> -->
-      <div class="billing-address-container" v-show="sendToBillingAddress">
+      <!-- <div class="billing-address-container" v-show="sendToBillingAddress">
         <div class="billing-address-container__title">
           Billing address
         </div>
-      </div>
+      </div> -->
       <div class="billing-address-content" v-show="sendToBillingAddress">
-        {{ billingAddress }}
+        <b> Billing Address: </b>{{ billingAddress }}
       </div>
       <!-- <div class="form__element form__checkbox form_button" v-if="sendToBillingAddress" @click="sendToBillingAddress = !sendToBillingAddress">
         Change Billing Address
@@ -105,6 +105,7 @@
         @blur="$v.payment.zipCode.$touch()"
       /> -->
       <SfSelect
+        style="display: none"
         v-if="!sendToBillingAddress"
         v-model="payment.country"
         class="
@@ -178,7 +179,7 @@
       </template> -->
       <SfButton
         v-if="!sendToBillingAddress"
-        class="sf-button--full-width form__action-button"
+        class="sf-button--full-width om-btn--primary"
         :disabled="$v.payment.$invalid"
         type="submit"
         @click="saveBillingAddress"
@@ -186,18 +187,23 @@
         {{ $t("Save and Continue") }}
       </SfButton>
     </div>
-    <SfHeading
-      :title="$t('Payment method')"
-      :level="3"
-      class="sf-heading--left sf-heading--no-underline title"
-      v-show="sendToBillingAddress"
-    />
-    <OmAlertBox type="warning" style="margin-bottom: 20px" v-show="sendToBillingAddress">
+    <OmAlertBox v-if="message" type="warning" style="margin-bottom: 20px;" v-show="sendToBillingAddress">
       <template #message>
         <div class="om-alert-box-message">
           <div>
             <p>
-              {{ isMessage ? message : 'You will be redirected to BarclayCard to make a secure payment.' }}
+              There was a problem processing your payment. Please try again or contact us if the issue persists
+            </p>
+          </div>
+        </div>
+      </template>
+    </OmAlertBox>
+    <OmAlertBox type="info" style="margin-bottom: 20px; margin-top: 40px;" v-show="sendToBillingAddress">
+      <template #message>
+        <div class="om-alert-box-message">
+          <div>
+            <p>
+              You will be redirected to CyberSource to make a secure payment
             </p>
           </div>
         </div>
@@ -422,7 +428,7 @@ export default {
       }, {});
     },
     billingAddress () {
-      let excludeFields = ['paymentMethod', 'taxId', 'isThankYouPage', 'modifiedAt'];
+      let excludeFields = ['firstName', 'lastName', 'region_id', 'telephone', 'phoneNumber', 'country', 'paymentMethod', 'taxId', 'isThankYouPage', 'modifiedAt'];
       if (this.paymentDetails.firstName) return Object.keys(this.paymentDetails).filter(payment => !excludeFields.includes(payment)).map(key => this.paymentDetails[key]).join(', ');
       else return Object.keys(this.getShippingDetails).filter(payment => !excludeFields.includes(payment)).map(key => this.getShippingDetails[key]).join(', ');
     }
@@ -500,7 +506,6 @@ export default {
   &__billing {
     color: #000000;
     font-size: 16px;
-    font-weight: 700;
     cursor: pointer;
   }
 
@@ -558,11 +563,7 @@ export default {
 
 .billing-address-content {
   width: 100%;
-  padding: 15px;
+  padding: 15px 0;
   line-break: anywhere;
-}
-
-.om-alert-box-message {
-  color: red;
 }
 </style>

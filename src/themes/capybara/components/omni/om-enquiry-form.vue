@@ -65,18 +65,9 @@
         wrap="soft"
       />
       <div class="form__action">
-        <SfButton class="form__action-submit" @click.prevent="submit">
+        <SfButton class="sf-button--full-width om-btn--primary" @click.prevent="submit">
           <SfLoader v-if="loading" :loading="loading" />
           <span v-else>Submit</span>
-        </SfButton>
-        <SfButton
-          class="
-            sf-button--text
-            form__action-button form__action-button--secondary
-          "
-          @click="reset"
-        >
-          Reset
         </SfButton>
       </div>
     </div>

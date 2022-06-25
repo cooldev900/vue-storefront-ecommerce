@@ -53,18 +53,29 @@
         "
         @blur="$v.personalDetails.emailAddress.$touch()"
       />
-      <OmAlertBox type="warning" style="{margin-bottom: 20px, width: 100%}" v-show="!!message">
+      <OmAlertBox type="warning" style="{margin-bottom: 20px, border: 1px solid #ccc;}" v-show="message">
         <template #message>
           <div class="om-alert-box-message">
             <div>
               <p>
-                {{ message ? message : 'You will be redirected to BarclayCard to make a secure payment.' }}
+                Your choson appointment is no longer available. Please select another time below.
               </p>
             </div>
           </div>
         </template>
       </OmAlertBox>
       <h3>Your appointment</h3>
+     <OmAlertBox type="info" style="{margin-bottom: 20px, border: 1px solid #ccc;}">
+        <template #message>
+          <div class="om-alert-box-message">
+            <div>
+              <p>
+        Our mobile service allows customers to book online and have Alfardan Commercial services brought to you, at any suitable location of your choice across Qatar.
+              </p>
+            </div>
+          </div>
+        </template>
+      </OmAlertBox>
       <OmAppointmentSelector
         v-model="schedule"
         :appointment-duration="120"
@@ -118,7 +129,7 @@ export default {
       activeLocation: 'omLocator/activeLocation',
       locationKind: 'omLocator/locationKind',
       isVirtualCart: 'cart/isVirtualCart',
-      message: 'vehicles/getAppointmentError',
+      message: 'vehicles/getAppointmentError'
     })
   },
   props: {
@@ -345,10 +356,4 @@ export default {
   margin-bottom: var(--spacer-xl);
 }
 
-.om-alert-box {
-  width: 100%;
-}
-.om-alert-box-message {
-  color: red;
-}
 </style>

@@ -1,25 +1,40 @@
 <template>
-  <div class="om-mobile-menu sf-mega-menu">
-    <SfBar
-      :title="title"
-      :back="!!selectedItems.length"
-      class="mobile-only"
-      close
-      @click:close="closeMenu"
-      @click:back="change('back')"
-    />
-    <SfList>
-      <transition-group name="slide-left">
-        <SfListItem v-for="item in currentItems" :key="item.id">
-          <SfMenuItem
-            @click="change('forward', item)"
-            :label="item.title"
-            :icon="item.level !== 3 ? 'chevron_right' : ''"
-            class="sf-mega-menu__menu-item"
-          />
-        </SfListItem>
-      </transition-group>
-    </SfList>
+  <div v-if="visible" class="om-mobile-menu">
+    <SfSidebar
+      title=""
+      :visible="true"
+    >
+      <template #bar>
+        <SfBar
+          close
+          :back="isLevel2"
+          @click:back="back"
+          @click:close="close"
+        >
+          <template #title>
+            <div v-if="isLevel2">
+              {{ selectLevel1Category }}
+            </div>
+          </template>
+        </SfBar>
+      </template>
+
+      <div class="content">
+        <SfList>
+          <transition-group name="fade" mode="out-in">
+            <SfListItem
+              v-for="categoryItem in _category"
+              :key="categoryItem._uid"
+            >
+              <SfMenuItem
+                :label="getLabel(categoryItem)"
+                @click="onClickItem(categoryItem)"
+              />
+            </SfListItem>
+          </transition-group>
+        </SfList>
+      </div>
+    </SfSidebar>
   </div>
 </template>
 
@@ -28,13 +43,11 @@ import {
   SfMegaMenu,
   SfList,
   SfMenuItem,
-  SfBanner,
-  SfFooter,
   SfIcon,
-  SfBar
+  SfBar,
+  SfSidebar,
+  SfImage
 } from '@storefront-ui/vue';
-import { localizedRoute } from '@vue-storefront/core/lib/multistore';
-import { mapState } from 'vuex';
 
 export default {
   name: 'OmMobileMenu',
@@ -42,166 +55,114 @@ export default {
     SfMegaMenu,
     SfList,
     SfMenuItem,
-    SfBanner,
-    SfFooter,
     SfIcon,
-    SfBar
+    SfBar,
+    SfSidebar,
+    SfImage
   },
   props: {
-    visible: {
-      type: Boolean,
-      default: true
-    },
     category: {
       type: Array,
       default: () => []
+    },
+    visible: {
+      type: Boolean,
+      default: false
+    }
+  },
+  computed: {
+    isLevel2 () {
+      return !!this.subCategory.length;
+    },
+    _category () {
+      if (!this.isLevel2) {
+        return this.category;
+      } else {
+        return this.subCategory;
+      }
     }
   },
   data () {
     return {
-      currentItems: [],
-      selectedItems: []
-    }
-  },
-  computed: {
-    ...mapState({
-      isMobileMenu: state => state.ui.isMobileMenu
-    }),
-    title () {
-      if (this.selectedItems.length) {
-        return this.selectedItems[this.selectedItems.length - 1].title;
-      }
-
-      return '';
+      subCategory: [],
+      selectLevel1Category: ''
     }
   },
   methods: {
-    change (direction, item = {}) {
-      if (direction === 'forward') {
-        this.selectedItems = [ ...this.selectedItems, { ...item, parent: this.currentItems } ];
-        if (item.level === 1) {
-          this.currentItems = item.children.map(child => ({
-            id: child._uid,
-            title: child.tier_2_name,
-            children: child.tier_3_linked,
-            link: child.tier_2_link.url,
-            level: 2
-          }));
-        } else if (item.level === 2) {
-          if (item.children.length) {
-            this.currentItems = item.children.map(child => ({
-              id: child._uid,
-              title: child.tier_3_link_title,
-              link: child.tier_3_link_url.url,
-              level: 3
-            }));
-          } else {
-            this.$router.push(localizedRoute(item.link));
-            this.closeMenu();
-          }
-        } else if (item.level === 3) {
-          this.$router.push(localizedRoute(item.link));
-          this.closeMenu();
+    close () {
+      this.$emit('close');
+    },
+    onClickItem (item) {
+      if (item.show_dropdown !== 'no') {
+        if (!this.isLevel2) {
+          this.subCategory = item.level_1;
+          this.selectLevel1Category = item.navigation_level_1_title;
+        } else {
+          this.$router.push(item.tier_2_link.url);
+          this.subCategory = [];
+          this.selectLevel1Category = '';
+          this.$emit('close');
         }
-      } else if (direction === 'back') {
-        const prevLevel = this.selectedItems.pop();
-        this.currentItems = prevLevel.parent;
+      } else {
+        if (item.level_1[0]?.tier_2_link?.url) {
+          this.$router.push(item.level_1[0].tier_2_link.url);
+          this.$emit('close');
+        }
       }
     },
-    closeMenu () {
-      this.$store.commit('ui/setSearchpanel', false)
-      this.isMobileMenu
-        ? this.$store.commit('ui/closeMenu')
-        : this.$store.commit('ui/openMenu')
-    }
-  },
-  watch: {
-    category: {
-      immediate: true,
-      deep: true,
-      handler (items) {
-        this.currentItems = items.map(item => ({
-          id: item._uid,
-          title: item.navigation_level_1_title,
-          children: item.level_1,
-          level: 1
-        }));
+    getLabel (item) {
+      if (!this.isLevel2) {
+        return item.navigation_level_1_title;
+      } else {
+        return item.tier_2_name;
       }
+    },
+    back () {
+      this.subCategory = []
     }
   }
 }
 </script>
 
 <style lang="scss">
-@import "~@storefront-ui/shared/styles/helpers/breakpoints";
-
 .om-mobile-menu {
-  padding: 0;
-  position: absolute;
-  left: 0;
-  width: 100%;
-  top: 100%;
-  z-index: 1;
-  opacity: 0;
-  visibility: hidden;
-  transition: 0.2s;
-  .router-link-exact-active {
-    --menu-item-font-weight: bold;
-  }
-  .sf-mega-menu{
-    background-color: var(--c-mm-background);
-  }
-  .sf-mega-menu__content{
-    max-width: 100%;
-    padding: 40px;
-    border-top: 1px solid #ddd;
-    margin-top: 60px;
-  }
-  .sf-mega-menu-column__title{
-    font-family: var(--font-family-bold);
-    font-size: 18px;
-      font-weight: 700;
-      line-height: 18px;
-      margin-bottom: 30px;
-      letter-spacing: .8px;
-      color: #0c121c;
-  }
-  .aside-menu {
-    display: flex;
-    justify-content: stretch;
-    flex-wrap: wrap;
-    @include for-desktop {
-      justify-content: space-between;
-    }
-    &--promo-link {
-      text-decoration: underline;
-    }
-  }
-  .aside-banner {
-    margin-bottom: var(--spacer-sm);
-    text-transform: uppercase;
-    --banner-height: 300px;
-    &--mobile {
-      display: none;
-      @include for-mobile {
-        display: block;
-      }
-    }
-    &--desktop {
-      --banner-width: 300px;
-      display: none;
-      margin: 0 var(--spacer-sm);
-      @include for-desktop {
-        display: block;
-      }
-    }
-  }
-  .tier2-list-item {
-    display: flex;
-    align-items: center;
 
-    .sf-icon {
-      margin-left: var(--spacer-sm);
+  .sf-sidebar__content {
+    padding: 0 !important;
+    background: #f4f4f4;
+  }
+  .mobile-logo{
+    width: 40px;
+    height: 40px;
+  }
+  .sf-bar {
+    padding: 15px 20px;
+    color: #fff;
+    height: auto;
+    min-height: 80px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: var(--font-family-primary);
+    background: #000;
+    .sf-icon{
+      svg{
+        fill: #fff;
+      }
+    }
+  }
+  .sf-bar__icon{
+   color: #fff;
+   --button-color: #fff;
+  }
+
+  .content {
+    padding: 0 var(--spacer-xl);
+    box-shadow: 0 4px 8px 1px rgba(0,0,0,0.1);
+
+    .sf-menu-item {
+      font-size: 20px;
+      min-height: 56px;
+      margin: var(--spacer-sm) 0;
     }
   }
 }

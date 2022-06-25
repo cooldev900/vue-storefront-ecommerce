@@ -1,4 +1,5 @@
 <template>
+<NoSSR>
   <div id="checkout">
     <div v-if="!isThankYouPage" class="checkout grid">
       <div class="checkout__main">
@@ -28,7 +29,7 @@
                   class="edit__inner"
                   @click="editAccordion(0)"
                 >
-                  Edit <span>delivery order</span>
+                  Edit your details
                 </div>
               </div>
               <div class="confirm">
@@ -45,7 +46,7 @@
                 :allStep="3"
                 :step="2"
                 id="address1"
-                title="Delivery Address"
+                title="Fitment Address"
                 :is-complete="isComplete.address"
               />
             </template>
@@ -60,11 +61,11 @@
                   class="edit__inner"
                   @click="editAccordion(1)"
                 >
-                  Edit <span>delivery address</span>
+                  Edit your address
                 </div>
               </div>
               <div class="confirm">                
-                <div v-show="locationKind !== 'click_collect_free'">Shipping Address : {{ shippingAddressText }}</div>
+                <div v-show="locationKind !== 'click_collect_free'">Fitting Address : {{ shippingAddressText }}</div>
                <div v-show="locationKind === 'click_collect_free'">Collection from: {{activeLocation.location_name}}</div>
               </div>
             </div>
@@ -104,6 +105,7 @@
     <OOrderConfirmation v-if="isThankYouPage" />
     <div />
   </div>
+</NoSSR>
 </template>
 <script>
 import Checkout from '@vue-storefront/core/pages/Checkout';
@@ -121,6 +123,7 @@ import OmCheckoutAccordionHeader from 'theme/components/om-checkout/om-checkout-
 import OmLocator from 'theme/components/omni/om-locator.vue';
 import APromoCode from 'theme/components/atoms/a-promo-code';
 import { currentStoreView } from '@vue-storefront/core/lib/multistore';
+import NoSSR from 'vue-no-ssr'
 
 export default {
   name: 'Checkout',

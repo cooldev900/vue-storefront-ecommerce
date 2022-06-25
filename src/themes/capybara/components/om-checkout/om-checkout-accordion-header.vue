@@ -62,7 +62,7 @@ export default {
   display: inline-block;
   background: grey;
   color: #fff;
-  border-radius: 20px;
+  border-radius: 0;
   margin-right: 8px;
   padding: 4px 12px;
   font-size: 0.9375rem;

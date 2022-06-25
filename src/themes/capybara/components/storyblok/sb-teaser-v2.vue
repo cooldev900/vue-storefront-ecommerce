@@ -1,65 +1,61 @@
 <template>
   <div class="sb-key-info">
     <div class="grid-container">
-    <div class="sb-key-info__title">
-     How it works
-    </div>
-    <p class="sb-key-info__description">Our simple step-by-step online buying process</p>
-    <div class="sb-key-info__content">
-      <div v-for="(step, index) in steps" :key="index" class="sb-key-info__card">
-       <img src="https://img.icons8.com/ios/100/000000/calendar--v1.png"/>
-        <div class="sb-key-info__card-step">
-        {{ index + 1 }}
-        </div>
-        <div class="sb-key-info__card-title">
-          {{ step.title }}
-        </div>
-        <div class="sb-key-info__card-description">
-          {{ step.description }}
+      <div class="sb-key-info__title">
+        {{ introTitles.title }}
+      </div>
+      <p class="sb-key-info__description">
+        {{ introTitles.copy }}
+      </p>
+      <div class="sb-key-info__content">
+        <div v-for="(step, index) in steps" :key="index" class="sb-key-info__card">
+          <img :src="step.icon.filename">
+          <div class="sb-key-info__card-step">
+            {{ index + 1 }}
+          </div>
+          <div class="sb-key-info__card-title">
+            {{ step.title }}
+          </div>
+          <div class="sb-key-info__card-description">
+            {{ step.copy }}
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
 import { SfImage } from '@storefront-ui/vue';
-
+import { mapGetters } from 'vuex';
 export default {
   name: 'SbTeaserV2',
   components: {
     SfImage
   },
-data () {
-
-return {
-title: 'The Ocean BMW Shop',
-description: 'Buy the Parts and Accessories you need from the comfort of your own home.',
-steps: [
-{
-icon: 'recycle',
-title: 'Choose Your Model',
-description: 'Simply enter your registration or choose your model from our model selector.'
-},
-{
-icon: 'speedometer',
-title: 'Browse',
-description: 'Use our intuitive visual parts finder to simply select the Part you need from your vehicle diagram or browse our categories to find the Accessory for you.'
-},
-{
-icon: 'recycle',
-title: 'Trust',
-description: 'By supplying your vehicle details, our expert Parts team will check that the item you have ordered fits your vehicle before dispatch.'
-},
-{
-icon: 'speedometer',
-title: 'Delivery',
-description: 'Receive your item, whether it’s a floor mat or a brake disc, in the post so it can be installed on your car.'
-}
-]
-}
-},
+  computed: {
+    ...mapGetters('vehicles', ['globalSbData']),
+    introTitles () {
+      if (this.globalSbData) {
+        const step = this.globalSbData['header_links'].find(
+          item => item.component === 'teaser-v2'
+        );
+        return step || [];
+      } else {
+        return [];
+      }
+    },
+    steps () {
+      if (this.globalSbData) {
+        const step = this.globalSbData['header_links'].find(
+          item => item.component === 'teaser-v2'
+        );
+        return step ? step.teaser_v2_card : [];
+      } else {
+        return [];
+      }
+    }
+  },
   methods: {
     getIcon (name) {
       const images = require.context('../../assets/icons/', false, /\.png$/)

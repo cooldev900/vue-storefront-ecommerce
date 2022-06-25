@@ -13,20 +13,6 @@
  --nav-font-size: 13px;
  --nav-font-transform: uppercase;
 }
-:root.theme-2{
-  direction: rtl;
-}
 :root.theme-3{
-  //global
-  --c-primary: #007da3 !important;
-  // header
-  --height-header: 81px;
-  // Confidence Bar
-  --height-confidence-bar: 40px;
-  --c-confidence-bar: #007da3;
-  --button-background: #007da3;
-   /* Navigation */
- --nav-font-weight: inherit;
- --nav-font-size: 16px;
- --nav-font-transform: uppercase;
+  direction: rtl;
 }

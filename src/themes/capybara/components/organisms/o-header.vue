@@ -42,7 +42,14 @@
         </div>
       </template>
       <template #logo>
-        <OmMobileTools class="sf-header__action" />
+        <div class="sf-header__action mobile-only">
+          <SfIcon
+            icon="menu"
+            size="xl"
+            color="white"
+            @click="showMobileMenu = true"
+          />
+          </div>
         <ALogo :menu-style="navigationItemColors" />
       </template>
       <template #search>
@@ -59,10 +66,10 @@
       </template>
     </SfHeader>
     <OmMobileMenu
-      v-if="isMobileMenu"
-      class="mobile-menu"
+      class="mobile-only"
       :category="_categories"
-      @close="$store.commit('ui/closeMenu')"
+      :visible="showMobileMenu"
+      @close="showMobileMenu = false"
     />
     <div class="compact-layout">
       <OmHeaderStatus />
@@ -73,7 +80,8 @@
 import {
   SfHeader,
   SfOverlay,
-  SfButton
+  SfButton,
+  SfIcon
 } from '@storefront-ui/vue';
 import ALogo from 'theme/components/atoms/a-logo';
 import ALogoGroup from 'theme/components/atoms/a-logo-group';
@@ -95,6 +103,7 @@ export default {
   name: 'OHeader',
   components: {
     SfHeader,
+    SfIcon,
     SfButton,
     SfOverlay,
     ALogo,
@@ -113,7 +122,8 @@ export default {
   data () {
     return {
       isHoveredMenu: false,
-      clickedNavItemUId: 0
+      clickedNavItemUId: 0,
+      showMobileMenu: false
     };
   },
   computed: {
@@ -163,12 +173,14 @@ export default {
     }
   },
   watch: {
-    async isMobileMenu (status) {
-      if (this.isMobileMenu) {
+    async showMobileMenu (value) {
+      console.log(value, 'isMobileMenu')
+      if (value) {
         // we can't add this style to body because sfui also add/remove overflow to body and there may be conflict
         document.documentElement.style.overflow = 'hidden';
       } else {
         document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
       }
     }
   }

@@ -84,13 +84,14 @@
                 :product="product"
                 :stock="productStock"
               />
+              <div v-else style="padding: 20px;">
               <SfButton
-                v-else
-                class="a-add-to-cart sf-button--full-width enquire-button"
+                class="sf-button--full-width om-btn--primary"
                 @click="showEnquiryModal"
               >
                 {{ $t('Enquire About This Part') }}
               </SfButton>
+              </div>
               <button
                 v-if="!isJpgRender && isFit"
                 class="open-modal-button"

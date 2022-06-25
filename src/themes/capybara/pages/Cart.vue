@@ -1,4 +1,5 @@
 <template>
+<NoSSR>
 <div>
   <div id="detailed-cart">
     <div class="detailed-cart grid-container">
@@ -102,6 +103,7 @@
   </div>
   <SbTeaseV2 />
   </div>
+</NoSSR>
 </template>
 <script>
 import SbTeaseV2 from "theme/components/storyblok/sb-teaser-v2.vue";
@@ -126,7 +128,8 @@ import { ProductService } from '@vue-storefront/core/data-resolver/ProductServic
 import rates from 'theme/resource/rates.json';
 import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 import OmSvgViewer from 'theme/components/svg-viewer.vue';
-import { ModalList } from 'theme/store/ui/modals'
+import { ModalList } from 'theme/store/ui/modals';
+import NoSSR from 'vue-no-ssr'
 
 export default {
   name: 'CartPage',

@@ -1,38 +1,38 @@
 <template>
-<div>
-  <footer class="o-footer">
-    <div class="o-footer__inner">
-      <SfFooter :column="5" :multiple="true">
-        <SfFooterColumn
-          v-for="linkGroup in links"
-          :key="linkGroup.name"
-          :title="$t(linkGroup.name)"
-        >
-          <SfList>
-            <SfListItem v-for="link in linkGroup.children" :key="link.name">
-              <a v-if="link.link && isExternalLink(link.link)" :href="link.link" target="_blank">
-                <SfMenuItem class="sf-footer__menu-item" :label="$t(link.name)" />
-              </a>
-              <router-link v-if="link.link && !isExternalLink(link.link)" :to="localizedRoute(link.link)" exact>
-                <SfMenuItem class="sf-footer__menu-item" :label="$t(link.name)" />
-              </router-link>
-              <SfMenuItem
-                v-else-if="link.clickHandler"
-                class="sf-footer__menu-item"
-                :label="$t(link.name)"
-                @click="link.clickHandler"
-              />
-            </SfListItem>
-          </SfList>
-        </SfFooterColumn>
-      </SfFooter>
-    </div>
-    <div class="footer-bottom__header">
-      <ul>
-        <li class="footer-bottom__menu-item">
-          <span @click="backToTop" >Back to Top</span>
-        </li>
-              <ul class="social-icon__list">
+  <div>
+    <footer class="o-footer">
+      <div class="o-footer__inner">
+        <SfFooter :column="5" :multiple="true">
+          <SfFooterColumn
+            v-for="linkGroup in links"
+            :key="linkGroup.name"
+            :title="$t(linkGroup.name)"
+          >
+            <SfList>
+              <SfListItem v-for="link in linkGroup.children" :key="link.name">
+                <a v-if="link.link && isExternalLink(link.link)" :href="link.link" target="_blank">
+                  <SfMenuItem class="sf-footer__menu-item" :label="$t(link.name)" />
+                </a>
+                <router-link v-if="link.link && !isExternalLink(link.link)" :to="localizedRoute(link.link)" exact>
+                  <SfMenuItem class="sf-footer__menu-item" :label="$t(link.name)" />
+                </router-link>
+                <SfMenuItem
+                  v-else-if="link.clickHandler"
+                  class="sf-footer__menu-item"
+                  :label="$t(link.name)"
+                  @click="link.clickHandler"
+                />
+              </SfListItem>
+            </SfList>
+          </SfFooterColumn>
+        </SfFooter>
+      </div>
+      <div class="footer-bottom__header">
+        <ul>
+          <li class="footer-bottom__menu-item">
+            <span @click="backToTop">Back to Top</span>
+          </li>
+          <ul class="social-icon__list">
             <li class="social-icon">
               <a target="_blank">
                 <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
@@ -61,25 +61,25 @@
               </a>
             </li>
           </ul>
-      </ul>
+        </ul>
         </li>
-      </ul>
-    </div>
-    <div class="footer-bottom__content">
-      <ul>
-        <li class="left">
-          <p class="copywrite">
-            © Alfardan Commercial. All Rights Reserved
-          </p>
-          <p>info-afc@alfardancommercial.com | +974 4406 5557</p>
-          <p>
-            7GM4+HH, PO 3763 Suhaim Bin Hamad Street, Doha, Qatar
-          </p>
-        </li>
-      </ul>
-    </div>
-  </footer>
-</div>
+        </ul>
+      </div>
+      <div class="footer-bottom__content">
+        <ul>
+          <li class="left">
+            <p class="copywrite">
+              © Alfardan Commercial. All Rights Reserved
+            </p>
+            <p>info-afc@alfardancommercial.com | +974 4406 5557</p>
+            <p>
+              7GM4+HH, PO 3763 Suhaim Bin Hamad Street, Doha, Qatar
+            </p>
+          </li>
+        </ul>
+      </div>
+    </footer>
+  </div>
 </template>
 
 <script>
@@ -91,7 +91,6 @@ import config from 'config';
 import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 import get from 'lodash-es/get';
 import { createSmoothscroll } from 'theme/helpers';
-
 
 export default {
   name: 'OFooter',
@@ -125,7 +124,8 @@ export default {
                 ? { link: '/my-account' }
                 : { clickHandler: () => this.openModal({ name: ModalList.Auth, payload: 'login' }) }
             },
-            { name: 'Contact Us', clickHandler: () => this.openModal({ name: ModalList['OmContactModal']}) }
+            { name: 'Contact Us', clickHandler: () => this.openModal({ name: ModalList['OmContactModal'] }) },
+            { name: 'FAQs', clickHandler: () => this.openModal({ name: ModalList['OmInfoModal'], payload: { contentKey: 'modal-faqs' } }) }
           ]
         },
         help: {
@@ -138,9 +138,9 @@ export default {
         about: {
           name: 'Our Services',
           children: [
-             { name: 'Tires', link: '/tires' },
-             { name: 'Lubricants', link: '/oils-lubricants' },
-             { name: 'Batteries', link: '/batteries' }
+            { name: 'Tires', link: '/tires' },
+            { name: 'Lubricants', link: '/oils-lubricants' },
+            { name: 'Batteries', link: '/batteries' }
           ]
         }
       };
