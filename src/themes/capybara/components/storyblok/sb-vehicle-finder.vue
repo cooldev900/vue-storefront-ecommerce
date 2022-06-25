@@ -13,7 +13,7 @@
               @change="changeSelector('vehicle', index)"
               v-model="models['vehicle'][selectorName]"
             >
-            <option value="" disabled selected hidden>Select {{changeText(selectorName)}}</option>
+            <option value="" disabled selected hidden>{{ $t('Select') }} {{$t(changeText(selectorName))}}</option>
               <option
                 v-for="label in options.vehicle[selectorName]"
                 :value="label"
@@ -47,7 +47,7 @@
               @change="changeSelector('size', index)"
               v-model="models['size'][selectorName]"
             >
-            <option value="" disabled selected hidden>Select {{changeText(selectorName)}}</option>
+            <option value="" disabled selected hidden>{{$t(Select)}} {{$t(changeText(selectorName))}}</option>
               <option
                 v-for="label in options.size[selectorName]"
                 :value="label"
@@ -61,7 +61,7 @@
               :disabled="disableSizeGoButton"
               @click="fetchNationalCode('size')"
             >
-              Go
+              {{$t(Go)}}
             </SfButton>
           </div>
           <div class="cta">
