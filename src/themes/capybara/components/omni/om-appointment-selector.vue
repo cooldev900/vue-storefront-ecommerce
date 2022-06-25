@@ -27,6 +27,7 @@
 import dayjs from 'dayjs';
 import OmRadio from 'theme/components/omni/om-round-checkbox.vue';
 import { mapGetters, mapActions } from 'vuex';
+import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 
 export default {
   components: { OmRadio },
@@ -81,6 +82,10 @@ export default {
       )} - ${end.format('HH:mm')}`;
     },
     schedulePeriod () {
+      if (currentStoreView().storeId === 3) 
+        dayjs.locale('ar-SY');
+      else 
+        dayjs.locale('en-US');
       const from = dayjs(this.weeks[0].week[0].schedule[0].start).format(
         'dddd DD, MMM'
       );
