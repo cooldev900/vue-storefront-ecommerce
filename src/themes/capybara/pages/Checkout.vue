@@ -52,6 +52,7 @@
                 <div>Your Email: {{getPersonalDetails.emailAddress}}</div>
                 <div>Your Name: {{getPersonalDetails.firstName + ' ' + getPersonalDetails.lastName}}</div>
                 <div>Phone Number: {{getPersonalDetails.telephone}}</div>
+                <div>Appointment: {{ getBookedTime }}</div>
               </div>
             </div>
           </SfAccordionItem>
@@ -207,6 +208,8 @@ export default {
       activeLocation: 'omLocator/activeLocation',
       locationKind: 'omLocator/locationKind',
       isVirtualCart: 'cart/isVirtualCart',
+      currentDay: 'vehicles/getCurrentDay',
+      slotData: 'vehicles/getSlotData',
     }),
     currentStep () {
       return this.steps.findIndex((step) => this.activeSection[step.key]);
@@ -217,7 +220,19 @@ export default {
     shippingAddressText () {
       let excludeFields = ['firstName', 'lastName', 'emailAddress', 'shippingCarrier', 'shippingMethod', 'region_id', 'telephone', 'phoneNumber', 'country'];
       return Object.keys(this.getShippingDetails).filter(payment => !excludeFields.includes(payment) && this.getShippingDetails[payment]).map(key => this.getShippingDetails[key]).join(', ');
-    }
+    },    
+    getBookedTime() {
+      if (this.slotData?.id) {
+        let date = this.slotData.start_time.slice(0, 11);
+        let start_time = this.slotData.start_time.slice(11, 13);
+        let end_time = this.slotData.end_time.slice(11, 13);
+        start_time = start_time >= 12 ? (start_time - 12) +  ":00 PM" : start_time +  ":00 PM";
+        end_time = end_time >= 12 ? (end_time - 12) +  ":00 PM" : end_time +  ":00 PM";
+        return `${date} ${start_time} ~ ${end_time}`;
+      } else {
+        return '';
+      }
+    },
   },
   methods: {
     ...mapActions({
@@ -225,6 +240,7 @@ export default {
       saveCompete: 'vehicles/saveCompete',
       saveOpens: 'vehicles/saveOpens',
       saveStep: 'vehicles/saveStep',
+      slotData: 'vehicles/getSlotData'
     }),
     nextAccordion (index) {
       // if (index === 0 && this.locationKind === 'click_collect_free') {
@@ -367,6 +383,9 @@ export default {
     },
 
     stepData (value) {
+      if (value === 0) {
+        this.$store.dispatch('vehicles/fetchAppointmentTaken', this.currentDay);
+      }
       if (this.step !== this.stepData) { this.step = this.stepData; this.goto();}
     }
   }
