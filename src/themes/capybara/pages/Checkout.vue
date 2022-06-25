@@ -1,22 +1,5 @@
 <template>
   <div id="checkout">
-    <div class="mercedes__cart-header">
-      <div class="mb-container">
-        <div class="cart-header">
-          <div class="cart-header__title">
-            <h1 v-if="!isThankYouPage">Checkout</h1>
-            <h1 v-else>Thank You!</h1>
-          </div>
-          <div class="cart-header__illustration-img desktop-only">
-            <SfImage
-              src="/assets/checkout-header-image.png"
-              :width="auto"
-              :height="326"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
     <div v-if="!isThankYouPage" class="checkout grid">
       <div class="checkout__main">
         <SfAccordion :open="opens" class="accordion">
