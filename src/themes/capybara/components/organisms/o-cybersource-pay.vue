@@ -60,19 +60,19 @@ export default {
   methods: {
     async process() {
       try {
-        // let params = {
-        //   client_id: this.getSlotData.client_id,
-        //   id: this.getSlotData.id,
-        //   available: this.getSlotData.available,
-        //   appointment_id: this.getSlotData.appointment_id,
-        //   end_time: this.getSlotData.end_time,
-        //   order_id: this.getSlotData.order_id,
-        //   start_time: this.getSlotData.start_time,
-        //   technician_ids: this.getSlotData.technician_ids,
-        //   total: this.getSlotData.total,
-        // }
-        let { data } = await axios.post(`${config.api.url}/api/ext/appointments`, this.getSlotData, {
-          params: this.getSlotData
+        let params = {
+          client_id: this.getSlotData.client_id,
+          id: this.getSlotData.id,
+          end_time: this.getSlotData.end_time,
+          order_id: this.getSlotData.order_id,
+          start_time: this.getSlotData.start_time,          
+          booked_online: true,
+          internal_booking: false,
+          duration: 2,
+          note: ''
+        }
+        let { data } = await axios.post(`${config.api.url}/api/ext/appointments`, params, {
+          params
         } );
         console.log( data, 'result');
         if (data.success) {
@@ -88,6 +88,8 @@ export default {
           };
           await axios({method: 'POST', url: `${config.api.url}/api/cart/additional-order-data?cartId=${cartId}`, headers: {}, data: body});
           this.$refs.form.submit();
+        } else {
+          this.alert(data.message);
         }
       } catch (e) {
         console.log(e);
