@@ -143,7 +143,8 @@ export default {
     SfInput,
     SfImage,
     APromoCode,
-    OShippingMethod
+    OShippingMethod,
+    NoSSR
   },
   mixins: [Checkout],
   data () {

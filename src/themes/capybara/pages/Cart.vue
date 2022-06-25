@@ -143,7 +143,8 @@ export default {
     OMicrocartPanelList,
     OmRadioCheckbox,
     OmSvgViewer,
-    SbTeaseV2
+    SbTeaseV2,
+    NoSSR
   },
   data () {
     return {
