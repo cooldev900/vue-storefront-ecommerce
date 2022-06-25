@@ -248,7 +248,7 @@
             {{ $t("Continue to Payment") }}
           </SfButton>
         </form> -->
-        <CybersourcePayVue />
+        <CybersourcePayVue :editAccordion="editAccordion"/>
       </div>
     </div>
     <!-- This dummy container below is needed because src\modules\payment-cash-on-delivery\index.ts
@@ -299,6 +299,10 @@ export default {
   mixins: [Payment, OrderReview],
   props: {
     nextAccordion: {
+      type: Function,
+      default: (Number) => {}
+    },
+    editAccordion: {
       type: Function,
       default: (Number) => {}
     }

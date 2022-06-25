@@ -29,7 +29,12 @@ export default {
     },
     modalData: {
       type: Object,
-      default: () => {},
+      default: () => {
+        return {
+          title: '',
+          message: '',
+        }
+      },
       required: false
     }
   },

@@ -54,7 +54,6 @@ export default {
     bookingStatus() {
       if (!this.available) return this.$t('Unavailable');
       if (this.checked) return this.$t('Selected');
-      if (this.available && !!this.appointment.technician_ids) return this.$t('Booked');
       return this.$t('Available');
     }
   },

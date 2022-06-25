@@ -68,7 +68,8 @@ export default {
     this.$bus.$on('checkout-after-shippingMethodChanged', this.onAfterShippingMethodChanged)
     this.$bus.$on('checkout-after-validationError', this.focusField)
     this.$bus.$on('send-sync-totals', this.sendAsyncTotals)
-    this.$bus.$on('place-order-after-cybersource-pay', this.placeOrder);
+    this.$bus.$on('place-order-after-cybersource-pay', this.goToStepOne);
+    this.$bus.$on('appointment-error', this.placeOrder);
     if (!this.isThankYouPage) {
       this.$store.dispatch('cart/load', { forceClientState: true }).then(() => {
         if (this.$store.state.cart.cartItems.length === 0) {
@@ -130,12 +131,16 @@ export default {
     this.$bus.$off('checkout-after-validationError', this.focusField)
     this.$bus.$off('send-sync-totals', this.sendAsyncTotals)
     this.$bus.$off('place-order-after-cybersource-pay', this.placeOrder)
+    this.$bus.$off('appointment-error', this.goToStepOne);
   },
   watch: {
     '$route': 'activateHashSection',
     'OnlineOnly': 'onNetworkStatusCheck'
   },
   methods: {
+    goToStepOne () {
+      this.editAccordion(0);
+    },
     changeShippingMethod (method_code) {
       let currentShippingMethod = this.shippingMethods.find(method => method.method_code === method_code);
       console.log(currentShippingMethod, 'current shipping method');

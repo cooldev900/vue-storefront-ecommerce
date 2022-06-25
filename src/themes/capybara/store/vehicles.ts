@@ -36,7 +36,8 @@ export const vehiclesStore = {
     },
     opens: ['order'],
     step: -1,
-    slot_data: {}
+    slot_data: {},
+    appointmentError: ''
   },
   actions: {
     async fetchStoryblok ({ commit }) {
@@ -201,6 +202,9 @@ export const vehiclesStore = {
     }
   },
   mutations: {
+    setAppointmentError(state, value) {
+      state.appointmentError = value;
+    },
     setStoryblok (state, payload) {
       Vue.set(state, 'storyblok', payload);
     },
@@ -323,6 +327,9 @@ export const vehiclesStore = {
     }
   },
   getters: {
+    getAppointmentError: state => {
+      return state.appointmentError;
+    },
     getBackFlag: (state)  => {
       return state.backFlag;
     },

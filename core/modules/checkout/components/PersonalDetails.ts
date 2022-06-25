@@ -21,7 +21,7 @@ export const PersonalDetails = {
       acceptConditions: false,
       password: '',
       rPassword: '',
-      isValidationError: false
+      isValidationError: false,
     }
   },
   computed: {

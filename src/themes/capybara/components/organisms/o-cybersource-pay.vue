@@ -54,6 +54,12 @@ export default {
     SfButton,
     // PaymentStripe
   },
+  props: {    
+    editAccordion: {
+      type: Function,
+      default: (Number) => {}
+    }
+  }  ,
   async mounted () {
     this.makeform();
   },
@@ -73,7 +79,6 @@ export default {
         let { data } = await axios.post(`${config.api.url}/api/ext/appointments`, params, {
           params
         } );
-        console.log( data, 'result');
         if (data.success) {
           let bookingId = data.result.data[0].id;
   
@@ -86,12 +91,15 @@ export default {
             }
           };
           await axios({method: 'POST', url: `${config.api.url}/api/cart/additional-order-data?cartId=${cartId}`, headers: {}, data: body});
+          this.$store.commit('vehicles/setAppointmentError', '');
           this.$refs.form.submit();
         } else {
-          this.alert(data.message);
+          this.$store.commit('vehicles/setAppointmentError', data.result.message);
+          this.editAccordion(0);
         }
       } catch (e) {
-        console.log(e);
+        this.$store.commit('vehicles/setAppointmentError', 'Appointment Error');
+        this.editAccordion(0);
       }
       
     },

@@ -53,6 +53,17 @@
         "
         @blur="$v.personalDetails.emailAddress.$touch()"
       />
+      <OmAlertBox type="warning" style="{margin-bottom: 20px, width: 100%}" v-show="!!message">
+        <template #message>
+          <div class="om-alert-box-message">
+            <div>
+              <p>
+                {{ message ? message : 'You will be redirected to BarclayCard to make a secure payment.' }}
+              </p>
+            </div>
+          </div>
+        </template>
+      </OmAlertBox>
       <h3>Your appointment</h3>
       <OmAppointmentSelector
         v-model="schedule"
@@ -87,6 +98,7 @@ import OmAppointmentSelector from 'theme/components/omni/om-appointment-selector
 import dayjs from 'dayjs';
 import config from 'config';
 import { currentStoreView } from '@vue-storefront/core/lib/multistore';
+import OmAlertBox from 'theme/components/omni/om-alert-box';
 
 export default {
   name: 'OPersonalDetails',
@@ -96,7 +108,8 @@ export default {
     SfHeading,
     SfCheckbox,
     SfCharacteristic,
-    OmAppointmentSelector
+    OmAppointmentSelector,
+    OmAlertBox
   },
   mixins: [PersonalDetails],
   computed: {
@@ -104,7 +117,8 @@ export default {
       location: 'omLocator/location',
       activeLocation: 'omLocator/activeLocation',
       locationKind: 'omLocator/locationKind',
-      isVirtualCart: 'cart/isVirtualCart'
+      isVirtualCart: 'cart/isVirtualCart',
+      message: 'vehicles/getAppointmentError',
     })
   },
   props: {
@@ -329,5 +343,12 @@ export default {
 
 .om-locator {
   margin-bottom: var(--spacer-xl);
+}
+
+.om-alert-box {
+  width: 100%;
+}
+.om-alert-box-message {
+  color: red;
 }
 </style>

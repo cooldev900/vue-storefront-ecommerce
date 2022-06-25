@@ -80,7 +80,7 @@
               />
             </template>
             <div v-show="!isComplete.payment">
-              <OPayment :next-accordion="nextAccordion" :validateOrderBeforeSending="validateOrderBeforeSending"/>
+              <OPayment :next-accordion="nextAccordion" :edit-accordion="editAccordion" :validateOrderBeforeSending="validateOrderBeforeSending"/>
             </div>
             <div v-show="isComplete.payment">
               <div class="edit" v-show="editable">
@@ -209,8 +209,8 @@ export default {
         let date = this.slotData.start_time.slice(0, 11);
         let start_time = this.slotData.start_time.slice(11, 13);
         let end_time = this.slotData.end_time.slice(11, 13);
-        start_time = start_time >= 12 ? (start_time - 12) +  ":00 PM" : start_time +  ":00 PM";
-        end_time = end_time >= 12 ? (end_time - 12) +  ":00 PM" : end_time +  ":00 PM";
+        start_time = start_time >= 12 ? (start_time - 12) +  ":00 PM" : start_time +  ":00 AM";
+        end_time = end_time >= 12 ? (end_time - 12) +  ":00 PM" : end_time +  ":00 AM";
         return `${date} ${start_time} ~ ${end_time}`;
       } else {
         return '';
