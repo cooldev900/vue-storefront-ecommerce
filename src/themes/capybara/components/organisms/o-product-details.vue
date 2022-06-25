@@ -46,6 +46,7 @@
             :product="product"
             :custom-options="productCustomOptions"
             :reviews="reviews"
+            :stock="productStock"
           />
           <OmRadioCheckbox
             v-if="showFittingCheckbox"
@@ -78,7 +79,7 @@
                 :product="product"
               />
               <MProductAddToCart
-                v-if="product.price || product.final_price"
+                v-if="availability === 'InStock' && (product.price || product.final_price)"
                 class="product__add-to-cart"
                 :product="product"
                 :stock="productStock"
