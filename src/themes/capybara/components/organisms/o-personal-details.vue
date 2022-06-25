@@ -64,7 +64,7 @@
           </div>
         </template>
       </OmAlertBox>
-      <h3>Your appointment</h3>
+      <h3>{{ $t('Your appointment') }}</h3>
      <OmAlertBox type="info" style="{margin-bottom: 20px, border: 1px solid #ccc;}">
         <template #message>
           <div class="om-alert-box-message">
