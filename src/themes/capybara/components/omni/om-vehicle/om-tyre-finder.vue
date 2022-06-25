@@ -1,7 +1,7 @@
 <template>
   <div class="af-tyre-finder">
     <div class="my-tyre" v-if="shouldShowVehicleCard">
-      <span class="my-tyre__header">Your Tire Size</span>
+      <span class="my-tyre__header">{{ $t('Your Tire Size') }}</span>
       <div class="my-tyre__container">
       <div class="my-tyre__icon">
         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
@@ -11,7 +11,7 @@ style=" fill:orange;">    <path d="M 25 2 C 12.318 2 2 12.318 2 25 C 2 37.682 12
       </div>
       <span>{{ activeVehicle.national_code }}</span>
       <SfButton class="om-btn--primary btn--full-width" @click="showTireSearch">
-        Start New Search</SfButton>
+        {{ $t('Start New Search') }}</SfButton>
     </div>
     </div>
     <div class="container" v-else>
@@ -28,7 +28,7 @@ style=" fill:orange;">    <path d="M 25 2 C 12.318 2 2 12.318 2 25 C 2 37.682 12
               v-model="models['vehicle'][selectorName]"
             >
               <option value="" disabled selected hidden>
-                Select {{ selectorName }}
+                {{ $t(changeText(selectorName)) }}
               </option>
               <option
                 v-for="label in options.vehicle[selectorName]"
@@ -43,7 +43,7 @@ style=" fill:orange;">    <path d="M 25 2 C 12.318 2 2 12.318 2 25 C 2 37.682 12
               :disabled="disableVehicleGoButton"
               @click="fetchNationalCode('vehicle')"
             >
-              Go
+              {{ $t('Go') }}
             </SfButton>
           </div>
         </SfTab>
@@ -59,7 +59,7 @@ style=" fill:orange;">    <path d="M 25 2 C 12.318 2 2 12.318 2 25 C 2 37.682 12
               v-model="models['size'][selectorName]"
             >
               <option value="" disabled selected hidden>
-                Select {{ selectorName }}
+                {{ $t(changeText(selectorName)) }}
               </option>
               <option
                 v-for="label in options.size[selectorName]"
@@ -74,7 +74,7 @@ style=" fill:orange;">    <path d="M 25 2 C 12.318 2 2 12.318 2 25 C 2 37.682 12
               :disabled="disableSizeGoButton"
               @click="fetchNationalCode('size')"
             >
-              Go
+              {{ $t('Go') }}
             </SfButton>
           </div>
         </SfTab>
@@ -101,25 +101,25 @@ export default {
         vehicle: {
           make: [],
           model: [],
-          tire_size: [],
+          tire_size: []
         },
         size: {
-          width: [],
-          rim: [],
+          width: [],          
           profile: [],
-        },
+          rim: [],
+        }
       },
       models: {
         vehicle: {
-          make: "",
-          model: "",
-          tire_size: "",
+          make: '',
+          model: '',
+          tire_size: ''
         },
         size: {
-          width: "",
-          rim: "",
-          profile: "",
-        },
+          width: '',          
+          profile: '',
+          rim: ''
+        }
       }
     };
   },
@@ -157,9 +157,22 @@ export default {
     showTireSearch() {
       this.$store.dispatch("vehicles/saveActiveVehicle", {});
     },
+    changeText(text) {
+      let texts = text.split("_");
+      let results = texts.map(text => text.charAt(0).toUpperCase() + text.slice(1));
+      console.log(results.join(" ").trim(), 'texts')
+      return results.join(" ").trim();
+    },
     async changeSelector(type, keyIndex) {
       if (type === "vehicle") {
         if (keyIndex < 2) {
+          if (keyIndex === 0) {
+            this.models.vehicle = {
+              ...this.models.vehicle,
+              model: '',
+              tire_size: ''
+            }
+          }
           const allKeys = Object.keys(this.models.vehicle);
           const key = allKeys[keyIndex + 1];
           const url = `${config.api.url}/api/ext/alfardan/vehicle-finder/options/${key}`;
@@ -186,6 +199,13 @@ export default {
         }
       } else {
         if (keyIndex < 2) {
+          if (keyIndex === 0) {
+            this.models.size = {
+              ...this.models.size,
+              profile: '',
+              rim: ''
+            }
+          }
           const allKeys = Object.keys(this.models.size);
           const key = allKeys[keyIndex + 1];
           const url = `${config.api.url}/api/ext/alfardan/tire-size/options/${key}`;
