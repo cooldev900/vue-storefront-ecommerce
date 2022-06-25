@@ -1,6 +1,6 @@
 <template>
   <SfButton
-    class="sf-button--pure a-account-ico navigation-icon" :class="direction"
+    class="sf-button--pure a-account-ico navigation-icon" :class="{'dir-rtl': storeId === 3}"
   >
     <div class="sf-header__custom-icon search-icon" :class="[{
       'sf-header__icon--is-active': isLoggedIn
@@ -32,7 +32,10 @@ export default {
     menuStyle: String
   },
   computed: {
-    ...mapGetters('user', ['isLoggedIn'])
+    ...mapGetters('user', ['isLoggedIn']),
+    currentStoreViewStoreId() {
+      return currentStoreView().storeId;
+    }
   },
   methods: {
     ...mapActions('ui', {
@@ -53,6 +56,14 @@ export default {
         this.openModal({ name: ModalList.Auth, payload: 'login' })
       }
     }
+  },
+  data() {
+    return {
+      storeId: 0
+    }
+  },
+  beforeMount() {
+    this.storeId = currentStoreView().storeId;
   }
 };
 </script>
