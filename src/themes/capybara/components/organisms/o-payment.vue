@@ -382,7 +382,7 @@ export default {
       const secretKey = config.secret_key;
       const shaSignature1 = `${transaction_id}${decision}${req_transaction_uuid}`;
       console.log(process.env, 'secret_key', config.secret_key);
-      const checkSumShaSign = this.$CryptoJS.HmacSHA256(shaSignature1, secretKey).toString(this.$CryptoJS.enc.Base64);
+      const checkSumShaSign = this.$CryptoJS.HmacSHA256(shaSignature1, secretKey).toString(this.$CryptoJS.enc.Hex);
       console.log(JSON.parse(SHASIGN) ===  checkSumShaSign,'is valid sha', SHASIGN, checkSumShaSign);
       if (JSON.parse(SHASIGN) ===  checkSumShaSign && decision === 'ACCEPT') {
         // let newOrder = await this.prepareOrder();
