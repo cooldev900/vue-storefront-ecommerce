@@ -18,13 +18,13 @@
     <div class="product__header">
      <h1>{{ product.enhanced_title || product.name | htmlDecode }}</h1>
     <div v-if="product.tyre_size" class="product__header--spec">
-    <p>Tire Size:</p><span>{{product.tyre_size}}</span>
+    <p>{{ $t('Tire Size:')}}'</p><span>{{product.tyre_size}}</span>
     </div>
      <div v-else-if="product.oil_type" class="product__header--spec">
-    <p>Oil Type:</p><span>{{oilType}}</span>
+    <p>{{ $t('Oil Type:')}}'</p><span>{{oilType}}</span>
     </div>
       <div v-else-if="product.battery_capacity" class="product__header--spec">
-    <p>Battery Capacity:</p><span>{{product.battery_capacity}}</span>
+    <p>{{ $t('Battery Capacity:')}}'</p><span>{{product.battery_capacity}}</span>
     </div>
     </div>
     <div class="product__main">
@@ -89,14 +89,14 @@
                 class="a-add-to-cart sf-button--full-width enquire-button"
                 @click="showEnquiryModal"
               >
-                Enquire About This Part
+                {{ $t('Enquire About This Part') }}
               </SfButton>
               <button
                 v-if="!isJpgRender && isFit"
                 class="open-modal-button"
                 @click="openSvgViewerModal"
               >
-                Open Interactive Parts
+                {{ $t('Open Interactive Parts') }}
               </button>
               <SfNotification
                 visible="true"

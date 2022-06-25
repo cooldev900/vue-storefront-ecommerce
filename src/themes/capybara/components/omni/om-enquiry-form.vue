@@ -95,7 +95,7 @@ import axios from 'axios';
 import { notifications } from '@vue-storefront/core/modules/cart/helpers';
 import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 import config from 'config';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'OmEnquiryForm',
@@ -123,6 +123,11 @@ export default {
       item_required: '',
       loading: false
     };
+  },
+  computed: {
+    ...mapGetters({
+      product: 'product/getCurrentProduct',
+    }),
   },
   methods: {
     ...mapActions('ui', {
@@ -220,6 +225,14 @@ export default {
       this.firstNameBlur = true;
       this.emailBlur = true;
       this.lastNameBlur = true;
+    }
+  },
+  mounted () {
+    if (this.product.sku) {
+      if (this.product.name)  
+        this.item_required = this.product.name + ' - ' + this.product.sku;  
+      else 
+        this.item_required = this.product.title + ' - ' + this.product.sku;  
     }
   }
 };

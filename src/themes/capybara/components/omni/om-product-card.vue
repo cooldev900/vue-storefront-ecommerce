@@ -435,6 +435,7 @@ export default {
       openModal: 'openModal'
     }),
     showEnquiryModal () {
+      this.$store.dispatch('product/setCurrent', this.product);
       this.openModal({
         name: ModalList.OmEnquiryModal
       })
