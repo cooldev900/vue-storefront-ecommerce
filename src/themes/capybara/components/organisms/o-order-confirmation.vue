@@ -10,6 +10,7 @@
         <p v-if="OnlineOnly && lastOrderConfirmation.orderNumber" class="banner__order-number">
           {{ $t('Order No.') }} <strong>{{ lastOrderConfirmation.orderNumber }}</strong>
         </p>
+          <div class="appointment">Appointment: {{ getBookedTime }}</div>
       </div>
     </div>
     <div class="wrapper">
@@ -86,7 +87,7 @@
 
 <script>
 import get from 'lodash-es/get';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import config from 'config';
 import VueOfflineMixin from 'vue-offline/mixin';
 import { EmailForm } from '@vue-storefront/core/modules/mailer/components/EmailForm';
@@ -110,6 +111,21 @@ export default {
       lastOrderConfirmation: state => get(state, 'order.last_order_confirmation.confirmation') || {},
       checkoutPersonalEmailAddress: state => state.checkout.personalDetails.emailAddress
     }),
+    ...mapGetters({
+      slotData: 'vehicles/getSlotData',
+    }),
+    getBookedTime() {
+      if (this.slotData?.id) {
+        let date = this.slotData.start_time.slice(0, 11);
+        let start_time = this.slotData.start_time.slice(11, 13);
+        let end_time = this.slotData.end_time.slice(11, 13);
+        start_time = start_time >= 12 ? (start_time - 12) +  ":00 PM" : start_time +  ":00 PM";
+        end_time = end_time >= 12 ? (end_time - 12) +  ":00 PM" : end_time +  ":00 PM";
+        return `${date} ${start_time} ~ ${end_time}`;
+      } else {
+        return '';
+      }
+    },
     isNotificationSupported () {
       if (isServer || !('Notification' in window)) return false;
       return 'Notification' in window;
@@ -241,5 +257,9 @@ export default {
   padding: 0.5em;
   font-family: var(--font-family-primary);
   resize: vertical;
+}
+
+.appointment {
+  margin-top: 15px;
 }
 </style>

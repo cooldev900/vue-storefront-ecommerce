@@ -223,7 +223,6 @@ export default {
       saveCompete: 'vehicles/saveCompete',
       saveOpens: 'vehicles/saveOpens',
       saveStep: 'vehicles/saveStep',
-      slotData: 'vehicles/getSlotData'
     }),
     nextAccordion (index) {
       // if (index === 0 && this.locationKind === 'click_collect_free') {
@@ -338,6 +337,7 @@ export default {
     },
     goto () {
       if (this.step !== -1) setTimeout(() => { document.getElementById(Object.keys(this.models)[this.step]).scrollIntoView({ behavior: 'smooth' }); }, 0);
+      if (this.isThankYouPage) setTimeout(() => { document.getElementById('checkout').scrollIntoView({ behavior: 'smooth' }); }, 0);
     }
   },
   async mounted () { 
@@ -353,6 +353,9 @@ export default {
     }
   },
   watch: {
+    isThankYouPage() {
+      this.goto();
+    },
     isCompleteData (value) {
       if (JSON.stringify(value) !== JSON.stringify(this.isComplete)) {
         this.isComplete = { ...value };

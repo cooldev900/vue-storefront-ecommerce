@@ -139,11 +139,10 @@ export default {
       this.isVisible = value;
     },
     changeText(text) {
-      console.log(text, 'text')
       let texts = text.split("_");
       let results = texts.map(text => text.charAt(0).toUpperCase() + text.slice(1));
-      console.log(results, 'texts')
-      return results.join(" ");
+      console.log(results.join(" ").trim(), 'texts')
+      return results.join(" ").trim();
     },
     async changeSelector (type, keyIndex) {
       console.log('changeSelector', type, 'type', keyIndex, 'keyIndex');
