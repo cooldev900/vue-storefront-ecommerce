@@ -87,7 +87,7 @@ export default {
             }
           };
           await axios({method: 'POST', url: `${config.api.url}/api/cart/additional-order-data?cartId=${cartId}`, headers: {}, data: body});
-          this.$refs.form.$el.submit();
+          this.$refs.form.submit();
         }
       } catch (e) {
         console.log(e);
