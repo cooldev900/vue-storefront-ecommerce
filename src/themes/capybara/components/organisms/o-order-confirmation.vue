@@ -1,5 +1,4 @@
 <template>
-<NoSSR>
   <div id="o-order-confirmation">
     <div class="banner">
       <div class="banner__info">
@@ -84,7 +83,6 @@
       </div>
     </div>
   </div>
-</NoSSR>
 </template>
 
 <script>
@@ -97,11 +95,10 @@ import { isServer } from '@vue-storefront/core/helpers';
 import { registerModule } from '@vue-storefront/core/lib/modules';
 import { MailerModule } from '@vue-storefront/core/modules/mailer';
 import { SfHeading, SfButton } from '@storefront-ui/vue';
-import NoSSR from 'vue-no-ssr'
 
 export default {
   name: 'OOrderConfirmation',
-  components: { SfHeading, SfButton, NoSSR },
+  components: { SfHeading, SfButton },
   mixins: [VueOfflineMixin, EmailForm],
   data () {
     return {

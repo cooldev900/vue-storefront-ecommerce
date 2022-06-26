@@ -1,5 +1,4 @@
 <template>
-<NoSSR>
   <div class="o-payment">
     <div class="form">
       <!-- <SfCheckbox
@@ -262,7 +261,6 @@
          tries to inject here a component with payment description -->
     <div v-show="false" id="checkout-order-review-additional-container" />
   </div>
-</NoSSR>
 </template>
 <script>
 import { mapGetters } from 'vuex';
@@ -290,7 +288,6 @@ import { createSmoothscroll } from 'theme/helpers';
 import { getShaSignature } from 'theme/helpers/index.ts';
 import CybersourcePayVue from './o-cybersource-pay.vue';
 import config from 'config';
-import NoSSR from 'vue-no-ssr'
 
 export default {
   name: 'OPayment',
@@ -302,8 +299,7 @@ export default {
     SfHeading,
     SfCheckbox,
     OmAlertBox,
-    CybersourcePayVue,
-    NoSSR
+    CybersourcePayVue
     // PaymentStripe
   },
   mixins: [Payment, OrderReview],
