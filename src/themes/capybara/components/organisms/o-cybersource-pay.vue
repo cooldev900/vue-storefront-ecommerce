@@ -81,7 +81,7 @@ export default {
         } );
         if (data.success) {
           let bookingId = data.result.data[0].id;
-  
+          let token = this.token;
           let cartId = this.cartToken;
           let body = {
             giftMessage: {
@@ -90,7 +90,7 @@ export default {
               message: `cartId: ${cartId}, appointmentId: ${bookingId}`,
             }
           };
-          await axios({method: 'POST', url: `${config.api.url}/api/cart/additional-order-data?cartId=${cartId}`, headers: {}, data: body});
+          await axios({method: 'POST', url: `${config.api.url}/api/cart/additional-order-data?cartId=${cartId}&token=${token}`, headers: {}, data: body});
           this.$store.commit('vehicles/setAppointmentError', '');
           this.$refs.form.submit();
         } else {
@@ -150,6 +150,7 @@ export default {
       totals: 'cart/getTotals',
       getSlotData: 'vehicles/getSlotData',
       cartToken: 'cart/getCartToken',
+      token: 'user/getToken'
     }),
     prices () {
       return this.totals.reduce((result, price) => {
