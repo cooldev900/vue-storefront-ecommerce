@@ -33,7 +33,7 @@ export default {
   },
   computed: {
     ...mapGetters('user', ['isLoggedIn']),
-    currentStoreViewStoreId() {
+    currentStoreViewStoreId () {
       return currentStoreView().storeId;
     }
   },
@@ -78,6 +78,10 @@ export default {
   border-radius: 20px 0 0 20px;
   padding: 0 30px 0 10px;
   font-size: 13px;
+  &.dir-rtl{
+    border-radius: 0px 20px 20px 0px !important;
+    padding: 0 10px 0 30px !important;
+}
 }
 .sf-header__custom-icon{
 font-size: 13px;

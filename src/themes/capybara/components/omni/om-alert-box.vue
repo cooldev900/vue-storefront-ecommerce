@@ -17,7 +17,7 @@ export default {
     },
     message: {
       type: String,
-      default: 'Please enter your VIN during Checkout to enable your Dealer to better verify that this product fits your BMW.'
+      default: ''
     }
   },
   data () {

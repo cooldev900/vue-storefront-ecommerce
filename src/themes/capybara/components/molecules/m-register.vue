@@ -114,8 +114,7 @@ export default {
           email: this.email,
           password: this.password,
           firstname: this.firstName,
-          lastname: this.lastName,
-          token
+          lastname: this.lastName
         })
         .then(result => {
           this.$bus.$emit('notification-progress-stop');

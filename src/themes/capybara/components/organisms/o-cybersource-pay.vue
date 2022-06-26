@@ -31,7 +31,7 @@
         <!-- layout information: see Look and feel of the payment page -->
 
         <SfButton
-        class="sf-button--full-width form__action-button"
+        class="sf-button--full-width om-btn--primary"
         @click.prevent="process"
         >
         {{ $t("Continue to Payment") }}

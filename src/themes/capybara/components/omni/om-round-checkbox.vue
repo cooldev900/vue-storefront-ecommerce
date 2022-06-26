@@ -114,19 +114,22 @@ export default {
 <style lang="scss">
 
 .slot {
-    border: 1px solid gray;
     align-items: center;
     padding: 15px;
     border-radius: 5px;
     background-color: #eee;
+    border: 1px solid #fff;
     margin-top: 15px;
     display: flex;
     justify-content: space-between;
 
     .bookingStatus {
-      font-size: 20px;
+      font-size: 15px;
       font-weight: bold;
     }
+  &:hover{
+    border: 1px solid #ccc;
+  }
 }
 
 .disabled {
@@ -146,12 +149,11 @@ export default {
   position: relative;
   padding-left: 40px;
   cursor: pointer;
-  font-size: 22px;
+  font-size: 15px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  
 }
 
 /* Hide the browser's default checkbox */
@@ -166,7 +168,7 @@ export default {
 /* Create a custom checkbox */
 .checkmark {
   position: absolute;
-  top: 5px;
+  top: 0;
   left: 0;
   height: 25px;
   width: 25px;

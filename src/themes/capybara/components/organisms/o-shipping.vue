@@ -79,6 +79,7 @@
         @blur="$v.shipping.zipCode.$touch()"
       /> -->
       <SfSelect
+        style="display: none"
         v-model="shipping.country"
         class="form__element form__element--half form__element--half-even form__select sf-select--underlined"
         name="countries"
@@ -111,7 +112,7 @@
     <div class="form">
       <div class="form__action">
         <SfButton
-          class="om-button wide btn"
+          class="sf-button--full-width om-btn--primary"
           :disabled="($v.shipping.$invalid || !shippingMethods.length)"
           @click="clickContinuePayment"
         >

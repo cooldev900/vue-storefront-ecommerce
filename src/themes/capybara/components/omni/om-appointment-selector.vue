@@ -514,9 +514,9 @@ export default {
   border: 1px solid transparent;
 }
 .disabled {
-  background-color: gray;
+  background-color: #fff;
   color: black;
-  opacity: 0.5;
+  opacity: 0.3;
   cursor: not-allowed;
 }
 }

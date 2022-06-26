@@ -2,13 +2,19 @@
   <SfButton
     class="sf-button--pure om-vehicle-icon navigation-icon desktop-only"
   >
-    <span class="sf-header__custom-icon">{{ $t('Language') }}</span>
+    <router-link
+      :to="('/')"
+      :title="$t('Home Page')"
+    >
+    <span @click="changeLanguage" class="sf-header__custom-icon">{{ $t('Language') }}</span>
+     </router-link>
   </SfButton>
 </template>
 
 <script>
 import { SfIcon, SfButton, SfBadge } from '@storefront-ui/vue';
 import { mapGetters, mapActions } from 'vuex';
+import { localizedRoute } from '@vue-storefront/core/lib/multistore';
 
 export default {
   name: 'OmVehicleIcon',
@@ -29,7 +35,10 @@ export default {
   methods: {
     ...mapActions({
       openVehicleCart: 'ui/toggleSidebar'
-    })
+    }),
+    changeLanguage () {
+      this.$router.push('/');
+    }
   }
 };
 </script>

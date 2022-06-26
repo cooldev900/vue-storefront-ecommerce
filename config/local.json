@@ -134,7 +134,7 @@
   "elasticsearch": {
     "httpAuth": "",
     "host": "/api/catalog",
-    "index": "alfardan_2",
+    "index": "alfardan_1",
     "min_score": 0.02,
     "csrTimeout": 5000,
     "ssrTimeout": 1000,
@@ -201,18 +201,18 @@
     "multistore": true,
     "commonCache": false,
     "mapStoreUrlsFor": [
-      "en",
+      "ar",
       "mini"
     ],
-    "en": {
-      "storeCode": "en",
-      "storeId": 2,
-      "name": "English",
-      "url": "/en",
+    "ar": {
+      "storeCode": "ar",
+      "storeId": 3,
+      "name": "Arabic",
+      "url": "/ar",
       "appendStoreCode": true,
       "elasticsearch": {
         "host": "/api/catalog",
-        "index": "alfardan_2"
+        "index": "alfardan_3"
       },
       "tax": {
         "sourcePriceIncludesTax": false,
@@ -1087,11 +1087,12 @@
   },
   "clientIds": {
     "1": 25,
-    "2": 11,
-    "3": 11,
-    "6": 11
+    "2": 25,
+    "3": 25,
+    "6": 25
   },
   "recaptcha": {
     "siteKey": "6LeMJLkZAAAAADcLY2qurohjqjDcZszw98_u1MSE"
-  }
+  },
+  "secret_key": "S3YU82lUwBnNXOdYdnz"
 }

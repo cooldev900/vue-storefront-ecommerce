@@ -30,14 +30,6 @@
         :class="{'sf-property--large': isLarge}"
       />
     </div>
-    <div v-if="!!prices.shipping || prices.shipping === 0">
-      <SfProperty
-        :name="$t('Shipping')"
-        :value="prices.shipping | price"
-        class="sf-property--full-width property"
-        :class="{'sf-property--large': isLarge}"
-      />
-    </div>
     <template v-if="prices.discount">
       <SfProperty
         :name="$t('Discount')"
