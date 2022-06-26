@@ -68,7 +68,7 @@ export default {
     this.$bus.$on('checkout-after-shippingMethodChanged', this.onAfterShippingMethodChanged)
     this.$bus.$on('checkout-after-validationError', this.focusField)
     this.$bus.$on('send-sync-totals', this.sendAsyncTotals)
-    this.$bus.$on('place-order-after-cybersource-pay', this.goToStepOne);
+    this.$bus.$on('place-order-after-cybersource-pay', this.placeOrder);
     this.$bus.$on('appointment-error', this.placeOrder);
     if (!this.isThankYouPage) {
       this.$store.dispatch('cart/load', { forceClientState: true }).then(() => {
