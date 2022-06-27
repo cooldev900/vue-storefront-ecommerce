@@ -18,13 +18,13 @@
     <div class="product__header">
      <h1>{{ product.enhanced_title || product.name | htmlDecode }}</h1>
     <div v-if="product.tyre_size" class="product__header--spec">
-    <p>{{ $t('Tire Size:')}}'</p><span>{{product.tyre_size}}</span>
+    <p>{{ $t('Tire Size') }}</p><span> {{product.tyre_size}}</span>
     </div>
      <div v-else-if="product.oil_type" class="product__header--spec">
-    <p>{{ $t('Oil Type:')}}'</p><span>{{oilType}}</span>
+    <p>{{ $t('Oil Type') }}</p><span> {{oilType}}</span>
     </div>
       <div v-else-if="product.battery_capacity" class="product__header--spec">
-    <p>{{ $t('Battery Capacity:')}}'</p><span>{{product.battery_capacity}}</span>
+    <p>{{ $t('Battery Capacity') }}</p><span> {{product.battery_capacity}}</span>
     </div>
     </div>
     <div class="product__main">
@@ -89,7 +89,7 @@
                 class="sf-button--full-width om-btn--primary"
                 @click="showEnquiryModal"
               >
-                {{ $t('Enquire About This Part') }}
+                {{ $t('Enquire') }}
               </SfButton>
               </div>
               <button
@@ -530,6 +530,9 @@ export default {
   margin: 30px 0;
 }
 .product__header{
+  @include for-mobile{
+    padding: 0 15px;
+  }
   h1{
     font-size: 28px;
     margin: 0;
@@ -538,6 +541,7 @@ export default {
     display: flex;
     align-items: center;
     margin-bottom: 15px;
+    gap: 15px;
   p{
     margin: 0;
     font-weight: 700;
@@ -548,7 +552,6 @@ export default {
     padding: 5px 20px;
     color: #fff;
     font-weight: 700;;
-    margin-left: 10px;
   }
   }
 }

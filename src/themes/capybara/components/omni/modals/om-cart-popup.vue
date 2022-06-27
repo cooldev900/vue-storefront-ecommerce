@@ -1,8 +1,10 @@
 <template>
   <div class="om-cart-popup">
-    <SfModal :visible="isVisible" @close="closeModal" title="Added to Basket">
+    <SfModal :visible="isVisible" @close="closeModal" :title="$t('Added to cart')">
       <div class="om-cart-popup__content">
-        <div class="title desktop-only">Added to Basket</div>
+        <div class="title desktop-only">
+          {{ $t('Added to cart') }}
+        </div>
         <div class="product-count">
           <SfIcon
             class="icon fits-icon"
@@ -11,21 +13,23 @@
             disabled
             color="var(--c-primary)"
           />
-          <span>{{ modalData.payload.qty }}x Added</span>
+          <span>{{ modalData.payload.qty }}x {{ $t('Added') }}</span>
         </div>
-        <div class="product-name">{{ modalData.payload.name }}</div>
+        <div class="product-name">
+          {{ modalData.payload.name }}
+        </div>
         <div class="actions">
           <SfButton
             class="sf-button--full-width om-btn--primary"
             @click="continueShipping"
           >
-            Continue Shopping
+            {{ $t('Continue shopping') }}
           </SfButton>
           <SfButton
             class="sf-button--full-width om-btn--secondary"
             @click="goToCart"
           >
-            Go to cart
+            {{ $t('Go to checkout') }}
           </SfButton>
         </div>
       </div>

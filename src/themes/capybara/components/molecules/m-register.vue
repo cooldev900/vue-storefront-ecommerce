@@ -4,7 +4,7 @@
       <SfInput
         v-model="email"
         name="email"
-        :label="$t('Your email')"
+        :label="$t('Email address')"
         :required="true"
         :valid="!$v.email.$error"
         :error-message="
@@ -18,7 +18,7 @@
       <SfInput
         v-model="firstName"
         name="first-name"
-        :label="$t('First Name')"
+        :label="$t('First name')"
         :required="true"
         :valid="!$v.firstName.$error"
         :error-message="$t('Field is required.')"
@@ -28,7 +28,7 @@
       <SfInput
         v-model="lastName"
         name="last-name"
-        :label="$t('Last Name')"
+        :label="$t('Last name')"
         :required="true"
         :valid="!$v.lastName.$error"
         :error-message="$t('Field is required.')"
@@ -47,11 +47,11 @@
         tabindex="4"
       />
       <SfButton class="sf-button--full-width form__submit om-btn--primary" tabindex="5">
-        {{ $t("Create an account") }}
+        {{ $t("Create a new account") }}
       </SfButton>
     </form>
     <SfButton class="sf-button--text action-button" @click.native="switchElem('login')" tabindex="6">
-      {{ `${$t("or")} ${$t("login in to your account")}` }}
+      {{ `${$t("or")} ${$t("Login in to your account")}` }}
     </SfButton>
   </div>
 </template>

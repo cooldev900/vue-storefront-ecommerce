@@ -30,7 +30,7 @@
       <div class="footer-bottom__header">
         <ul>
           <li class="footer-bottom__menu-item">
-            <span @click="backToTop">Back to Top</span>
+            <span @click="backToTop">{{ $t('Back to Top') }}</span>
           </li>
           <ul class="social-icon__list">
             <li class="social-icon">
@@ -139,7 +139,7 @@ export default {
           name: 'Our Services',
           children: [
             { name: 'Tires', link: '/tires' },
-            { name: 'Lubricants', link: '/oils-lubricants' },
+            { name: 'Lubricants', link: '/lubricants' },
             { name: 'Batteries', link: '/batteries' }
           ]
         }

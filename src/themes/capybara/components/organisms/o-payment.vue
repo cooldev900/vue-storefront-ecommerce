@@ -14,7 +14,7 @@
         </div>
       </div> -->
       <div class="billing-address-content" v-show="sendToBillingAddress">
-        <b> Billing Address: </b>{{ billingAddress }}
+        <b> {{ $t('Billing address') }} </b>{{ billingAddress }}
       </div>
       <!-- <div class="form__element form__checkbox form_button" v-if="sendToBillingAddress" @click="sendToBillingAddress = !sendToBillingAddress">
         Change Billing Address
@@ -25,7 +25,7 @@
         @click="handleClick"
         v-show="sendToBillingAddress"
       >
-        {{ locationKind === 'click_collect_free' ? $t('Edit Billing Address') : $t('Change Billing Address') }}
+        {{ locationKind === 'click_collect_free' ? $t('Change billing address') : $t('Change billing address') }}
       </span>
       <SfInput
         v-if="!sendToBillingAddress"
@@ -184,7 +184,7 @@
         type="submit"
         @click="saveBillingAddress"
       >
-        {{ $t("Save and Continue") }}
+        {{ $t("Save") }}
       </SfButton>
     </div>
     <OmAlertBox v-if="message" type="warning" style="margin-bottom: 20px;" v-show="sendToBillingAddress">

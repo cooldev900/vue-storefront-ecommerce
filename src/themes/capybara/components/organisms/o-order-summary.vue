@@ -1,7 +1,7 @@
 <template>
   <div class="o-order-summary">
     <SfHeading
-      :title="$t('Totals')"
+      :title="$t('Total')"
       :level="3"
       class="sf-heading--left sf-heading--no-underline title"
     />

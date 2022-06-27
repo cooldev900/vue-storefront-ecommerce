@@ -8,9 +8,9 @@
       <div class="product__part-info">
         <!-- <Pill /> -->
         <div class="pill-wrap">
-          <div class="pill" :class="{'pill-red': !isAvailable}">{{ isAvailable ? $t('In Stock') : $t('Out of Stock')}}</div>
+          <div class="pill" :class="{'pill-red': !isAvailable}">{{ isAvailable ? $t('In Stock') : $t('Out of stock')}}</div>
         </div>
-      <span class="part-number">Product Code: {{ title }}</span>
+      <span class="part-number">{{ $t('Product Code:') }} {{ title }}</span>
     </div>
     </div>
   </div>
@@ -117,9 +117,9 @@ export default {
   &__part-info{
     display: flex;
     align-items: center;
+    gap: 15px;
    .part-number{
     font-size: 12px;
-    margin-left: 15px;
   }
   }
 }

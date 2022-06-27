@@ -2,9 +2,11 @@ A customer with the same email already exists in an associated website.,A custom
 Account,Account
 About us (Magento CMS),About us (Magento CMS)
 About us,About us
+Added,Added
 Add a discount code,Add a discount code
 Add discount code,Apply
 Add to cart,Add to cart
+Added to cart,Added to cart
 Add to compare,Add to compare
 Add to favorite,Add to favorite
 Additional Information,Additional Information
@@ -17,6 +19,7 @@ Authorization in progress ...,Authorization in progress ...
 Back to login,Back to login
 Back,Back
 Billing address,Billing address
+Booking message,Our mobile service allows customers to book online and have Alfardan Commercial services brought to you, at any suitable location of your choice across Qatar.
 Cancel,Cancel
 Cash on delivery,Cash on delivery
 Categories,Categories
@@ -38,9 +41,11 @@ Company name *,Company name *
 Company name,Company name
 Compare products,Compare products
 Confirm your order,Confirm your order
-Contact us,Contact us
+Contact Us,Contact us
 Continue to payment,Continue to payment
 Continue to shipping,Continue to shipping
+Continue shopping,Continue Shopping
+Contact information,Your details
 Copy address data from shipping,Copy address data from shipping
 Country *,Country *
 Country,Country
@@ -48,7 +53,7 @@ Create a new account,Create a new account
 Current password *,Current password *
 Custom Cms Page,Custom Cms Page
 Customer service (Magento CMS),Customer service (Magento CMS)
-Customer service,Customer service
+Customer Service,Customer service
 DPD Courier,DPD Courier
 Date and time,Date and time
 Delivery,Delivery
@@ -74,17 +79,20 @@ Email address,Email address
 English,English
 Enjoy these perks with your free account!,Enjoy these perks with your free account!
 Enter your email to receive instructions on how to reset your password.,Enter your email to receive instructions on how to reset your password.
+Enquire,Enquire
 Erin recommends,Erin recommends
 Error while sending reset password e-mail,Error while sending reset password e-mail
 Everything new,Everything new
 Extension developers would like to thank you for placing an order!,Extension developers would like to thank you for placing an order!
 Faster checkout,Faster checkout
+FAQs,FAQS
 Field is required,Field is required
 Filter by categories,Filter by categories
 Filter,Filter
 Filters,Filters
 First name *,First name *
 First name,First name
+Fitment location,Fitment location
 Forgot the password?,Forgot the password?
 Full rewards program benefits,Full rewards program benefits
 General agreement,General agreement
@@ -104,9 +112,11 @@ Home,Home
 House/Apartment number *,House/Apartment number *
 House/Apartment number,House/Apartment number
 How Do I Find Tire Size, How do I find my tire size?
+How to find your tire size, How to find your tire size
 I accept ,I accept 
 I accept terms and conditions,I accept terms and conditions
 I agree to,I agree to
+Items required, Items required
 I have a company and want to receive an invoice for every order,I have a company and want to receive an invoice for every order
 I want to create an account,I want to create an account
 I want to create an account',I want to create an account'
@@ -124,7 +134,7 @@ Kidswear,Kidswear
 Language,"عربى"
 Last name *,Last name *
 Last name,Last name
-Latest,Latest
+Latest,Sort By: Latest
 Legal notice,Legal notice
 Load more,Load more
 Log in to your account,Log in to your account
@@ -134,6 +144,7 @@ Logout,Logout
 Magazine,Magazine
 Manage your wishlist,Manage your wishlist
 Men's fashion,Men's fashion
+Message,Message
 My Account,My Account
 My Recently viewed products,My Recently viewed products
 My account,My account
@@ -154,6 +165,7 @@ No products yet,No products yet
 No results were found.,No results were found.
 No reviews have been posted yet. Please don't hesitate to share Your opinion and write the first review!,No reviews have been posted yet. Please don't hesitate to share Your opinion and write the first review!
 OK,OK
+Of,of
 Open menu,Open menu
 Open microcart,Open microcart
 Open my account,Open my account
@@ -169,6 +181,7 @@ Order informations,Order informations
 Orders,Orders
 Others,Others
 Password *,Password *
+Password,Password
 Password must have at least 8 letters.,Password must have at least 8 letters.
 Passwords must be identical,Passwords must be identical
 Passwords must be identical.,Passwords must be identical.
@@ -190,11 +203,14 @@ Price: High to low,Price: High to low
 Price: Low to high,Price: Low to high
 Product {productName} has been removed from wishlist!,Product {productName} has been removed from wishlist!
 Product {productName} has been added to wishlist!,Product {productName} has been added to wishlist!
-Privacy policy,Privacy policy
+Privacy Policy,Privacy Policy
+Products,Products
 Product Name,Product Name
 Product details,Product details
 Products,Products
 Products found,Products found
+Profile title,Profile
+Profile description,Followed by a two digit number - i.e. 45
 Purchase,Purchase
 Qty,Qty
 Quantity,Quantity
@@ -214,6 +230,10 @@ Return policy,Return policy
 Return to shopping,Return to shopping
 Returns,Returns
 Review order,Review order
+Rim title,Rim
+Rim description,The rim size is represented next to an 'R' - i.e. 17
+Save,Save
+Save with code,% with code
 SKU,SKU
 SKU: {sku},SKU: {sku}
 Safety,Safety
@@ -241,6 +261,7 @@ Social,Social
 Something went wrong ...,Something went wrong ...
 Something went wrong. Try again in a few seconds.,Something went wrong. Try again in a few seconds.
 Sort By,Sort By
+Step,Step
 State / Province,State / Province
 Start New Search, Start New Search
 Status,Status
@@ -250,6 +271,7 @@ Street name,Street name
 Subscribe to the newsletter and receive a coupon for 10% off,Subscribe to the newsletter and receive a coupon for 10% off
 Subscribe,Subscribe
 Subtotal,Subtotal
+Submit,Submit
 Tax ID *,Tax ID *
 Tax ID must have at least 3 letters.,Tax ID must have at least 3 letters.
 Tax identification number *,Tax identification number *
@@ -275,7 +297,9 @@ Update my shipping details,Update my shipping details
 Use my billing data,Use my billing data
 Use my company's address details,Use my company's address details
 Use my company's address details,Use my company's address details
+Use the guide,Use our guide below to easily and quickly find your tire size from the side of your existing tires.
 Value,Value
+VIN,VIN or Registration
 View,View
 View all,View all
 View order,View order
@@ -288,7 +312,10 @@ We will send you the invoice to given e-mail address,We will send you the invoic
 We've noticed Internal Server Error while rendering this request.,We've noticed Internal Server Error while rendering this request.
 We've sent password reset instructions to your email. Check your inbox and follow the link.,We've sent password reset instructions to your email. Check your inbox and follow the link.
 What we can improve?,What we can improve?
+Width,Select Width
+Width title,Width
 Wishlist,Wishlist
+Width description,You’re looking for a three digit number – i.e. 245
 Women fashion,Women fashion
 You are logged in as {firstname},You are logged in as {firstname}
 You are offline,You are offline
@@ -306,6 +333,7 @@ You will receive Push notification about the order.,You will receive Push notifi
 You’ll receive dispatch confirmation and an arrival date,You’ll receive dispatch confirmation and an arrival date
 You've entered an incorrect coupon code. Please try again.,You've entered an incorrect coupon code. Please try again.
 Your Account,Your Account
+Your appointment,Your Appointment
 Your feedback is important for us. Let us know what we could improve.,Your feedback is important for us. Let us know what we could improve.
 Your purchase,Your purchase
 Your wishlist is empty.,Your wishlist is empty.
@@ -315,10 +343,10 @@ Zip-code,Zip-code
 a chat,a chat
 a contact page,a contact page
 browse our catalog,browse our catalog
-color,color
+color,Color
 color_filter,Color
 erin_recommends_filter,Erin Recommends
-login,login
+login,Login
 or write to us through,or write to us through
 or,or
 price_filter,Price
@@ -422,6 +450,9 @@ Review,Review
 Menu,Menu
 Selected variant is out of stock,Selected variant is out of stock
 TIRES,TIRES
+Tires,Tires
+Batteries,Batteries
+Car care,Car Care
 BATTERIES,BATTERIES
 CAR CARE,CAR CARE
 PROMOTIONS,PROMOTIONS
@@ -437,15 +468,16 @@ Select Model,Select Model
 Select Tire Size,Select Tire Size
 Find My Tires,Find My Tires
 By Tire Size,By Tire Size
-Select Width,Select Width
-Select Rim,Select Rim
-Select Profile,Select Profile
+Width,Select Width
+Rim,Select Rim
+Profile,Select Profile
 Go,Go
 Buy one tire,BUY ONE TIRE & GET ANOTHER FREE.
 we come,& WE COME TO YOU.
 battery warranty,1 YEAR BATTERY WARRANTY.
 free fitment,& FREE FITMENT AT YOUR LOCATION.
 CAR CARE & ENHANCEMENTS,CAR CARE & ENHANCEMENTS
+Car care & enhancements,Car Care & Enhancements
 Lubricants,Lubricants
 Next day fitting,NEXT DAY FITTING AVAILABLE
 Alfardan Conti,"ALFARDAN COMMERCIAL, THE AUTHORIZED DISTRIBUTOR FOR CONTINENTAL TYRES IN QATAR."
@@ -459,11 +491,15 @@ Trust,Trust
 Trust Description,"By supplying your vehicle details, our expert Parts team will check that the item you have ordered fits your vehicle before dispatch."
 Delivery Description," Simply order your item, whether it�s a Tire, Battery, Lubricants or Care Care and we�ll deliver and install it on your car at your location ."
 LOGIN/REGISTER,LOGIN/REGISTER
+Login/Register,Login/Register
 LEGAL,LEGAL
+Legal,Legal
+Terms & Conditions,Terms & Conditions
 TERMS & CONDITIONS,TERMS & CONDITIONS
 OURS SERVICES,OURS SERVICES
+Our Services,Our Services
 Back to Top,Back to Top
-Footer copyright,� Alfardan Commercial. All Rights Reserved
+Footer copyright,© Alfardan Commercial. All Rights Reserved
 Alfardan address,"7GM4+HH, PO 3763 Suhaim Bin Hamad Street, Doha, Qatar"
 Alfardan conti 2,"Al Fardan are a top supplier of Continental tire products in Qatar. Continental are a manufacturer of safe, efficient, and performance-oriented tires for passenger cars, commercial vehicles, and two-wheelers."
 Products found,Products found
@@ -519,3 +555,34 @@ Sort By: Latest,Sort By: Latest
 Product Highlights,Product Highlights
 Product Description,Product Description
 Product Code:,Product Code:
+AM,AM
+PM,PM
+Selected,Selected
+Available,Available
+Unavailable,Unavailable
+MON,Mon
+TUE,Tue
+WED,Wed
+THU,Thu
+FRI,Fri
+SAT,Sat
+SUN,Sun
+Monday,Monday
+Tuesday,Tuesday
+Wednesday,Wednesday
+Thursday,Thursday
+Friday ,Friday 
+Saturday ,Saturday 
+Sunday,Sunday
+January,January
+February,February
+March,March
+April,April
+May,May
+June,June
+July,July
+August,August
+September,September
+October,October
+November,November
+December,December

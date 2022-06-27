@@ -61,7 +61,7 @@
               :disabled="disableSizeGoButton"
               @click="fetchNationalCode('size')"
             >
-              {{$t(Go)}}
+              {{ $t('Go') }}
             </SfButton>
           </div>
           <div class="cta">
@@ -384,15 +384,14 @@ export default {
   .cta {
     display: flex;
     justify-content: end;
-
     .notSure {
       display: flex;
       justify-content: center;
       align-items: center;
       margin: 15px 0 0 0;
+      gap: 15px;
       a {
         font-weight: 700;
-        margin-left: 10px;
       }
     }
   }

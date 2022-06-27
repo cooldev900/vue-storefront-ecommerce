@@ -6,7 +6,7 @@
       <div v-if="totalItems" class="detailed-cart__aside">
         <OOrderSummary />
           <SfButton class="om-btn--primary checkout--btn" @click="goToCheckout">
-      Go to checkout
+    {{ $t('Go to checkout') }}
     </SfButton>
       </div>
       <div class="detailed-cart__main">
@@ -439,5 +439,9 @@ position: relative;
 }
 ::v-deep .sf-collected-product__more-actions{
   display: none;
+}
+::v-deep .sf-collected-product__remove{
+  position: relative;
+  padding: 20px;
 }
 </style>

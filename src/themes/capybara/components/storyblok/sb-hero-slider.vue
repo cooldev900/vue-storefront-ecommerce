@@ -1,11 +1,11 @@
 <template>
-  <div class="om-hero--v2">
+  <div class="om-hero--v2" :class="{'dir-rtl': storeId === 3}">
     <swiper ref="carousel" :options="swiperOptions" class="carousel" @slideChange="slideChange">
       <swiper-slide v-for="(slide, index) in slideItems" :key="index">
         <div class="slide">
           <img class="slide-image desktop-only" :src="slide.image.filename" alt="hero-image">
           <img class="slide-image mobile-only" :src="slide.image_mobile.filename" alt="hero-image">
-          <div class="slide-content desktop-only">
+          <div class="slide-content desktop-only" :class="{'dir-rtl': storeId === 3}">
             <div class="car-explorer__desktop">
               <h2 class="title">
                 {{ slide.Title }}
@@ -23,12 +23,11 @@
               {{ slide.Sub_title }}
             </div>
 
-              	<a :href="slide.link.url">
-            <SfButton class="sf-button--full-width om-btn--primary">
-              Shop Now
-            </SfButton>
-            	</a>
-   
+            <a :href="slide.link.url">
+              <SfButton class="sf-button--full-width om-btn--primary">
+                Shop Now
+              </SfButton>
+            </a>
           </div>
         </div>
       </swiper-slide>
@@ -51,6 +50,7 @@ import { SfCallToAction, SfButton, SfImage, SfChevron } from '@storefront-ui/vue
 import { SwiperSlide } from 'vue-awesome-swiper';
 import { mapGetters, mapActions } from 'vuex';
 import { ModalList } from 'theme/store/ui/modals';
+import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 
 export const dropdownKeys = [
   'Brand',
@@ -82,11 +82,14 @@ export default {
     }
   },
   computed: {
-        ...mapGetters({
+    ...mapGetters({
       activeVehicle: 'vehicles/activeVehicle',
       getVehicleByNationalCode: 'vehicles/getVehicleByNationalCode',
       isSidebarOpen: 'ui/isSidebarOpen',
-      activeModals: 'ui/activeModals'
+      activeModals: 'ui/activeModals',
+      currentStoreViewStoreId () {
+        return currentStoreView().storeId;
+      }
     }),
     swiper () {
       return this.$refs.carousel.$swiper;
@@ -97,6 +100,7 @@ export default {
   },
   data () {
     return {
+      storeId: 0,
       initialSelectorData: [],
       selectorData: [],
       selectedItems: {},
@@ -123,7 +127,7 @@ export default {
     };
   },
   methods: {
-      ...mapActions({
+    ...mapActions({
       openVehicleCart: 'ui/toggleSidebar',
       openModal: 'ui/openModal'
     }),
@@ -144,20 +148,23 @@ export default {
       this.swiper.autoplay.stop();
       this.autoplayStatus = false;
     },
-      onClick () {
+    onClick () {
       this.openModal({
         name: ModalList.OmSelectorModal,
         payload: { dropdownKeys: [], enableAction: true }
       });
     }
   },
-    watch: {
+  watch: {
     isSidebarOpen (status) {
       this.open = !status
     },
     activeModals (modals) {
       this.open = !modals.length
     }
+  },
+  beforeMount () {
+    this.storeId = currentStoreView().storeId;
   }
 };
 </script>
@@ -210,7 +217,9 @@ export default {
         height: 100%;
         display: flex;
         align-items: center;
-
+        &.dir-rtl{
+         flex-direction: row-reverse;
+        }
         .car-explorer {
           &__desktop {
             width: 374px;

@@ -1,6 +1,6 @@
 <template>
  <div class="product__info--card product-usp">
-     <h4>Product Highlights</h4>
+     <h4> {{ $t('Product Highlights') }} </h4>
     <div class="product-usp__message1">
         <span> ✔ {{product.usp1}}</span>
     </div>

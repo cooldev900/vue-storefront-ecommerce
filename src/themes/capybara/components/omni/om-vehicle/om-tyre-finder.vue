@@ -16,7 +16,7 @@ style=" fill:orange;">    <path d="M 25 2 C 12.318 2 2 12.318 2 25 C 2 37.682 12
     </div>
     <div class="container" v-else>
       <SfTabs :open-tab="1">
-        <SfTab title="Tire By Vehicle">
+        <SfTab :title="$t('Tire By Vehicle')">
           <div class="selector-wrapper">
             <select
               v-for="(selectorName, index) in Object.keys(options.vehicle)"
@@ -47,7 +47,7 @@ style=" fill:orange;">    <path d="M 25 2 C 12.318 2 2 12.318 2 25 C 2 37.682 12
             </SfButton>
           </div>
         </SfTab>
-        <SfTab title="By Tire Size">
+        <SfTab :title="$t('By Tire Size')">
           <div class="selector-wrapper">
             <select
               v-for="(selectorName, index) in Object.keys(options.size)"
@@ -296,7 +296,7 @@ export default {
 
   .my-tyre {
     background-color: white;
-    margin: 0 15px;
+    margin: 0;
     box-shadow: #d6d5d5 0px 1px 3px 0px;
     border-radius: 8px;
     overflow: hidden;
@@ -307,7 +307,7 @@ export default {
     display: block;
     }
     &__container{
-      padding: 15px;
+      padding: 15px 0;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -327,12 +327,12 @@ export default {
   }
 
   .container {
-    margin: 0 15px;
+    margin: 0;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    padding: 4px;
+    padding: 0;
     .sf-tabs {
       width: 100%;
       box-shadow: #d6d5d5 0px 1px 3px 0px;

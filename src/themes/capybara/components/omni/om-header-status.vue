@@ -95,9 +95,10 @@ export default {
     align-items: center;
     flex: 1;
     height: 50px;
-
+    @include for-desktop{
+      gap: 15px;
+    }
     &__title {
-      margin-left: 1em;
       font-size: 14px;
     }
     &__icon{
