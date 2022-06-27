@@ -111,7 +111,7 @@ export const vehiclesStore = {
 
     async fetchAppointmentTaken({commit}, date) {
       let params = {
-        clientID: '25',
+        clientID: '28',
         show: '5 days',
         date,
         timezone: ''
