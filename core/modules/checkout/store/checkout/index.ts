@@ -17,7 +17,8 @@ export const checkoutModule: Module<CheckoutState, RootState> = {
       lastName: '',
       emailAddress: '',
       password: '',
-      createAccount: false
+      createAccount: false,
+      telephone: ''
     },
     shippingDetails: {
       firstName: '',

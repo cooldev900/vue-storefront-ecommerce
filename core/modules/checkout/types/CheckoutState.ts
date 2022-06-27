@@ -10,7 +10,8 @@ export default interface CheckoutState {
     lastName: string,
     emailAddress: string,
     password: string,
-    createAccount: boolean
+    createAccount: boolean,
+    telephone: string,
   },
   shippingDetails: ShippingDetails,
   paymentDetails: PaymentDetails,
