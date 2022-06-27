@@ -10,7 +10,7 @@
                 :allStep="3"
                 :step="1"
                 step="1"
-                title="Your Details"
+                :title="$t('Contact information')"
                 id="order1"
                 :is-complete="isComplete.order"
               />
@@ -29,14 +29,14 @@
                   class="edit__inner"
                   @click="editAccordion(0)"
                 >
-                  Edit your details
+                {{ $t('Edit') }}
                 </div>
               </div>
               <div class="confirm">
-                <div>Your Email: {{getPersonalDetails.emailAddress}}</div>
-                <div>Your Name: {{getPersonalDetails.firstName + ' ' + getPersonalDetails.lastName}}</div>
-                <div>Phone Number: {{getPersonalDetails.telephone}}</div>
-                <div>Appointment: {{ getBookedTime }}</div>
+                <div>{{ $t('Your email') }}: {{getPersonalDetails.emailAddress}}</div>
+                <div>{{ $t('Your Name') }}: {{getPersonalDetails.firstName + ' ' + getPersonalDetails.lastName}}</div>
+                <div>{{ $t('Phone Number') }}: {{getPersonalDetails.telephone}}</div>
+                <div>{{ $t('Your appointment') }}: {{ getBookedTime }}</div>
               </div>
             </div>
           </SfAccordionItem>
@@ -46,7 +46,7 @@
                 :allStep="3"
                 :step="2"
                 id="address1"
-                title="Fitment Address"
+                :title="$t('Fitment location')"
                 :is-complete="isComplete.address"
               />
             </template>
@@ -61,11 +61,11 @@
                   class="edit__inner"
                   @click="editAccordion(1)"
                 >
-                  Edit your address
+                  {{ $t('Edit') }}
                 </div>
               </div>
               <div class="confirm">                
-                <div v-show="locationKind !== 'click_collect_free'">Fitting Address : {{ shippingAddressText }}</div>
+                <div v-show="locationKind !== 'click_collect_free'">{{ $t('Your appointment') }} : {{ shippingAddressText }}</div>
                <div v-show="locationKind === 'click_collect_free'">Collection from: {{activeLocation.location_name}}</div>
               </div>
             </div>
@@ -75,7 +75,7 @@
               <OmCheckoutAccordionHeader
                 :allStep="3"
                 :step="3"
-                title="Payment"
+                :title="$t('Payment')"
                 id="payment1"
                 :is-complete="isComplete.payment"
               />
@@ -91,7 +91,7 @@
                   class="edit__inner"
                   @click="editAccordion(3)"
                 >
-                  Edit <span>delivery payment</span>
+                  {{ $t('Edit') }}
                 </div>
               </div>
             </div>

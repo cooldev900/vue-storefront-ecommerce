@@ -6,10 +6,9 @@
       <div id="findSizeOuter">
         <div id="findSizeInner">
           <div id="content01">
-            <h3>How to find your tire size</h3>
+            <h3>{{ $t('How to find your tire size') }}</h3>
             <h4>
-              Use our guide below to easily and quickly find your tire size from
-              the side of your existing tires.
+              {{ $t('Use the guide') }}
             </h4>
           </div>
 
@@ -18,14 +17,14 @@
               <div class="number-holder">
                 <span class="number">1</span>
               </div>
-              <div class="columnTitle"><h5>Width</h5></div>
+              <div class="columnTitle"><h5>{{ $t('Width title') }}</h5></div>
               <div class="imageslot">
                 <img
                   src="/assets/tire-width.png"
                 />
               </div>
               <div class="textslot">
-                <p>You’re looking for a three digit number – i.e. <b>245</b></p>
+                <p>{{ $t('Width description') }}</p>
               </div>
             </div>
 
@@ -33,14 +32,14 @@
               <div class="number-holder">
                 <span class="number">2</span>
               </div>
-              <div class="columnTitle"><h5>Profile</h5></div>
+              <div class="columnTitle"><h5>{{ $t('Profile title') }}</h5></div>
               <div class="imageslot">
                 <img
                   src="/assets/tire-profile.png"
                 />
               </div>
               <div class="textslot">
-                <p>Followed by a two digit number – i.e. <b>45</b></p>
+                <p>{{ $t('Profile description') }}</p>
               </div>
             </div>
 
@@ -48,7 +47,7 @@
               <div class="number-holder">
                 <span class="number">3</span>
               </div>
-              <div class="columnTitle"><h5>Rim Size</h5></div>
+              <div class="columnTitle"><h5>{{ $t('Rim Title') }}</h5></div>
               <div class="imageslot">
                 <img
                   src="/assets/tire-rim.png"
@@ -56,7 +55,7 @@
               </div>
               <div class="textslot">
                 <p>
-                  The rim size is represented next to an ‘R’ – i.e. <b>17</b>
+                  {{ $t('Rim description') }}
                 </p>
               </div>
             </div>

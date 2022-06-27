@@ -89,7 +89,7 @@
         </slot>
       </template>
       <div class="stock-status">
-        <span class="stock-pill" :class="{'stock-red': !isAvailable }">{{ isAvailable ? $t('In Stock') : $t('Out of Stock') }}</span>
+        <span class="stock-pill" :class="{'stock-red': !isAvailable }">{{ isAvailable ? $t('In Stock') : $t('Out of stock') }}</span>
       </div>
       <h4 class="sub-title">
         {{ secondTitle || ' ' }}

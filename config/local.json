@@ -227,7 +227,7 @@
         "defaultCountry": "QA",
         "defaultLocale": "ar-SY",
         "currencyCode": "QAR",
-        "currencySign": "QR",
+        "currencySign": "QR ",
         "dateFormat": "HH:mm D-M-YYYY"
       },
       "seo": {

@@ -1,6 +1,6 @@
 <template>
   <h2 class="step-heading heading heading-sm" :id="id">
-    <span class="progress-step" v-if="!isComplete"><span class="checkout__step-title">Step</span> {{ step }} of {{allStep}}
+    <span class="progress-step" v-if="!isComplete"><span class="checkout__step-title">{{ $t('Step') }}</span> {{ step }} {{ $t('Of') }} {{allStep}}
     </span>
     <span v-else class="progress-step progress-step--complete"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
 width="16" height="16"
@@ -47,6 +47,7 @@ export default {
 .step-heading {
   display: flex;
   align-items: center;
+  gap: 15px;
   color: #333;
   font-size: 1.25rem;
   font-weight: 700;
@@ -63,7 +64,6 @@ export default {
   background: grey;
   color: #fff;
   border-radius: 0;
-  margin-right: 8px;
   padding: 4px 12px;
   font-size: 0.9375rem;
   &--complete{

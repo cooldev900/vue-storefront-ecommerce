@@ -12,13 +12,13 @@
         <div class="navbar__main">
           <div class="navbar__filter mobile-only">
             <SfButton
-              class="sf-button--text navbar__filters-button"
+              class="sf-button om-btn--primary filter-btn"
               @click="isFilterSidebarOpen = true"
             >
               <SfIcon
                 size="18px"
                 class="navbar__filters-icon"
-                color="#BEBFC4"
+                color="#fff"
                 icon="filter"
               />
               {{ $t("Filters") }}
@@ -44,7 +44,6 @@
             </span>
           </div>
           <div class="navbar__sort">
-            <span class="navbar__label desktop-only">{{ $t("Sort By") }}:</span>
             <!-- <SfSelect
                 class="navbar__select sort-by"
                 ref="SortBy"
@@ -679,8 +678,8 @@ export default {
       }
     });
     this.$store.dispatch('category-next/switchSearchFilters', [
-        { id: 'updated_at:desc', type: 'sort' }
-      ]);
+      { id: 'updated_at:desc', type: 'sort' }
+    ]);
     this.$bus.$on('product-after-list', this.initPagination);
     window.addEventListener('resize', this.getBrowserWidth);
     this.getBrowserWidth();
@@ -791,21 +790,21 @@ export default {
     },
     title (filterType) {
       if (filterType === 'oe_brand_filter') {
-        return 'Brand';
+        return this.$t('Brand');
       } else if (filterType === 'price_filter') {
-        return 'Price';
+        return this.$t('Price');
       } else if (filterType === 'vehicle_type_filter') {
-        return 'Vehicle Type';
+        return this.$t('Vehicle Type');
       } else if (filterType === 'battery_capacity_filter') {
-        return 'Battery Capacity';
+        return this.$t('Battery Capacity');
       } else if (filterType === 'litres_filter') {
-        return 'Litres';
+        return this.$t('Litres');
       } else if (filterType === 'grade_filter') {
-        return 'Grade';
+        return this.$t('Grade');
       } else if (filterType === 'oil_type_filter') {
-        return 'Oil Type';
+        return this.$t('Oil Type');
       } else if (filterType === 'color_filter') {
-        return 'Colour';
+        return this.$t('color');
       } else return filterType;
     },
     getBrowserWidth () {
@@ -1030,10 +1029,7 @@ export default {
     border-width: 1px 0 1px 0;
   }
   &.section {
-    padding: var(--spacer-sm);
-    @include for-desktop {
-      padding: 0;
-    }
+    margin-bottom: 15px;
   }
   &__aside {
     display: flex;
@@ -1056,15 +1052,10 @@ export default {
   }
   &__main {
     align-items: center;
-    display: grid;
+    display: flex;
+    justify-content: space-between;
     flex: 1;
-    grid-template-columns: 1fr minmax(auto, max-content) 1fr;
-    grid-template-areas: "filter counter sort";
     @include for-desktop {
-      grid-template-areas: "filter sort counter";
-      grid-column-gap: var(--spacer-2xl);
-      grid-template-columns: max-content max-content auto;
-      padding: var(--spacer-xs) var(--spacer-xl);
     }
   }
   &__filters-button {
@@ -1088,24 +1079,21 @@ export default {
   }
   &__filter {
     display: flex;
-    grid-area: filter;
-    margin-bottom: 1rem;
   }
   &__filters-icon {
-    margin: 0 var(--spacer-sm) 0 0;
+    margin: 0;
   }
   &__label {
-    font-family: var(--font-family-secondary);
-    font-weight: var(--font-normal);
+    font-family: var(--font-family-bold);
+    font-weight: 700;
     color: var(--c-text-muted);
     margin: 0 var(--spacer-2xs) 0 0;
     @include for-mobile {
-      font-size: var(--font-xs);
+      display: none;
     }
   }
   &__select {
     padding: 10px 5px;
-    margin-left: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     --select-padding: 0 var(--spacer-lg) 0 var(--spacer-2xs);
@@ -1174,7 +1162,7 @@ export default {
 .products__grid {
   display: grid !important;
   grid-template-columns: 1fr 1fr 1fr;
-  margin: 0 0 0 30px;
+  margin: 0;
   gap: 30px;
   padding-bottom: 20px;
   @media (min-width: 700px) and (max-width: 1300px) {
@@ -1188,7 +1176,7 @@ export default {
 }
 .main {
   display: flex;
-  margin: 0;
+  gap: 30px;
 }
 .sidebar {
   flex: 0 0 25% !important;
@@ -1242,7 +1230,7 @@ export default {
     &__pagination {
       display: flex;
       justify-content: center;
-      margin: var(--spacer-xl) 0 0 0;
+      margin: var(--spacer-xl) 0 var(--spacer-xl) 0;
     }
     &__product-card-horizontal {
       margin: var(--spacer-lg) 0;
@@ -1261,7 +1249,7 @@ export default {
   font-weight: 700;
 }
 .filters {
-  margin: 15px;
+  margin: 15px 0;
   &__title {
     --heading-title-font-size: var(--font-xl);
     margin: var(--spacer-xl) 0 var(--spacer-base) 0;
@@ -1397,8 +1385,6 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-right: 0px !important;
-    padding-left: 15px;
   }
   .sidebar {
     padding: 0 !important;
@@ -1416,7 +1402,10 @@ export default {
 ::v-deep .sf-accordion-item__content {
   padding: 0;
   max-height: 200px;
-  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none;
   width: 100%;
   background: #fff;
 }
@@ -1538,10 +1527,11 @@ export default {
 justify-content: center;
 gap: 15px;
 }
-
-.select-mobile {
-  @include for-mobile {
-    margin-bottom: 16px;
-  }
+.filter-btn{
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
 }
 </style>

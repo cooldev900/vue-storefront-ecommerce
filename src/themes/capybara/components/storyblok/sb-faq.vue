@@ -1,6 +1,6 @@
 <template>
 <div class="grid-container">
-    <h2>Frequently Asked Questions</h2>
+    <h2>{{ faqTitle }}</h2>
   <SfAccordion open="" :multiple="false" transition="" show-chevron>
     <SfAccordionItem v-for="(item, index) in faqs" :key="index" :header="item.title">
       {{ item.copy }}
@@ -30,6 +30,9 @@ export default {
   computed: {
     faqs () {
       return Object.keys(this.content) ? this.content.faq_items : []
+    },
+    faqTitle () {
+      return Object.keys(this.content) ? this.content.title : []
     }
   }
 };

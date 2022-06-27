@@ -43,7 +43,7 @@
         v-model.trim="personalDetails.telephone"
         class="form__element"
         name="telephone"
-        :label="$t('Telephone')"
+        :label="$t('Phone Number')"
         :required="true"
         :valid="!$v.personalDetails.telephone.$error"
         :error-message="
@@ -70,7 +70,7 @@
           <div class="om-alert-box-message">
             <div>
               <p>
-        Our mobile service allows customers to book online and have Alfardan Commercial services brought to you, at any suitable location of your choice across Qatar.
+        {{ $t('Booking message') }}
               </p>
             </div>
           </div>

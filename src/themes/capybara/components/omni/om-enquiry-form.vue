@@ -3,52 +3,52 @@
     <div class="form">
       <SfInput
         v-model="firstName"
-        label="First name"
+        :label="$t('First name')"
         name="firstName"
         class="form__element form__element--half"
         required
         :valid="firstNameBlur || validFirstName(firstName)"
-        error-message="Please type your name"
+        :error-message="$t('Field is required')"
         @blur="firstNameBlur = false"
       />
       <SfInput
         v-model="lastName"
-        label="Last name"
+        :label="$t('Last name')"
         name="lastName"
         class="form__element form__element--half form__element--half-even"
         required
         :valid="lastNameBlur || validLastName(lastName)"
-        error-message="Please type your last name. Your name should have at least one character."
+        :error-message="$t('Field is required')"
         @blur="lastNameBlur = false"
       />
       <SfInput
         v-model="phoneNumber"
-        label="Phone number"
+        :label="$t('Phone Number')"
         name="phone"
         type="number"
         class="form__element form__element--half"
         :valid="validPhoneNumber(phoneNumber)"
-        error-message="Please enter 9 digital numbers."
+        :error-message="$t('Field is required')"
       />
       <SfInput
         v-model="email"
-        label="Email"
+        :label="$t('Email address')"
         name="email"
         class="form__element form__element--half form__element--half-even"
         required
         :valid="emailBlur || validEmail(email)"
-        error-message="Please enter a valid email address."
+        :error-message="$t('Field is required')"
         @blur="emailBlur = false"
       />
       <SfInput
         v-model="vin"
-        label="Registration / VIN"
+        :label="$t('VIN')"
         name="vin"
         class="form__element form__element--half"
       />
       <SfInput
         v-model="item_required"
-        label="Item Required"
+        :label="$t('Items required')"
         name="item_required"
         class="form__element form__element--half form__element--half-even"
       />
@@ -56,7 +56,7 @@
         v-model="message"
         type="textarea"
         class="form__element"
-        label="Message"
+        :label="$t('Message')"
         name="message"
         cols="80"
         rows="15"
@@ -67,7 +67,7 @@
       <div class="form__action">
         <SfButton class="sf-button--full-width om-btn--primary" @click.prevent="submit">
           <SfLoader v-if="loading" :loading="loading" />
-          <span v-else>Submit</span>
+          <span v-else>{{ $t('Submit') }}</span>
         </SfButton>
       </div>
     </div>

@@ -4,7 +4,7 @@
       <SfInput
         v-model="email"
         name="email"
-        :label="$t('Your email')"
+        :label="$t('Email address')"
         :required="true"
         :valid="!$v.email.$error"
         :error-message="
@@ -34,20 +34,20 @@
         tabindex="3"
       />
       <SfButton class="sf-button--full-width form__submit om-btn--primary" tabindex="4">
-        {{ $t("Login") }}
+        {{ $t("login") }}
       </SfButton>
     </form>
     <SfButton class="sf-button--text action-button" @click.native="switchElem('forgot-pass')" tabindex="5">
-      {{ $t("Forgotten password?") }}
+      {{ $t("Forgot the password?") }}
     </SfButton>
     <div class="aside">
       <SfHeading
-        :title="$t('Don\'t have an account yet?')"
+        :title="$t('I want to create an account')"
         :level="3"
         class="aside__heading"
       />
       <SfButton class="sf-button--full-width om-btn--secondary" @click.native="switchElem('register')" tabindex="6">
-        {{ $t("Register now") }}
+        {{ $t("Register") }}
       </SfButton>
     </div>
   </div>

@@ -8,7 +8,7 @@
         <SfInput
           v-model="email"
           name="email"
-          :label="$t('Your email')"
+          :label="$t('Email address')"
           :required="true"
           :valid="!$v.email.$error"
           :error-message="
@@ -29,7 +29,7 @@
       </p>
     </div>
     <SfButton class="sf-button--text action-button" @click.native="switchElem('login')">
-      {{ `${$t("or")} ${$t("login in to your account")}` }}
+      {{ `${$t("or")} ${$t("Login in to your account")}` }}
     </SfButton>
   </div>
 </template>

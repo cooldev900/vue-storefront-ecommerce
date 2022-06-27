@@ -34,7 +34,7 @@
         class="sf-button--full-width om-btn--primary"
         @click.prevent="process"
         >
-        {{ $t("Continue to Payment") }}
+        {{ $t("Continue to payment") }}
         </SfButton>
     </form>    
 </template>

@@ -1,3 +1,4 @@
+@import "./breakpoints";
 :root{
   //global
   --c-primary: orange !important;
@@ -12,7 +13,41 @@
  --nav-font-weight: 700;
  --nav-font-size: 13px;
  --nav-font-transform: uppercase;
+ .sf-checkbox__checkmark{
+   .sf-icon{
+    --icon-size: 12px !important;
+   }
+ }
 }
 :root.theme-3{
   direction: rtl;
+  .form__element--half-even{
+   padding: 0 var(--spacer-lg) 0 0;
+   @include for-mobile{
+    padding: 0 0 0 0;
+   }
+   @include for-tablet{
+    padding: 0 0 0 0;
+   }
+  }
+  .sf-checkbox__label{
+    margin: 0 var(--spacer-sm) 0 0;
+  }
+  .sf-filter__count{
+    margin: 0 auto 0 var(--spacer-sm)
+  }
+  .sf-filter__label{
+   margin-right: 10px;
+  }
+  .sf-checkbox input{
+    right: auto;
+    left: auto;
+  }
+  .sf-accordion-item .edit{
+    left: 20px;
+    right: auto;
+  }
+  .om-hero--v2 .carousel .slide-content{
+    flex-direction: row-reverse !important;
+  }
 }
