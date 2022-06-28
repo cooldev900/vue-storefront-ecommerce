@@ -17,7 +17,7 @@
     </div>
     <div class="slots">
       <div class="anytime">
-        <OmRadio :key="index" :appointment="appointment" v-for="(appointment, index) in appointmentsData"/>
+        <OmRadio :key="index" :appointment="appointment" v-for="(appointment, index) in appointmentsData" :availableStartTime="availableStartTime"/>
       </div>
     </div>
   </div>
@@ -64,6 +64,10 @@ export default {
     period: {
       type: Number,
       default: 5
+    },
+    availableStartTime: {
+      type: Number,
+      default: 24
     }
   },
   computed: {
@@ -99,9 +103,9 @@ export default {
     appointmentsData () {
       let today = new Date();
       return this.appointments.filter(appointment => {
-        if (today.getDate() === new Date(appointment.start_time).getDate()) {
-           return new Date(appointment.start_time).getHours() >= 12 && new Date(appointment.start_time).getHours() < 20
-        } else 
+        // if (today.getDate() === new Date(appointment.start_time).getDate()) {
+        //    return new Date(appointment.start_time).getHours() >= 12 && new Date(appointment.start_time).getHours() < 20
+        // } else 
            return new Date(appointment.start_time).getHours() >= 8 && new Date(appointment.start_time).getHours() < 20
       })
     },

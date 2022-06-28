@@ -20,6 +20,10 @@ export default {
     appointment: {
       type: Object,
       default: {},
+    },
+    availableStartTime: {
+      type: Number,
+      default: 24
     }
   },
   data() {
@@ -38,17 +42,16 @@ export default {
       let pm = this.$t('pm');
       let am = this.$t('am');
       let start_time = new Date(this.appointment.start_time).getHours();
-      start_time = start_time > 12 ? (`${start_time - 12} ${pm}`) : `${start_time} ${am}`;
+      start_time = start_time === 12 ? '12 pm' : start_time > 12 ? (`${start_time - 12} ${pm}`) : `${start_time} ${am}`;
       let end_time = new Date(this.appointment.end_time).getHours();
-      end_time = end_time > 12 ? (`${end_time - 12} ${pm}`) : `${end_time} ${am}`;
+      end_time = end_time === 12 ? '12 pm' : end_time > 12 ? (`${end_time - 12} ${pm}`) : `${end_time} ${am}`;
       return `${start_time} - ${end_time}`;
     },
 
     available () {
-      let now = new Date();
-      let tomorrow = new Date(now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate()).getTime() + 86400000;
-      let startTime = new Date(this.appointment.start_time);
-      return this.appointment?.available ? true : false;
+      let tomorrow = new Date().getTime() + this.availableStartTime * 3600 * 1000;
+      let startTime = new Date(this.appointment.start_time).getTime();
+      return !!this.appointment?.available && startTime > tomorrow;
     },
 
     bookingStatus() {
