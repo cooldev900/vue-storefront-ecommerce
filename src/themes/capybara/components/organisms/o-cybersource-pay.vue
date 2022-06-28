@@ -79,9 +79,9 @@ export default {
         let { data } = await axios.post(`${config.api.url}/api/ext/appointments`, params, {
           params
         } );
-        if (data.success) {
+        if (data?.success) {
           let bookingId = data.result.data[0].id;
-          let token = this.token;
+          let token = this.token ? this.token : '';
           let cartId = this.cartToken;
           let body = {
             giftMessage: {
@@ -91,8 +91,8 @@ export default {
             }
           };
           await axios({method: 'POST', url: `${config.api.url}/api/cart/additional-order-data?cartId=${cartId}&token=${token}`, headers: {}, data: body});
-          this.$store.commit('vehicles/setAppointmentError', '');
-          this.$refs.form.submit();
+          // this.$store.commit('vehicles/setAppointmentError', '');
+          // this.$refs.form.submit();
         } else {
           this.$store.commit('vehicles/setAppointmentError', data.result.message);
           this.editAccordion(0);
