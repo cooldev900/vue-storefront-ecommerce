@@ -106,7 +106,7 @@ export const loadStepData = async () => {
       const location = await asyncLocalStorage?.getItem(
         storeView.storeCode + '/step'
       );
-      return location ? JSON.parse(location) : null;
+      return location ? JSON.parse(location) : -1;
     }
   } catch (e) {
     console.log('localStorage error----', e);
@@ -133,7 +133,11 @@ export const loadCompleteData = async () => {
       const location = await asyncLocalStorage?.getItem(
         storeView.storeCode + '/isComplete'
       );
-      return location ? JSON.parse(location) : {};
+      return location ? JSON.parse(location) : {
+        order: false,
+        address: false,
+        payment: false
+      };
     }
   } catch (e) {
     console.log('localStorage error----', e);
@@ -160,7 +164,7 @@ export const loadOpensData = async () => {
       const location = await asyncLocalStorage?.getItem(
         storeView.storeCode + '/opens'
       );
-      return location ? JSON.parse(location) : [];
+      return location ? JSON.parse(location) : ['order'];
     }
   } catch (e) {
     console.log('localStorage error----', e);
