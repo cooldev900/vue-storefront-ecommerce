@@ -110,7 +110,6 @@
       <div class="form__action">
         <SfButton
           class="sf-button--full-width om-btn--primary"
-          :disabled="($v.shipping.$invalid || !shippingMethods.length)"
           @click="clickContinuePayment"
         >
           {{ $t("Continue to payment") }}

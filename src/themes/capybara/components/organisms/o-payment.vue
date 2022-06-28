@@ -176,7 +176,6 @@
       <SfButton
         v-if="!sendToBillingAddress"
         class="sf-button--full-width om-btn--primary"
-        :disabled="$v.payment.$invalid"
         type="submit"
         @click="saveBillingAddress"
       >
