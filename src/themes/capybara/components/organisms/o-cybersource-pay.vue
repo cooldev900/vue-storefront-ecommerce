@@ -34,7 +34,7 @@
         class="sf-button--full-width om-btn--primary"
         @click.prevent="process"
         >
-        {{ $t("Continue to payment") }}
+        {{ $t("Continue to Payment") }}
         </SfButton>
     </form>    
 </template>
@@ -65,43 +65,42 @@ export default {
   },
   methods: {
     async process() {
-      this.$refs.form.submit();
-      // try {
-      //   let params = {
-      //     client_id: this.getSlotData.client_id,
-      //     id: this.getSlotData.id,
-      //     end_time: this.getSlotData.end_time,
-      //     order_id: this.getSlotData.order_id,
-      //     start_time: this.getSlotData.start_time,          
-      //     booked_online: true,
-      //     internal_booking: false,
-      //     duration: 2
-      //   }
-      //   let { data } = await axios.post(`${config.api.url}/api/ext/appointments`, params, {
-      //     params
-      //   } );
-      //   if (data.success) {
-      //     let bookingId = data.result.data[0].id;
-      //     let token = this.token;
-      //     let cartId = this.cartToken;
-      //     let body = {
-      //       giftMessage: {
-      //         sender: "customer",
-      //         recipient: "vehicle_data",
-      //         message: `cartId: ${cartId}, appointmentId: ${bookingId}`,
-      //       }
-      //     };
-      //     await axios({method: 'POST', url: `${config.api.url}/api/cart/additional-order-data?cartId=${cartId}&token=${token}`, headers: {}, data: body});
-      //     this.$store.commit('vehicles/setAppointmentError', '');
-      //     this.$refs.form.submit();
-      //   } else {
-      //     this.$store.commit('vehicles/setAppointmentError', data.result.message);
-      //     this.editAccordion(0);
-      //   }
-      // } catch (e) {
-      //   this.$store.commit('vehicles/setAppointmentError', 'Appointment Error');
-      //   this.editAccordion(0);
-      // }
+      try {
+        let params = {
+          client_id: this.getSlotData.client_id,
+          id: this.getSlotData.id,
+          end_time: this.getSlotData.end_time,
+          order_id: this.getSlotData.order_id,
+          start_time: this.getSlotData.start_time,          
+          booked_online: true,
+          internal_booking: false,
+          duration: 2
+        }
+        let { data } = await axios.post(`${config.api.url}/api/ext/appointments`, params, {
+          params
+        } );
+        if (data.success) {
+          let bookingId = data.result.data[0].id;
+          let token = this.token;
+          let cartId = this.cartToken;
+          let body = {
+            giftMessage: {
+              sender: "customer",
+              recipient: "vehicle_data",
+              message: `cartId: ${cartId}, appointmentId: ${bookingId}`,
+            }
+          };
+          await axios({method: 'POST', url: `${config.api.url}/api/cart/additional-order-data?cartId=${cartId}&token=${token}`, headers: {}, data: body});
+          this.$store.commit('vehicles/setAppointmentError', '');
+          this.$refs.form.submit();
+        } else {
+          this.$store.commit('vehicles/setAppointmentError', data.result.message);
+          this.editAccordion(0);
+        }
+      } catch (e) {
+        this.$store.commit('vehicles/setAppointmentError', 'Appointment Error');
+        this.editAccordion(0);
+      }
       
     },
     makeform() {
