@@ -13,7 +13,6 @@
             ? $t('Field is required')
             : $t('Name must have at least 2 letters.')
         "
-        @blur="$v.personalDetails.firstName.$touch()"
       />
       <SfInput
         v-model.trim="personalDetails.lastName"
@@ -23,7 +22,6 @@
         :required="true"
         :valid="!$v.personalDetails.lastName.$error"
         :error-message="$t('Field is required')"
-        @blur="$v.personalDetails.lastName.$touch()"
       />
       <SfInput
         v-model.trim="personalDetails.emailAddress"
@@ -37,7 +35,6 @@
             ? $t('Field is required')
             : $t('Please provide valid e-mail address.')
         "
-        @blur="$v.personalDetails.emailAddress.$touch()"
       />
       <SfInput
         v-model.trim="personalDetails.telephone"
@@ -51,7 +48,6 @@
             ? $t('Field is required')
             : $t('Please provide valid e-mail address.')
         "
-        @blur="$v.personalDetails.emailAddress.$touch()"
       />
       <OmAlertBox type="warning" style="{margin-bottom: 20px, border: 1px solid #ccc;}" v-show="message">
         <template #message>
@@ -87,7 +83,7 @@
       <div class="form__action">
         <SfButton
           class="sf-button--full-width om-btn--primary"
-          :disabled="!selected || (createAccount ? $v.$invalid : $v.personalDetails.$invalid)"
+          :disabled="!selected"
           @click="goToShipping"
         >
           {{
@@ -237,13 +233,17 @@ export default {
     ...mapActions('ui', {
       openModal: 'openModal'
     }),
-    login () {
+    login9 () {
       this.openModal({ name: ModalList.Auth, payload: 'login' })
     },
     openTermsAndConditionsModal () {
       this.openModal({ name: ModalList.TermsAndConditions })
     },
     async goToShipping () {
+      this.$v.$touch();
+      if (this.$v.personalDetails.$invalid) {
+        return;
+      }
       this.nextAccordion(0);
       this.sendDataToCheckout();
       await this.$store.dispatch('cart/pullMethods', { forceServerSync: true });

@@ -40,7 +40,6 @@
         required
         :valid="!$v.shipping.streetAddress.$error"
         :error-message="$t('Field is required')"
-        @blur="$v.shipping.streetAddress.$touch()"
       />
       <SfInput
         v-model.trim="shipping.apartmentNumber"
@@ -56,7 +55,6 @@
         required
         :valid="!$v.shipping.city.$error"
         :error-message="$t('Field is required')"
-        @blur="$v.shipping.city.$touch()"
       />
       <SfInput
         v-model.trim="shipping.state"
@@ -88,7 +86,6 @@
         :valid="!$v.shipping.country.$error"
         :error-message="$t('Field is required')"
         @change="changeCountry"
-        @blur="$v.shipping.country.$touch()"
       >
         <SfSelectOption
           v-for="country in countries"
@@ -193,6 +190,10 @@ export default {
   },
   methods: {
     async clickContinuePayment () {
+      this.$v.$touch();
+      if (this.$v.shipping.$invalid) {
+        return;
+      }
       this.nextAccordion(1);      
       this.$store.dispatch('checkout/savePaymentDetails', {
         apartmentNumber: this.shipping.apartmentNumber,

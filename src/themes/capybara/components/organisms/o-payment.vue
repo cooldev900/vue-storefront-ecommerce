@@ -40,7 +40,6 @@
             ? $t('Field is required')
             : $t('Name must have at least 2 letters.')
         "
-        @blur="$v.payment.firstName.$touch()"
       />
       <SfInput
         v-if="!sendToBillingAddress"
@@ -51,7 +50,6 @@
         required
         :valid="!$v.payment.lastName.$error"
         :error-message="$t('Field is required')"
-        @blur="$v.payment.lastName.$touch()"
       />
       <SfInput
         v-if="!sendToBillingAddress"
@@ -62,7 +60,6 @@
         required
         :valid="!$v.payment.streetAddress.$error"
         :error-message="$t('Field is required')"
-        @blur="$v.payment.streetAddress.$touch()"
       />
       <SfInput
         v-if="!sendToBillingAddress"
@@ -80,7 +77,6 @@
         required
         :valid="!$v.payment.city.$error"
         :error-message="$t('Field is required')"
-        @blur="$v.payment.city.$touch()"
       />
       <SfInput
         v-if="!sendToBillingAddress"
@@ -461,6 +457,10 @@ export default {
       this.sendDataToCheckout();
     },
     saveBillingAddress () {
+      this.$v.$touch();
+      if (this.$v.payment.$invalid) {
+        return;
+      }
       this.sendToBillingAddress = true;
       this.sendDataToCheckout();
     },
