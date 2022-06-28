@@ -87,7 +87,7 @@
       <div class="form__action">
         <SfButton
           class="sf-button--full-width om-btn--primary"
-          :disabled=" locationKind === '' || (locationKind === 'click_collect_free' && !activeLocation.id) ? true : createAccount ? $v.$invalid : $v.personalDetails.$invalid"
+          :disabled="!selected || (createAccount ? $v.$invalid : $v.personalDetails.$invalid)"
           @click="goToShipping"
         >
           {{
@@ -129,8 +129,12 @@ export default {
       activeLocation: 'omLocator/activeLocation',
       locationKind: 'omLocator/locationKind',
       isVirtualCart: 'cart/isVirtualCart',
-      message: 'vehicles/getAppointmentError'
-    })
+      message: 'vehicles/getAppointmentError',      
+      getSlotID: 'vehicles/getSlotID',
+    }),
+    selected () {
+      return this.getSlotID !== -1;
+    }
   },
   props: {
     nextAccordion: {
