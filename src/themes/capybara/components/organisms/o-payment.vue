@@ -258,7 +258,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import { required, minLength } from 'vuelidate/lib/validators';
 import {
   unicodeAlpha,
@@ -283,6 +283,7 @@ import { createSmoothscroll } from 'theme/helpers';
 import { getShaSignature } from 'theme/helpers/index.ts';
 import CybersourcePayVue from './o-cybersource-pay.vue';
 import config from 'config';
+import { ModalList } from 'theme/store/ui/modals';
 
 export default {
   name: 'OPayment',
@@ -397,9 +398,21 @@ export default {
         // }
         // await this.$store.dispatch('checkout/placeOrder', { order: newOrder });
         // EventBus.$emit('notification-progress-stop')
-        this.$bus.$emit('notification-progress-start');
-        this.$bus.$emit('place-order-after-cybersource-pay');
-        this.$store.dispatch('vehicles/setAppointment');
+        let client_id = this.getSlotData.client_id;
+        let slot_id = this.getSlotID;
+        try {
+          let { data } = await axios.get(`${config.api.url}/api/ext/appointments/available-slot?client_id=${client_id}&slot_id=${slot_id}`);
+          if (data.result) {
+            this.$bus.$emit('notification-progress-start');
+            this.$bus.$emit('place-order-after-cybersource-pay');
+            this.$store.dispatch('vehicles/setAppointment');
+          } else {
+            this.openModal({ name: ModalList.OmAppointmentModal, payload: {} })
+          }
+        } catch(e) {
+          this.$store.commit('vehicles/setAppointmentError', 'Appointment Error');
+          this.editAccordion(0);
+        }
       } else {
         this.isMessage = true;
         this.message = message;
@@ -414,7 +427,9 @@ export default {
     ...mapGetters({
       paymentDetails: 'checkout/getPaymentDetails',
       cartToken: 'cart/getCartToken',
-      totals: 'cart/getTotals'
+      totals: 'cart/getTotals',
+      getSlotData: 'vehicles/getSlotData',
+      getSlotID: 'vehicles/getSlotID'
     }),
     prices () {
       return this.totals.reduce((result, price) => {
@@ -447,6 +462,9 @@ export default {
     };
   },
   methods: {
+    ...mapActions('ui', {
+      openModal: 'openModal'
+    }),
     async goToReviewOrder () {
       this.sendDataToCheckout();
       this.placeOrder();
