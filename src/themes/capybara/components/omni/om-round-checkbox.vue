@@ -1,7 +1,7 @@
 <template>
-  <div class="slot" :class=" available ? '' : 'disabled'">
+  <div class="slot" :class=" available ? '' : 'disabled'" @click="setAppointment">
     <label class="container">{{label}}
-      <input type="checkbox" v-model="checked" @click="setAppointment" :disabled="!available">
+      <input type="checkbox" v-model="checked" :disabled="!available">
       <span class="checkmark"></span>
     </label>
     <div class="bookingStatus">{{bookingStatus}}</div>
@@ -136,6 +136,7 @@ export default {
     margin-top: 15px;
     display: flex;
     justify-content: space-between;
+    cursor: pointer;
 
     .bookingStatus {
       font-size: 15px;
