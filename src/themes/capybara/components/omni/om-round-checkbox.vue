@@ -39,17 +39,28 @@ export default {
       slot_data: 'vehicles/getSlotData'
     }),
     label () {
+      let timePart = config.timePart;
+      console.log(timePart, 'timePart')
       let pm = this.$t('pm');
       let am = this.$t('am');
       let start_time = new Date(this.appointment.start_time).getHours();
-      start_time = start_time === 12 ? '12 pm' : start_time > 12 ? (`${start_time - 12} ${pm}`) : `${start_time} ${am}`;
       let end_time = new Date(this.appointment.end_time).getHours();
-      end_time = end_time === 12 ? '12 pm' : end_time > 12 ? (`${end_time - 12} ${pm}`) : `${end_time} ${am}`;
+      if (timePart === '12') {
+        start_time = start_time === 24 ? '0: 00' : `${start_time}: 00`;
+        end_time = end_time === 24 ? '0: 00' : `${end_time}: 00`;
+      } else {
+        start_time = start_time === 12 ? '12 pm' : start_time > 12 ? (`${start_time - 12} ${pm}`) : `${start_time} ${am}`;
+        end_time = end_time === 12 ? '12 pm' : end_time > 12 ? (`${end_time - 12} ${pm}`) : `${end_time} ${am}`;
+      }
+      
       return `${start_time} - ${end_time}`;
     },
 
     available () {
-      let tomorrow = new Date().getTime() + this.availableStartTime * 3600 * 1000;
+      let availableStartTime = config.availableStartTime;
+      if (!availableStartTime) availableStartTime = this.availableStartTime;
+      console.log(availableStartTime, 'available start time')
+      let tomorrow = new Date().getTime() + availableStartTime * 3600 * 1000;
       let startTime = new Date(this.appointment.start_time).getTime();
       return !!this.appointment?.available && startTime > tomorrow;
     },

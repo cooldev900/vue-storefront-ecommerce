@@ -20,10 +20,12 @@ export const UserModule: StorefrontModule = async function ({ store }) {
 
     EventBus.$on('user-after-loggedin', receivedData => {
       // TODO: Make independent of checkout module
+      // let telephone = receivedData.addresses[0]?.telephone;
       // store.dispatch('checkout/savePersonalDetails', {
       //   firstName: receivedData.firstname,
       //   lastName: receivedData.lastname,
-      //   emailAddress: receivedData.email
+      //   emailAddress: receivedData.email,
+      //   telephone
       // })
     })
 
