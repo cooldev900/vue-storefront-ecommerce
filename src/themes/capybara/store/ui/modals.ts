@@ -17,7 +17,8 @@ export enum ModalList {
   OmInfoModal = 'om-info-modal',
   OmCartCheckoutModal = 'om-cart-checkout-modal',
   OmEnquiryModal = 'om-enquiry-modal',
-  OmContactModal = 'om-contact-modal'
+  OmContactModal = 'om-contact-modal',
+  OmAppointmentModal = "om-appointment-modal"
 }
 
 /**
@@ -38,7 +39,8 @@ export const modalComponents = new Map([
   [ModalList.OmCartCheckoutModal, () => import(/* webpackChunkName: "vsf-modals" */ 'theme/components/omni/modals/om-cart-checkout.vue')],
   [ModalList.OmInfoModal, () => import(/* webpackChunkName: "vsf-modals" */ 'theme/components/omni/modals/om-info-modal.vue')],
   [ModalList.OmEnquiryModal, () => import(/* webpackChunkName: "vsf-modals" */ 'theme/components/omni/modals/om-enquiry-modal.vue')],
-  [ModalList.OmContactModal, () => import(/* webpackChunkName: "vsf-modals" */ 'theme/components/omni/modals/om-contact-modal.vue')]
+  [ModalList.OmContactModal, () => import(/* webpackChunkName: "vsf-modals" */ 'theme/components/omni/modals/om-contact-modal.vue')],
+  [ModalList.OmAppointmentModal, () => import(/* webpackChunkName: "vsf-modals" */ 'theme/components/omni/modals/om-appointment-modal.vue')]
 ])
 
 /**
