@@ -14,6 +14,8 @@
         "
         class="form__element"
         tabindex="1"
+        v-focus
+        ref="first"
       />
       <SfInput
         v-model="password"
@@ -60,9 +62,13 @@ import { required, email } from 'vuelidate/lib/validators';
 import { SfInput, SfButton, SfCheckbox, SfHeading } from '@storefront-ui/vue';
 import { mapActions } from 'vuex';
 import { ModalList } from 'theme/store/ui/modals'
+import { focus } from 'theme/helpers/directives';
 
 export default {
   name: 'MLogin',
+  directives: {
+    focus
+  },
   components: { SfInput, SfButton, SfCheckbox, SfHeading },
   data () {
     return {
@@ -154,6 +160,9 @@ export default {
     password: {
       required
     }
+  },
+  mounted() {
+    this.$refs.first.$el.children[0].children[0].focus();
   }
 }
 </script>
