@@ -121,12 +121,15 @@
       </div>
       <div class="action-area__wrap--price">
         <slot name="price" v-bind="{ specialPrice, regularPrice }">
-          <SfPrice
-            v-if="regularPrice"
-            class="sf-product-card__price"
-            :regular="regularPrice"
-            :special="specialPrice"
-          />
+          <div class="tire">
+            <SfPrice
+              v-if="regularPrice"
+              class="sf-product-card__price"
+              :regular="regularPrice"
+              :special="specialPrice"
+            />
+            <span class="tire__content" v-if="isTire">{{ $t('Per Tire') }}</span>
+          </div>
         </slot>
       </div>
       <div class="action-area__wrap--addtocart">
@@ -391,7 +394,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      previewQty: 'vehicles/qty'
+      previewQty: 'vehicles/qty',
+      attributeListByCode: 'attribute/attributeListByCode',
     }),
     isSFColors () {
       return SF_COLORS.includes(this.badgeColor.trim());
@@ -428,6 +432,11 @@ export default {
           : 'a';
       }
       return 'div';
+    },
+    isTire() {
+      let product_group = this.product.product_group;
+      let options = this.attributeListByCode.product_group.options;
+      return options?.some(option => option.value == product_group && option.label === 'Tires');
     }
   },
   methods: {
@@ -484,5 +493,16 @@ export default {
 
 .stock-red {
   background: red !important;
+}
+
+.tire {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+
+  &__content {
+    color: var(--c-primary);
+    margin: 8px 0;
+  }
 }
 </style>
