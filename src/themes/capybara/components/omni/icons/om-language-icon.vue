@@ -1,13 +1,14 @@
 <template>
   <SfButton
     class="sf-button--pure om-vehicle-icon navigation-icon desktop-only"
+    @click="goto"
   >
-    <router-link
+    <!-- <router-link
       :to="storeId !== 3 ? '/ar/' : '/'"
       :title="$t('Home Page')"
-    >
+    > -->
     <span class="sf-header__custom-icon">{{ $t('Language') }}</span>
-     </router-link>
+     <!-- </router-link> -->
   </SfButton>
 </template>
 
@@ -39,7 +40,14 @@ export default {
   methods: {
     ...mapActions({
       openVehicleCart: 'ui/toggleSidebar'
-    })
+    }),
+    goto() {
+      if (this.storeId === 3) {
+        location.href = "/";
+      } else {
+        this.$router.push('/ar/');
+      }
+    }
   }
 };
 </script>
