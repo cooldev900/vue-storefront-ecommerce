@@ -14,6 +14,7 @@
         "
         class="form__element"
         tabindex="1"
+        ref="first"
       />
       <SfInput
         v-model="firstName"
@@ -50,7 +51,7 @@
         {{ $t("Create a new account") }}
       </SfButton>
     </form>
-    <SfButton class="sf-button--text action-button" @click.native="switchElem('login')" tabindex="6">
+    <SfButton class="sf-button--text action-button" @click.native="switchElem('login')" tabindex="6" ref="last">
       {{ `${$t("or")} ${$t("Login in to your account")}` }}
     </SfButton>
   </div>
@@ -151,6 +152,27 @@ export default {
         message: i18n.t(result.result),
         action1: { label: i18n.t('OK') }
       });
+    },
+    restricTab(e) {
+      let firstFocusableEl = this.$refs.first.$el.children[0].children[0];
+      let lastFocusableEl = this.$refs.last.$el;
+      let isTabPressed = (e.key === 'Tab' || e.keyCode === KEYCODE_TAB);
+
+      if (!isTabPressed) { 
+        return; 
+      }
+
+      if ( e.shiftKey ) /* shift + tab */ {
+        if (document.activeElement === firstFocusableEl) {
+          lastFocusableEl.focus();
+            e.preventDefault();
+          }
+        } else /* tab */ {
+        if (document.activeElement === lastFocusableEl) {
+          firstFocusableEl.focus();
+            e.preventDefault();
+          }
+        }
     }
   },
   validations: {
@@ -167,6 +189,16 @@ export default {
     lastName: {
       required
     }
+  },
+  beforeMount() {
+    window.addEventListener('keydown', this.restricTab);
+  },
+  beforeDestroy () {
+    window.addEventListener('keydown', this.restricTab);
+  },
+  mounted() {
+    this.$refs.first.$el.children[0].children[0].focus();
+    console.log(this.$refs.last.$el, 'last');
   }
 }
 </script>
