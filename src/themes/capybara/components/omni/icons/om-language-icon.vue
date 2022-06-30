@@ -45,7 +45,7 @@ export default {
       if (this.storeId === 3) {
         location.href = "/";
       } else {
-        this.$router.push('/ar/');
+        location.href = "/ar/";
       }
     }
   }
