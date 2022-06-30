@@ -70,7 +70,7 @@
                 :value="option.id"
                 :key="option.id"
               >
-                {{ option.label }}
+                {{ $t(option.label) }}
               </option>
             </select>
             <!-- <SfButton
