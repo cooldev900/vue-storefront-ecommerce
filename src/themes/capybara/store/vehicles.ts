@@ -40,6 +40,15 @@ export const vehiclesStore = {
     appointmentError: ''
   },
   actions: {
+    async clearCheckoutSteps({ dispatch }) {
+      await dispatch('saveStep', -1);
+      await dispatch('saveOpens', ['order']);
+      await dispatch('saveCompete', {
+        order: false,
+        address: false,
+        payment: false
+      });
+    },
     async fetchStoryblok ({ commit }) {
       const result = { global: {}, home: {}, about: {} };
       const storeId = currentStoreView().storeId;
