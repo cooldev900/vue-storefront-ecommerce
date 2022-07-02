@@ -218,12 +218,7 @@
   .o-header .search-container {
     display: flex;
     height: 44px !important;
-    @include for-mobile{
-      display: none;
-    }
-    @include for-tablet{
-      display: none;
-    }
+    width: 0;
   }
   .sf-gallery__stage{
     max-width: calc(100% - 160px);
@@ -247,24 +242,12 @@
     height: 100%;
     align-items: center;
     @include for-mobile{
-      display: flex;
-      margin: 0;
-      height: 55px;
-      order: 2;
-      flex: 1 1;
-      justify-content: flex-end;
-      padding: 0 5px 0 0;
+      display: none;
     }
     @include for-tablet{
-      display: flex;
-      margin: 0;
-      margin-left: 40px !important;
-      height: 55px;
-      order: 2;
-      justify-content: flex-end;
-      padding: 0;
-    }
+      display: none;
   }
+}
   .sf-header__navigation {
     flex: 1;
     position: relative;

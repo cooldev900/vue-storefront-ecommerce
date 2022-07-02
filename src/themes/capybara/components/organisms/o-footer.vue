@@ -34,7 +34,7 @@
           </li>
           <ul class="social-icon__list">
             <li class="social-icon">
-              <a target="_blank">
+              <a target="_blank" href="https://en-gb.facebook.com/AlfardanCommercial/">
                 <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
                      width="50" height="50"
                      viewBox="0 0 24 24"
@@ -43,21 +43,21 @@
               </a>
             </li>
             <li class="social-icon">
-              <a target="_blank">
-                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-                     width="24" height="24"
-                     viewBox="0 0 24 24"
-                     style=" fill:#000;"
-                >    <path d="M19,3H5C3.895,3,3,3.895,3,5v14c0,1.105,0.895,2,2,2h14c1.105,0,2-0.895,2-2V5C21,3.895,20.105,3,19,3z M17.05,9.514 c0,0.086,0,0.171,0,0.343c0,3.257-2.486,7.029-7.029,7.029c-1.371,0-2.657-0.429-3.771-1.114c0.171,0,0.429,0,0.6,0 c1.114,0,2.229-0.429,3.086-1.029c-1.114,0-1.971-0.771-2.314-1.714c0.171,0,0.343,0.086,0.429,0.086c0.257,0,0.429,0,0.686-0.086 c-1.114-0.257-1.971-1.2-1.971-2.4c0.343,0.171,0.686,0.257,1.114,0.343c-0.686-0.6-1.114-1.286-1.114-2.143 c0-0.429,0.086-0.857,0.343-1.2c1.2,1.457,3,2.486,5.057,2.571c0-0.171-0.086-0.343-0.086-0.6c0-1.371,1.114-2.486,2.486-2.486 c0.686,0,1.371,0.257,1.8,0.771c0.6-0.086,1.114-0.343,1.543-0.6c-0.171,0.6-0.6,1.029-1.114,1.371 c0.514-0.086,0.943-0.171,1.457-0.429C17.907,8.743,17.479,9.171,17.05,9.514z" /></svg>
-              </a>
-            </li>
-            <li class="social-icon">
-              <a target="_blank">
+              <a target="_blank" href="https://www.linkedin.com/company/alfardan-commercial">
                 <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
                      width="24" height="24"
                      viewBox="0 0 24 24"
                      style=" fill:#000;"
                 >    <path d="M19,3H5C3.895,3,3,3.895,3,5v14c0,1.105,0.895,2,2,2h14c1.105,0,2-0.895,2-2V5C21,3.895,20.105,3,19,3z M9,17H6.477v-7H9 V17z M7.694,8.717c-0.771,0-1.286-0.514-1.286-1.2s0.514-1.2,1.371-1.2c0.771,0,1.286,0.514,1.286,1.2S8.551,8.717,7.694,8.717z M18,17h-2.442v-3.826c0-1.058-0.651-1.302-0.895-1.302s-1.058,0.163-1.058,1.302c0,0.163,0,3.826,0,3.826h-2.523v-7h2.523v0.977 C13.93,10.407,14.581,10,15.802,10C17.023,10,18,10.977,18,13.174V17z" /></svg>
+              </a>
+            </li>
+            <li class="social-icon">
+              <a target="_blank" href="https://www.instagram.com/alfardancommercial/">
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                     width="24" height="24"
+                     viewBox="0 0 30 30"
+                     style=" fill:#000000;"
+                >    <path d="M 9.9980469 3 C 6.1390469 3 3 6.1419531 3 10.001953 L 3 20.001953 C 3 23.860953 6.1419531 27 10.001953 27 L 20.001953 27 C 23.860953 27 27 23.858047 27 19.998047 L 27 9.9980469 C 27 6.1390469 23.858047 3 19.998047 3 L 9.9980469 3 z M 22 7 C 22.552 7 23 7.448 23 8 C 23 8.552 22.552 9 22 9 C 21.448 9 21 8.552 21 8 C 21 7.448 21.448 7 22 7 z M 15 9 C 18.309 9 21 11.691 21 15 C 21 18.309 18.309 21 15 21 C 11.691 21 9 18.309 9 15 C 9 11.691 11.691 9 15 9 z M 15 11 A 4 4 0 0 0 11 15 A 4 4 0 0 0 15 19 A 4 4 0 0 0 19 15 A 4 4 0 0 0 15 11 z" /></svg>
               </a>
             </li>
           </ul>
@@ -217,7 +217,7 @@ export default {
     padding: 0 25px !important;
     list-style: none;
     .social-icon{
-    padding: var(--spacer-xs) 10px;
+    padding: 0;
     display: inline-block;
   svg{
     fill: #000 !important;
@@ -243,6 +243,7 @@ export default {
       max-width: 1400px;
       margin: auto;
       padding: 0;
+      gap: 15px;
       display: flex;
       justify-content: space-between;
     .footer-bottom__menu-item{

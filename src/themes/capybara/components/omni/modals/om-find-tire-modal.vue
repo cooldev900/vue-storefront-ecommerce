@@ -62,7 +62,7 @@
           </div>
           <div class="tire-finder__diagram">
             <img
-              src="//images.blackcircles.com/find-tyre-size/find-tyre-size.png"
+              src="/assets/tire-guide.png"
             />
           </div>
         </div>
@@ -114,6 +114,7 @@ export default {
 
     .sf-modal__content {
       height: 100%;
+      padding-bottom: 0px;
     }
   }
 }
@@ -250,6 +251,7 @@ export default {
   &__diagram{
     img{
       max-width: 100%;
+      vertical-align: middle;
     }
   }
 }

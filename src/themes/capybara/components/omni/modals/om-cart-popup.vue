@@ -13,7 +13,7 @@
             disabled
             color="var(--c-primary)"
           />
-          <span>{{ modalData.payload.qty }}x {{ $t('Added') }}</span>
+          <span>{{ modalData.payload.qty }} {{ $t('Added') }}</span>
         </div>
         <div class="product-name">
           {{ modalData.payload.name }}

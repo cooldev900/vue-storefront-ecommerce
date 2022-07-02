@@ -443,5 +443,13 @@ position: relative;
 ::v-deep .sf-collected-product__remove{
   position: relative;
   padding: 20px;
+  @include for-mobile{
+    position: absolute;
+    top: 0;
+    transform: none;
+    right: 0;
+    text-decoration: none !important;
+    bottom: auto;
+  }
 }
 </style>

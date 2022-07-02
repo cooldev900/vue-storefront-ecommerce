@@ -1,6 +1,9 @@
 <template>
   <div class="sb-sign-post" :style="{ backgroundColor: theme.bgColor, color: theme.color }">
     <div class="content">
+      <h4 class="subtitle">
+        {{ subTitle }}
+      </h4>
       <h2 class="title">
         {{ title }}
       </h2>
@@ -36,6 +39,9 @@ export default {
   computed: {
     title () {
       return this.content.title || ''
+    },
+    subTitle () {
+      return this.content.sub_title || ''
     },
     copy () {
       return this.content.copy || ''
@@ -115,6 +121,10 @@ export default {
       order: 1;
       width: 100%;
     }
+  }
+  .subtitle{
+    color: orange;
+    margin-bottom: 0;
   }
 }
 </style>

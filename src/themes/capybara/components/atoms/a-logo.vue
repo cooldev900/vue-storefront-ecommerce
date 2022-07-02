@@ -32,7 +32,7 @@ export default {
       return currentStoreView().storeId;
     },
     storeName () {
-      return ('/assets/afc-logo.png');
+      return ('/assets/logo.svg');
     }
   }
 };

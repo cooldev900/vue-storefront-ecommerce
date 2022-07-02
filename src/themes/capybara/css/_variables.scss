@@ -47,7 +47,33 @@
     left: 20px;
     right: auto;
   }
+  .sf-menu-item__mobile-nav-icon{
+    transform: rotate(180deg);
+  }
+  .sf-chevron--right{
+    transform: rotate(180deg);
+  }
   .om-hero--v2 .carousel .slide-content{
     flex-direction: row-reverse !important;
+  }
+  .sf-pagination__item--next{
+    transform: rotate(180deg);
+    margin-right: 15px;
+  }
+  .sf-pagination__item--prev{
+    transform: rotate(180deg);
+    margin-left: 15px;
+  }
+  .swiper-button-next{
+    left: 1rem;
+    transform: rotate(180deg);
+    right: auto;
+  }
+  .swiper-button-prev{
+    transform: rotate(180deg);
+  }
+  .sf-modal__close{
+    left: 20px;
+    right: auto;
   }
 }
