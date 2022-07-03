@@ -414,6 +414,7 @@ export default {
             this.openModal({ name: ModalList.OmAppointmentModal, payload: {} })
           }
         } catch(e) {
+          console.log(e, 'appointment error');
           this.$store.commit('vehicles/setAppointmentError', 'Appointment Error');
           this.editAccordion(0);
         }
