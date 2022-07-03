@@ -35,7 +35,7 @@
        <div class="back-to-shop">
       <SfButton
         class="btn om-button"
-        @click="$router.push(localizedRoute('/'))"
+        @click="handleClick"
       >
         {{ $t('Continue Shopping') }}
       </SfButton>
@@ -54,6 +54,9 @@ import { isServer } from '@vue-storefront/core/helpers';
 import { registerModule } from '@vue-storefront/core/lib/modules';
 import { MailerModule } from '@vue-storefront/core/modules/mailer';
 import { SfHeading, SfButton } from '@storefront-ui/vue';
+import {
+  localizedRoute
+} from '@vue-storefront/core/lib/multistore';
 
 export default {
   name: 'OOrderConfirmation',
@@ -103,6 +106,16 @@ export default {
     this.$store.dispatch('checkout/setThankYouPage', false);
   },
   methods: {
+    async handleClick() {
+      await this.$store.dispatch('cart/clear', { sync: false }, { root: true })
+      await this.$store.dispatch('checkout/savePersonalDetails', {});
+      await this.$store.dispatch('checkout/saveShippingDetails', {});
+      await this.$store.dispatch('checkout/savePaymentDetails', {});
+      await this.$store.dispatch('checkout/dropPassword')
+      await this.$store.dispatch('vehicles/clearCheckoutSteps');
+      await this.$store.commit('vehicles/setSlotData', {});
+      this.$router.push(localizedRoute('/'))
+    },
     requestNotificationPermission () {
       if (this.isNotificationSupported && !this.isPermissionGranted) {
         Notification.requestPermission()

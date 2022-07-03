@@ -9,6 +9,7 @@ const actions: ActionTree<CheckoutState, RootState> = {
   async placeOrder ({ dispatch }, { order }) {
     try {
       const result = await dispatch('order/placeOrder', order, { root: true })
+      console.log(result, 'order result');
       if (!result.resultCode || result.resultCode === 200) {
         await dispatch('updateOrderTimestamp')
         // clear cart without sync, because after order cart will be already cleared on backend
@@ -18,6 +19,7 @@ const actions: ActionTree<CheckoutState, RootState> = {
         await dispatch('savePaymentDetails', {});
         await dispatch('vehicles/clearCheckoutSteps');
         await dispatch('dropPassword')
+        return result;
       }
     } catch (e) {
       Logger.error(e, 'checkout')()

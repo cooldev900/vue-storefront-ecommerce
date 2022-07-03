@@ -384,8 +384,9 @@ export default {
     async placeOrder () {
       this.checkConnection({ online: typeof navigator !== 'undefined' ? navigator.onLine : true })
       if (this.checkStocks()) {
-        await this.$store.dispatch('checkout/placeOrder', { order: this.prepareOrder() })
+        const result = await this.$store.dispatch('checkout/placeOrder', { order: this.prepareOrder() })
         this.$bus.$emit('notification-progress-stop');
+        return result;
       } else {
         this.notifyNotAvailable()
       }

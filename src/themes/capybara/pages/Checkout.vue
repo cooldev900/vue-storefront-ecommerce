@@ -81,7 +81,7 @@
               />
             </template>
             <div v-show="!isComplete.payment">
-              <OPayment :next-accordion="nextAccordion" :edit-accordion="editAccordion" :validateOrderBeforeSending="validateOrderBeforeSending"/>
+              <OPayment :next-accordion="nextAccordion" :edit-accordion="editAccordion" :validateOrderBeforeSending="validateOrderBeforeSending" :placeOrder="placeOrder"/>
             </div>
             <div v-show="isComplete.payment">
               <div class="edit" v-show="editable">

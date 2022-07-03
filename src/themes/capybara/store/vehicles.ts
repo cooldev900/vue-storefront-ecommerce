@@ -41,6 +41,7 @@ export const vehiclesStore = {
   },
   actions: {
     async clearCheckoutSteps({ dispatch }) {
+      console.log('clearCheckout');
       await dispatch('saveStep', -1);
       await dispatch('saveOpens', ['order']);
       await dispatch('saveCompete', {
@@ -98,9 +99,12 @@ export const vehiclesStore = {
       let slot_data = await VehicleStorage.getSlotData();
       state.slot_data = slot_data;
     },
-    async setAppointment({commit, dispatch, state}) {
+    async setAppointment({commit, dispatch, state}, orderId = null) {
+      if (orderId) {
+        state.slot_data.order_id = orderId;
+      }
       const res = await axios.post(
-        `${config.api.url}/api/ext/appointments`, state.slot_data 
+        `http://localhost:8080/api/ext/appointments`, state.slot_data 
       );
 
       if (res.status === 200 ) {

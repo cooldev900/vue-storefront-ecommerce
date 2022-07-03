@@ -307,6 +307,10 @@ export default {
     editAccordion: {
       type: Function,
       default: (Number) => {}
+    },
+    placeOrder: {
+      type: Function,
+      default: () => {}
     }
   },
   validations () {
@@ -402,10 +406,12 @@ export default {
         // EventBus.$emit('notification-progress-stop')
         
         await this.$bus.$emit('notification-progress-start');
-        await this.$bus.$emit('place-order-after-cybersource-pay');
+        // await this.$bus.$emit('place-order-after-cybersource-pay');
+        const result = await this.placeOrder();
+        console.log(result?.result.magentoOrderId, 'result?.result.magentoOrderId');
     
         try {
-            this.$store.dispatch('vehicles/setAppointment');
+            await this.$store.dispatch('vehicles/setAppointment', result?.result.magentoOrderId);
         } catch(e) {
           console.log(e, 'appointment error');
           await this.$bus.$emit('notification-progress-stop');
@@ -481,7 +487,7 @@ export default {
     },
     handleClick () {
       this.sendToBillingAddress = !this.sendToBillingAddress;
-    },
+    }
   }
 };
 </script>
