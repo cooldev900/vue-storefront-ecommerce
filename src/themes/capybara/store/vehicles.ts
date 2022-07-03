@@ -104,7 +104,7 @@ export const vehiclesStore = {
         state.slot_data.order_id = orderId;
       }
       const res = await axios.post(
-        `http://localhost:8080/api/ext/appointments`, state.slot_data 
+        `${config.api.url}/api/ext/appointments`, state.slot_data 
       );
 
       if (res.status === 200 ) {
