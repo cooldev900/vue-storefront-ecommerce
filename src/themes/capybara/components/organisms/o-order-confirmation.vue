@@ -2,85 +2,44 @@
   <div id="o-order-confirmation">
     <div class="banner">
       <div class="banner__info">
+        <div class="confirmed">
+          <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+               width="96" height="96"
+               viewBox="0 0 24 24"
+          ><path d="M12,22.5A10.5,10.5,0,1,0,1.5,12,10.5118,10.5118,0,0,0,12,22.5Zm0-20A9.5,9.5,0,1,1,2.5,12,9.51081,9.51081,0,0,1,12,2.5ZM8.64648,12.35352a.5.5,0,0,1,.707-.707L11,13.293l3.64648-3.64649a.5.5,0,0,1,.707.707l-4,4a.49984.49984,0,0,1-.707,0Z" /></svg>
+        </div>
         <SfHeading
           :title="OnlineOnly ? $t('It\'s ordered!') : $t('You are offline')"
-          :level="3"
+          :level="2"
           class="sf-heading--no-underline"
         />
         <p v-if="OnlineOnly && lastOrderConfirmation.orderNumber" class="banner__order-number">
           {{ $t('Order No.') }} <strong>{{ lastOrderConfirmation.orderNumber }}</strong>
         </p>
-          <div class="appointment">Appointment: {{ getBookedTime }}</div>
+        <div class="appointment">Appointment: {{ getBookedTime }}</div>
       </div>
     </div>
     <div class="wrapper">
       <template v-if="OnlineOnly">
-        <SfHeading
-          :title="$t('You\'ve successfully placed the order')"
-          :level="3"
-          class="sf-heading--left"
-        />
         <p class="paragraph">
-          {{ $t('You can check status of your order by using our delivery status feature. You will receive an order confirmation e-mail with details of your order and a link to track its progress.') }}
-        </p>
-        <transition name="fade">
-          <p v-if="isPermissionGranted" class="paragraph">
-            {{ $t('You will receive Push notification about the order.') }}
-          </p>
-        </transition>
-      </template>
-      <template v-else>
-        <template v-if="isNotificationSupported">
-          <p v-if="isPermissionGranted" class="paragraph">
-            <strong>{{ $t('You will receive Push notification after coming back online. You can confirm the order by clicking on it') }}</strong>
-          </p>
-          <template v-else>
-            <p class="paragraph">
-              {{ $t("You can allow us to remind you about the order via push notification after coming back online. You'll only need to click on it to confirm.") }}
-            </p>
-            <p class="paragraph">
-              {{ $t(`Or if you will stay on "Order confirmation" page, the order will be placed automatically without confirmation, once the internet connection will be back.`) }}
-            </p>
-          </template>
-        </template>
-        <p v-else class="paragraph">
-          {{ $t('To finish the order just come back to our store while online. Your order will be sent to the server as soon as you come back here while online and then confirmed regarding the stock quantities of selected items') }}
+          {{ $t('Thank you for placing your order. This is now being processed by our team and you will receive an email with your order confirmation details.') }}
         </p>
       </template>
-      <SfButton
+      <!-- <SfButton
         v-if="!isPermissionGranted && isNotificationSupported"
         class="wrapper__notifications-button"
         @click.native="requestNotificationPermission()"
       >
         {{ $t('Allow order notifications') }}
+      </SfButton> -->
+       <div class="back-to-shop">
+      <SfButton
+        class="btn om-button"
+        @click="$router.push(localizedRoute('/'))"
+      >
+        {{ $t('Continue Shopping') }}
       </SfButton>
-      <SfHeading
-        :title="$t('What we can improve?')"
-        :level="3"
-        class="sf-heading--left"
-      />
-      <p class="paragraph">
-        {{ $t('Your feedback is important for us. Let us know what we could improve.') }}
-      </p>
-      <textarea
-        class="feedback"
-        v-model="feedback"
-        :placeholder="$t('Type your opinion')"
-      />
-      <div class="wrapper__buttons">
-        <SfButton
-          class="color-secondary sf-button--full-width"
-          @click="sendFeedback"
-        >
-          {{ $t('Send my feedback') }}
-        </SfButton>
-        <SfButton
-          class="sf-button--outline sf-button--full-width"
-          @click="$router.push(localizedRoute('/'))"
-        >
-          {{ $t('Back to shop') }}
-        </SfButton>
-      </div>
+       </div>
     </div>
   </div>
 </template>
@@ -197,20 +156,35 @@ export default {
 #o-order-confirmation {
   box-sizing: border-box;
   @include for-desktop {
-    max-width: 1272px;
+    max-width: 100%;
     margin: auto;
   }
 }
+.confirmed{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 15px;
+  svg{
+    fill: var(--c-primary);
+  }
+}
+.back-to-shop{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 15px 40px 15px;
+}
 .banner {
-  background-color: #f1f2f3;
+      background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   &__info {
     padding: 2rem;
     text-align: left;
     @include for-desktop {
       text-align: center;
-    }
-    @include for-mobile {
-      margin: 1rem;
     }
   }
   &__order-number {
@@ -219,7 +193,7 @@ export default {
 }
 .wrapper {
   max-width: 586px;
-  margin: var(--spacer-2xl) auto 0;
+  margin: var(--spacer-xl) auto 0;
   padding: 0 var(--spacer-lg) 0 var(--spacer-lg);
   &__notifications-button {
     margin: var(--spacer-2xl) 0 var(--spacer-2xl) 0;
@@ -248,6 +222,7 @@ export default {
 .paragraph {
   line-height: 1.875rem;
   font-size: var(--font-lg);
+  text-align: center;
 }
 .feedback {
   box-sizing: border-box;
@@ -257,9 +232,5 @@ export default {
   padding: 0.5em;
   font-family: var(--font-family-primary);
   resize: vertical;
-}
-
-.appointment {
-  margin-top: 15px;
 }
 </style>
