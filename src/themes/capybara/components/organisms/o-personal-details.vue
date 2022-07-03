@@ -49,17 +49,6 @@
             : $t('Please provide valid telephone.')
         "
       />
-      <OmAlertBox type="warning" style="{margin-bottom: 20px, border: 1px solid #ccc;}" v-show="message">
-        <template #message>
-          <div class="om-alert-box-message">
-            <div>
-              <p>
-                Your chosen appointment is no longer available. Please select another time below.
-              </p>
-            </div>
-          </div>
-        </template>
-      </OmAlertBox>
       <h3>{{ $t('Your appointment') }}</h3>
      <OmAlertBox type="info" style="{margin-bottom: 20px, border: 1px solid #ccc;}">
         <template #message>
