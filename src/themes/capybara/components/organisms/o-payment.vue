@@ -416,10 +416,12 @@ export default {
           if (data.result) {
             this.$store.dispatch('vehicles/setAppointment');
           } else {
+            await this.$bus.$emit('notification-progress-stop');
             this.openModal({ name: ModalList.OmAppointmentModal, payload: {} })
           }
         } catch(e) {
           console.log(e, 'appointment error');
+          await this.$bus.$emit('notification-progress-stop');
           this.$store.commit('vehicles/setAppointmentError', 'Appointment Error');
           this.editAccordion(0);
         }
