@@ -13,6 +13,11 @@
               <div class="description">
                 {{ slide.Sub_title }}
               </div>
+              <a :href="slide.link.url">
+                <SfButton class="om-btn--primary">
+                  {{ slide.cta }}
+                </SfButton>
+              </a>
             </div>
           </div>
           <div class="car-explorer__mobile mobile-only">
@@ -25,7 +30,7 @@
 
             <a :href="slide.link.url">
               <SfButton class="sf-button--full-width om-btn--primary">
-                Shop Now
+                {{ slide.cta }}
               </SfButton>
             </a>
           </div>
@@ -263,11 +268,13 @@ export default {
           margin: 0;
           color: #333;
           font-size: 18px;
+          text-align: center;
         }
 
         .description {
           color: #333;
           margin-bottom: var(--spacer-sm);
+          text-align: center;
         }
       }
     }

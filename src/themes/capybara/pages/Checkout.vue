@@ -65,7 +65,7 @@
                 </div>
               </div>
               <div class="confirm">                
-                <div v-show="locationKind !== 'click_collect_free'">{{ $t('Your appointment') }} : {{ shippingAddressText }}</div>
+                <div v-show="locationKind !== 'click_collect_free'">{{ $t('Fitment location') }} : {{ shippingAddressText }}</div>
                <div v-show="locationKind === 'click_collect_free'">Collection from: {{activeLocation.location_name}}</div>
               </div>
             </div>
@@ -250,7 +250,7 @@ export default {
       // if (this.isComplete[Object.keys(this.models)[index + 1]] === true) index++;
 
       if (index < 2) { 
-          this.step = index + 1;
+      this.step = index + 1;
         this.opens = [...this.opens, Object.keys(this.models)[this.step]];
       }
       if (index < 3) {
@@ -501,6 +501,7 @@ export default {
     position: absolute;
     top: 40px;
     font-size: 12px;
+    font-weight: 700;
     right: 20px;
     cursor: pointer;
     color: #333;

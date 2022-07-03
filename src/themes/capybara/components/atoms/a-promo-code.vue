@@ -3,7 +3,6 @@
     <template v-if="!isCouponCode">
       <SfInput
         v-model="promoCode"
-        name="promoCode"
         :placeholder="$t('Add a discount code')"
         class="sf-input--filled promo-code__input"
         @keyup.enter="applyCoupon"
@@ -66,6 +65,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
   padding: var(--spacer-lg) 0 0;
   &__circle-icon {
     --button-size: 2rem;
@@ -74,11 +74,17 @@ export default {
   &__input {
     --input-background: var(--c-white);
     flex: 1;
-    margin: 0 var(--spacer-lg) 0 0;
+    margin: 0;
   }
   &__button {
     --button-height: 2rem;
     --button-font-size: 0.6875rem;
   }
 }
+  ::v-deep .sf-input__label {
+    display: none;
+  }
+  ::v-deep .sf-input__wrapper{
+    margin: 0;
+  }
 </style>

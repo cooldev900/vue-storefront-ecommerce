@@ -270,7 +270,7 @@ export default {
         padding: 0px 24px;
         border-radius: 8px;
         font-size: 16px;
-        line-height: 1.75;
+        padding-top: 1px !important;
         color: #333;
         background-color: #ffffff;
         background-image: none;

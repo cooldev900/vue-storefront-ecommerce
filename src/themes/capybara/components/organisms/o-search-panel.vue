@@ -9,7 +9,7 @@
     <div class="o-search">
       <SfSearchBar
         v-model="search"
-        :placeholder="$t('Search for Accessories')"
+        :placeholder="$t('Search')"
         class="sf-header__search"
         ref="searchInput"
         @input="startSearch"
@@ -22,23 +22,7 @@
     >
       {{ $t(noResultsMessage) }}
     </div>
-    <div v-else class="container">
-      <div class="categories">
-        <!-- <SfHeading :level="3" :title="$t('Categories')" class="categories__title sf-heading--left" /> -->
-        <SfList v-if="visibleProducts.length && categories.length > 1" class="categories__listing">
-          <SfListItem
-            v-for="category in categories"
-            :key="category.category_id"
-          >
-            <SfMenuItem
-              :class="{'selected': isCategorySelected(category)}"
-              :label="category.name"
-              icon=""
-              @click="toggleCategory(category)"
-            />
-          </SfListItem>
-        </SfList>
-      </div>
+    <div v-else class="grid-container">
       <div class="products">
         <!-- <SfHeading :level="3" :title="$t('Product suggestions')" class="products__title sf-heading--left" /> -->
         <div class="products__listing">
@@ -194,20 +178,22 @@ export default {
   position: fixed;
   left: 0;
   right: 0;
+  padding-top: 40px;
   top: var(--_header-height);
   background: var(--c-light);
   overflow: auto;
   max-height: calc(66vh - var(--_header-height));
 
   @include for-mobile {
-    top: auto;
-    max-height: calc(100vh - var(--_header-height) - var(--bottom-navigation-height));
+    max-height: calc(100vh - var(--_header-height));
   }
 
   .close-button {
     position: absolute;
-    right: 10px;
-    top: 10px;
+    right: 0;
+    top: 0;
+    background: #fff;
+    padding: 10px;
   }
 
   .container {
@@ -259,19 +245,17 @@ export default {
       margin-top: var(--spacer-base);
     }
     &__listing {
-      display: flex;
-      flex: 0 1 auto;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
       gap: 10px;
+      padding-bottom: 50px;
+      @include for-mobile{
+        grid-template-columns: 1fr 1fr;
+      }
     }
     &__product-card {
-
-      flex: 0 1 24%;
       min-width: calc(var(--product-card-max-width) * 0.8);
-    }
-
-    @include for-desktop {
-      padding-left: 3rem;
+      max-width: auto;
     }
   }
 
@@ -295,8 +279,6 @@ export default {
   justify-content: center;
   align-items: center;
   padding: 0 10px;
-  width: 100%;
-
   .sf-search-bar {
     width: initial;
     height: initial;

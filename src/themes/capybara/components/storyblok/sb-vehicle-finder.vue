@@ -366,7 +366,7 @@ export default {
     padding: 0px 24px;
     border-radius: 8px;
     font-size: 16px;
-    line-height: 1.75;
+    padding-top: 1px !important;
     color: #333;
     background-color: #ffffff;
     background-image: none;
@@ -383,7 +383,10 @@ export default {
 
   .cta {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
+    @include for-mobile{
+      justify-content: flex-start;
+    }
     .notSure {
       display: flex;
       justify-content: center;

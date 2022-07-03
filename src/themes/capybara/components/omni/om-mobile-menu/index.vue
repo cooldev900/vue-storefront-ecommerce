@@ -34,6 +34,18 @@
           </transition-group>
         </SfList>
       </div>
+      <SfButton
+        @click="goto"
+        class="sf-button--pure om-vehicle-icon navigation-icon lang-switcher"
+      >
+        <span>{{ $t('Language') }}</span>
+      </SfButton>
+      <SfButton
+        @click="goToAccount"
+        class="sf-button--pure om-vehicle-icon navigation-icon mobile-my-account"
+      >
+        <span>{{ $t('Account') }}</span>
+      </SfButton>
     </SfSidebar>
   </div>
 </template>
@@ -48,6 +60,9 @@ import {
   SfSidebar,
   SfImage
 } from '@storefront-ui/vue';
+import { mapGetters, mapActions } from 'vuex';
+import { ModalList } from 'theme/store/ui/modals'
+import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 
 export default {
   name: 'OmMobileMenu',
@@ -71,8 +86,12 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('user', ['isLoggedIn']),
     isLevel2 () {
       return !!this.subCategory.length;
+    },
+    storeId () {
+      return currentStoreView().storeId;
     },
     _category () {
       if (!this.isLevel2) {
@@ -89,8 +108,27 @@ export default {
     }
   },
   methods: {
+    ...mapActions('ui', {
+      openModal: 'openModal'
+    }),
     close () {
       this.$emit('close');
+    },
+    goto () {
+      if (this.storeId === 3) {
+        location.href = "/";
+      } else {
+        location.href = "/ar/";
+      }
+    },
+    goToAccount () {
+      if (this.isLoggedIn) {
+        this.$router.push(this.localizedRoute('/my-account'));
+        this.$emit('close');
+      } else {
+        this.openModal({ name: ModalList.Auth, payload: 'login' });
+        this.$emit('close');
+      }
     },
     onClickItem (item) {
       if (item.show_dropdown !== 'no') {
@@ -139,7 +177,7 @@ export default {
     padding: 15px 20px;
     color: #fff;
     height: auto;
-    min-height: 80px;
+    min-height: 40px;
     font-size: 16px;
     font-weight: 700;
     font-family: var(--font-family-primary);
@@ -165,5 +203,18 @@ export default {
       margin: var(--spacer-sm) 0;
     }
   }
+}
+.lang-switcher{
+  background: white;
+    padding: 20px 40px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+}
+.mobile-my-account{
+  background: white;
+    padding: 20px 40px;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
 }
 </style>

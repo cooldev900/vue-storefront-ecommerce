@@ -3,7 +3,7 @@
     <SfHeading
       :title="$t('Total')"
       :level="3"
-      class="sf-heading--left sf-heading--no-underline title"
+      class="sf-heading--no-underline title"
     />
     <MPriceSummary :is-large="true" />
     <APromoCode :allow-promo-code-removal="false" />

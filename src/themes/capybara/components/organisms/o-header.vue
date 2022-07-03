@@ -14,27 +14,28 @@
       :style="{ 'z-index': isHoveredMenu ? 2 : 1}"
     >
       <template #navigation>
-       <SfHeaderNavigationItem
-            v-for="category in _categories"
-            :key="category._uid"
-            class="navigation-link"
-            @mouseover="triggerSubMenu(category)"
-            @mouseleave="isHoveredMenu = false"
+        <SfHeaderNavigationItem
+          v-for="category in _categories"
+          :key="category._uid"
+          class="navigation-link"
+          @mouseover="triggerSubMenu(category)"
+          @mouseleave="isHoveredMenu = false"
+        >
+          <router-link
+            :to="category.navigation_level_1_link.url"
           >
-            <router-link
-              :to="category.navigation_level_1_link.url"
-            >
-              {{ category.navigation_level_1_title }}
-            </router-link>
-            <MMenu
-              v-if="!category.navigation_level_1_link.url"
-              :visible="isHoveredMenu && !isSearchPanelVisible"
-              :category="category"
-              @close="isHoveredMenu = false"
-            />
-          </SfHeaderNavigationItem>
+            {{ category.navigation_level_1_title }}
+          </router-link>
+          <MMenu
+            v-if="!category.navigation_level_1_link.url"
+            :visible="isHoveredMenu && !isSearchPanelVisible"
+            :category="category"
+            @close="isHoveredMenu = false"
+          />
+        </SfHeaderNavigationItem>
       </template>
       <template #header-icons>
+        <ACartIconMobile class="mobile-only mobile-icon__cart" :menu-style="navigationItemColors" />
         <div class="sf-header__icons">
           <OmLanguageIcon class="sf-header__action" :menu-style="navigationItemColors" />
           <AAccountIcon class="sf-header__action desktop-only" :menu-style="navigationItemColors" />
@@ -42,14 +43,23 @@
         </div>
       </template>
       <template #logo>
-        <div class="sf-header__action mobile-only">
-          <SfIcon
-            icon="menu"
-            size="xl"
-            color="white"
-            @click="showMobileMenu = true"
-          />
-          </div>
+        <div @click="showMobileMenu = true" class="sf-header__action mobile-icon__burger mobile-only">
+          <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+               width="25" height="25"
+               viewBox="0 0 30 30"
+               style=" fill:#fff;"
+          ><path d="M 3 7 A 1.0001 1.0001 0 1 0 3 9 L 27 9 A 1.0001 1.0001 0 1 0 27 7 L 3 7 z M 3 14 A 1.0001 1.0001 0 1 0 3 16 L 27 16 A 1.0001 1.0001 0 1 0 27 14 L 3 14 z M 3 21 A 1.0001 1.0001 0 1 0 3 23 L 27 23 A 1.0001 1.0001 0 1 0 27 21 L 3 21 z" /></svg>
+        </div>
+        <div class="mobile-icon__search mobile-only search-icon" @click="$store.commit('ui/setSearchpanel', true)" :class="[{
+          'sf-header__icon--is-active': isLoggedIn
+        }, menuStyle]"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+               width="25" height="25"
+               viewBox="0 0 30 30"
+               style=" fill:#fff;"
+          ><path d="M 13 3 C 7.4889971 3 3 7.4889971 3 13 C 3 18.511003 7.4889971 23 13 23 C 15.396508 23 17.597385 22.148986 19.322266 20.736328 L 25.292969 26.707031 A 1.0001 1.0001 0 1 0 26.707031 25.292969 L 20.736328 19.322266 C 22.148986 17.597385 23 15.396508 23 13 C 23 7.4889971 18.511003 3 13 3 z M 13 5 C 17.430123 5 21 8.5698774 21 13 C 21 17.430123 17.430123 21 13 21 C 8.5698774 21 5 17.430123 5 13 C 5 8.5698774 8.5698774 5 13 5 z" /></svg>
+        </div>
         <ALogo :menu-style="navigationItemColors" />
       </template>
       <template #search>
@@ -98,6 +108,7 @@ import OmLanguageIcon from 'theme/components/omni/icons/om-language-icon.vue';
 import OmMobileTools from 'theme/components/omni/om-mobile-menu/om-mobile-tools';
 import OSearch from 'theme/components/organisms/o-search';
 import OTopBar from 'theme/components/organisms/o-top-bar';
+import ACartIconMobile from 'theme/components/atoms/a-cart-icon-mobile'
 
 export default {
   name: 'OHeader',
@@ -117,7 +128,8 @@ export default {
     OmLanguageIcon,
     OmMobileTools,
     OSearch,
-    OTopBar
+    OTopBar,
+    ACartIconMobile
   },
   data () {
     return {
@@ -189,11 +201,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@storefront-ui/shared/styles/helpers/breakpoints";
-.sf-header{
-  @include for-mobile{
-    z-index: 0 !important;
-  }
-}
 .router-link-active{
   color: var(--c-primary) !important;
 }
@@ -250,13 +257,10 @@ export default {
     }
   }
   .search-container {
-
-
     .o-search {
       flex-grow: 1;
     }
     @include for-mobile {
-      width: 100%;
       .sf-button {
         margin: 0 0 0 var(--spacer-sm);
       }
@@ -280,6 +284,9 @@ export default {
 ::v-deep .sf-header__actions{
   height: 100%;
   flex: 1;
+@include for-mobile{
+  flex: initial;
+}
 }
 .sf-header {
   @include for-mobile {
@@ -297,5 +304,28 @@ export default {
   max-width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
+}
+.mobile-icon{
+  &__cart{
+    position: absolute;
+    right: 22px;
+    transform: translateY(-50%);
+    top: 50%;
+  }
+  &__burger{
+    display: flex;
+    position: absolute;
+    left: 15px;
+    transform: translateY(-50%);
+    top: 50%;
+  }
+   &__search{
+    display: flex;
+    position: absolute;
+    left: 50px;
+    fill: #fff;
+    transform: translateY(-50%);
+    top: 50%;
+  }
 }
 </style>

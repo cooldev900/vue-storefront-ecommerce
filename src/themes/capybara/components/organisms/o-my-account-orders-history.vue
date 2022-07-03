@@ -19,12 +19,6 @@
               >
                 {{ $t(tableHeader) }}
               </SfTableHeader>
-              <SfTableHeader class="orders__element--right">
-                <span class="mobile-only">{{ $t('Download') }}</span>
-                <SfButton @click.native="downloadAll" class="desktop-only sf-button--text orders__download-all">
-                  {{ $t('Download all') }}
-                </SfButton>
-              </SfTableHeader>
             </SfTableHeading>
             <SfTableRow v-for="order in orders" :key="order.order_id">
               <SfTableData v-for="(data, key) in order" :key="key">

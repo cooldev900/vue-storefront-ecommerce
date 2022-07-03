@@ -25,6 +25,7 @@
         v-model="phoneNumber"
         :label="$t('Phone Number')"
         name="phone"
+        required
         type="number"
         class="form__element form__element--half"
         :valid="validPhoneNumber(phoneNumber)"

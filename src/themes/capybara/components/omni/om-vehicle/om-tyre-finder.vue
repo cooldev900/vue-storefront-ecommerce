@@ -344,6 +344,7 @@ export default {
         border: none;
         color: #fff;
         flex: 1;
+        z-index: 0;
         font-weight: 700;
         margin: 0;
         &--active {

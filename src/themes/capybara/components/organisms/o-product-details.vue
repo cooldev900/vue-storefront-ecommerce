@@ -531,11 +531,14 @@ export default {
 }
 .product__header{
   @include for-mobile{
-    padding: 0 15px;
+    padding: 15px 0;
   }
   h1{
     font-size: 28px;
     margin: 0;
+    @include for-mobile{
+    font-size: 22px;
+    }
   }
   &--spec{
     display: flex;

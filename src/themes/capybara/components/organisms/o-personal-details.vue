@@ -46,7 +46,7 @@
         :error-message="
           !$v.personalDetails.telephone.required
             ? $t('Field is required')
-            : $t('Please provide valid e-mail address.')
+            : $t('Please provide valid telephone.')
         "
       />
       <OmAlertBox type="warning" style="{margin-bottom: 20px, border: 1px solid #ccc;}" v-show="message">
@@ -54,7 +54,7 @@
           <div class="om-alert-box-message">
             <div>
               <p>
-                Your choson appointment is no longer available. Please select another time below.
+                Your chosen appointment is no longer available. Please select another time below.
               </p>
             </div>
           </div>
