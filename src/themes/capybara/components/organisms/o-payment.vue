@@ -401,14 +401,19 @@ export default {
         // await this.$store.dispatch('checkout/placeOrder', { order: newOrder });
         // EventBus.$emit('notification-progress-stop')
         console.log('passed sha sign');
+        
+
+        await this.$bus.$emit('notification-progress-start');
+        await this.$bus.$emit('place-order-after-cybersource-pay');
+
         let client_id = this.getSlotData.client_id;
         let slot_id = this.getSlotID;
+    
         try {
+
           let { data } = await axios.get(`${config.api.url}/api/ext/appointments/available-slot?client_id=${client_id}&slot_id=${slot_id}`);
           console.log(data, 'available slot data');
           if (data.result) {
-            this.$bus.$emit('notification-progress-start');
-            this.$bus.$emit('place-order-after-cybersource-pay');
             this.$store.dispatch('vehicles/setAppointment');
           } else {
             this.openModal({ name: ModalList.OmAppointmentModal, payload: {} })
