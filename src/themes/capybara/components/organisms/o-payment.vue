@@ -390,6 +390,8 @@ export default {
       console.log(process.env, 'secret_key', config.secret_key);
       const checkSumShaSign = this.$CryptoJS.HmacSHA256(shaSignature1, secretKey).toString(this.$CryptoJS.enc.Hex);
       console.log(JSON.parse(SHASIGN) ===  checkSumShaSign,'is valid sha', SHASIGN, checkSumShaSign);
+      console.log(this.getSlotData, 'getSlotData');
+      console.log(this.getSlotID, 'getSlotID');
       if (JSON.parse(SHASIGN) ===  checkSumShaSign && decision === 'ACCEPT') {
         // let newOrder = await this.prepareOrder();
 
@@ -398,10 +400,12 @@ export default {
         // }
         // await this.$store.dispatch('checkout/placeOrder', { order: newOrder });
         // EventBus.$emit('notification-progress-stop')
+        console.log('passed sha sign');
         let client_id = this.getSlotData.client_id;
         let slot_id = this.getSlotID;
         try {
           let { data } = await axios.get(`${config.api.url}/api/ext/appointments/available-slot?client_id=${client_id}&slot_id=${slot_id}`);
+          console.log(data, 'available slot data');
           if (data.result) {
             this.$bus.$emit('notification-progress-start');
             this.$bus.$emit('place-order-after-cybersource-pay');
