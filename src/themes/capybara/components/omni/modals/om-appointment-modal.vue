@@ -13,7 +13,6 @@
             :period="5"
         />
         <div class="actions">
-            <button class="cancel" @click="cancelOrder">{{$t('Cancel Order')}}</button>
             <SfButton @click="go">{{$t('continue')}}</SfButton>
         </div>
       </div>
