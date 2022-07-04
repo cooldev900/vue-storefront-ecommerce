@@ -54,7 +54,7 @@
                   </div>
                   <div v-else class="title-container">
                     <router-link
-                      :to="localizedRoute('/' + product.url_path)"
+                      :to="localizedRoute('/p/' + product.sku + '/' + product.slug)"
                       class="a-logo"
                     >
                       {{ product.name }}
@@ -74,6 +74,17 @@
                 <template #actions>
                   <div class="actions desktop-only">
             
+                  </div>
+                </template>
+                <template #price>
+                  <div class="tire">
+                    <SfPrice
+                      v-if="getProductPrice(product).regular"
+                      class="sf-product-card__price"
+                      :regular="getProductPrice(product).regular"
+                      :special="getProductPrice(product).special"
+                    />
+                    <span class="tire__content" v-if="isTire(product)">{{ $t('Per Tire') }}</span>
                   </div>
                 </template>
               </SfCollectedProduct>
@@ -112,7 +123,8 @@ import {
   SfButton,
   SfImage,
   SfProperty,
-  SfHeading
+  SfHeading,
+  SfPrice
 } from '@storefront-ui/vue';
 import OOrderSummary from 'theme/components/organisms/o-order-summary';
 import { mapGetters, mapActions } from 'vuex';
@@ -144,7 +156,8 @@ export default {
     OmRadioCheckbox,
     OmSvgViewer,
     SbTeaseV2,
-    NoSSR
+    NoSSR,
+    SfPrice
   },
   data () {
     return {
@@ -170,7 +183,8 @@ export default {
       totals: 'cart/getTotals',
       getAttributeLabelById: 'vehicles/getAttributeLabelById',
       cartToken: 'cart/getCartToken',
-      userToken: 'user/getToken'
+      userToken: 'user/getToken',
+      attributeListByCode: 'attribute/attributeListByCode',
     }),
     totalItems () {
       return this.productsInCart.reduce(
@@ -189,12 +203,18 @@ export default {
       })
 
       return flag;
-    }
+    },
   },
   methods: {
         ...mapActions('ui', {
       openModal: 'openModal'
-    }),
+    }),    
+    isTire(product) {
+      console.log(product, 'product');
+      let product_group = product.product_group;
+      let options = this.attributeListByCode.product_group.options;
+      return options?.some(option => option.value == product_group && option.label === 'Tires');
+    },
     getThumbnailForProductExtend (product) {
       return getThumbnailForProduct(product);
     },
