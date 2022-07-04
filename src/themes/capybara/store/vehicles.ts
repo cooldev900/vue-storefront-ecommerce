@@ -99,10 +99,13 @@ export const vehiclesStore = {
       let slot_data = await VehicleStorage.getSlotData();
       state.slot_data = slot_data;
     },
-    async setAppointment({commit, dispatch, state}, orderId = null) {
+    async setAppointment({commit, dispatch, state, rootGetters}, orderId = null) {
       if (orderId) {
         state.slot_data.order_id = orderId;
       }
+      const personalDetails = rootGetters['checkout/getPersonalDetails'];
+      const customer = personalDetails?.firstName + ' ' + personalDetails.lastName;
+      state.slot_data.customer = customer;
       const res = await axios.post(
         `${config.api.url}/api/ext/appointments`, state.slot_data 
       );

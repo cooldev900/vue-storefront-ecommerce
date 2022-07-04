@@ -14,10 +14,6 @@ const actions: ActionTree<CheckoutState, RootState> = {
         await dispatch('updateOrderTimestamp')
         // clear cart without sync, because after order cart will be already cleared on backend
         await dispatch('cart/clear', { sync: false }, { root: true })
-        await dispatch('savePersonalDetails', {});
-        await dispatch('saveShippingDetails', {});
-        await dispatch('savePaymentDetails', {});
-        await dispatch('vehicles/clearCheckoutSteps');
         await dispatch('dropPassword')
         return result;
       }
