@@ -415,7 +415,7 @@ export default {
         } catch(e) {
           console.log(e, 'appointment error');
           await this.$bus.$emit('notification-progress-stop');
-          this.openModal({ name: ModalList.OmAppointmentModal, payload: {} })
+          this.openModal({ name: ModalList.OmAppointmentModal, payload: { orderId: result?.result.magentoOrderId } })
         }
       } else {
         this.isMessage = true;

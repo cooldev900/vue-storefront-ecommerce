@@ -13,8 +13,8 @@
             :period="5"
         />
         <div class="actions">
-            <button class="cancel">{{$t('Cancel Order')}}</button>
-            <SfButton>{{$t('continue')}}</SfButton>
+            <button class="cancel" @click="cancelOrder">{{$t('Cancel Order')}}</button>
+            <SfButton @click="continue">{{$t('continue')}}</SfButton>
         </div>
       </div>
     </SfModal>
@@ -39,6 +39,7 @@ export default {
       default: () => ({
         name: 'OmAppointmentModal',
         payload: {
+          orderId: '',
         }
       }),
       required: true
@@ -81,7 +82,20 @@ export default {
   methods: {
     closeModal () {
       this.$emit('close', this.modalData.name)
-    }
+    },
+    cancelOrder() {
+      //cancel order operation
+      this.closeModal();
+    },
+    continue() {
+      try{
+        await this.$store.dispatch('vehicles/setAppointment', this.modalData.payload.orderId);
+        this.closeModal();
+      } catch(e) {
+
+      }
+      
+    },
   },
   async mounted () {
     
