@@ -14,7 +14,7 @@
         />
         <div class="actions">
             <button class="cancel" @click="cancelOrder">{{$t('Cancel Order')}}</button>
-            <SfButton @click="continue">{{$t('continue')}}</SfButton>
+            <SfButton @click="go">{{$t('continue')}}</SfButton>
         </div>
       </div>
     </SfModal>
@@ -87,7 +87,7 @@ export default {
       //cancel order operation
       this.closeModal();
     },
-    continue() {
+    async go() {
       try{
         await this.$store.dispatch('vehicles/setAppointment', this.modalData.payload.orderId);
         this.closeModal();
