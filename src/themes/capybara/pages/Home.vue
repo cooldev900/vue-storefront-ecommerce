@@ -13,9 +13,10 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import { Logger } from '@vue-storefront/core/lib/logger';
 import { isServer, onlineHelper } from '@vue-storefront/core/helpers';
+import { ModalList } from 'theme/store/ui/modals'
 
 export default {
   name: 'Home',
@@ -37,6 +38,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions('ui', {
+      openModal: 'openModal'
+    }),
     getComponentName (name) {
       return name ? `sb-${name.replace(/_/g, '-')}` : '';
     }
@@ -59,6 +63,11 @@ export default {
       this.$bus.$emit('modal-show', 'modal-signup');
     }
     this.$gtm.trackView('MyScreenName', 'currentPath');
+    
+    const {resetpassword, token} = this.$route.query;
+    if (resetpassword) {
+      this.openModal({ name: ModalList.Auth, payload: 'forgot-reset' })
+    }
   },
   beforeRouteEnter (to, from, next) {
     if (!isServer && !from.name) {
