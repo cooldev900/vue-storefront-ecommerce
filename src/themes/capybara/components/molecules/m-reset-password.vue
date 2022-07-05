@@ -17,6 +17,7 @@
               : $t('Please provide valid e-mail address.')
           "
           class="form__element"
+          ref="first"
         />
         <SfButton class="sf-button--full-width form__submit om-btn--primary">
           {{ $t("Reset password") }}
@@ -28,7 +29,7 @@
         {{ $t('We\'ve sent password reset instructions to your email. Check your inbox and follow the link.') }}
       </p>
     </div>
-    <SfButton class="sf-button--text action-button" @click.native="switchElem('login')">
+    <SfButton class="sf-button--text action-button" @click.native="switchElem('login')" ref="last">
       {{ `${$t("or")} ${$t("Login in to your account")}` }}
     </SfButton>
   </div>

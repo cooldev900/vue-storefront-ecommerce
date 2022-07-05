@@ -29,6 +29,7 @@
               ? $t('Field is required.')
               : $t('Please provide valid password.')
           "
+          type="password"
           class="form__element"
         />
         <SfButton class="sf-button--full-width form__submit om-btn--primary">
