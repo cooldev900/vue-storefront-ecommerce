@@ -1,12 +1,20 @@
 <template>
   <div class="m-reset-password modal-content">
     <template v-if="!passwordSent">
-      <p v-if="errorMessage">
-        {{ $t(errorMessage) }}
-      </p>
-      <p v-else>
+      <p>
         {{ $t('Enter your email to receive instructions on how to reset your password.') }}
       </p>
+      <OmAlertBox type="warning" style="{margin-bottom: 20px, border: 1px solid #ccc;}" v-if="errorMessage">
+        <template #message>
+          <div class="om-alert-box-message">
+            <div>
+              <p>
+                {{ $t(errorMessage) }}
+              </p>
+            </div>
+          </div>
+        </template>
+      </OmAlertBox>
       <form @submit.prevent="resetPassword" class="form">
         <SfInput
           v-model="email"
@@ -58,10 +66,11 @@ import { required, email } from 'vuelidate/lib/validators';
 import { SfInput, SfButton } from '@storefront-ui/vue';
 import { ModalList } from 'theme/store/ui/modals'
 import { mapActions } from 'vuex';
+import OmAlertBox from 'theme/components/omni/om-alert-box';
 
 export default {
   name: 'MResetPassword',
-  components: { SfInput, SfButton },
+  components: { SfInput, SfButton, OmAlertBox },
   data () {
     return {
       email: '',
