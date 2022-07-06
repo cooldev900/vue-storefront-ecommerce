@@ -16,7 +16,11 @@
       {{ $t('Account') }}
     </div>
     <span class="sf-header__split">|</span>
-    <span class="sf-header__custom-icon--help">{{ $t('Help') }}</span>
+    <span class="sf-header__custom-icon--help sf-header__custom-icon">{{ $t('Help') }}</span>
+    <span class="sf-header__split">|</span>
+    <a title="Whatsapp"  class="sf-header__custom-icon search-icon" :class="[{
+      'sf-header__icon--is-active': isLoggedIn
+    }, menuStyle]"><img src="https://www.freepnglogos.com/uploads/whatsapp-logo-app-png-4.png" width="22" alt="whatsapp logo app png" /></a>
   </SfButton>
 </template>
 
@@ -128,5 +132,26 @@ display: none;
     fill: var(--c-primary);
   }
 }
+}
+
+.two {
+  transition: all 2s ease-in-out 0.5s;
+  -webkit-transition: all 2s ease-in-out 0.5s;
+}
+#scale {
+  height: 150px;
+  width: 100px;
+  text-align: center;
+  margin: 0 auto;
+}
+#scale {
+  fill: yellow;
+  stroke: blue;
+  stroke-width: 2px;
+}
+.grow:hover {
+  transform: scale(2.0);
+  -ms-transform: scale(2.0);
+  -webkit-transform: scale(2.0);
 }
 </style>
