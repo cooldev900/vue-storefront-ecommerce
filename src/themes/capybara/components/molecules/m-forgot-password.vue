@@ -1,7 +1,10 @@
 <template>
   <div class="m-reset-password modal-content">
     <template v-if="!passwordSent">
-      <p>
+      <p v-if="errorMessage">
+        {{ $t(errorMessage) }}
+      </p>
+      <p v-else>
         {{ $t('Enter your email to receive instructions on how to reset your password.') }}
       </p>
       <form @submit.prevent="resetPassword" class="form">
@@ -63,7 +66,8 @@ export default {
     return {
       email: '',
       password: '',
-      passwordSent: false
+      passwordSent: false,
+      errorMessage: ''
     };
   },
   methods: {
@@ -94,6 +98,7 @@ export default {
           this.$bus.$emit('notification-progress-stop');
           if (response.code === 200) {
             this.passwordSent = true;
+            this.errorMessage = '';
           } else {
             this.onFailure(response);
           }
@@ -103,11 +108,12 @@ export default {
         });
     },
     onFailure (result) {
-      this.$store.dispatch('notification/spawnNotification', {
-        type: 'danger',
-        message: i18n.t(result.result.errorMessage),
-        action1: { label: i18n.t('OK') }
-      });
+      this.errorMessage = result.result.errorMessage;
+      // this.$store.dispatch('notification/spawnNotification', {
+      //   type: 'danger',
+      //   message: i18n.t(result.result.errorMessage),
+      //   action1: { label: i18n.t('OK') }
+      // });
     }
   },
   validations: {
