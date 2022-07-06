@@ -247,10 +247,13 @@ export default {
         this.$router.push(localizedRoute('/checkout'));
     },
     changeQuantity (product, newQuantity) {
-      this.$store.dispatch('cart/updateQuantity', {
-        product: product,
-        qty: newQuantity
-      });
+      if (newQuantity)
+        this.$store.dispatch('cart/updateQuantity', {
+          product: product,
+          qty: newQuantity
+        });
+      else 
+        this.removeHandler(product);
     },
     getFittingPrice (sku, qty) {
       const currentFittingProduct = this.fittingProducts.find(p => p.sku === sku);
