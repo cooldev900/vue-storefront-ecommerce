@@ -67,6 +67,47 @@ export function getProductPrice (product, customOptions = {}, fittingPrice = 0) 
   };
 }
 
+export function getProductPricePerItem (product, customOptions = {}, fittingPrice = 0) {
+  if (!product) {
+    return {
+      regular: '',
+      special: ''
+    };
+  }
+  console.log(product.qty, 'qty');
+  const priceInclTax =
+           product.price_incl_tax || product.priceInclTax || 0;
+  const originalPriceInclTax =
+           product.original_price_incl_tax || product.originalPriceInclTax || 0;
+  const specialPrice =
+           product.special_price || product.specialPrice || 0;
+
+  const isSpecialPrice =
+           specialPrice && priceInclTax && originalPriceInclTax;
+  const priceDelta = calculateCustomOptionsPriceDelta(
+    product,
+    customOptions
+  );
+
+  const special =
+           (priceInclTax + priceDelta) * product.qty || priceInclTax;
+  const original =
+           (originalPriceInclTax + priceDelta) * product.qty ||
+           originalPriceInclTax;
+  const regular =
+           product.regular_price ||
+           calculateBundleOptionsPrice(product) ||
+           (priceInclTax + priceDelta) * product.qty ||
+           priceInclTax;
+  console.log(special, original, regular, 'price', product.qty);
+  return {
+    regular: isSpecialPrice
+      ? formatPrice((original + fittingPrice)/product.qty)
+      : formatPrice((regular + fittingPrice)),
+    special: isSpecialPrice ? formatPrice((special + fittingPrice)/product.qty) : ''
+  };
+}
+
 export function getProductPriceFromTotals (product, fittingPrice = 0) {
   if (!product.totals || !product.totals.options) {
     return {

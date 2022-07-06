@@ -485,7 +485,7 @@ export default {
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import "~@storefront-ui/shared/styles/components/organisms/SfProductCard.scss";
 .sub-title{
   margin: 20px 0 40px 0;

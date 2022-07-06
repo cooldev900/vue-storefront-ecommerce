@@ -77,14 +77,22 @@
                   </div>
                 </template>
                 <template #price>
-                  <div class="tire">
+                  <div>
                     <SfPrice
                       v-if="getProductPrice(product).regular"
                       class="sf-product-card__price"
                       :regular="getProductPrice(product).regular"
                       :special="getProductPrice(product).special"
                     />
-                    <span class="tire__content" v-if="isTire(product)">{{ $t('Per Tire') }}</span>
+                    <div class="tire">
+                      <SfPrice
+                        v-if="getProductPricePerItem(product).regular"
+                        class="sf-product-card__price"
+                        :regular="getProductPricePerItem(product).regular"
+                        :special="getProductPricePerItem(product).special"
+                      />
+                      <span class="tire__content" v-if="isTire(product)">{{ $t('Per Tire') }}</span>
+                    </div>
                   </div>
                 </template>
               </SfCollectedProduct>
@@ -130,7 +138,7 @@ import OOrderSummary from 'theme/components/organisms/o-order-summary';
 import { mapGetters, mapActions } from 'vuex';
 import OMicrocartPanelList from 'theme/components/organisms/o-microcart-panel-list.vue';
 import { getThumbnailForProduct } from '@vue-storefront/core/modules/cart/helpers';
-import { getProductPrice, getProductPriceFromTotals } from 'theme/helpers';
+import { getProductPrice, getProductPriceFromTotals, getProductPricePerItem } from 'theme/helpers';
 import { onlineHelper } from '@vue-storefront/core/helpers';
 import { localizedRoute } from '@vue-storefront/core/lib/multistore';
 import * as VehicleStorage from 'theme/store/vehicles-storage';
@@ -222,6 +230,9 @@ export default {
       return onlineHelper.isOnline && product.totals && product.totals.options
         ? getProductPriceFromTotals(product)
         : getProductPrice(product);
+    },
+    getProductPricePerItem (product) {
+      return getProductPricePerItem(product);
     },
     getProductOptions (product) {
       return onlineHelper.isOnline && product.totals && product.totals.options
@@ -470,6 +481,17 @@ position: relative;
     right: 0;
     text-decoration: none !important;
     bottom: auto;
+  }
+}
+
+.tire {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+
+  &__content {
+    color: var(--c-primary);
+    margin: 8px 0;
   }
 }
 </style>
