@@ -1,8 +1,8 @@
 <template>
   <transition name="fade" mode="out-in">
-    <div class="om-category-header" :class="{'tyre-background': getCategoryTitle === 'Fuel Tank Parts'}">
+    <div class="om-category-header" :class="{'tyre-background': getCategoryTitle === 'Fuel Tank Parts'}"  v-if="title">
       <div class="om-category-header__inner">
-        <SfHeading :title="title" class="title" />
+        <SfHeading :title="title" class="title"/>
         <div v-if="description != null" class="description desktop-only" v-html="description"></div>
       </div>
     </div>
