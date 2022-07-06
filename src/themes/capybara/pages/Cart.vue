@@ -494,4 +494,9 @@ position: relative;
     margin: 8px 0;
   }
 }
+
+.a-logo {
+  word-break: break-all;
+  padding-right: 15px;
+}
 </style>
