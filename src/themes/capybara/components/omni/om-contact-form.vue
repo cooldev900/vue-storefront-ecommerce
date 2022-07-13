@@ -28,7 +28,7 @@
         type="number"
         class="form__element form__element--half"
         :valid="validPhoneNumber(phoneNumber)"
-        error-message="Please enter 9 digital numbers."
+        :error-message="$t('Field is required')"
       />
       <SfInput
         v-model="email"
