@@ -20,7 +20,7 @@
               <div class="columnTitle"><h5>{{ $t('Width title') }}</h5></div>
               <div class="imageslot">
                 <img
-                  src="/assets/tire-width.png"
+                  src="/assets/tire-size-01.png"
                 />
               </div>
               <div class="textslot">
@@ -35,7 +35,7 @@
               <div class="columnTitle"><h5>{{ $t('Profile title') }}</h5></div>
               <div class="imageslot">
                 <img
-                  src="/assets/tire-profile.png"
+                  src="/assets/tire-size-02.png"
                 />
               </div>
               <div class="textslot">
@@ -50,7 +50,7 @@
               <div class="columnTitle"><h5>{{ $t('Rim Title') }}</h5></div>
               <div class="imageslot">
                 <img
-                  src="/assets/tire-rim.png"
+                  src="/assets/tire-size-03.png"
                 />
               </div>
               <div class="textslot">
@@ -240,6 +240,9 @@ export default {
       .imageslot {
         background: #ffffff;
         display: block;
+        img{
+          border-radius: 50%;
+        }
       }
 
       .textslot {
