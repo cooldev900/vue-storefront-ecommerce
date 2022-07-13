@@ -90,7 +90,7 @@ export default {
   position: relative;
   display: grid;
   grid-column-gap: 15px;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   @include for-mobile {
     grid-template-columns: 1fr;
     grid-row-gap: 15px;

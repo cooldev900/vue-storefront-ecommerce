@@ -18,9 +18,9 @@
     <span class="sf-header__split">|</span>
     <span class="sf-header__custom-icon--help sf-header__custom-icon">{{ $t('Help') }}</span>
     <span class="sf-header__split">|</span>
-    <a title="Whatsapp"  class="sf-header__custom-icon search-icon" :class="[{
-      'sf-header__icon--is-active': isLoggedIn
-    }, menuStyle]"><img src="https://www.freepnglogos.com/uploads/whatsapp-logo-app-png-4.png" width="22" alt="whatsapp logo app png" /></a>
+    <a href="https://wa.me/message/WY4AEO7EDPQAA1" target="_blank" title="Whatsapp" class="sf-header__custom-icon search-icon">
+      <img src="/assets/whatsapp.png" width="22">
+    </a>
   </SfButton>
 </template>
 
@@ -61,12 +61,12 @@ export default {
       }
     }
   },
-  data() {
+  data () {
     return {
       storeId: 0
     }
   },
-  beforeMount() {
+  beforeMount () {
     this.storeId = currentStoreView().storeId;
   }
 };

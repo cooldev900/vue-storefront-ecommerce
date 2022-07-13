@@ -78,21 +78,18 @@
                 </template>
                 <template #price>
                   <div>
-                    <SfPrice
+                    <!-- <SfPrice
                       v-if="getProductPrice(product).regular"
                       class="sf-product-card__price"
                       :regular="getProductPrice(product).regular"
                       :special="getProductPrice(product).special"
-                    />
-                    <div class="tire">
+                    /> -->
                       <SfPrice
                         v-if="getProductPricePerItem(product).regular"
                         class="sf-product-card__price"
                         :regular="getProductPricePerItem(product).regular"
                         :special="getProductPricePerItem(product).special"
                       />
-                      <span class="tire__content" v-if="isTire(product)">{{ $t('Per Tire') }}</span>
-                    </div>
                   </div>
                 </template>
               </SfCollectedProduct>
