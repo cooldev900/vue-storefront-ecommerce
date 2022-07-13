@@ -71,7 +71,7 @@
             <p class="copywrite">
               © Alfardan Commercial. All Rights Reserved
             </p>
-            <p>info-afc@alfardancommercial.com | +974 4406 5557</p>
+            <p><a href="mailto:info-afc@alfardancommercial.com">info-afc@alfardancommercial.com </a>| <a href="tel:+97444065557">+974 4406 5557</a></p>
             <p>
               7GM4+HH, PO 3763 Suhaim Bin Hamad Street, Doha, Qatar
             </p>

@@ -149,7 +149,7 @@ export default {
     },
     validPhoneNumber (phone) {
       if (!phone) return true;
-      const regex = /^[0-9]{9}$/;
+      const regex = /^[0-9]{8,12}$/;
       return regex.test(phone);
     },
     validEmail (email) {
@@ -170,7 +170,7 @@ export default {
       this.validate();
       if (this.valid) {
         const token = await this.recaptcha();
-        const baseUrl = 'http://34.247.218.222/api';
+        const baseUrl = 'https://portal-api.omninext.app/api';
         const payload = {
           first_name: this.firstName,
           last_name: this.lastName,
@@ -178,10 +178,10 @@ export default {
           message: this.message,
           phone: this.phoneNumber,
           vin: this.vin,
+          status: 'open',
           item_required: this.item_required,
           client_id: config.clientIds[currentStoreView().storeId],
-          store_id: currentStoreView().storeId,
-          token
+          store_id: currentStoreView().storeId
         }
         this.loading = true;
         this.submitted = true;
