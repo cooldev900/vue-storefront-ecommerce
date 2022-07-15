@@ -1,6 +1,6 @@
 <template>
   <transition name="fade" mode="out-in">
-    <div class="om-category-header" :class="{'tyre-background': getCategoryTitle === 'Fuel Tank Parts'}"  v-if="title">
+    <div class="om-category-header" :class="{'tyre-background': title === 'Fuel Tank Parts'}">
       <div class="om-category-header__inner">
         <SfHeading :title="title" class="title" :level="1"/>
         <div v-if="description != null" class="description desktop-only" v-html="description"></div>
@@ -58,9 +58,9 @@ export default {
         // return this.getCategoriesMap[parentKey].children_data
       }
     },
-      getCategoryTitle () {
-      return this.breadcrumbs?.length && this.breadcrumbs[this.breadcrumbs.length - 1].text
-    }
+    //   getCategoryTitle () {
+    //   return this.breadcrumbs?.length && this.breadcrumbs[this.breadcrumbs.length - 1].text
+    // }
   },
   methods: {
     goToLink (url) {

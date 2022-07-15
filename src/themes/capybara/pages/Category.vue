@@ -1,10 +1,10 @@
 <template>
   <div>
     <div id="category">
-      <lazy-hydrate :trigger-hydration="!loading">
+      <lazy-hydrate  when-idle>
         <OmCategoryHeader
           v-if="!!getCurrentCategory"
-          :title="getCategoryTitle"
+          :title="getCurrentCategory.name"
           :products="getCurrentCategory.children_data"
           :description="getCurrentCategory.description"
           :parent-id="getCurrentCategory.parent_id"
@@ -378,6 +378,7 @@ const composeInitialPageState = async (store, route, forceLoad = false) => {
       cachedCategory && !forceLoad
         ? cachedCategory
         : await store.dispatch('category-next/loadCategory', { filters });
+    console.log(currentCategory, 'currentCategory', route);
     await store.dispatch('category-next/loadCategoryProducts', {
       route,
       category: currentCategory,
@@ -392,7 +393,8 @@ const composeInitialPageState = async (store, route, forceLoad = false) => {
       }
     );
 
-    if (isServer) await breadCrumbsLoader;
+    await breadCrumbsLoader;
+    console.log(store.getters['breadcrumbs/getBreadcrumbsCurrent'], 'currentBreadCrumb');
     catalogHooksExecutors.categoryPageVisited(currentCategory);
   } catch (e) {
     //
@@ -605,12 +607,12 @@ export default {
           (variant) => variant && variant.id === filter.id
         ) !== undefined;
     },
-    getCategoryTitle () {
-      return (
-        this.breadcrumbs?.length &&
-        this.breadcrumbs[this.breadcrumbs.length - 1].text
-      );
-    },
+    // getCategoryTitle () {
+    //   return (
+    //     this.breadcrumbs?.length &&
+    //     this.breadcrumbs[this.breadcrumbs.length - 1].text
+    //   );
+    // },
     shouldShowVehicleCard () {
       let existsNationCode = false;
       if (this.activeVehicle && this.activeVehicle.national_code) { existsNationCode = true; }
@@ -668,6 +670,7 @@ export default {
       // Pure CSR, with no initial category state
       next(async (vm) => {
         vm.loading = true;
+        await composeInitialPageState(vm.$store, to, true);
         vm.$store.dispatch('category-next/cacheProducts', { route: to });
         vm.loading = false;
       });
