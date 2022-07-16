@@ -1,6 +1,17 @@
 <template>
   <div id="form-template">
-    <div class="form">
+    <OmAlertBox :type="type" v-if="successMessage">
+      <template #message>
+        <div class="om-alert-box-message">
+          <div>
+            <p>
+              {{ $t(successMessage) }}
+            </p>
+          </div>
+        </div>
+      </template>
+    </OmAlertBox>
+    <div class="form" v-else>
       <SfInput
         v-model="firstName"
         :label="$t('First name')"
@@ -66,9 +77,18 @@
         wrap="soft"
       />
       <div class="form__action">
-        <SfButton class="sf-button--full-width om-btn--primary" @click.prevent="submit">
+        <SfButton class="om-btn--primary" @click.prevent="submit">
           <SfLoader v-if="loading" :loading="loading" />
           <span v-else>{{ $t('Submit') }}</span>
+        </SfButton>
+        <SfButton
+          class="
+            sf-button--text
+            form__action-button form__action-button--secondary
+          "
+          @click="reset"
+        >
+          Reset
         </SfButton>
       </div>
     </div>
@@ -88,6 +108,7 @@ import { notifications } from '@vue-storefront/core/modules/cart/helpers';
 import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 import config from 'config';
 import { mapActions, mapGetters } from 'vuex';
+import OmAlertBox from 'theme/components/omni/om-alert-box';
 
 export default {
   name: 'OmEnquiryForm',
@@ -97,7 +118,8 @@ export default {
     SfComponentSelect,
     SfHeading,
     SfRange,
-    SfLoader
+    SfLoader,
+    OmAlertBox
   },
   data () {
     return {
@@ -113,7 +135,9 @@ export default {
       message: '',
       vin: '',
       item_required: '',
-      loading: false
+      loading: false,
+      successMessage: '',
+      type: 'info'
     };
   },
   computed: {
@@ -174,37 +198,46 @@ export default {
         try {
           const { data: { data, status } } = await axios.post(baseUrl + '/enquiries', payload);
           if (status === 'success') {
-            this.$store.dispatch(
-              'notification/spawnNotification',
-              notifications.createNotification({
-                type: 'success',
-                message: 'Your enquiry was created successfully!'
-              }),
-              { root: true }
-            );
-            this.reset();
+            // this.$store.dispatch(
+            //   'notification/spawnNotification',
+            //   notifications.createNotification({
+            //     type: 'success',
+            //     message: 'Your enquiry was created successfully!'
+            //   }),
+            //   { root: true }
+            // );
+            this.type = 'info';
+            this.successMessage = 'Your enquiry was created successfully!';
+            this.loading = false;
+            // this.reset();
           } else {
-            this.$store.dispatch(
-              'notification/spawnNotification',
-              notifications.createNotification({
-                type: 'danger',
-                message: 'Failed registration of a new enquiry!'
-              }),
-              { root: true }
-            );
+            // this.$store.dispatch(
+            //   'notification/spawnNotification',
+            //   notifications.createNotification({
+            //     type: 'danger',
+            //     message: 'Failed registration of a new enquiry!'
+            //   }),
+            //   { root: true }
+            // );
+            this.type = 'warning';
+            this.successMessage = 'Failed registration of a new enquiry!';
+            this.loading = false;
           }
         } catch (e) {
-          this.$store.dispatch(
-            'notification/spawnNotification',
-            notifications.createNotification({
-              type: 'danger',
-              message: 'Failed registration of a new enquiry!'
-            }),
-            { root: true }
-          );
+          // this.$store.dispatch(
+          //   'notification/spawnNotification',
+          //   notifications.createNotification({
+          //     type: 'danger',
+          //     message: 'Failed registration of a new enquiry!'
+          //   }),
+          //   { root: true }
+          // );
+          this.type = 'warning';
+          this.successMessage = 'Failed registration of a new enquiry!';
+          this.loading = false;
         }
-        this.closeModal();
-        this.loading = false;
+        // this.loading = false;
+        // this.closeModal();
       }
     },
     reset () {
@@ -218,15 +251,21 @@ export default {
       this.firstNameBlur = true;
       this.emailBlur = true;
       this.lastNameBlur = true;
-    }
+      this.setProductInfo();
+    },
+    setProductInfo() {
+      this.type = 'info';
+      this.successMessage = '';
+      if (this.product.sku) {
+        if (this.product.name)  
+          this.item_required = this.product.name + ' - ' + this.product.sku;  
+        else 
+          this.item_required = this.product.title + ' - ' + this.product.sku;  
+      }  
+    },
   },
   mounted () {
-    if (this.product.sku) {
-      if (this.product.name)  
-        this.item_required = this.product.name + ' - ' + this.product.sku;  
-      else 
-        this.item_required = this.product.title + ' - ' + this.product.sku;  
-    }
+    this.reset();
   }
 };
 </script>
