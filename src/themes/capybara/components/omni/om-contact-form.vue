@@ -1,6 +1,17 @@
 <template>
   <div id="form-template">
-    <div class="form">
+    <OmAlertBox :type="type" v-if="successMessage">
+      <template #message>
+        <div class="om-alert-box-message">
+          <div>
+            <p>
+              {{ $t(successMessage) }}
+            </p>
+          </div>
+        </div>
+      </template>
+    </OmAlertBox>
+    <div class="form" v-else>
       <SfInput
         v-model="firstName"
         label="First name"
@@ -96,6 +107,7 @@ import { notifications } from '@vue-storefront/core/modules/cart/helpers';
 import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 import config from 'config';
 import { mapActions } from 'vuex';
+import OmAlertBox from 'theme/components/omni/om-alert-box';
 
 export default {
   name: 'OmContactForm',
@@ -105,7 +117,8 @@ export default {
     SfComponentSelect,
     SfHeading,
     SfRange,
-    SfLoader
+    SfLoader,
+    OmAlertBox
   },
   data () {
     return {
@@ -121,7 +134,9 @@ export default {
       message: '',
       vin: '',
       item_required: '',
-      loading: false
+      loading: false,
+      type: 'info',
+      successMessage: ''
     };
   },
   methods: {
@@ -188,37 +203,46 @@ export default {
         try {
           const { data: { data, status } } = await axios.post(baseUrl + '/enquiries', payload);
           if (status === 'success') {
-            this.$store.dispatch(
-              'notification/spawnNotification',
-              notifications.createNotification({
-                type: 'success',
-                message: 'Your enquiry was created successfully!'
-              }),
-              { root: true }
-            );
-            this.reset();
+            // this.$store.dispatch(
+            //   'notification/spawnNotification',
+            //   notifications.createNotification({
+            //     type: 'success',
+            //     message: 'Your enquiry was created successfully!'
+            //   }),
+            //   { root: true }
+            // );
+            this.type = 'info';
+            this.successMessage = 'Your enquiry was created successfully!';
+            this.loading = false;
+            // this.reset();
           } else {
-            this.$store.dispatch(
-              'notification/spawnNotification',
-              notifications.createNotification({
-                type: 'danger',
-                message: 'Failed registration of a new enquiry!'
-              }),
-              { root: true }
-            );
+            // this.$store.dispatch(
+            //   'notification/spawnNotification',
+            //   notifications.createNotification({
+            //     type: 'danger',
+            //     message: 'Failed registration of a new enquiry!'
+            //   }),
+            //   { root: true }
+            // );
+            this.type = 'warning';
+            this.successMessage = 'Failed registration of a new enquiry!';
+            this.loading = false;
           }
         } catch (e) {
-          this.$store.dispatch(
-            'notification/spawnNotification',
-            notifications.createNotification({
-              type: 'danger',
-              message: 'Failed registration of a new enquiry!'
-            }),
-            { root: true }
-          );
+          // this.$store.dispatch(
+          //   'notification/spawnNotification',
+          //   notifications.createNotification({
+          //     type: 'danger',
+          //     message: 'Failed registration of a new enquiry!'
+          //   }),
+          //   { root: true }
+          // );
+          this.type = 'warning';
+          this.successMessage = 'Failed registration of a new enquiry!';
+          this.loading = false;
         }
-        this.closeModal();
-        this.loading = false;
+        // this.closeModal();
+        // this.loading = false;
       }
     },
     reset () {
@@ -232,8 +256,22 @@ export default {
       this.firstNameBlur = true;
       this.emailBlur = true;
       this.lastNameBlur = true;
-    }
-  }
+      this.setProductInfo();
+    },
+    setProductInfo() {
+      this.type = 'info';
+      this.successMessage = '';
+      if (this.product.sku) {
+        if (this.product.name)  
+          this.item_required = this.product.name + ' - ' + this.product.sku;  
+        else 
+          this.item_required = this.product.title + ' - ' + this.product.sku;  
+      }  
+    },
+  },
+  mounted () {
+    this.reset();
+  }  
 };
 </script>
 <style lang="scss" scoped>
