@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="category">
-      <lazy-hydrate  when-idle>
+      <lazy-hydrate  :trigger-hydration="loading">
         <OmCategoryHeader
           v-if="!!getCurrentCategory"
           :title="getCurrentCategory.name"
@@ -160,8 +160,8 @@
               )
             "
           />
-          <template v-if="!isCategoryEmpty && !loading">
-            <!-- <lazy-hydrate :trigger-hydration="!loading"> -->
+          <template>
+            <lazy-hydrate :trigger-hydration="loading">
 
             <transition-group
               appear
@@ -227,7 +227,7 @@
                 </template>
               </OmProductCard>
             </transition-group>
-            <!-- </lazy-hydrate> -->
+            </lazy-hydrate>
             <SfPagination
               v-if="totalPages > 1"
               class="products__pagination desktop-only"
