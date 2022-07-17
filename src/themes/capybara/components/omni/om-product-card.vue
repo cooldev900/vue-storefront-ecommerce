@@ -209,6 +209,10 @@ export default {
       type: Object,
       default: {}
     },
+    stock: {
+      type: Object,
+      default: {}
+    },
     waranty: {
       type: String,
       default: ''
@@ -389,7 +393,6 @@ export default {
     return {
       isAddingToCart: false,
       qty: 1,
-      isAvailable: true
     };
   },
   computed: {
@@ -437,6 +440,19 @@ export default {
       let product_group = this.product.product_group;
       let options = this.attributeListByCode.product_group.options;
       return options?.some(option => option.value == product_group && option.label === 'Tires');
+    },
+    isAvailable() {
+      // if (this.qty1) this.qty = this.qty1;
+      // const res = await this.$store.dispatch('stock/check', {
+      //   product: this.product,
+      //   qty: this.product.qty
+      // });
+      // let manageQuantity = res.isManageStock;
+      // let max = res.qty || res.isManageStock ? res.qty : null;
+      // this.isAvailable = !onlineHelper.isOnline || !!max || !manageQuantity || ['simple', 'configurable'].includes(
+      //   this.product.type_id
+      // );
+      return this.stock.is_in_stock;
     }
   },
   methods: {
@@ -467,19 +483,16 @@ export default {
     }
   },
   async beforeMount() {
-    if (this.qty1) this.qty = this.qty1;
-    const res = await this.$store.dispatch('stock/check', {
-      product: this.product,
-      qty: this.product.qty
-    });
-    let manageQuantity = res.isManageStock;
-    let max = res.qty || res.isManageStock ? res.qty : null;
-    this.isAvailable = !onlineHelper.isOnline || !!max || !manageQuantity || ['simple', 'configurable'].includes(
-      this.product.type_id
-    );
-  },
-  async mounted () {
-    
+    // if (this.qty1) this.qty = this.qty1;
+    // const res = await this.$store.dispatch('stock/check', {
+    //   product: this.product,
+    //   qty: this.product.qty
+    // });
+    // let manageQuantity = res.isManageStock;
+    // let max = res.qty || res.isManageStock ? res.qty : null;
+    // this.isAvailable = !onlineHelper.isOnline || !!max || !manageQuantity || ['simple', 'configurable'].includes(
+    //   this.product.type_id
+    // );
   },
   watch: {
     qty (value) {

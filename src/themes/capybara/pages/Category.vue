@@ -146,7 +146,7 @@
               class="products__grid"
             >
               <OmProductCardLoader
-                v-for="(value, index) in new Array(9).fill('')"
+                v-for="(value, index) in new Array(12).fill('')"
                 :key="index"
               />
             </transition-group>
@@ -189,6 +189,7 @@
                 :waranty="product.usp1"
                 :usp2="product.usp2"
                 :second-title="product.secondary_title"
+                :stock="product.stock"
                 class="products__product-card"
               >
                 <template #image>
