@@ -466,7 +466,7 @@ export default {
       this.qty = value;
     }
   },
-  async mounted () {
+  async beforeMount() {
     if (this.qty1) this.qty = this.qty1;
     const res = await this.$store.dispatch('stock/check', {
       product: this.product,
@@ -477,6 +477,9 @@ export default {
     this.isAvailable = !onlineHelper.isOnline || !!max || !manageQuantity || ['simple', 'configurable'].includes(
       this.product.type_id
     );
+  },
+  async mounted () {
+    
   },
   watch: {
     qty (value) {
