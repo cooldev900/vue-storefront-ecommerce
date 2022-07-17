@@ -1,31 +1,36 @@
 <template>
   <div class="sf-gallery">
+    <CoolLightBox
+      :items="lightBoxItems"
+      :index="lightBoxIndex"
+      :effect="'fade'"
+      :use-zoom-bar="true"
+      @close="lightBoxIndex = null"
+    />
     <div class="sf-gallery__stage">
-      <div ref="glide" class="glide">
-        <div class="glide__track" data-glide-el="track">
-          <ul class="glide__slides">
-            <li
-              v-for="(picture, index) in images"
-              :key="'slide-' + index"
-              class="glide__slide"
-              @mouseover="startZoom(picture)"
-              @mousemove="moveZoom($event, index)"
-              @mouseout="removeZoom(index)"
-            >
-              <SfImage
-                ref="sfGalleryBigImage"
-                class="sf-gallery__big-image"
-                :class="{ 'sf-gallery__big-image--has-zoom': enableZoom }"
-                :src="picture.desktop.url"
-                :alt="picture.alt"
-                :width="imageWidth"
-                :height="imageHeight"
-                @click="$emit('click:stage', { picture, index })"
-              />
-            </li>
-          </ul>
-        </div>
-      </div>
+      <swiper
+        ref="swiper"
+        :slides-per-view="1"
+        :space-between="50"
+        @swiper="onSwiper"
+        @slideChange="onSlideChange"
+      >
+        <swiper-slide v-for="(picture, index) in images"
+          :key="'slide-' + index"
+          @mouseover.native="startZoom(picture)"
+          @mousemove.native="moveZoom($event, index)"
+          @mouseout.native="removeZoom(index)"
+        >
+          <SfImage
+            ref="sfGalleryBigImage"           
+            :src="picture.desktop.url"
+            :alt="picture.alt"
+            :lazy="false"            
+            @click="clickImage(picture, index)"
+            :class="{ 'sf-gallery__big-image--has-zoom': enableZoom }"            
+          />
+        </swiper-slide>
+      </swiper>
       <transition name="fade">
         <div
           v-if="outsideZoom && pictureSelected"
@@ -53,11 +58,12 @@
           @click="go(index)"
         >
           <SfImage
-            class="sf-gallery__thumb"
+            class="sf-gallery__thumb"            
             :src="image.mobile.url"
             :alt="image.alt"
             :width="thumbWidth"
             :height="thumbHeight"
+            :lazy="false"            
           />
         </SfButton>
       </slot>
@@ -152,8 +158,10 @@ export default {
       eventHover: {},
       pictureSelected: '',
       glide: null,
-      activeIndex: this.current - 1,
-      style: ''
+      activeIndex: 0,
+      style: '',
+      lightBoxIndex: null,
+      swiper: null,
     };
   },
   computed: {
@@ -166,20 +174,38 @@ export default {
     },
     updatedSliderOptions () {
       return { ...this.sliderOptions, startAt: this.activeIndex };
+    },
+    lightBoxItems () {
+      return this.images.map(image => image.desktop.url)
     }
   },
-  mounted () {
-    this.$nextTick(() => {
-      // handle slider with swipe and transitions with Glide.js
-      // https://glidejs.com/docs/
-      if (this.images.length < 1) return;
+  async mounted () {
+    this.swiper = this.$refs.swiper.$swiper;
+  },
+  beforeDestroy () {
+    if (this.glide) {
+      this.glide.destroy();
+    }
+  },
+  watch: {
+    images (value) {
+      console.log('images', value);
+      this.$forceUpdate();
+    }
+  },
+  methods: {
+    rerender () {
+      this.$forceUpdate();
+    },
+    initiateGlide () {
+      if (this.glide) this.glide.destroy();
       const glide = new Glide(this.$refs.glide, this.updatedSliderOptions);
       glide.on('run', () => {
         this.go(glide.index);
       });
       glide.mount();
       this.glide = glide;
-    });
+    },
   },
   beforeDestroy () {
     if (this.glide) {
@@ -200,16 +226,8 @@ export default {
       return '';
     },
     go (index) {
-      if (!this.glide) return;
       this.activeIndex = index;
-      /**
-       * Event for current image change (`v-model`)
-       * @type {Event}
-       */
-      this.$emit('click', index + 1);
-      if (this.glide) {
-        this.glide.go(`=${index}`);
-      }
+      this.swiper.slideTo(index);
     },
     startZoom (picture) {
       if (this.enableZoom) {
@@ -245,19 +263,86 @@ export default {
           'translate3d(0, -50%, 0)';
         this.$refs.sfGalleryBigImage[index].$refs.image.style.top = '50%';
       }
+    },
+    clickImage (picture, index) {
+      console.log('click')
+      this.$emit('click:stage', { picture, index })
+      this.lightBoxIndex = index;
     }
   }
 };
 </script>
 <style lang="scss">
-@import "@storefront-ui/shared/styles/components/molecules/SfGallery.scss";
-.sf-gallery__thumbs{
-  padding: 20px;
-}
-.sf-gallery__item--selected{
-  border: 1px solid var(--c-primary);
-}
-.sf-gallery__item{
-  border: 1px solid var(--c-primary);
+@import "~@storefront-ui/shared/styles/helpers/breakpoints";
+.sf-gallery {
+  display: flex;
+  flex-direction: var(--gallery-flex-direction, column);
+  &__thumbs {
+    display: var(--gallery-thumbs-display, flex);
+    flex: var(--gallery-thumbs-flex);
+    flex-direction: var(--gallery-thumbs-flex-direction);
+    margin: var(--gallery-thumbs-margin, var(--spacer-xs) 0 0 0);
+    order: var(--gallery-thumbs-order);
+    overflow: auto;
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+  &__item {
+    display: flex;
+    flex: 0 0 var(--gallery-thumb-width, 10rem);
+    margin: var(--gallery-item-margin, 0 var(--spacer-xs) 0 0);
+    &:last-child {
+      --gallery-item-margin: 0;
+    }
+    opacity: var(--gallery-item-opacity, 0.5);
+    transition: var(--gallery-item-transition, opacity 150ms ease-in-out);
+    cursor: var(--gallery-item-cursor, pointer);
+    &--selected {
+      --gallery-item-opacity: 1;
+      --gallery-item-cursor: default;
+    }
+  }
+  &__thumb {
+    width: var(--gallery-thumb-width, calc(var(--_image-width, 10rem) * 1px));
+    height: var(
+      --gallery-thumb-height,
+      calc(var(--_image-height, 10rem) * 1px)
+    );
+  }
+  &__stage {
+    flex: 1;
+    max-width: var(--gallery-stage-width, 26.375rem);
+  }
+  .glide {
+    &__slide {
+      flex: 1;
+      display: flex;
+    }
+    &__slides {
+      margin: 0;
+    }
+  }
+  .swiper-slide {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+  }
+  @include for-desktop {
+    --gallery-flex-direction: column;
+    --gallery-thumbs-flex: 0 0 var(--gallery-thumb-width, 10rem);
+    --gallery-thumbs-flex-direction: row;
+    --gallery-thumbs-order: 1;
+    --gallery-thumbs-margin: 0 var(--spacer-xs) 0 0;
+    --gallery-item-margin: 0 0 var(--spacer-xs) 0;
+    &__item {
+      &:last-child {
+        --gallery-item-margin: 0;
+      }
+    }
+  }
+  .sf-gallery__thumbs{
+    gap: 15px;
+  }
 }
 </style>
