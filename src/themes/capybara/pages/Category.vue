@@ -161,7 +161,7 @@
             "
           />
           <template>
-            <lazy-hydrate :trigger-hydration="loading">
+            <!-- <lazy-hydrate :trigger-hydration="loading"> -->
 
             <transition-group
               appear
@@ -228,7 +228,7 @@
                 </template>
               </OmProductCard>
             </transition-group>
-            </lazy-hydrate>
+            <!-- </lazy-hydrate> -->
             <SfPagination
               v-if="totalPages > 1"
               class="products__pagination desktop-only"
