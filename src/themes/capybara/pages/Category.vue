@@ -140,7 +140,7 @@
         <div class="products">
           <div v-if="loading && !currentPageProducts.length">
             <transition-group
-              appear
+              
               name="products__slide"
               tag="div"
               class="products__grid"
@@ -673,7 +673,7 @@ export default {
       // Pure CSR, with no initial category state
       next(async (vm) => {
         vm.loading = true;
-        await composeInitialPageState(vm.$store, to, true);
+        // await composeInitialPageState(vm.$store, to, true);
         vm.$store.dispatch('category-next/cacheProducts', { route: to });
         vm.loading = false;
       });
