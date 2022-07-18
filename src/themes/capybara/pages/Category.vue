@@ -96,7 +96,7 @@
             <omTyreFinder v-if="shouldShowVehicleCard" />
           </div>
           <div class="filters">
-            <lazy-hydrate :trigger-hydration="!loading">
+            <lazy-hydrate :trigger-hydration="loading">
               <SfAccordion
                 class="tyre-filters"
                 open="all"
@@ -138,7 +138,7 @@
           </div>
         </div>
         <div class="products">
-          <!-- <div v-if="loading">
+          <div v-if="loading && !currentPageProducts.length">
             <transition-group
               appear
               name="products__slide"
@@ -150,7 +150,7 @@
                 :key="index"
               />
             </transition-group>
-          </div> -->
+          </div>
           <SfHeading
             v-if="isCategoryEmpty && !loading"
             :title="$t('No products found!')"
@@ -657,7 +657,9 @@ export default {
     await composeInitialPageState(store, route);
   },
   async beforeRouteEnter (to, from, next) {
-    if (isServer) next();
+    if (isServer) next((vm) => {
+      vm.loading = false;
+    });
     // SSR no need to invoke SW caching here
     else if (!from.name) {
       // SSR but client side invocation, we need to cache products and invoke requests from asyncData for offline support
