@@ -2,19 +2,19 @@
   <div class="sf-product-card products__product-card products__product-card product-card-loader">
     <VueSkeletonLoader
       type="rect"
+      width="100%"
+      height="20px"
+      animation="fade"
+      class="title"
+    />
+    <VueSkeletonLoader
+      type="rect"
       rounded
       radius="50%"
       width="200px"
       height="200px"
       animation="fade"
       class="image"
-    />
-    <VueSkeletonLoader
-      type="rect"
-      width="100%"
-      height="20px"
-      animation="fade"
-      class="title"
     />
     <VueSkeletonLoader
       type="rect"
@@ -39,7 +39,7 @@ export default {
 
 <style lang="scss">
 .product-card-loader {
-  min-height: 418.797px;
+  min-height: 696.6px;
   display: flex;
   flex-direction: column;
 
