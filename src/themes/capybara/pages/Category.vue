@@ -138,7 +138,7 @@
           </div>
         </div>
         <div class="products">
-          <div v-if="loading">
+          <!-- <div v-if="loading">
             <transition-group
               appear
               name="products__slide"
@@ -150,7 +150,7 @@
                 :key="index"
               />
             </transition-group>
-          </div>
+          </div> -->
           <SfHeading
             v-if="isCategoryEmpty && !loading"
             :title="$t('No products found!')"
