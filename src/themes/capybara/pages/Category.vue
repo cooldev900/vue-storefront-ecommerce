@@ -664,18 +664,18 @@ export default {
     else if (!from.name) {
       // SSR but client side invocation, we need to cache products and invoke requests from asyncData for offline support
       next(async (vm) => {
-        vm.loading = true;
-        await composeInitialPageState(vm.$store, to, true);
-        await vm.$store.dispatch('category-next/cacheProducts', { route: to }); // await here is because we must wait for the hydration
+        // vm.loading = true;
+        // await composeInitialPageState(vm.$store, to, true);
+        // await vm.$store.dispatch('category-next/cacheProducts', { route: to }); // await here is because we must wait for the hydration
         vm.loading = false;
       });
     } else {
       // Pure CSR, with no initial category state
       next(async (vm) => {
-        vm.loading = true;
+        // vm.loading = true;
         // await composeInitialPageState(vm.$store, to, true);
-        vm.$store.dispatch('category-next/cacheProducts', { route: to });
-        vm.loading = false;
+        // vm.$store.dispatch('category-next/cacheProducts', { route: to });
+        // vm.loading = false;
       });
     }
   },
@@ -710,7 +710,7 @@ export default {
       let manageQuantity = res.isManageStock;
       let max = res.qty || res.isManageStock ? res.qty : null;
       let isAvailable = !onlineHelper.isOnline || !!max || !manageQuantity || ['simple', 'configurable'].includes(
-        this.product.type_id
+        this.product?.type_id
       );
       if (!isAvailable) return;
 
