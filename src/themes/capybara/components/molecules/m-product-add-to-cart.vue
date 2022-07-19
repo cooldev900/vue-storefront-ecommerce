@@ -1,11 +1,11 @@
 <template>
   <div v-if="product" class="m-product-add-to-cart">
-    <SfAlert
+    <!-- <SfAlert
       v-if="alert"
       class="alert"
       :message="alert.message"
       :type="alert.type"
-    />
+    /> -->
     <SfAddToCart v-model="qty" :product="product">
       <template #add-to-cart-btn>
         <AAddToCart
