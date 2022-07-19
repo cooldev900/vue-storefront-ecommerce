@@ -450,7 +450,9 @@
         "product_group",
         "*image",
         "*sku",
-        "*small_image"
+        "*small_image",
+        "stock.qty",
+        "stock.is_in_stock"
       ],
       "excludeFields": [
         "attribute_set_id",
