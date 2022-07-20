@@ -1,5 +1,6 @@
 <template>
   <div class="m-product-gallery">
+    <div class="new-label"><h2>{{$t('NEW')}}</h2></div>
     <OmGallery
       ref="gallery"
       :image-width="900"
@@ -82,6 +83,12 @@ export default {
     }
   },
   computed: {
+    isNew() {
+      const startTime = new Date(this.product.news_from_date).getTime();
+      const endTime = new Date(this.product.news_to_date).getTime();
+      const now = new Date();
+      return now >= startTime && now <= endTime;
+    },
     variantImage () {
       let variantImage = this.gallery.find((image) => {
         let selectThis = true;
@@ -262,6 +269,11 @@ width: 100%;
 @include for-mobile{
   width: 100%;
 }
+}
+.new-label {
+  position: absolute;
+  left: 20px;
+  color: red;
 }
 ::v-deep .sf-image--has-size img:not(.noscript){
   position: absolute !important;
