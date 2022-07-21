@@ -52,12 +52,33 @@
         :error-message="$t('Field is required')"
         @blur="emailBlur = false"
       />
-      <SfInput
+      <!-- <SfInput
         v-model="vin"
         :label="$t('VIN')"
         name="vin"
         class="form__element form__element--half"
-      />
+      /> -->
+      <SfSelect
+        v-model="vin"
+        name="vin"
+        :label="$t('Services')"
+        required
+        class="form__element
+          form__element--half
+          form__element--half-even
+          form__select
+          sf-select--underlined
+          vin-select
+          "
+      >
+        <SfSelectOption
+          v-for="(service, key) in services"
+          :key="key"
+          :value="service"
+        >
+          {{ $t(service) }}
+        </SfSelectOption>
+      </SfSelect>
       <SfInput
         v-model="item_required"
         :label="$t('Items required')"
@@ -101,7 +122,8 @@ import {
   SfButton,
   SfHeading,
   SfRange,
-  SfLoader
+  SfLoader,
+  SfSelect
 } from '@storefront-ui/vue';
 import axios from 'axios';
 import { notifications } from '@vue-storefront/core/modules/cart/helpers';
@@ -119,6 +141,7 @@ export default {
     SfHeading,
     SfRange,
     SfLoader,
+    SfSelect,
     OmAlertBox
   },
   data () {
@@ -137,7 +160,8 @@ export default {
       item_required: '',
       loading: false,
       successMessage: '',
-      type: 'info'
+      type: 'info',
+      services: ['Tires', 'Batteries', 'Lubricants', 'Car Care'],
     };
   },
   computed: {
@@ -271,6 +295,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "~@storefront-ui/vue/styles";
+@import "~@storefront-ui/shared/styles/helpers/breakpoints";
 #form-template {
   box-sizing: border-box;
   padding: 0 var(--spacer-sm);
@@ -279,6 +304,10 @@ export default {
     max-width: 870px;
     margin: 0 auto;
   }
+}
+.vin-select {
+  padding: 0 !important;
+  margin-top: 42px !important;
 }
 .form {
   padding: var(--spacer-sm) 0;
