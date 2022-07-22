@@ -147,7 +147,12 @@ export function baseFilterProductsQuery (parentCategory, filters = []) { // TODO
     }
     recurCatFinderBuilder(parentCategory)
   }
-  searchProductQuery = searchProductQuery.applyFilter({ key: 'category_ids', value: { 'in': childCats } })
+  childCats = childCats.filter(function( element ) {
+    return element !== undefined;
+ });
+  if (childCats?.length) {
+    searchProductQuery = searchProductQuery.applyFilter({ key: 'category_ids', value: { 'in': childCats } })
+  }
   return searchProductQuery
 }
 

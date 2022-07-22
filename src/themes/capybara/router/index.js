@@ -22,6 +22,8 @@ const Vehicle = () =>
   import(/* webpackChunkName: "vsf-static" */ 'theme/pages/Vehicle');
 const VehicleSvg = () =>
   import(/* webpackChunkName: "vsf-static" */ 'theme/pages/VehicleSvg');
+const Search = () =>
+  import(/* webpackChunkName: "vsf-checkout" */ 'theme/pages/Search');
 const About = () =>
   import(/* webpackChunkName: "vsf-static" */ 'theme/pages/About');
 const ExternalSuccessPage = () => import(/* webpackChunkName: "vsf-ExternalSuccessPage" */ '../pages/ExternalSuccess.vue');
@@ -59,6 +61,7 @@ let routes = [
   { name: 'vehicle-page', path: '/vehicle', component: Vehicle, meta: { breadcrumb: 'Vehicle page' } },
   { name: 'vehicle-svg', path: '/vehicle/:nationalCode/parts/:visualGroup', component: VehicleSvg, meta: { breadcrumb: 'Vehicle svg page' } },
   { name: 'external-thank-you', path: '/order-success', component: ExternalSuccessPage, meta: { layout: 'default' } },
+  { name: 'search', path: '/search', component: Search, meta: { breadcrumb: 'Search' } },
   { name: 'deliver', path: '/cart/deliver', component: DeliverPage, meta: { breadcrumb: 'Deliver' } }
 ];
 
