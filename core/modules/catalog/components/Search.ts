@@ -4,6 +4,8 @@ import onEscapePress from '@vue-storefront/core/mixins/onEscapePress'
 import { prepareQuickSearchQuery } from '@vue-storefront/core/modules/catalog/queries/searchPanel'
 import RootState from '@vue-storefront/core/types/RootState'
 import { Logger } from '@vue-storefront/core/lib/logger'
+import axios from "axios";
+import config from 'config';
 
 export const Search = {
   name: 'SearchPanel',
@@ -16,7 +18,8 @@ export const Search = {
       placeholder: i18n.t('Type what you are looking for...'),
       emptyResults: false,
       readMore: true,
-      componentLoaded: false
+      componentLoaded: false,
+      searchResult: [],
     }
   },
   mounted () {
@@ -61,6 +64,15 @@ export const Search = {
           this.products = items
           this.start = startValue + this.size
           this.emptyResults = items.length < 1
+          const {
+            data: {
+              result
+            }
+          } = await axios.post(`${config.api.url}/api/search/es-search`, {
+            query: this.search
+          });
+          console.log(result, 'search result');
+          this.searchResult = result;
         } catch (err) {
           Logger.error(err, 'components-search')()
         }

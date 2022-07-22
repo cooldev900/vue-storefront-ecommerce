@@ -59,6 +59,11 @@
           {{ $t("Load more") }}
         </SfButton>
       </div>
+      <div class="searchResult">
+        <ul>
+          <li v-for="(value, key) in searchResult" :key="key">{{value}}</li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -306,6 +311,10 @@ export default {
     transition: border-width 1s linear;
     font-size: 14px;
     text-transform: none;
+  }
+
+  .grid-container {
+    display: flex;
   }
 }
 </style>
