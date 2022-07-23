@@ -2,7 +2,7 @@
   <SfButton
     class="sf-button--pure a-account-ico navigation-icon" :class="{'dir-rtl': storeId === 3}"
   >
-    <div class="sf-header__custom-icon search-icon" @click="$store.commit('ui/setSearchpanel', true)" :class="[{
+    <div class="sf-header__custom-icon search-icon" @click="showSearchPanel" :class="[{
       'sf-header__icon--is-active': isLoggedIn
     }, menuStyle]"
     >
@@ -45,6 +45,10 @@ export default {
     ...mapActions('ui', {
       openModal: 'openModal'
     }),
+    showSearchPanel() {
+      console.log(this.$route.path, 'route');
+      if (this.$route.path !== '/search') this.$store.commit('ui/setSearchpanel', true);
+    },
     direction () {
       const storeId = currentStoreView().storeId;
       if (storeId === 2) {

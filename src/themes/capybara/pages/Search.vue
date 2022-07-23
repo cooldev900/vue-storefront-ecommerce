@@ -339,7 +339,7 @@ export default {
       getCategoryProducts: 'category-next/getCategoryProducts',
       getCurrentCategory: 'category-next/getCurrentCategory',
       getCategoryProductsTotal: 'category-next/getCategoryProductsTotal',
-      getAvailableFilters: 'category-next/getAvailableFilters',
+      getSearchFilters: 'category-next/getSearchFilters',
       getCurrentFilters: 'category-next/getCurrentFilters',
       hasActiveFilters: 'category-next/hasActiveFilters',
       getSystemFilterNames: 'category-next/getSystemFilterNames',
@@ -433,7 +433,7 @@ export default {
       return selectedSortOrder.label || '';
     },
     availableFilters () {
-      const result = Object.entries(this.getAvailableFilters || {})
+      const result = Object.entries(this.getSearchFilters || {})
         .filter(([filterType, filters]) => {
           return (
             filters.length && !this.getSystemFilterNames.includes(filterType)
@@ -550,6 +550,7 @@ export default {
     this.$bus.$on('product-after-list', this.initPagination);
     window.addEventListener('resize', this.getBrowserWidth);
     this.getBrowserWidth();
+    this.search = this.$route.query?.search;
   },
   beforeDestroy () {
     this.unsubscribeFromStoreAction();

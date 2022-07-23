@@ -7,14 +7,23 @@
       />
     </SfButton>
     <div class="o-search">
-      <SfSearchBar
+      <!-- <SfSearchBar
         v-model="search"
         :placeholder="$t('Search')"
         class="sf-header__search"
         ref="searchInput"
         @input="startSearch"
-        @click.native="$store.commit('ui/setSearchpanel', true)"
-      />
+        @click.native="goToSearch"
+      /> -->
+      <autocomplete
+        ref="searchInput"        
+        :search="getSearchResult"
+        :placeholder="$t('Search')"
+        class="sf-header__search"
+        aria-label="Search Wikipedia"
+        :get-result-value="getResultValue"
+        @submit="submit"
+    ></autocomplete>
     </div>
     <div
       v-if="noResultsMessage"
@@ -75,6 +84,11 @@ import { SfHeading, SfButton, SfList, SfSearchBar, SfMenuItem, SfProductCard, Sf
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 import SearchPanelMixin from '@vue-storefront/core/compatibility/components/blocks/SearchPanel/SearchPanel';
 import SvgViewer from 'theme/components/svg-viewer.vue';
+import { localizedRoute } from '@vue-storefront/core/lib/multistore'
+import config from 'config';
+import axios from 'axios';
+import Autocomplete from '@trevoreyre/autocomplete-vue'
+import '@trevoreyre/autocomplete-vue/dist/style.css'
 
 export default {
   name: 'OSearchPanel',
@@ -86,7 +100,8 @@ export default {
     SfHeading,
     SfSearchBar,
     SfIcon,
-    SvgViewer
+    SvgViewer,
+    Autocomplete
   },
   mixins: [VueOfflineMixin, SearchPanelMixin],
   data () {
@@ -130,6 +145,31 @@ export default {
     }
   },
   methods: {
+    getResultValue(result) {
+      console.log(result, 'result');
+      return result
+    },
+    async getSearchResult(input) {
+      this.search = input;
+      this.startSearch();
+      if (input.length >= 3) {
+        try {
+          const {
+                data: {
+                  result
+                }
+              } = await axios.post(`${config.api.url}/api/search/es-search`, {
+                query: input
+              });
+          console.log(result, 'result');
+          return result;
+        } catch(e) {
+          return [];
+        }
+      } else {
+        return []
+      }
+    },
     isCategorySelected (category) {
       return this.selectedCategoryIds.includes(category.category_id);
     },
@@ -145,8 +185,14 @@ export default {
         this.makeSearch();
       }
     },
+    submit(result) {
+      this.search = result;
+      this.$router.push(localizedRoute('/search?search='+result));
+      this.$store.commit('ui/setSearchpanel', false)
+    },
     focusInput () {
-      this.$refs.searchInput.$el.children[0].focus();
+      console.log(this.$refs.searchInput.$el.children[0].children[0], 'searchInput');
+      this.$refs.searchInput.$el.children[0].children[0].focus();
     },
     isJpgRender (product) {
       if (product.main_image) return false
