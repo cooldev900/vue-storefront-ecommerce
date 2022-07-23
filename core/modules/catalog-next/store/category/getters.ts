@@ -114,7 +114,7 @@ const getters: GetterTree<CategoryState, RootState> = {
   getFiltersMap: state => state.filtersMap,
   getAvailableFilters: (state, getters) => {
     const categoryId = get(getters.getCurrentCategory, 'id', null)
-    return state.filtersMap[categoryId] || {}
+    return state.filtersMap[categoryId ? categoryId : 'search' ] || {}
   },
   getCurrentFiltersFrom: (state, getters, rootState) => (filters, categoryFilters) => {
     const currentQuery = filters || rootState.route[products.routerFiltersSource]

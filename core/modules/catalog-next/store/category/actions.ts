@@ -42,6 +42,7 @@ const actions: ActionTree<CategoryState, RootState> = {
       // loading all filters only when some filters are currently chosen and category has no available filters yet
       await dispatch('loadCategoryFilters', searchCategory);
     }
+    console.log(searchCategory, 'searchCategory');
     const searchQuery = getters.getCurrentFiltersFrom(
       route[products.routerFiltersSource],
       categoryMappedFilters

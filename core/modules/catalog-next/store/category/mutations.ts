@@ -35,7 +35,7 @@ const mutations: MutationTree<CategoryState> = {
     state.notFoundCategoryIds = [...state.notFoundCategoryIds, ...categoryIds]
   },
   [types.CATEGORY_SET_CATEGORY_FILTERS] (state, { category, filters }) {
-    Vue.set(state.filtersMap, category.id, filters)
+    Vue.set(state.filtersMap, category?.id ? category.id : 'search', filters)
   },
   [types.CATEGORY_SET_SEARCH_PRODUCTS_STATS] (state, stats = {}) {
     state.searchProductsStats = stats
