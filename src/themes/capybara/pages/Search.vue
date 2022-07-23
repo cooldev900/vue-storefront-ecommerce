@@ -1,6 +1,6 @@
 <template>
   <div id="category">
-    <div class="search-container">
+    <div class="search-container  grid-container">
       <div class="o-search-bar">
         <SfSearchBar
           v-model="search"
@@ -10,16 +10,13 @@
         <SfButton @click="startSearch" class="search-btn"> submit </SfButton>
       </div>
     </div>
-    <div class="main section">
+    <div class="main grid-container">
       <div class="sidebar desktop-only">
         <div>
-          <OmVehicleCardCategory
-            :vehicle="activeVehicle"
-            :active="true"
-          />
+            <omTyreFinder v-if="shouldShowVehicleCard" />
         </div>
-                <div class="filters">
-          <lazy-hydrate :trigger-hydration="!loading">
+        <div class="filters">
+          <lazy-hydrate :trigger-hydration="loading">
             <SfAccordion
               open="Accessories"
               :first-open="true"
@@ -114,7 +111,7 @@
             </div>
           </div>
         </div>
-        <div v-if="loading">
+        <div v-if="loading && !currentPageProducts.length">
           <transition-group
             appear
             name="products__slide"
@@ -136,63 +133,83 @@
             )
           "
         />
-        <template v-if="!isCategoryEmpty && !loading">
-          <!-- <lazy-hydrate :trigger-hydration="!loading"> -->
-          <transition-group
-            appear
-            name="products__slide"
-            tag="div"
-            class="products__grid"
-          >
-            <SfProductCard
-              v-for="product in currentPageProducts"
-              :key="product.id"
-              :title="product.enhanced_title || product.title"
-              :image="product.image"
-              :regular-price="product.price.regular"
-              :special-price="product.price.special"
-              :link="product.link"
-              link-tag="router-link"
-              :is-on-wishlist="isOnWishlist(product)"
-              wishlistIcon="heart"
-              onWishlistIcon="heart_fill"
-              @click:wishlist="toggleWishlist(product)"
-              class="products__product-card"
+        <template>
+            <!-- <lazy-hydrate :trigger-hydration="loading"> -->
+
+            <transition-group
+              appear
+              name="products__slide"
+              tag="div"
+              class="products__grid"
             >
-              <template v-if="!isJpgRender(product)" #image>
-                <svg-viewer
-                  :width="200"
-                  :height="200"
-                  :image-id="getImageId(product.image_list[0])"
-                  :image-code="product.image_list[0]"
-                  :dom-id="product.id"
-                />
-              </template>
-              <template v-else #image>
-                <SfImage
-                  class="sf-product-card__image"
-                  :src="product.image"
-                  :alt="product.enhanced_title || product.title"
-                  :width="216"
-                  :height="326"
-                  lazy
-                  :threshold="0.2"
-                />
-              </template>
-              <template v-if="!product.price.regular && !product.price.special" #price>
-                <b :style="{color: 'black'}">Not Available Online</b>
-              </template>
-            </SfProductCard>
-          </transition-group>
-          <!-- </lazy-hydrate> -->
-          <SfPagination
-            v-if="totalPages > 1"
-            class="products__pagination desktop-only"
-            :current="currentPage"
-            :total="totalPages"
-            :visible="3"
-          />
-        </template>
+              <OmProductCard
+                v-for="product in currentPageProducts"
+                :product="product"
+                :key="product.id"
+                :title="product.enhanced_title || product.title"
+                :description="product.description"
+                :image="product.image"
+                :regular-price="product.price.regular"
+                :special-price="product.price.special"
+                :link="product.link"
+                :qty1="product.qty"
+                :brand-image="product.brand_logo"
+                :brand-color="product.brand_colour"
+                link-tag="router-link"
+                :wishlist-icon="false"
+                offer="Save 10% with code NEW10"
+                promotion="Mobile Fitting Service Available"
+                :waranty="product.usp1"
+                :usp2="product.usp2"
+                :second-title="product.secondary_title"
+                :stock="product.stock"
+                class="products__product-card"
+              >
+                <template #image>
+                  <SfImage
+                    class="sf-product-card__image"
+                    :src="product.image"
+                    :alt="product.enhanced_title || product.title"
+                    :width="216"
+                    :height="326"
+                    lazy
+                    :threshold="0.2"
+                  />
+                </template>
+                <template
+                  v-if="!product.price.regular && !product.price.special"
+                  #price
+                >
+                  <b :style="{ color: 'black' }">Not Available Online</b>
+                </template>
+                <template #reviews>
+                  <div class="product-card__action-area">
+                    <SfButton
+                      :disabled="isProductDisabled || loading"
+                      class="
+                      a-add-to-cart
+                      om-btn--primary
+                      btn--narrow
+                      sf-button--full-width
+                    "
+                      @click.native="addToCart(product)"
+                    >
+                      <SfLoader v-if="loading" :loading="loading" />
+                      <span v-else>{{ $t("Add to cart") }}</span>
+                    </SfButton>
+                  </div>
+                </template>
+              </OmProductCard>
+            </transition-group>
+            <!-- </lazy-hydrate> -->
+            <SfPagination
+              v-if="totalPages > 1"
+              class="products__pagination"
+              :current="currentPage"
+              :total="totalPages"
+              :visible="3"
+            />
+          </template>
       </div>
     </div>
     <SfBreadcrumbs class="breadcrumbs desktop-only" :breadcrumbs="breadcrumbs">
@@ -256,7 +273,8 @@ import { ModalList } from 'theme/store/ui/modals';
 import { createSmoothscroll } from 'theme/helpers';
 import SearchPanelMixin from '@vue-storefront/core/compatibility/components/blocks/SearchPanel/SearchPanel';
 import { prepareQuickSearchQuery } from '@vue-storefront/core/modules/catalog/queries/searchPanel'
-import Button from 'src/modules/payment-paypal/components/Button.vue';
+import OmProductCard from 'theme/components/omni/om-product-card.vue';
+import omTyreFinder from 'theme/components/omni/om-vehicle/om-tyre-finder';
 
 const THEME_PAGE_SIZE = 12;
 const LAZY_LOADING_ACTIVATION_BREAKPOINT = 1024;
@@ -297,7 +315,9 @@ export default {
     SfSearchBar,
     OmCategoryHeader,
     OmProductCardLoader,
-    SfImage
+    SfImage,
+    OmProductCard,
+    omTyreFinder
   },
   mixins: [onBottomScroll, SearchPanelMixin],
   data () {
@@ -330,6 +350,19 @@ export default {
       getAttributeIdByLabel: 'vehicles/getAttributeIdByLabel',
       activeVehicle: 'vehicles/activeVehicle'
     }),
+    shouldShowVehicleCard () {
+      let existsNationCode = false;
+      if (this.activeVehicle && this.activeVehicle.national_code) { existsNationCode = true; }
+
+      let isFullWidth = false;
+      if (
+        this.getCurrentCategory &&
+        this.getCurrentCategory?.page_layout === 'category-full-width'
+      ) { isFullWidth = true; }
+
+      if (!Object.keys(this.availableFilters).length) return false;
+      return !isFullWidth;
+    },
     isOnWishlist () {
       return product => this.$store.getters['wishlist/isOnWishlist'](product)
     },
@@ -480,26 +513,29 @@ export default {
     await composeInitialPageState(store, route);
   },
   async beforeRouteEnter (to, from, next) {
-    if (isServer) next();
-    // SSR no need to invoke SW caching here
-    else if (!from.name) {
-      // SSR but client side invocation, we need to cache products and invoke requests from asyncData for offline support
-      next(async vm => {
-        vm.loading = true;
-        vm.search = to.query.search
-        await composeInitialPageState(vm.$store, to, true);
-        await vm.$store.dispatch('category-next/cacheProducts', { route: to }); // await here is because we must wait for the hydration
-        vm.loading = false;
-      });
-    } else {
-      // Pure CSR, with no initial category state
-      next(async vm => {
-        vm.loading = true;
-        vm.search = to.query.search
-        vm.$store.dispatch('category-next/cacheProducts', { route: to });
-        vm.loading = false;
-      });
-    }
+    // if (isServer) 
+    next( async vm => {
+      vm.loading = false;
+    });
+    // // SSR no need to invoke SW caching here
+    // else if (!from.name) {
+    //   // SSR but client side invocation, we need to cache products and invoke requests from asyncData for offline support
+    //   next(async vm => {
+    //     vm.loading = true;
+    //     vm.search = to.query.search
+    //     await composeInitialPageState(vm.$store, to, true);
+    //     await vm.$store.dispatch('category-next/cacheProducts', { route: to }); // await here is because we must wait for the hydration
+    //     vm.loading = false;
+    //   });
+    // } else {
+    //   // Pure CSR, with no initial category state
+    //   next(async vm => {
+    //     vm.loading = true;
+    //     vm.search = to.query.search
+    //     vm.$store.dispatch('category-next/cacheProducts', { route: to });
+    //     vm.loading = false;
+    //   });
+    // }
   },
   created () {
     this.search = this.$router.query?.search
@@ -755,33 +791,10 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@storefront-ui/shared/styles/helpers/breakpoints";
-.o-search-bar {
-  --search-bar-border-width: 0;
-  background-color: var(--_c-light-primary-darken);
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
-  width: 100%;
-  .sf-search-bar__input {
-    border: 1px solid #adadad !important;
-    border-radius: 4px !important;
-  }
-  input {
-    background: var(--_c-light-primary-darken);
-  }
-}
-.o-search-bar .sf-search-bar {
-  background: var(--c-light);
-  height: 40px;
-}
 
-::v-deep .sf-search-bar__input[type="search"] {
-  &:focus {
-    outline: none;
-    border-width: 0 0 1px 0;
-    border-color: #b1b1b1;
-    transition: border-width 1s linear;
-  }
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
 }
 .search-btn {
     background-color: #5c5c5c;
@@ -789,32 +802,26 @@ export default {
     border: none;
     border-radius: 4px;
     height: 40px;
-    margin: 10px;
-}
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s
+    margin: 4px 10px;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
-  opacity: 0
+  opacity: 0;
 }
 
 #category {
   box-sizing: border-box;
-  background: #f2f2f2;
+  background: #f3f4f4;
   @include for-desktop {
     max-width: 100%;
   }
 }
+.o-search-bar {
+  display: flex;
+  padding-top: 15px;
+  margin-bottom: 15px;
+}
 .main {
-  max-width: 1600px;
-  padding: 0 15px !important;
   margin: auto !important;
-  &.section {
-    padding: var(--spacer-xs);
-    @include for-desktop {
-      padding: 0;
-    }
-  }
 }
 .breadcrumbs {
   padding: 10px 0 20px 0;
@@ -829,10 +836,7 @@ export default {
     border-width: 1px 0 1px 0;
   }
   &.section {
-    padding: var(--spacer-sm);
-    @include for-desktop {
-      padding: 0;
-    }
+    margin-bottom: 15px;
   }
   &__aside {
     display: flex;
@@ -855,15 +859,10 @@ export default {
   }
   &__main {
     align-items: center;
-    display: grid;
+    display: flex;
+    justify-content: space-between;
     flex: 1;
-    grid-template-columns: 1fr minmax(auto, max-content) 1fr;
-    grid-template-areas: "filter counter sort";
     @include for-desktop {
-      grid-template-areas: "filter sort counter";
-      grid-column-gap: var(--spacer-2xl);
-      grid-template-columns: max-content max-content auto;
-      padding: var(--spacer-xs) var(--spacer-xl);
     }
   }
   &__filters-button {
@@ -887,22 +886,23 @@ export default {
   }
   &__filter {
     display: flex;
-    grid-area: filter;
-    margin-bottom: 1rem;
   }
   &__filters-icon {
-    margin: 0 var(--spacer-sm) 0 0;
+    margin: 0;
   }
   &__label {
-    font-family: var(--font-family-secondary);
-    font-weight: var(--font-normal);
+    font-family: var(--font-family-bold);
+    font-weight: 700;
     color: var(--c-text-muted);
     margin: 0 var(--spacer-2xs) 0 0;
     @include for-mobile {
-      font-size: var(--font-xs);
+      display: none;
     }
   }
   &__select {
+    padding: 10px 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     --select-padding: 0 var(--spacer-lg) 0 var(--spacer-2xs);
     --select-margin: 0;
     --select-selected-padding: 0 var(--spacer-xl) 0 0;
@@ -966,24 +966,24 @@ export default {
     }
   }
 }
-.products__grid{
-      display: grid !important;
-      grid-template-columns: 1fr 1fr 1fr;
-      margin: 0 0 0 40px;
-      gap: 30px;
-      padding-bottom: 20px;
-      @media (min-width: 1024px) and (max-width: 1200px) {
+.products__grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 0;
+  gap: 30px;
+  padding-bottom: 20px;
+  @media (min-width: 700px) and (max-width: 1300px) {
     grid-template-columns: 1fr 1fr;
   }
-  @include for-mobile{
-    grid-template-columns: 1fr 1fr;
-     margin: 0;
+@media (min-width: 1px) and (max-width: 699px) {
+    grid-template-columns: 1fr;
+    margin: 0;
     gap: 10px;
   }
 }
 .main {
   display: flex;
-  margin: 0;
+  gap: 30px;
 }
 .sidebar {
   flex: 0 0 25% !important;
@@ -1018,7 +1018,7 @@ export default {
     justify-content: space-between;
   }
   &__product-card {
-   --product-card-max-width: 100%;
+    --product-card-max-width: 100%;
   }
   &__product-card-horizontal {
     flex: 0 0 100%;
@@ -1037,7 +1037,7 @@ export default {
     &__pagination {
       display: flex;
       justify-content: center;
-      margin: var(--spacer-xl) 0 0 0;
+      margin: var(--spacer-xl) 0 var(--spacer-xl) 0;
     }
     &__product-card-horizontal {
       margin: var(--spacer-lg) 0;
@@ -1050,11 +1050,13 @@ export default {
     }
   }
 }
-::v-deep .sf-accordion-item__header{
+::v-deep .sf-accordion-item__header {
   padding: 15px 10px;
+  background: #ddd;
+  font-weight: 700;
 }
 .filters {
-  width: 100%;
+  margin: 15px 0;
   &__title {
     --heading-title-font-size: var(--font-xl);
     margin: var(--spacer-xl) 0 var(--spacer-base) 0;
@@ -1126,50 +1128,61 @@ export default {
     --_image-width: 600 !important;
     --_image-height: 600 !important;
     img {
-    position: absolute !important;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate3d(0, -50%, 0);
-    transform: translate3d(-50%, -50%, 0);
+      position: absolute !important;
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translate3d(0, -50%, 0);
+      transform: translate3d(-50%, -50%, 0);
     }
-  &:after{
-    display: block;
-    content: "";
-    padding-bottom: calc(var(--_image-height) / var(--_image-width) * 100%);
+    &:after {
+      display: block;
+      content: "";
+      padding-bottom: calc(var(--_image-height) / var(--_image-width) * 100%);
+    }
   }
-  }
-  ::v-deep .sf-product-card__image-wrapper{
+  ::v-deep .sf-product-card__image-wrapper {
     padding: 10px;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
-    a{
-    width: 100%;
-    height: 100%;
+    a {
+      width: 100%;
+      height: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
   ::v-deep .products__product-card {
     --product-card-max-width: 100%;
     margin: 0;
     border-radius: 8px;
+    display: grid;
+    height: 100%;
+    padding: 0 !important;
+    box-shadow: #d6d5d5 0px 1px 3px 0px;
+    overflow: hidden;
   }
   ::v-deep .sf-product-card {
     &__title {
       --product-card-title-margin: 2px;
-      @include for-mobile{
-        font-size: 12px !important;
+      text-align: center;
+      font-weight: 700;
+      font-size: 18px;
+      @include for-mobile {
+        font-size: 16px !important;
       }
     }
   }
 }
-.category-title{
-  .sf-heading__title{
+.category-title {
+  .sf-heading__title {
     font-size: 32px;
     font-weight: 700;
   }
 }
-.category-description{
+.category-description {
   max-width: 800px;
   text-align: center;
   margin: auto;
@@ -1179,10 +1192,9 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-right: 0px !important;
   }
   .sidebar {
-    padding: 16px 16px 16px 0;
+    padding: 0 !important;
     border: none;
     .sidebar-wrapper {
       padding: var(--spacer-sm);
@@ -1191,13 +1203,142 @@ export default {
     }
   }
 }
-::v-deep .sf-checkbox__checkmark{
+::v-deep .sf-checkbox__checkmark {
   border-radius: 4px;
 }
-::v-deep .sf-accordion-item__content{
+::v-deep .sf-accordion-item__content {
   padding: 0;
   max-height: 200px;
-  overflow: scroll;
-  margin-bottom: 20px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none;
+  width: 100%;
+  background: #fff;
+}
+::v-deep .sf-accordion-item__content.tyres {
+  z-index: 1;
+  width: 100%;
+}
+.sf-accordion-item {
+    position: relative;
+    margin: 20px 0;
+    box-shadow: rgb(214,213,213) 0px 1px 3px 0px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+::v-deep .sf-product-card-horizontal {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+::v-deep .sf-product-card__brand {
+  height: 60px;
+  width: 100%;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .brand-logo {
+    max-height: 30px;
+  }
+}
+::v-deep .action-area__wrap {
+  background: #000;
+  padding: 15px;
+  display: grid;
+}
+::v-deep .action-area__wrap--price {
+  padding: 0 10px;
+}
+::v-deep .action-area__wrap--addtocart {
+  display: flex;
+  gap: 10px;
+}
+::v-deep .product-card__action-area {
+  flex: 1;
+}
+::v-deep .action-area__wrap--message1 {
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  p {
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+    margin: 5px 0;
+  }
+}
+
+::v-deep .action-area__wrap--message2 {
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  p {
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+    margin: 5px 0;
+  }
+}
+::v-deep .action-area__wrap--promobanner {
+  height: 25px;
+  width: 100%;
+  background: grey;
+  color: #fff;
+  font-size: 12px;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+::v-deep .stock-status{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+  .stock-pill {
+    background: green;
+    padding: 5px 10px;
+    border-radius: 25px;
+    font-size: 11px;
+    color: #fff;
+    margin-right: 0;
+  }
+}
+::v-deep .action-area__wrap--stock {
+  height: 45px;
+  padding: 0 5px;
+  width: 100%;
+  background: #000;
+  color: #fff;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  .stock-pill {
+    background: green;
+    padding: 5px 10px;
+    border-radius: 25px;
+    font-size: 11px;
+    color: #fff;
+    margin-right: 15px;
+  }
+}
+::v-deep .sf-product-card__price {
+justify-content: center;
+gap: 15px;
+}
+.filter-btn{
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
 }
 </style>
