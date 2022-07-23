@@ -23,6 +23,7 @@
         aria-label="Search Wikipedia"
         :get-result-value="getResultValue"
         @submit="submit"
+        @click.native="goToSearch"
     ></autocomplete>
     </div>
     <div
@@ -186,9 +187,12 @@ export default {
       }
     },
     submit(result) {
-      this.search = result;
-      this.$router.push(localizedRoute('/search?search='+result));
+      console.log(result, 'result');
+      this.$router.push(localizedRoute('/search?search='+(result ? result: this.search)));
       this.$store.commit('ui/setSearchpanel', false)
+    },
+    goToSearch(e) {
+      this.search = e.target.value;
     },
     focusInput () {
       console.log(this.$refs.searchInput.$el.children[0].children[0], 'searchInput');
