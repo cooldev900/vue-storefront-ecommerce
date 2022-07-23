@@ -29,7 +29,7 @@ export default {
   async mounted () {
     const recaptcha = this.$recaptchaInstance;
     // Hide reCAPTCHA badge:
-    recaptcha.hideBadge();
+    recaptcha?.hideBadge();
     await this.$store.dispatch('vehicles/fetchVehicles')
     await this.$store.dispatch('vehicles/fetchActiveVehicle')
     await this.$store.dispatch('vehicles/fetchStoryblok')
