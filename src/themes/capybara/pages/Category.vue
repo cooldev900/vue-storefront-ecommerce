@@ -682,9 +682,6 @@ export default {
     this.$bus.$on('product-after-list', this.initPagination);
     window.addEventListener('resize', this.getBrowserWidth);
     this.getBrowserWidth();
-    const recaptcha = this.$recaptchaInstance;
-    // Hide reCAPTCHA badge:
-    recaptcha?.hideBadge();
   },
   beforeDestroy () {
     this.unsubscribeFromStoreAction();
@@ -697,7 +694,7 @@ export default {
       openModal: 'ui/openModal'
     }),
     async addToCart (product) {
-      console.log(product, 'product');
+      this.$store.dispatch('product/setCurrent', product);
       const res = await this.$store.dispatch('stock/check', {
         product: product,
         qty: product.qty

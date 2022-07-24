@@ -33,7 +33,12 @@ Object.keys(sbComponents).map(key => {
 
 Vue.use(VueAwesomeSwiper /* { default options with global component } */);
 // Vue.use(VueReCaptcha, { siteKey: config.recaptcha.siteKey });
-Vue.use(VueReCaptcha, { siteKey: '6LeMJLkZAAAAADcLY2qurohjqjDcZszw98_u1MSE' });
+Vue.use(VueReCaptcha, { siteKey: '6LeMJLkZAAAAADcLY2qurohjqjDcZszw98_u1MSE',
+  loaderOptions: {
+    useRecaptchaNet: true,
+    autoHideBadge: true
+  }
+});
 Vue.component('OmPanZoom', OmPanZoom);
 
 once('__VUE_EXTEND_DROPPOINT_VPB__', () => {

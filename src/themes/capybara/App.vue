@@ -27,9 +27,9 @@ export default {
     document.documentElement.classList.add('theme-' + storeId);
   },
   async mounted () {
-    const recaptcha = this.$recaptchaInstance;
-    // Hide reCAPTCHA badge:
-    recaptcha?.hideBadge();
+    // const recaptcha = this.$recaptchaInstance;
+    // // Hide reCAPTCHA badge:
+    // recaptcha?.hideBadge();
     await this.$store.dispatch('vehicles/fetchVehicles')
     await this.$store.dispatch('vehicles/fetchActiveVehicle')
     await this.$store.dispatch('vehicles/fetchStoryblok')
