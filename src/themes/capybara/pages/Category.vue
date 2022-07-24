@@ -163,7 +163,7 @@
           <template>
             <!-- <lazy-hydrate :trigger-hydration="loading"> -->
 
-            <transition-group              
+            <div              
               name="products__slide"
               tag="div"
               class="products__grid"
@@ -226,7 +226,7 @@
                   </div>
                 </template>
               </OmProductCard>
-            </transition-group>
+            </div>
             <!-- </lazy-hydrate> -->
             <SfPagination
               v-if="totalPages > 1"
