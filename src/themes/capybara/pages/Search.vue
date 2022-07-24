@@ -513,29 +513,29 @@ export default {
     await composeInitialPageState(store, route);
   },
   async beforeRouteEnter (to, from, next) {
-    // if (isServer) 
-    next( async vm => {
-      vm.loading = false;
-    });
+    if (isServer) 
+      next( async vm => {
+        vm.loading = false;
+      });
     // // SSR no need to invoke SW caching here
-    // else if (!from.name) {
-    //   // SSR but client side invocation, we need to cache products and invoke requests from asyncData for offline support
-    //   next(async vm => {
-    //     vm.loading = true;
-    //     vm.search = to.query.search
-    //     await composeInitialPageState(vm.$store, to, true);
-    //     await vm.$store.dispatch('category-next/cacheProducts', { route: to }); // await here is because we must wait for the hydration
-    //     vm.loading = false;
-    //   });
-    // } else {
-    //   // Pure CSR, with no initial category state
-    //   next(async vm => {
-    //     vm.loading = true;
-    //     vm.search = to.query.search
-    //     vm.$store.dispatch('category-next/cacheProducts', { route: to });
-    //     vm.loading = false;
-    //   });
-    // }
+    else if (!from.name) {
+      // SSR but client side invocation, we need to cache products and invoke requests from asyncData for offline support
+      next(async vm => {
+        vm.loading = true;
+        vm.search = to.query.search
+        await composeInitialPageState(vm.$store, to, true);
+        await vm.$store.dispatch('category-next/cacheProducts', { route: to }); // await here is because we must wait for the hydration
+        vm.loading = false;
+      });
+    } else {
+      // Pure CSR, with no initial category state
+      next(async vm => {
+        vm.loading = true;
+        vm.search = to.query.search
+        vm.$store.dispatch('category-next/cacheProducts', { route: to });
+        vm.loading = false;
+      });
+    }
   },
   created () {
     this.search = this.$router.query?.search
