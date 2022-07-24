@@ -152,7 +152,7 @@
             </transition-group>
           </div>
           <SfHeading
-            v-if="isCategoryEmpty && !loading"
+            v-if="isCategoryEmpty"
             :title="$t('No products found!')"
             :subtitle="
               $t(
@@ -379,7 +379,6 @@ const composeInitialPageState = async (store, route, forceLoad = false) => {
       cachedCategory && !forceLoad
         ? cachedCategory
         : await store.dispatch('category-next/loadCategory', { filters });
-    console.log(currentCategory, 'currentCategory', route);
     await store.dispatch('category-next/loadCategoryProducts', {
       route,
       category: currentCategory,
@@ -395,7 +394,6 @@ const composeInitialPageState = async (store, route, forceLoad = false) => {
     );
 
     await breadCrumbsLoader;
-    console.log(store.getters['breadcrumbs/getBreadcrumbsCurrent'], 'currentBreadCrumb');
     catalogHooksExecutors.categoryPageVisited(currentCategory);
   } catch (e) {
     //
@@ -657,28 +655,28 @@ export default {
     await composeInitialPageState(store, route);
   },
   async beforeRouteEnter (to, from, next) {
-    // if (isServer) 
-    next((vm) => {
-      vm.loading = false;
-    });
+    if (isServer) 
+      next((vm) => {
+        vm.loading = false;
+      });
     // SSR no need to invoke SW caching here
-    // else if (!from.name) {
-    //   // SSR but client side invocation, we need to cache products and invoke requests from asyncData for offline support
-    //   next(async (vm) => {
-    //     // vm.loading = true;
-    //     await composeInitialPageState(vm.$store, to, true);
-    //     await vm.$store.dispatch('category-next/cacheProducts', { route: to }); // await here is because we must wait for the hydration
-    //     vm.loading = false;
-    //   });
-    // } else {
-    //   // Pure CSR, with no initial category state
-    //   next(async (vm) => {
-    //     vm.loading = true;
-    //     await composeInitialPageState(vm.$store, to, true);
-    //     vm.$store.dispatch('category-next/cacheProducts', { route: to });
-    //     vm.loading = false;
-    //   });
-    // }
+    else if (!from.name) {
+      // SSR but client side invocation, we need to cache products and invoke requests from asyncData for offline support
+      next(async (vm) => {
+        // vm.loading = true;
+        await composeInitialPageState(vm.$store, to, true);
+        await vm.$store.dispatch('category-next/cacheProducts', { route: to }); // await here is because we must wait for the hydration
+        vm.loading = false;
+      });
+    } else {
+      // Pure CSR, with no initial category state
+      next(async (vm) => {
+        vm.loading = true;
+        await composeInitialPageState(vm.$store, to, true);
+        vm.$store.dispatch('category-next/cacheProducts', { route: to });
+        vm.loading = false;
+      });
+    }
   },
   mounted () {
     this.unsubscribeFromStoreAction = this.$store.subscribeAction((action) => {
