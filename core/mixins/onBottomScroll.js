@@ -21,7 +21,7 @@ export default {
   mounted () {
     const scrollHandler = () => {
       if (isBottomVisible()) {
-        this.onBottomScroll()
+        // this.onBottomScroll()
       }
     }
     document.addEventListener('scroll', scrollHandler)
