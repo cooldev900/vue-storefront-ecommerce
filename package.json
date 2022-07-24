@@ -52,6 +52,7 @@
   "dependencies": {
     "@gtm-support/vue2-gtm": "^1.2.1",
     "@panzoom/panzoom": "^4.4.3",
+    "@trevoreyre/autocomplete-vue": "^2.2.0",
     "@types/webpack": "^4.41",
     "@types/webpack-dev-server": "^3.10",
     "apollo-cache-inmemory": "^1.6.5",
