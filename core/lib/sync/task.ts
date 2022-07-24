@@ -154,11 +154,12 @@ function _internalExecute (resolve, reject, task: Task, currentToken, currentCar
         }
 
         if (!task.silent && jsonResponse.result && hasResponseError(jsonResponse) && !silentMode) {
-          rootStore.dispatch('notification/spawnNotification', {
-            type: 'error',
-            message: i18n.t(getResponseMessage(jsonResponse)),
-            action1: { label: i18n.t('OK') }
-          })
+          Logger.error(i18n.t(getResponseMessage(jsonResponse)), 'sync magento error')()
+          // rootStore.dispatch('notification/spawnNotification', {
+          //   type: 'error',
+          //   message: i18n.t(getResponseMessage(jsonResponse)),
+          //   action1: { label: i18n.t('OK') }
+          // })
         }
       }
 
