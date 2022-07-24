@@ -152,7 +152,7 @@
             </transition-group>
           </div>
           <SfHeading
-            v-if="isCategoryEmpty"
+            v-if="isCategoryEmpty && !loading"
             :title="$t('No products found!')"
             :subtitle="
               $t(
@@ -613,18 +613,11 @@ export default {
     //   );
     // },
     shouldShowVehicleCard () {
-      let existsNationCode = false;
-      if (this.activeVehicle && this.activeVehicle.national_code) { existsNationCode = true; }
-
-      let isFullWidth = false;
-      if (
-        this.getCurrentCategory &&
-        this.getCurrentCategory?.page_layout === 'category-full-width'
-      ) { isFullWidth = true; }
-
-      if (!Object.keys(this.availableFilters).length) return false;
-      return !isFullWidth;
-    }
+      if (this.$route.path === '/car-accessories' ) 
+        return true;
+      else 
+        return this.getCurrentCategory?.id && this.getCurrentCategory?.page_layout !== 'category-full-width'
+    },
   },
   watch: {
     sortOrder () {
