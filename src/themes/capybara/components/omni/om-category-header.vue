@@ -2,7 +2,7 @@
   <transition name="fade" mode="out-in">
     <div class="om-category-header" :class="{'tyre-background': title === 'Fuel Tank Parts'}">
       <div class="om-category-header__inner">
-        <SfHeading :title="title" class="title" :level="1"/>
+        <SfHeading :title="title" class="title" :level="1" v-if="title !== 'Default Category'"/>
         <div v-if="description != null" class="description desktop-only" v-html="description"></div>
       </div>
     </div>
