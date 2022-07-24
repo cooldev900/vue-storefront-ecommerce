@@ -721,9 +721,17 @@ export default {
 
         const productData = items[0] || null;
         productData.qty = this.qty;
-        await this.$store.dispatch('cart/addItem', {
-          productToAdd: Object.assign({}, productData, { qty: this.qty })
+        const { serverResponses } = await this.$store.dispatch('cart/addItem', {
+          productToAdd: Object.assign({}, this.product, { qty: this.qty })
         });
+        console.log(serverResponses, 'response')
+        let errorMessage = '';
+        if (serverResponses?.length) {
+          const response = serverResponses[0];
+          if (response.status !== 200) {
+            errorMessage = response?.result?.result;
+          }
+        }
 
         const cartItems = await StorageManager.get('cart').getItem('current-cart');
         cartItems.forEach(item => {
@@ -775,7 +783,8 @@ export default {
           name: ModalList.OmCartPopupModal,
           payload: {
             qty: this.qty,
-            name: productData.name
+            name: productData.name,
+            errorMessage
           }
         });
       } catch (message) {

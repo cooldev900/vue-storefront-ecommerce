@@ -63,9 +63,17 @@ export default {
     async addToCart () {
       try {
         this.loading = true;
-        await this.$store.dispatch('cart/addItem', {
+        const { serverResponses } = await this.$store.dispatch('cart/addItem', {
           productToAdd: Object.assign({}, this.product, { qty: this.qty })
         });
+
+        let errorMessage = '';
+        if (serverResponses?.length) {
+          const response = serverResponses[0];
+          if (response.status !== 200) {
+            errorMessage = response?.result?.result;
+          }
+        }
 
         const cartItems = await StorageManager.get('cart').getItem('current-cart');
         cartItems.forEach(item => {
@@ -117,10 +125,12 @@ export default {
           name: ModalList.OmCartPopupModal,
           payload: {
             qty: this.qty,
-            name: this.product.name
+            name: this.product.name,
+            errorMessage
           }
         })
       } catch (message) {
+        console.log(message, 'cart message');
         this.$store.dispatch(
           'notification/spawnNotification',
           notifications.createNotification({ type: 'danger', message }),

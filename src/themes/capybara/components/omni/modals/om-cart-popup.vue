@@ -1,11 +1,11 @@
 <template>
   <div class="om-cart-popup">
-    <SfModal :visible="isVisible" @close="closeModal" :title="$t('Added to cart')">
+    <SfModal :visible="isVisible" @close="closeModal" :title="serverError ? $t('Error') : $t('Added to cart')">
       <div class="om-cart-popup__content">
         <div class="title desktop-only">
-          {{ $t('Added to cart') }}
+          {{ serverError ? $t('Error') : $t('Added to cart') }}
         </div>
-        <div class="product-count">
+        <div class="product-count" v-if="!serverError">
           <SfIcon
             class="icon fits-icon"
             icon="check"
@@ -16,7 +16,7 @@
           <span>{{ modalData.payload.qty }} {{ $t('Added') }}</span>
         </div>
         <div class="product-name">
-          {{ modalData.payload.name }}
+          {{ serverError ? $t(modalData.payload.errorMessage) : $t(modalData.payload.name) }}
         </div>
         <div class="actions">
           <SfButton
@@ -28,6 +28,7 @@
           <SfButton
             class="sf-button--full-width om-btn--secondary"
             @click="goToCart"
+            v-if="!serverError"
           >
             {{ $t('Go to checkout') }}
           </SfButton>
@@ -55,7 +56,8 @@ export default {
         name: 'OmCartPopupModal',
         payload: {
           name: '',
-          qty: 1
+          qty: 1,
+          errorMessage: ''
         }
       }),
       required: true
@@ -75,6 +77,11 @@ export default {
     goToCart () {
       this.$router.push(localizedRoute('/cart'));
       this.closeModal();
+    }
+  },
+  computed: {
+    serverError() {
+      return !!this.modalData?.payload?.errorMessage;
     }
   }
 };
