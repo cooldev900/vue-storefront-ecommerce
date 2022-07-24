@@ -683,6 +683,9 @@ export default {
     this.$bus.$on('product-after-list', this.initPagination);
     window.addEventListener('resize', this.getBrowserWidth);
     this.getBrowserWidth();
+    const recaptcha = this.$recaptchaInstance;
+    // Hide reCAPTCHA badge:
+    recaptcha?.hideBadge();
   },
   beforeDestroy () {
     this.unsubscribeFromStoreAction();
