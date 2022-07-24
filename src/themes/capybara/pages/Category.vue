@@ -163,8 +163,7 @@
           <template>
             <!-- <lazy-hydrate :trigger-hydration="loading"> -->
 
-            <transition-group
-              appear
+            <transition-group              
               name="products__slide"
               tag="div"
               class="products__grid"
@@ -429,7 +428,7 @@ export default {
     OmProductCard,
     SbTeaseV2
   },
-  mixins: [onBottomScroll, SearchPanelMixin],
+  mixins: [SearchPanelMixin],
   data () {
     return {
       loading: true,
@@ -698,6 +697,7 @@ export default {
       openModal: 'ui/openModal'
     }),
     async addToCart (product) {
+      console.log(product, 'product');
       const res = await this.$store.dispatch('stock/check', {
         product: product,
         qty: product.qty
