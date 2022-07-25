@@ -1,93 +1,95 @@
 <template>
-<div>
-  <div id="category">
-    <lazy-hydrate :trigger-hydration="!loading">
-      <OmCategoryHeader
-        v-if="!!getCurrentCategory"
-        :title="getCategoryTitle"
-        :products="getCurrentCategory.children_data"
-        :description="getCurrentCategory.description"
-        :parent-id="getCurrentCategory.parent_id"
-      />
-    </lazy-hydrate>
-    <div>
-      <omServiceFinder :loading="loading" @update:loading="setLoading" />
-    </div>
-    <div class="loader" v-if="loading">
-      <SfLoader :loading="loading" />
-    </div>
-    <div v-else>
-      <div class="service-vehicles" v-if="getServiceVehicles">
-        <OmProductCard
-          v-for="product in getServiceVehicles"
-          :key="product.id"
-          :title="product.name || product.title"
-          :description="product.description"
-          :image="product.image"
-          :regular-price="product.price.regular"
-          :special-price="product.price.special"
-          :link="product.link"
-          :brandImage="brandImage"
-          link-tag="router-link"
-          :wishlist-icon="false"
-          class="products__product-card"
-        >
-          <template #image> </template>
-          <template
-            v-if="!product.price.regular && !product.price.special"
-            #price
+  <div>
+    <div id="category">
+      <lazy-hydrate :trigger-hydration="!loading">
+        <OmCategoryHeader
+          v-if="!!getCurrentCategory"
+          :title="getCategoryTitle"
+          :products="getCurrentCategory.children_data"
+          :description="getCurrentCategory.description"
+          :parent-id="getCurrentCategory.parent_id"
+        />
+      </lazy-hydrate>
+      <div>
+        <omServiceFinder :loading="loading" @update:loading="setLoading" />
+      </div>
+      <div class="loader" v-if="loading">
+        <SfLoader :loading="loading" />
+      </div>
+      <div v-else>
+        <div class="service-vehicles" v-if="getServiceVehicles">
+          <OmProductCard
+            v-for="product in getServiceVehicles"
+            :key="product.id"
+            :title="product.name || product.title"
+            :description="product.description"
+            :image="product.image"
+            :regular-price="product.price.regular"
+            :special-price="product.price.special"
+            :link="product.link"
+            :brand-image="brandImage"
+            link-tag="router-link"
+            :wishlist-icon="false"
+            class="products__product-card"
           >
-            <b :style="{ color: 'black' }">Not Available Online</b>
-          </template>
-          <template #reviews>
-            <div class="product-card__action-area">
-              <SfButton
-                :disabled="isProductDisabled || loading"
-                class="
+            <template #image />
+            <template
+              v-if="!product.price.regular && !product.price.special"
+              #price
+            >
+              <b :style="{ color: 'black' }">Not Available Online</b>
+            </template>
+            <template #reviews>
+              <div class="product-card__action-area">
+                <SfButton
+                  :disabled="isProductDisabled || loading"
+                  class="
                   a-add-to-cart
                   om-btn--primary
                   btn--narrow
                   sf-button--full-width
                 "
-                @click.native="addToCart(product)"
-              >
-                <SfLoader v-if="loading" :loading="loading" />
-                <span v-else>{{ $t("Add to cart") }}</span>
-              </SfButton>
-            </div>
-          </template>
-        </OmProductCard>
+                  @click.native="addToCart(product)"
+                >
+                  <SfLoader v-if="loading" :loading="loading" />
+                  <span v-else>{{ $t("Add to cart") }}</span>
+                </SfButton>
+              </div>
+            </template>
+          </OmProductCard>
+        </div>
+        <div v-else>
+          There is no data
+        </div>
       </div>
-      <div v-else>There is no data</div>
     </div>
+    <SbTeaseV2 />
   </div>
-<SbTeaseV2 />
-</div>
 </template>
 
 <script>
-import SbTeaseV2 from "theme/components/storyblok/sb-teaser-v2.vue";
-import LazyHydrate from "vue-lazy-hydration";
-import { mapGetters, mapActions } from "vuex";
-import castArray from "lodash-es/castArray";
-import config from "config";
+import SbTeaseV2 from 'theme/components/storyblok/sb-teaser-v2.vue';
+import LazyHydrate from 'vue-lazy-hydration';
+import { mapGetters, mapActions } from 'vuex';
+import castArray from 'lodash-es/castArray';
+import config from 'config';
 import {
   buildFilterProductsQuery,
-  isServer,
-} from "@vue-storefront/core/helpers";
-import i18n from "@vue-storefront/i18n";
-import onBottomScroll from "@vue-storefront/core/mixins/onBottomScroll";
-import { htmlDecode } from "@vue-storefront/core/filters";
-import { quickSearchByQuery } from "@vue-storefront/core/lib/search";
-import { getSearchOptionsFromRouteParams } from "@vue-storefront/core/modules/catalog-next/helpers/categoryHelpers";
-import { catalogHooksExecutors } from "@vue-storefront/core/modules/catalog-next/hooks";
+  isServer
+} from '@vue-storefront/core/helpers';
+import i18n from '@vue-storefront/i18n';
+import onBottomScroll from '@vue-storefront/core/mixins/onBottomScroll';
+import { htmlDecode } from '@vue-storefront/core/filters';
+import { quickSearchByQuery } from '@vue-storefront/core/lib/search';
+import { getSearchOptionsFromRouteParams } from '@vue-storefront/core/modules/catalog-next/helpers/categoryHelpers';
+import { catalogHooksExecutors } from '@vue-storefront/core/modules/catalog-next/hooks';
 import {
   getTopLevelCategories,
   prepareCategoryMenuItem,
-  prepareCategoryProduct,
-} from "theme/helpers";
-import { currentStoreView } from "@vue-storefront/core/lib/multistore";
-import ASortIcon from "theme/components/atoms/a-sort-icon";
+  prepareCategoryProduct
+} from 'theme/helpers';
+import { currentStoreView } from '@vue-storefront/core/lib/multistore';
+import ASortIcon from 'theme/components/atoms/a-sort-icon';
 import {
   SfIcon,
   SfList,
@@ -104,26 +106,26 @@ import {
   SfBreadcrumbs,
   SfProductCard,
   SfSearchBar,
-  SfImage,
-} from "@storefront-ui/vue";
-import omServiceFinder from "theme/components/omni/om-vehicle/om-service-finder.vue";
-import OmCategoryHeader from "theme/components/omni/om-category-header";
-import OmProductCardLoader from "theme/components/omni/skeletons/om-product-card-loader.vue";
-import SvgViewer from "theme/components/svg-viewer.vue";
-import { ModalList } from "theme/store/ui/modals";
-import SearchPanelMixin from "@vue-storefront/core/compatibility/components/blocks/SearchPanel/SearchPanel";
+  SfImage
+} from '@storefront-ui/vue';
+import omServiceFinder from 'theme/components/omni/om-vehicle/om-service-finder.vue';
+import OmCategoryHeader from 'theme/components/omni/om-category-header';
+import OmProductCardLoader from 'theme/components/omni/skeletons/om-product-card-loader.vue';
+import SvgViewer from 'theme/components/svg-viewer.vue';
+import { ModalList } from 'theme/store/ui/modals';
+import SearchPanelMixin from '@vue-storefront/core/compatibility/components/blocks/SearchPanel/SearchPanel';
 import buildQuery from '@vue-storefront/core/modules/catalog/helpers/associatedProducts/buildQuery.ts';
 import { ProductService } from '@vue-storefront/core/data-resolver/ProductService';
 import { Logger } from '@vue-storefront/core/lib/logger';
 import { notifications } from '@vue-storefront/core/modules/cart/helpers';
 import { StorageManager } from '@vue-storefront/core/lib/storage-manager';
-import OmProductCard from "theme/components/omni/om-product-card.vue";
+import OmProductCard from 'theme/components/omni/om-product-card.vue';
 
 const THEME_PAGE_SIZE = 12;
 const LAZY_LOADING_ACTIVATION_BREAKPOINT = 1024;
 
 export default {
-  name: "Services",
+  name: 'Services',
   components: {
     LazyHydrate,
     ASortIcon,
@@ -151,41 +153,41 @@ export default {
     SbTeaseV2
   },
   mixins: [onBottomScroll, SearchPanelMixin],
-  data() {
+  data () {
     return {
       loading: false,
       loadingProducts: false,
       currentPage: 1,
-      brandImage: "/assets/continental_logo.svg"
+      brandImage: '/assets/continental_logo.svg'
     };
   },
   computed: {
     ...mapGetters({
-      getCurrentSearchQuery: "category-next/getCurrentSearchQuery",
-      getCategoryProducts: "category-next/getCategoryProducts",
-      getCurrentCategory: "category-next/getCurrentCategory",
-      getCategoryProductsTotal: "category-next/getCategoryProductsTotal",
-      getAvailableFilters: "category-next/getAvailableFilters",
-      getCurrentFilters: "category-next/getCurrentFilters",
-      hasActiveFilters: "category-next/hasActiveFilters",
-      getSystemFilterNames: "category-next/getSystemFilterNames",
-      getCategories: "category/getCategories",
-      getBreadcrumbsRoutes: "breadcrumbs/getBreadcrumbsRoutes",
-      getBreadcrumbsCurrent: "breadcrumbs/getBreadcrumbsCurrent",
-      getAttributeLabelById: "vehicles/getAttributeLabelById",
-      getAttributeIdByLabel: "vehicles/getAttributeIdByLabel",
-      getServiceVehicles: "vehicles/getServiceVehicles",
-      getServiceVehicle: "vehicles/getServiceVehicle",
-      activeVehicle: "vehicles/activeVehicle",
-      serviceVehicle: "vehicles/serviceVehicle",
-    }),
+      getCurrentSearchQuery: 'category-next/getCurrentSearchQuery',
+      getCategoryProducts: 'category-next/getCategoryProducts',
+      getCurrentCategory: 'category-next/getCurrentCategory',
+      getCategoryProductsTotal: 'category-next/getCategoryProductsTotal',
+      getAvailableFilters: 'category-next/getAvailableFilters',
+      getCurrentFilters: 'category-next/getCurrentFilters',
+      hasActiveFilters: 'category-next/hasActiveFilters',
+      getSystemFilterNames: 'category-next/getSystemFilterNames',
+      getCategories: 'category/getCategories',
+      getBreadcrumbsRoutes: 'breadcrumbs/getBreadcrumbsRoutes',
+      getBreadcrumbsCurrent: 'breadcrumbs/getBreadcrumbsCurrent',
+      getAttributeLabelById: 'vehicles/getAttributeLabelById',
+      getAttributeIdByLabel: 'vehicles/getAttributeIdByLabel',
+      getServiceVehicles: 'vehicles/getServiceVehicles',
+      getServiceVehicle: 'vehicles/getServiceVehicle',
+      activeVehicle: 'vehicles/activeVehicle',
+      serviceVehicle: 'vehicles/serviceVehicle'
+    })
   },
   methods: {
     ...mapActions({
       openVehicleCart: 'ui/toggleSidebar',
       openModal: 'ui/openModal'
     }),
-    async onBottomScroll() {
+    async onBottomScroll () {
       // if (!this.isLazyLoadingEnabled || this.loadingProducts) {
       //   return;
       // }
@@ -193,7 +195,7 @@ export default {
       // await this.$store.dispatch('vehicle/loadMoreServiceProducts');
       // this.loadingProducts = false;
     },
-    setLoading(value) {
+    setLoading (value) {
       this.loading = value;
     },
     async addToCart (product) {
@@ -210,7 +212,7 @@ export default {
             assignProductConfiguration: true
           }
         });
-        
+
         const productData = items[0] || null;
         await this.$store.dispatch('cart/addItem', {
           productToAdd: Object.assign({}, productData, { qty: 1 })
@@ -249,7 +251,7 @@ export default {
             }
           }
         })
-        
+
         await StorageManager.get('cart').setItem('current-cart', cartItems).catch((reason) => {
           Logger.error(reason)()
         })
@@ -261,7 +263,7 @@ export default {
           'notification/clearNotification',
           { root: true }
         );
-        
+
         this.openModal({
           name: ModalList.OmCartPopupModal,
           payload: {
@@ -276,15 +278,15 @@ export default {
           { root: true }
         );
       }
-      
+
       this.isAddingToCart = false;
     }
   },
   watch: {
-    getServiceVehicles(value) {
-      console.log(value, "getServiceVehicles");
-    },
-  },
+    getServiceVehicles (value) {
+      console.log(value, 'getServiceVehicles');
+    }
+  }
 };
 </script>
 
