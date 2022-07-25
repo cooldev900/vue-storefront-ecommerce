@@ -12,9 +12,9 @@
     </div>
     <div class="main grid-container">
       <div class="sidebar desktop-only">
-        <div>
+        <!-- <div>
             <omTyreFinder v-if="shouldShowVehicleCard" />
-        </div>
+        </div> -->
         <div class="filters">
           <lazy-hydrate :trigger-hydration="loading">
             <SfAccordion
@@ -79,9 +79,9 @@
               <span class="navbar__label desktop-only">
                 {{ $t("Products found") }}:
               </span>
-              <strong class="desktop-only">{{ productTotalCount }}</strong>
+              <strong class="desktop-only">{{ visibleProducts.length }}</strong>
               <span class="navbar__label mobile-only">
-                {{ $t("{count} items", { count: productTotalCount }) }}
+                {{ $t("{count} items", { count: visibleProducts.length }) }}
               </span>
             </div>
             <div class="navbar__sort">
@@ -111,7 +111,7 @@
             </div>
           </div>
         </div>
-        <div v-if="loading && !currentPageProducts.length">
+        <div v-if="loading && !visibleProducts.length">
           <transition-group
             appear
             name="products__slide"
@@ -125,7 +125,7 @@
           </transition-group>
         </div>
         <SfHeading
-          v-if="isCategoryEmpty && !loading"
+          v-if="!visibleProducts.length && !loading"
           :title="$t('No products found!')"
           :subtitle="
             $t(
@@ -143,7 +143,7 @@
               class="products__grid"
             >
               <OmProductCard
-                v-for="product in currentPageProducts"
+                v-for="product in visibleProducts"
                 :product="product"
                 :key="product.id"
                 :title="product.enhanced_title || product.title"
@@ -350,6 +350,9 @@ export default {
       getAttributeIdByLabel: 'vehicles/getAttributeIdByLabel',
       activeVehicle: 'vehicles/activeVehicle'
     }),
+    visibleProducts () {
+      return this.products.map(product => prepareCategoryProduct(product));
+    },
     shouldShowVehicleCard () {
       let existsNationCode = false;
       if (this.activeVehicle && this.activeVehicle.national_code) { existsNationCode = true; }
@@ -532,7 +535,8 @@ export default {
       next(async vm => {
         vm.loading = true;
         vm.search = to.query.search
-        vm.$store.dispatch('category-next/cacheProducts', { route: to });
+        // await composeInitialPageState(vm.$store, to, true);
+        // vm.$store.dispatch('category-next/cacheProducts', { route: to });
         vm.loading = false;
       });
     }
@@ -550,7 +554,7 @@ export default {
     this.$bus.$on('product-after-list', this.initPagination);
     window.addEventListener('resize', this.getBrowserWidth);
     this.getBrowserWidth();
-    this.search = this.$route.query?.search;
+    this.startSearch();
   },
   beforeDestroy () {
     this.unsubscribeFromStoreAction();
@@ -617,14 +621,9 @@ export default {
       return (this.browserWidth = window.innerWidth);
     },
     async startSearch () {
-      if (this.search.length >= 3) {
-        await this.$store.dispatch('category-next/switchSearchFilters', [
-          { id: 'search', value: this.search }
-        ]);
-      } else if (this.search.length === 0) {
-        await this.$store.dispatch('category-next/switchSearchFilters', [
-          { id: 'search', value: '' }
-        ]);
+      console.log(this.search, 'search');
+      if (this.search?.length >= 3) {
+        this.makeSearch();
       }
     },
     openSvgViewer () {
