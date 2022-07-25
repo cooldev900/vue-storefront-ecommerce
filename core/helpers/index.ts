@@ -152,8 +152,6 @@ export function baseFilterProductsQuery (parentCategory, filters = []) { // TODO
  });
   if (childCats?.length) {
     searchProductQuery = searchProductQuery.applyFilter({ key: 'category_ids', value: { 'in': childCats } })
-  } else {
-    searchProductQuery = searchProductQuery.applyFilter({ key: 'category_ids', value: { 'in': "3" } })
   }
   return searchProductQuery
 }

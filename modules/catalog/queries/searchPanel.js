@@ -13,5 +13,7 @@ export function prepareQuickSearchQuery (queryText) {
     searchQuery = searchQuery.applyFilter({ key: 'stock.is_in_stock', value: { 'eq': true } })
   }
 
+  console.log(searchQuery, 'searchQuery');
+
   return searchQuery
 }

@@ -1,9 +1,11 @@
-import { mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import i18n from '@vue-storefront/i18n'
 import onEscapePress from '@vue-storefront/core/mixins/onEscapePress'
 import { prepareQuickSearchQuery } from '@vue-storefront/core/modules/catalog/queries/searchPanel'
 import RootState from '@vue-storefront/core/types/RootState'
 import { Logger } from '@vue-storefront/core/lib/logger'
+import config from 'config';
+import { buildFilterProductsQuery } from '@vue-storefront/core/helpers';
 
 export const Search = {
   name: 'SearchPanel',
@@ -46,11 +48,50 @@ export const Search = {
     async makeSearch () {
       if (this.search !== '' && this.search !== undefined) {
         let query = this.buildSearchQuery(this.search)
+        for (let attrToFilter of config.products.defaultFilters) {
+          query = query.addAvailableFilter({ field: attrToFilter, scope: 'catalog' })
+        }
+
+        // const categoryMappedFilters = this.getFiltersMap['search'];
+        // console.log(categoryMappedFilters, 'categoryMappedFilters');
+        // const searchQuery = this.getCurrentFiltersFrom(
+        //   this.$router.query,
+        //   categoryMappedFilters
+        // );
+        
+        // let appliedFilters = searchQuery.filters;
+        // for (let code of Object.keys(appliedFilters)) {
+        //   const filter = appliedFilters[code]
+        //   const attributeCode = Array.isArray(filter) ? filter[0].attribute_code : filter.attribute_code
+      
+        //   if (Array.isArray(filter) && attributeCode !== 'price') {
+        //     const values = filter.map(filter => filter.id)
+        //     query = query.applyFilter({ key: attributeCode, value: { 'in': values }, scope: 'catalog' })
+        //   } else if (attributeCode !== 'price') {
+        //     query = query.applyFilter({ key: attributeCode, value: { 'eq': filter.id }, scope: 'catalog' })
+        //   } else { // multi should be possible filter here?
+        //     const rangeqr = {}
+        //     const filterValues = Array.isArray(filter) ? filter : [filter]
+        //     filterValues.forEach(singleFilter => {
+        //       if (singleFilter.from) rangeqr['gte'] = singleFilter.from
+        //       if (singleFilter.to) rangeqr['lte'] = singleFilter.to
+        //     })
+        //     query = query.applyFilter({ key: attributeCode, value: rangeqr, scope: 'catalog' })
+        //   }
+        // }
+        
         let startValue = 0;
         this.start = startValue
         this.readMore = true
         try {
-          const { items } = await this.$store.dispatch('product/findProducts', {
+          const { 
+            items,
+            perPage,
+            start,
+            total,
+            aggregations,
+            attributeMetadata 
+          } = await this.$store.dispatch('product/findProducts', {
             query,
             start: this.start,
             size: this.size,
@@ -62,15 +103,11 @@ export const Search = {
           this.products = items
           this.start = startValue + this.size
           this.emptyResults = items.length < 1
-          // const {
-          //   data: {
-          //     result
-          //   }
-          // } = await axios.post(`${config.api.url}/api/search/es-search`, {
-          //   query: this.search
-          // });
-          // console.log(result, 'search result');
-          // this.searchResult = result;
+          await this.$store.dispatch('category-next/loadAvailableFiltersFrom', {
+            aggregations,
+            attributeMetadata,
+            category: {id: 'search'}
+          });
         } catch (err) {
           Logger.error(err, 'components-search')()
         }
@@ -111,6 +148,10 @@ export const Search = {
     }
   },
   computed: {
+    ...mapGetters({
+      getFiltersMap: 'category-next/getFiltersMap',
+      getCurrentFiltersFrom: 'category-next/getCurrentFiltersFrom',
+    }),
     items () {
       return this.$store.state.search
     },
