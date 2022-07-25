@@ -292,7 +292,7 @@ const composeInitialPageState = async (store, route, forceLoad = false) => {
 };
 
 export default {
-  name: 'CategoryPage',
+  name: 'SearchPage',
   components: {
     LazyHydrate,
     ASortIcon,
@@ -329,7 +329,8 @@ export default {
       browserWidth: 0,
       isFilterSidebarOpen: false,
       unsubscribeFromStoreAction: null,
-      aggregations: null
+      aggregations: null,
+      sortOrder: ''
     };
   },
   computed: {
@@ -376,7 +377,17 @@ export default {
       })
     },
     visibleProducts () {
-      return this.getVProduct.map(product => prepareCategoryProduct(product));
+      let result = this.getVProduct;
+      if (this.sortOrder) {
+        if (this.sortOrder === "updated_at:desc") {
+          result = this.getVProduct.sort((a, b) => a.updated_at > b.updated_at ? -1: 1);
+        } else if (this.sortOrder === 'final_price') {
+          result = this.getVProduct.sort((a, b) => a.price - b.price);
+        } else if(this.sortOrder === 'final_price:desc'){
+          result = this.getVProduct.sort((a, b) => b.price - a.price);
+        }
+      }
+      return result.map(product => prepareCategoryProduct(product));
     },
     shouldShowVehicleCard () {
       let existsNationCode = false;
@@ -437,14 +448,14 @@ export default {
         : this.getMoreCategoryProducts.map(prepareCategoryProduct);
     },
     totalPages () {
-      return Math.ceil(this.getCategoryProductsTotal / THEME_PAGE_SIZE);
+      return Math.ceil(this.visibleProducts?.length / THEME_PAGE_SIZE);
     },
-    sortOrder () {
-      return (
-        this.getCurrentSearchQuery.sort ||
-        `${config.products.defaultSortBy.attribute}:${config.products.defaultSortBy.order}`
-      );
-    },
+    // sortOrder () {
+    //   return (
+    //     this.getCurrentSearchQuery.sort ||
+    //     `${config.products.defaultSortBy.attribute}:${config.products.defaultSortBy.order}`
+    //   );
+    // },
     sortOptions () {
       return Object.entries(config.products.sortByAttributes).map(attribute => {
         const [label, id] = attribute;
@@ -744,11 +755,12 @@ export default {
       this.currentPage = 1;
     },
     changeSortOder (sortOrder) {
-      if (this.getCurrentSearchQuery.sort !== sortOrder) {
-        this.$store.dispatch('category-next/switchSearchFilters', [
-          { id: sortOrder, type: 'sort' }
-        ]);
-      }
+      this.sortOrder = sortOrder;
+      // if (this.getCurrentSearchQuery.sort !== sortOrder) {
+      //   this.$store.dispatch('category-next/switchSearchFilters', [
+      //     { id: sortOrder, type: 'sort' }
+      //   ]);
+      // }
     },
     changeFilter (filter) {
       this.$store.dispatch('category-next/switchSearchFilters', [filter]);
