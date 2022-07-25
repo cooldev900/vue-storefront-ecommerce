@@ -191,7 +191,12 @@ export default {
         email
       },
       telephone: {
-        required
+        required,
+        complex: value => {
+          if (!value) return true;
+          const regex = /^[0-9]{7,12}$/;
+          return regex.test(value);
+        }
       }
     },
     password: {
