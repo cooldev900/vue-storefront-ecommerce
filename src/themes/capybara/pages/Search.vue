@@ -111,7 +111,7 @@
             </div>
           </div>
         </div>
-        <div v-if="loading && !visibleProducts.length">
+        <div v-if="loading">
           <transition-group
             appear
             name="products__slide"
@@ -281,11 +281,11 @@ const LAZY_LOADING_ACTIVATION_BREAKPOINT = 1024;
 
 const composeInitialPageState = async (store, route, forceLoad = false) => {
   try {
-    await store.dispatch('category-next/loadCategoryProducts', {
-      route,
-      category: null,
-      pageSize: THEME_PAGE_SIZE
-    });
+    // await store.dispatch('category-next/loadCategoryProducts', {
+    //   route,
+    //   category: null,
+    //   pageSize: THEME_PAGE_SIZE
+    // });
   } catch (e) {
     //
   }
@@ -329,8 +329,7 @@ export default {
       browserWidth: 0,
       isFilterSidebarOpen: false,
       unsubscribeFromStoreAction: null,
-      aggregations: null,
-      search: null
+      aggregations: null
     };
   },
   computed: {
@@ -348,10 +347,36 @@ export default {
       getBreadcrumbsCurrent: 'breadcrumbs/getBreadcrumbsCurrent',
       getAttributeLabelById: 'vehicles/getAttributeLabelById',
       getAttributeIdByLabel: 'vehicles/getAttributeIdByLabel',
-      activeVehicle: 'vehicles/activeVehicle'
-    }),
+      activeVehicle: 'vehicles/activeVehicle',
+      getFiltersMap: 'category-next/getFiltersMap',
+      getCurrentFiltersFrom: 'category-next/getCurrentFiltersFrom',
+    }),    
+    getVProduct() {
+      const categoryMappedFilters = this.getFiltersMap['search'];
+      const searchQuery = this.getCurrentFiltersFrom(
+        this.$router.query,
+        categoryMappedFilters
+      );
+      const filters = searchQuery?.filters;
+      console.log(filters, 'filters', this.products);
+      if (!Object.keys(filters)?.length) return this.products;
+      return this.products.filter( product => {
+        let flag = true;
+        Object.keys(filters).map(filter => {
+          if (filter === 'price') {
+            let from = filters['price'][0]?.from || 0;
+            let to =  filters['price'][0]?.to || 0;
+            console.log(from, 'from', to);
+            if (product?.price < from || product?.price > to) flag = false;
+          } else {
+            if (product[filter].toString() !== filters[filter][0]?.id) flag = false
+          }
+        })
+        return flag;
+      })
+    },
     visibleProducts () {
-      return this.products.map(product => prepareCategoryProduct(product));
+      return this.getVProduct.map(product => prepareCategoryProduct(product));
     },
     shouldShowVehicleCard () {
       let existsNationCode = false;
@@ -368,9 +393,6 @@ export default {
     },
     isOnWishlist () {
       return product => this.$store.getters['wishlist/isOnWishlist'](product)
-    },
-    search () {
-      return this.$route.query.search
     },
     isLazyHydrateEnabled () {
       return config.ssr.lazyHydrateFor.includes('category-next.products');
@@ -555,6 +577,8 @@ export default {
     window.addEventListener('resize', this.getBrowserWidth);
     this.getBrowserWidth();
     this.startSearch();
+    // this.$store.dispatch('category-next/resetSearchFilters');
+    // this.$store.dispatch('category-next/switchSearchFilters', [{ id: 'search', value: this.search }]);
   },
   beforeDestroy () {
     this.unsubscribeFromStoreAction();
@@ -621,7 +645,6 @@ export default {
       return (this.browserWidth = window.innerWidth);
     },
     async startSearch () {
-      console.log(this.search, 'search');
       if (this.search?.length >= 3) {
         this.makeSearch();
       }
