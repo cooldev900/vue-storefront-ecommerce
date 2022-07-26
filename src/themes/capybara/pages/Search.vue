@@ -567,6 +567,14 @@ export default {
           }
           return result;
         }, {});
+      
+      if (result?.price_filter) {
+        result.price_filter = result.price_filter.filter((value, index, self) =>
+          index === self.findIndex((t) => (
+            t.id === value.id
+          ))
+        );
+      }
 
       return result;
     },
