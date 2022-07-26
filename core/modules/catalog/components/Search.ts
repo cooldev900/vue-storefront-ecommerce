@@ -6,6 +6,7 @@ import RootState from '@vue-storefront/core/types/RootState'
 import { Logger } from '@vue-storefront/core/lib/logger'
 import config from 'config';
 import { buildFilterProductsQuery } from '@vue-storefront/core/helpers';
+import * as types from '@vue-storefront/core/modules/catalog-next/store/category/mutation-types';
 
 export const Search = {
   name: 'SearchPanel',
@@ -13,13 +14,13 @@ export const Search = {
     return {
       products: [],
       search: '',
-      size: 18,
+      size: 30,
       start: 0,
       placeholder: i18n.t('Type what you are looking for...'),
       emptyResults: false,
       readMore: true,
       componentLoaded: false,
-      searchResult: [],
+      searchResult: []
     }
   },
   mounted () {
@@ -48,49 +49,19 @@ export const Search = {
     async makeSearch () {
       if (this.search !== '' && this.search !== undefined) {
         let query = this.buildSearchQuery(this.search)
-        for (let attrToFilter of config.products.defaultFilters) {
-          query = query.addAvailableFilter({ field: attrToFilter, scope: 'catalog' })
-        }
+        console.log(query, 'query');
 
-        // const categoryMappedFilters = this.getFiltersMap['search'];
-        // console.log(categoryMappedFilters, 'categoryMappedFilters');
-        // const searchQuery = this.getCurrentFiltersFrom(
-        //   this.$router.query,
-        //   categoryMappedFilters
-        // );
-        
-        // let appliedFilters = searchQuery.filters;
-        // for (let code of Object.keys(appliedFilters)) {
-        //   const filter = appliedFilters[code]
-        //   const attributeCode = Array.isArray(filter) ? filter[0].attribute_code : filter.attribute_code
-      
-        //   if (Array.isArray(filter) && attributeCode !== 'price') {
-        //     const values = filter.map(filter => filter.id)
-        //     query = query.applyFilter({ key: attributeCode, value: { 'in': values }, scope: 'catalog' })
-        //   } else if (attributeCode !== 'price') {
-        //     query = query.applyFilter({ key: attributeCode, value: { 'eq': filter.id }, scope: 'catalog' })
-        //   } else { // multi should be possible filter here?
-        //     const rangeqr = {}
-        //     const filterValues = Array.isArray(filter) ? filter : [filter]
-        //     filterValues.forEach(singleFilter => {
-        //       if (singleFilter.from) rangeqr['gte'] = singleFilter.from
-        //       if (singleFilter.to) rangeqr['lte'] = singleFilter.to
-        //     })
-        //     query = query.applyFilter({ key: attributeCode, value: rangeqr, scope: 'catalog' })
-        //   }
-        // }
-        
         let startValue = 0;
         this.start = startValue
         this.readMore = true
         try {
-          const { 
+          const {
             items,
             perPage,
             start,
             total,
             aggregations,
-            attributeMetadata 
+            attributeMetadata
           } = await this.$store.dispatch('product/findProducts', {
             query,
             start: this.start,
@@ -103,11 +74,13 @@ export const Search = {
           this.products = items
           this.start = startValue + this.size
           this.emptyResults = items.length < 1
-          await this.$store.dispatch('category-next/loadAvailableFiltersFrom', {
-            aggregations,
-            attributeMetadata,
-            category: {id: 'search'}
-          });
+          // await this.$store.dispatch('category-next/loadAvailableFiltersFrom', {
+          //   aggregations,
+          //   attributeMetadata,
+          //   category: { id: 'search' }
+          // });
+          // this.$store.commit(types.CATEGORY_SET_SEARCH_PRODUCTS_STATS, { perPage, start, total });
+          // this.$store.commit(types.CATEGORY_SET_PRODUCTS, items);
         } catch (err) {
           Logger.error(err, 'components-search')()
         }
@@ -150,7 +123,7 @@ export const Search = {
   computed: {
     ...mapGetters({
       getFiltersMap: 'category-next/getFiltersMap',
-      getCurrentFiltersFrom: 'category-next/getCurrentFiltersFrom',
+      getCurrentFiltersFrom: 'category-next/getCurrentFiltersFrom'
     }),
     items () {
       return this.$store.state.search

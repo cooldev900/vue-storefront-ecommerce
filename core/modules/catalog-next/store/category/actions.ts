@@ -136,6 +136,98 @@ const actions: ActionTree<CategoryState, RootState> = {
 
     return items;
   },
+  async loadSearchProducts (
+    { commit, getters, dispatch, rootState },
+    { route, category = null, pageSize = 50 } = {}
+  ) {
+    const searchCategory =
+      category || getters.getCategoryFrom(route.path) || {};
+    const categoryMappedFilters = getters.getFiltersMap['search'];
+    const areFiltersInQuery = !!Object.keys(route[products.routerFiltersSource])
+      .length;
+    if (!categoryMappedFilters && areFiltersInQuery) {
+      // loading all filters only when some filters are currently chosen and category has no available filters yet
+      await dispatch('loadCategoryFilters', searchCategory);
+    }
+    console.log(searchCategory, 'searchCategory');
+    const searchQuery = getters.getCurrentFiltersFrom(
+      route[products.routerFiltersSource],
+      categoryMappedFilters
+    );
+
+    if (
+      getters.getCurrentCategory?.page_layout &&
+      getters.getCurrentCategory?.page_layout === 'category-full-width'
+    ) {
+      // No filtering by national code
+    } else {
+      const { storeCode } = currentStoreView();
+      const savedActiveVehicle = localStorage?.getItem(
+        storeCode + '/active-vehicle'
+      );
+
+      if (savedActiveVehicle && savedActiveVehicle !== '{}') {
+        const activeVehicle = JSON.parse(savedActiveVehicle);
+        let national_code = [];
+        national_code.push({
+          attribute_code: 'national_code.keyword',
+          id: activeVehicle.national_code,
+          label: activeVehicle.national_code,
+          type: 'national_code.keyword'
+        });
+        searchQuery.filters['national_code.keyword'] = national_code;
+      }
+    }
+
+    let filterQr = buildFilterProductsQuery(
+      searchCategory,
+      searchQuery.filters
+    );
+    console.log(route.query.search, 'search query');
+    if (route.query && route.query.search) {
+      filterQr.setSearchText(route.query.search);
+    }
+
+    const {
+      items,
+      perPage,
+      start,
+      total,
+      aggregations,
+      attributeMetadata
+    } = await dispatch(
+      'product/findProducts',
+      {
+        query: filterQr,
+        sort:
+          searchQuery.sort ||
+          `${products.defaultSortBy.attribute}:${products.defaultSortBy.order}`,
+        includeFields: entities.productList.includeFields,
+        excludeFields: entities.productList.excludeFields,
+        size: pageSize,
+        configuration: searchQuery.filters,
+        options: {
+          populateRequestCacheTags: true,
+          prefetchGroupProducts: false,
+          setProductErrors: false,
+          fallbackToDefaultWhenNoAvailable: true,
+          assignProductConfiguration: false,
+          separateSelectedVariant: false
+        }
+      },
+      { root: true }
+    );
+    await dispatch('loadAvailableFiltersFrom', {
+      aggregations,
+      attributeMetadata,
+      category: searchCategory,
+      filters: searchQuery.filters
+    });
+    commit(types.CATEGORY_SET_SEARCH_PRODUCTS_STATS, { perPage, start, total });
+    commit(types.CATEGORY_SET_PRODUCTS, items);
+
+    return items;
+  },
   async loadMoreCategoryProducts ({ commit, getters, rootState, dispatch }) {
     const { perPage, start, total } = getters.getCategorySearchProductsStats;
     const totalValue = typeof total === 'object' ? total.value : total;

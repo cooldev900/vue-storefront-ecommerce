@@ -428,7 +428,7 @@ export default {
     OmProductCard,
     SbTeaseV2
   },
-  mixins: [SearchPanelMixin],
+  mixins: [],
   data () {
     return {
       loading: true,
