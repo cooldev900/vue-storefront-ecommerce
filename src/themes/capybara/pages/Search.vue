@@ -92,9 +92,9 @@
       </div>
       <div class="main grid-container">
         <div class="sidebar desktop-only">
-          <div>
+          <!-- <div>
             <omTyreFinder v-if="shouldShowVehicleCard" />
-          </div>
+          </div> -->
           <div class="filters">
             <lazy-hydrate :trigger-hydration="loading">
               <SfAccordion
@@ -878,6 +878,10 @@ export default {
         this.getCurrentCategory,
         filters
       );
+      console.log(this.$route.query, 'query');
+      if (this.$route.query && this.$route.query.search) {
+        filterQuery.setSearchText(this.$route.query.search);
+      }
 
       const searchResult = await quickSearchByQuery({
         query: filterQuery,
