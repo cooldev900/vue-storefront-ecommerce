@@ -179,11 +179,22 @@ const actions: ActionTree<CategoryState, RootState> = {
       }
     }
 
+    if (route.query && route.query?.field && route.query?.value) {
+      let filter_code = [];
+        filter_code.push({
+          attribute_code: route.query.field + '.keyword',
+          id: route.query.value,
+          label: route.query.value,
+          type: route.query.field + '.keyword',
+        });
+        searchQuery.filters[route.query.field + '.keyword'] = filter_code;
+    }
+
     let filterQr = buildFilterProductsQuery(
       searchCategory,
       searchQuery.filters
     );
-    console.log(route.query.search, 'search query');
+    
     if (route.query && route.query.search) {
       filterQr.setSearchText(route.query.search);
     }
