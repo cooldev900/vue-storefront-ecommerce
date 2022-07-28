@@ -369,6 +369,7 @@ const LAZY_LOADING_ACTIVATION_BREAKPOINT = 1024;
 
 const composeInitialPageState = async (store, route, forceLoad = false) => {
   try {
+    console.log('search')
     await store.dispatch('category-next/loadSearchProducts', {
       route,
       category: null,
@@ -380,7 +381,7 @@ const composeInitialPageState = async (store, route, forceLoad = false) => {
 };
 
 export default {
-  name: 'CategoryPage',
+  name: 'SearchPage',
   components: {
     LazyHydrate,
     ASortIcon,
@@ -428,8 +429,9 @@ export default {
       getCategoryProducts: 'category-next/getCategoryProducts',
       getCurrentCategory: 'category-next/getCurrentCategory',
       getCategoryProductsTotal: 'category-next/getCategoryProductsTotal',
-      getAvailableFilters: 'category-next/getAvailableFilters',
+      getAvailableFilters: 'category-next/getSearchFilters',
       getCurrentFilters: 'category-next/getCurrentFilters',
+      getCurrentSearchFilters: 'category-next/getCurrentSearchFilters',
       hasActiveFilters: 'category-next/hasActiveFilters',
       getSystemFilterNames: 'category-next/getSystemFilterNames',
       getCategories: 'category/getCategories',
@@ -583,16 +585,16 @@ export default {
     },
     activeFiltersCount () {
       let counter = 0;
-      Object.keys(this.getCurrentFilters).forEach((key) => {
+      Object.keys(this.getCurrentSearchFilters).forEach((key) => {
         if (!key.includes('national_code')) {
-          counter += this.getCurrentFilters[key].length;
+          counter += this.getCurrentSearchFilters[key].length;
         }
       });
       return counter;
     },
     isFilterActive () {
       return (filter) =>
-        castArray(this.getCurrentFilters[filter.type]).find(
+        castArray(this.getCurrentSearchFilters[filter.type]).find(
           (variant) => variant && variant.id === filter.id
         ) !== undefined;
     },
@@ -647,15 +649,15 @@ export default {
       // SSR but client side invocation, we need to cache products and invoke requests from asyncData for offline support
       next(async (vm) => {
         // vm.loading = true;
-        await composeInitialPageState(vm.$store, to, true);
-        await vm.$store.dispatch('category-next/cacheProducts', { route: to }); // await here is because we must wait for the hydration
+        // await composeInitialPageState(vm.$store, to, true);
+        // await vm.$store.dispatch('category-next/cacheProducts', { route: to }); // await here is because we must wait for the hydration
         vm.loading = false;
       });
     } else {
       // Pure CSR, with no initial category state
       next(async (vm) => {
         vm.loading = true;
-        vm.$store.dispatch('category-next/cacheProducts', { route: to });
+        // vm.$store.dispatch('category-next/cacheProducts', { route: to });
         vm.loading = false;
       });
     }

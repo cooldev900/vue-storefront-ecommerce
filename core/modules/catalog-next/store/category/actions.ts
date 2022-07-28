@@ -25,8 +25,8 @@ import { transformCategoryUrl } from '@vue-storefront/core/modules/url/helpers/t
 import { ProductService } from '@vue-storefront/core/data-resolver/ProductService';
 import { filter } from 'vue/types/umd';
 import {
-  currentStoreView,
-} from "@vue-storefront/core/lib/multistore";
+  currentStoreView
+} from '@vue-storefront/core/lib/multistore';
 
 const actions: ActionTree<CategoryState, RootState> = {
   async loadCategoryProducts (
@@ -181,20 +181,20 @@ const actions: ActionTree<CategoryState, RootState> = {
 
     if (route.query && route.query?.field && route.query?.value) {
       let filter_code = [];
-        filter_code.push({
-          attribute_code: route.query.field + '.keyword',
-          id: route.query.value,
-          label: route.query.value,
-          type: route.query.field + '.keyword',
-        });
-        searchQuery.filters[route.query.field + '.keyword'] = filter_code;
+      filter_code.push({
+        attribute_code: route.query.field + '.keyword',
+        id: route.query.value,
+        label: route.query.value,
+        type: route.query.field + '.keyword'
+      });
+      searchQuery.filters[route.query.field + '.keyword'] = filter_code;
     }
 
     let filterQr = buildFilterProductsQuery(
       searchCategory,
       searchQuery.filters
     );
-    
+
     if (route.query && route.query.search) {
       filterQr.setSearchText(route.query.search);
     }
@@ -231,7 +231,7 @@ const actions: ActionTree<CategoryState, RootState> = {
     await dispatch('loadAvailableFiltersFrom', {
       aggregations,
       attributeMetadata,
-      category: searchCategory,
+      category: { id: 'search' },
       filters: searchQuery.filters
     });
     commit(types.CATEGORY_SET_SEARCH_PRODUCTS_STATS, { perPage, start, total });
@@ -463,7 +463,6 @@ const actions: ActionTree<CategoryState, RootState> = {
         newQuery[key] = value;
       }
     })
-
     await dispatch('changeRouterFilterParameters', Object.assign({}, newQuery));
   },
   async resetSearchFilters ({ dispatch }) {
