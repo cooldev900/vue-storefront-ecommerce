@@ -47,7 +47,7 @@ export default {
     }),
     showSearchPanel() {
       console.log(this.$route.path, 'route');
-      if (this.$route.path !== '/search') this.$store.commit('ui/setSearchpanel', true);
+      this.$store.commit('ui/setSearchpanel', true);
     },
     direction () {
       const storeId = currentStoreView().storeId;

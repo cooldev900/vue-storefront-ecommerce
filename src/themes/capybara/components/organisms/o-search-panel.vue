@@ -147,8 +147,7 @@ export default {
   },
   methods: {
     getResultValue(result) {
-      console.log(result, 'result');
-      return result
+      return result.text
     },
     async getSearchResult(input) {
       this.search = input;
@@ -188,7 +187,7 @@ export default {
     },
     submit(result) {
       console.log(result, 'result');
-      this.$router.push(localizedRoute('/search?search='+(result ? result: this.search)));
+      this.$router.push(localizedRoute('/search?search='+(result ? `&field=${result.field}&value=${result.text}`: this.search)));
       this.$store.commit('ui/setSearchpanel', false)
     },
     goToSearch(e) {

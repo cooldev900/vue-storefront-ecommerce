@@ -4,7 +4,7 @@
       <lazy-hydrate  :trigger-hydration="loading">
         <OmCategoryHeader
           v-if="!!getCurrentCategory"
-          :title="getCurrentCategory.name"
+          :title="search"
           :products="getCurrentCategory.children_data"
           :description="getCurrentCategory.description"
           :parent-id="getCurrentCategory.parent_id"
@@ -92,9 +92,9 @@
       </div>
       <div class="main grid-container">
         <div class="sidebar desktop-only">
-          <!-- <div>
+          <div>
             <omTyreFinder v-if="shouldShowVehicleCard" />
-          </div> -->
+          </div>
           <div class="filters">
             <lazy-hydrate :trigger-hydration="loading">
               <SfAccordion
@@ -419,7 +419,7 @@ export default {
       isFilterSidebarOpen: false,
       unsubscribeFromStoreAction: null,
       aggregations: null,
-      sortOrderValue: ''
+      sortOrderValue: '',
     };
   },
   computed: {
@@ -440,6 +440,9 @@ export default {
       activeVehicle: 'vehicles/activeVehicle',
       qty: 'vehicles/getQty'
     }),
+    search() {
+      return this.$route?.query?.search;
+    },
     isLazyHydrateEnabled () {
       return config.ssr.lazyHydrateFor.includes('category-next.products');
     },
