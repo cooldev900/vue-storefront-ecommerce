@@ -92,9 +92,9 @@
       </div>
       <div class="main grid-container">
         <div class="sidebar desktop-only">
-          <div>
+          <!-- <div>
             <omTyreFinder v-if="shouldShowVehicleCard" />
-          </div>
+          </div> -->
           <div class="filters">
             <lazy-hydrate :trigger-hydration="loading">
               <SfAccordion
@@ -443,7 +443,7 @@ export default {
       qty: 'vehicles/getQty'
     }),
     search() {
-      return this.$route?.query?.search;
+      return this.$route?.query?.search || this.$route?.query?.value || '';
     },
     isLazyHydrateEnabled () {
       return config.ssr.lazyHydrateFor.includes('category-next.products');
