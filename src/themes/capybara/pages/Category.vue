@@ -718,13 +718,11 @@ export default {
             assignProductConfiguration: true
           }
         });
-
         const productData = items[0] || null;
         productData.qty = this.qty;
         const { serverResponses } = await this.$store.dispatch('cart/addItem', {
-          productToAdd: Object.assign({}, this.product, { qty: this.qty })
+          productToAdd: Object.assign({}, productData, { qty: this.qty })
         });
-        console.log(serverResponses, 'response')
         let errorMessage = '';
         if (serverResponses?.length) {
           const response = serverResponses[0];
