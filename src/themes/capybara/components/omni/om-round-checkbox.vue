@@ -36,7 +36,8 @@ export default {
     ...mapGetters({
       cartToken: 'cart/getCartToken',
       slot_id: 'vehicles/getSlotID',
-      slot_data: 'vehicles/getSlotData'
+      slot_data: 'vehicles/getSlotData',
+      getCurrentDay: 'vehicles/getCurrentDay',
     }),
     label () {
       let timePart = config.timePart;
@@ -121,6 +122,10 @@ export default {
     slot_id(newValue) {
       // this.checked = newValue.includes(this.appointment.id);
       this.checked = newValue === this.appointment.id;
+    },
+
+    getCurrentDay(value) {
+      this.checked = this.slot_id === this.appointment.id;
     }
   }
 };

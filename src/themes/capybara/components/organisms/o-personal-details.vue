@@ -72,7 +72,7 @@
       <div class="form__action">
         <SfButton
           class="sf-button--full-width om-btn--primary"
-          :disabled="!selected"
+          :disabled="!selected && !validAppointment"
           @click="goToShipping"
         >
           {{
@@ -116,9 +116,13 @@ export default {
       isVirtualCart: 'cart/isVirtualCart',
       message: 'vehicles/getAppointmentError',      
       getSlotID: 'vehicles/getSlotID',
+      getSlotData: 'vehicles/getSlotData',
     }),
     selected () {
       return this.getSlotID !== -1;
+    },
+    validAppointment() {
+      return this.getSlotData?.start_time && new Date(this.getSlotData.start_time).getTime() > new Date().getTime();
     }
   },
   props: {

@@ -74,6 +74,8 @@ export default {
     ...mapGetters({
       appointments: 'vehicles/getAppointmentsTaken',
       today: 'vehicles/getCurrentDay',
+      getSlotData: 'vehicles/getSlotData',
+      stepData: 'vehicles/stepData',
     }),
     selectedSchedule () {
       if (!this.selected.start || !this.selected.end) return this.scheduleLabel;
@@ -324,17 +326,30 @@ export default {
         };
       },
       deep: true
+    },
+    stepData(value) {
+      if (value === 0) {
+        if (this.getSlotData?.start_time) {
+          const date = new Date(this.getSlotData?.start_time.slice(0, 10)).toISOString();
+          this.$store.commit('vehicles/setCurrentDay', date);
+          this.fetchAppointmentTaken(date);
+        }
+      }
     }
   },
 
-  mounted () {
+  async mounted () {
     let date = new Date(new Date().toISOString().split('T')[0]).toISOString();
     if (new Date().getDay() === 5 || new Date().getDay() === 6) {
       date = new Date(new Date(dayjs().add(7 - new Date().getDay(), 'day').toISOString()).toISOString().split('T')[0]).toISOString()
     }
-    console.log(date, 'date', dayjs().add(7 - new Date().getDay(), 'day').toISOString())
-    this.getAppointment(date);
-    this.loadSlotID();
+    await this.$store.dispatch('vehicles/loadSlotID')
+    await this.$store.dispatch('vehicles/loadSlotData')
+    console.log(this.getSlotData, 'slot data');
+    if (this.getSlotData?.start_time) {
+      date = new date(this.getSlotData.start_time.slice(0, 10)).toISOString();
+    }
+    await this.getAppointment(date);
   }
 };
 </script>
