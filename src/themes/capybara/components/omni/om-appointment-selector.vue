@@ -347,7 +347,7 @@ export default {
     await this.$store.dispatch('vehicles/loadSlotData')
     console.log(this.getSlotData, 'slot data');
     if (this.getSlotData?.start_time) {
-      date = new date(this.getSlotData.start_time.slice(0, 10)).toISOString();
+      date = new Date(this.getSlotData.start_time.slice(0, 10)).toISOString();
     }
     await this.getAppointment(date);
   }
