@@ -134,13 +134,16 @@ export default {
       return false;
     },
     async getAppointment (date) {
-      if (this.isHoliday(date)) return;
+      if (this.isHoliday(date)) {
+        let day = new Date(date).getDay();
+        date = new Date(new Date(date).getTime() + (7 - day) * 24 * 60 * 60 * 1000).toISOString();        
+      };
       if (this.today !== date) {
         this.$store.commit('vehicles/setCurrentDay', date);
         this.fetchAppointmentTaken(date);
       }
     },
-    nextWeek () {
+    async nextWeek () {
       let newWeek = this.weeks.length
         ? dayjs(
           this.weeks[this.weeks.length - 1].week[0].schedule[this.period - 1]
@@ -204,9 +207,9 @@ export default {
       }
       schedule.days = weekDays;
       this.weeks = [schedule];      
-      this.getAppointment(weekDays[0].payload);
+      await this.getAppointment(weekDays[0].payload);
     },
-    prevWeek () {
+    async prevWeek () {
       let firstDay = new Date(new Date().toISOString().split('T')[0]).toISOString();
       if (this.weeks.length)
         firstDay = this.weeks[0].days[0].payload;
@@ -275,7 +278,7 @@ export default {
       }
       schedule.days = weekDays;
       this.weeks = [schedule];
-      this.getAppointment(weekDays[0].payload);
+      await this.getAppointment(weekDays[0].payload);
     },
     setMeeting (meeting) {
       if (this.isDisabled(meeting) || this.isAnotherPopUpDisplayed) return;
@@ -308,6 +311,26 @@ export default {
         this.nextWeek();
         min--;
       } while (min > 0);
+    },
+    async adjustWeek(today, targetDay ) {
+      let delta = (new Date(targetDay).getTime() - new Date(today).getTime())/24/60/60/1000;
+      console.log(delta, 'delta');
+      if (delta < 0) {
+        delta = -1 * delta;
+        let min = Math.ceil(delta / 5);
+        do {
+            await this.prevWeek();
+            min--;
+          } while (min > 0);
+      } else {
+        if (delta >= 4) {
+          let min = Math.floor(delta / 5);
+          do {
+            await this.nextWeek();
+            min--;
+          } while (min > 0);
+        }
+      }
     }
   },
   created () {
@@ -327,12 +350,12 @@ export default {
       },
       deep: true
     },
-    stepData(value) {
+    async stepData(value) {
       if (value === 0) {
-        if (this.getSlotData?.start_time) {
+        if (this.getSlotData?.start_time) { 
           const date = new Date(this.getSlotData?.start_time.slice(0, 10)).toISOString();
-          this.$store.commit('vehicles/setCurrentDay', date);
-          this.fetchAppointmentTaken(date);
+          await this.adjustWeek(this.today, date);
+          await this.getAppointment(date);
         }
       }
     }
@@ -348,6 +371,14 @@ export default {
     console.log(this.getSlotData, 'slot data');
     if (this.getSlotData?.start_time) {
       date = new Date(this.getSlotData.start_time.slice(0, 10)).toISOString();
+      let days = Math.ceil((new Date(date).getTime() - new Date().getTime())/24/60/60/1000);
+      if (days >= 4) {
+        let min = Math.floor(days/5);
+        do {
+          this.nextWeek();
+          min--;
+        } while (min > 0);
+      }
     }
     await this.getAppointment(date);
   }
