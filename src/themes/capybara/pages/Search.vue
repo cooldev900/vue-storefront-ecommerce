@@ -556,7 +556,7 @@ export default {
                   {
                     ...filter,
                     label: filter.label,
-                    count: this.getFilterCount(filter) || '',
+                    count: '',
                     color:
                       filterType === 'coulor'
                         ? (config.products.colorMappings &&
