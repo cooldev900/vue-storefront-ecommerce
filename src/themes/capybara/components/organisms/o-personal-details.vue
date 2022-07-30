@@ -13,6 +13,7 @@
             ? $t('Field is required')
             : $t('Name must have at least 2 letters.')
         "
+        :disabled="isLoggedIn"
       />
       <SfInput
         v-model.trim="personalDetails.lastName"
@@ -22,6 +23,7 @@
         :required="true"
         :valid="!$v.personalDetails.lastName.$error"
         :error-message="$t('Field is required')"
+        :disabled="isLoggedIn"
       />
       <SfInput
         v-model.trim="personalDetails.emailAddress"
@@ -35,6 +37,7 @@
             ? $t('Field is required')
             : $t('Please provide valid e-mail address.')
         "
+        :disabled="isLoggedIn"
       />
       <SfInput
         v-model.trim="personalDetails.telephone"
@@ -117,6 +120,7 @@ export default {
       message: 'vehicles/getAppointmentError',      
       getSlotID: 'vehicles/getSlotID',
       getSlotData: 'vehicles/getSlotData',
+      isLoggedIn: 'user/isLoggedIn'
     }),
     selected () {
       return this.getSlotID !== -1;
@@ -258,7 +262,22 @@ export default {
         this.$store.commit('vehicles/setSlotID', 0);
       }
     }
-  }
+  },
+  beforeMount () {
+    // current user may not be available yet in beforeMount hook so vuex watcher is needed
+    const unsubscribeFromStoreWatch = this.$store.watch(
+      state => state.user.current,
+      currentUser => {
+        if (currentUser) {
+          this.personalDetails.firstName = currentUser.firstname;
+          this.personalDetails.lastName = currentUser.lastname;
+          this.personalDetails.emailAddress = currentUser.email;
+        }
+      },
+      { immediate: true });
+
+    this.$once('hook:beforeDestroy', unsubscribeFromStoreWatch)
+  },
 };
 </script>
 <style lang="scss" scoped>
