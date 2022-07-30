@@ -1,3 +1,30 @@
+import store from '@vue-storefront/core/store'
+import { currentStoreView, localizedRoute } from '@vue-storefront/core/lib/multistore'
+
+function requireAuth (to, from, next) {
+  if (store.getters['user/isLoggedIn']) {
+    /*
+      If not, load the user
+    */
+    store.dispatch('user/me');
+
+    /*
+      Watch for the user to be loaded. When it's finished, then
+      we proceed.
+    */
+    store.watch(store.getters['user/isLoggedIn'], () => {
+      if (!store.getters['user/isLoggedIn']) {
+        next(localizedRoute('/', currentStoreView().storeCode))
+      }
+    });
+  } else {
+    /*
+      User call completed, so we proceed
+    */
+    next(localizedRoute('/', currentStoreView().storeCode))
+  }
+}
+
 const Home = () =>
   import(/* webpackChunkName: "vsf-home" */ 'theme/pages/Home');
 const ErrorPage = () =>
@@ -38,7 +65,7 @@ let routes = [
   { name: 'bc-thank-you', path: '/bc-order-success', component: BCExternalSuccess, meta: { meta: { subLayout: 'checkout', breadcrumb: 'Checkout' } } },
   { name: 'legal', path: '/legal', component: Static, meta: { breadcrumb: 'Legal' } },
   { name: 'privacy', path: '/privacy', component: Static, meta: { breadcrumb: 'Privacy' } },
-  { name: 'my-account', path: '/my-account', component: MyAccount, meta: { breadcrumb: 'My account' } },
+  { name: 'my-account', path: '/my-account', component: MyAccount, meta: { breadcrumb: 'My account' }, beforeEnter: requireAuth },
   { name: 'about-us', path: '/about-us', component: Static, meta: { breadcrumb: 'About us' } },
   { name: 'customer-service', path: '/customer-service', component: Static, meta: { breadcrumb: 'Customer Service' } },
   { name: 'store-locator', path: '/store-locator', component: Static, meta: { breadcrumb: 'Store locator' } },
