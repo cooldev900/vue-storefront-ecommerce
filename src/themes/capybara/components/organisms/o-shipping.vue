@@ -1,6 +1,18 @@
 <template>
   <div class="o-shipping">
     <div class="form">
+      <div class="o-shipping__addresses" v-if="isLoggedIn && hasRegisterdShippingAddress">
+        <SfHeading
+          :title="$t('Use one of your saved addresses')"
+          :level="3"
+          class="sf-heading--left sf-heading--no-underline title"
+        />
+        <div class="o-shipping__addresses--container">
+          <div class="o-shipping__addresses--container-content" :class="{'selected': getAddressId === address.id}" v-for="address in currentUser.addresses" :key="address.id" @click="changeShippingAddress(address.id)">
+            {{ $t(address.street[0]) }}
+          </div>
+        </div>
+      </div>
       <SfCheckbox
         v-if="currentUser && hasShippingDetails()"
         v-model="shipToMyAddress"
@@ -142,7 +154,8 @@ export default {
     SfSelect,
     SfHeading,
     SfCheckbox,
-    OmLocator
+    OmLocator,
+    SfHeading
   },
   mixins: [Shipping],
   validations: {
@@ -158,7 +171,7 @@ export default {
       // },
       country: {
         required,
-        minLength: minLength(2),
+        minLength: minLength(2)
       },
       streetAddress: {
         required,
@@ -172,7 +185,7 @@ export default {
       city: {
         required,
         unicodeAlpha
-      },
+      }
       // phoneNumber: {
       //   required
       // }
@@ -184,8 +197,13 @@ export default {
       default: (Number) => {}
     }
   },
-  mounted () {
-    // createSmoothscroll(document.documentElement.scrollTop || document.body.scrollTop, 0);
+  async mounted () {    
+    await this.$store.dispatch('checkoutStep/loadAddressId');
+    if (this.isLoggedIn && this.currentUser?.addresses?.length && !this.shipping.firstName) {
+      if (this.getAddressId === -1) {
+        this.changeShippingAddress(this.currentUser.addresses[0].id);
+      }
+    }
   },
   methods: {
     async clickContinuePayment () {
@@ -193,7 +211,7 @@ export default {
       if (this.$v.shipping.$invalid) {
         return;
       }
-      this.nextAccordion(1);      
+      this.nextAccordion(1);
       this.$store.dispatch('checkout/savePaymentDetails', {
         apartmentNumber: this.shipping.apartmentNumber,
         city: this.shipping.city,
@@ -210,6 +228,18 @@ export default {
       });
       this.sendShippingDataToCheckout();
       await this.$store.dispatch('cart/pullMethods', { forceServerSync: true })
+    },
+    changeShippingAddress (addressId) {
+      if (this.getAddressId === addressId) return;
+      this.$store.dispatch('checkoutStep/saveAddressId', addressId);
+      const shippingAddress = this.currentUser?.addresses?.find( address => address.id === addressId );
+      if (shippingAddress) {
+        this.shipping.apartmentNumber = shippingAddress?.street[1]
+        this.shipping.city = shippingAddress.city;
+        this.shipping.streetAddress = shippingAddress?.street[0];
+        this.shipping.zipCode = shippingAddress?.postcode;
+        this.shipping.state = shippingAddress?.region?.region;
+      }
     }
   }
 };
@@ -384,5 +414,31 @@ export default {
     &::-ms-expand {
       display: none;
     }
+  }
+
+  .o-shipping {
+    &__addresses {
+      &--container {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+
+        &-content {
+          font-size: 18px;
+          padding: 10px 0;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          width: 30%;
+          text-align: center;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .selected {
+    background-color: var(--c-primary);
+    color: white;
+    border: 1px solid transparent;
   }
 </style>

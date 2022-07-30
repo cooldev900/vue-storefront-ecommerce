@@ -38,7 +38,7 @@ export const Shipping = {
         street: ['', ''],
         postcode: '',
         telephone: ''
-      }
+      },
     }
   },
   computed: {
@@ -52,7 +52,12 @@ export const Shipping = {
       locationKind: 'omLocator/locationKind',
       activeLocation: 'omLocator/activeLocation',
       getShippingDetails: "checkout/getShippingDetails",
+      isLoggedIn: 'user/isLoggedIn',
+      getAddressId: 'checkoutStep/getAddressId',
     }),
+    hasRegisterdShippingAddress() {
+      return !!this.currentUser?.addresses?.length
+    },
     checkoutShippingDetails () {
       return this.$store.state.checkout.shippingDetails
     },
