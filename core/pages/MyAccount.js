@@ -3,6 +3,8 @@ import i18n from '@vue-storefront/i18n'
 import Composite from '@vue-storefront/core/mixins/composite'
 import { Logger } from '@vue-storefront/core/lib/logger'
 import { currentStoreView, localizedRoute } from '@vue-storefront/core/lib/multistore'
+import { mapActions } from 'vuex'
+import { ModalList } from 'theme/store/ui/modals'
 
 export default {
   name: 'MyAccount',
@@ -28,6 +30,7 @@ export default {
     if (!this.$store.getters['user/isLoggedIn']) {
       localStorage.setItem('redirect', this.$route.path)
       this.$router.push(localizedRoute('/', currentStoreView().storeCode))
+      this.openModal({ name: ModalList.Auth, payload: 'login' })
     }
   },
   destroyed () {
@@ -35,6 +38,9 @@ export default {
     this.$bus.$off('myAccount-before-changePassword', this.onBeforeChangePassword)
   },
   methods: {
+    ...mapActions('ui', {
+      openModal: 'openModal'
+    }),
     onBeforeChangePassword (passwordData) {
       this.$store.dispatch('user/changePassword', passwordData)
     },
