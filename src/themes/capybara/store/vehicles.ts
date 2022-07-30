@@ -404,7 +404,7 @@ export const vehiclesStore = {
       }
 
       const attributeLabel = attribute.options.find(
-        option => option.value === attributeId.toString()
+        option => option.value === attributeId?.toString()
       )?.label;
       return attributeLabel || null;
     },
