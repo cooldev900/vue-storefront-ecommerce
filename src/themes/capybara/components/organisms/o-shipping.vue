@@ -202,6 +202,8 @@ export default {
     if (this.isLoggedIn && this.currentUser?.addresses?.length && !this.shipping.firstName) {
       if (this.getAddressId === -1) {
         this.changeShippingAddress(this.currentUser.addresses[0].id);
+      } else {
+        this.changeShippingAddress(this.getAddressId);
       }
     }
   },
@@ -230,7 +232,6 @@ export default {
       await this.$store.dispatch('cart/pullMethods', { forceServerSync: true })
     },
     changeShippingAddress (addressId) {
-      if (this.getAddressId === addressId) return;
       this.$store.dispatch('checkoutStep/saveAddressId', addressId);
       const shippingAddress = this.currentUser?.addresses?.find( address => address.id === addressId );
       if (shippingAddress) {
