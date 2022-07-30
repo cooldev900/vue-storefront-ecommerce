@@ -199,7 +199,8 @@ export default {
   },
   async mounted () {    
     await this.$store.dispatch('checkoutStep/loadAddressId');
-    if (this.isLoggedIn && this.currentUser?.addresses?.length && !this.shipping.firstName) {
+    await this.$store.dispatch('checkout/load');
+    if (this.isLoggedIn && this.currentUser?.addresses?.length && !this.getShippingDetails.streetAddress) {
       if (this.getAddressId === -1) {
         this.changeShippingAddress(this.currentUser.addresses[0].id);
       } else {
