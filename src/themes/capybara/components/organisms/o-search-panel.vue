@@ -147,7 +147,7 @@ export default {
   },
   methods: {
     getResultValue(result) {
-      return result.text
+      return result.text + " / " + result.field; 
     },
     async getSearchResult(input) {
       this.search = input;
@@ -161,8 +161,8 @@ export default {
               } = await axios.post(`${config.api.url}/api/search/es-search`, {
                 query: input
               });
-          console.log(result, 'result');
-          return result;
+          
+          return result.filter((data, index, self) => index === self.findIndex( d => d?.text === data?.text && d?.field === data?.field));
         } catch(e) {
           return [];
         }
