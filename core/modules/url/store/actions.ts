@@ -1,4 +1,4 @@
-import { transformProductUrl, transformCategoryUrl, transformCmsPageUrl } from '@vue-storefront/core/modules/url/helpers/transformUrl';
+import { transformProductUrl, transformCategoryUrl, transformCmsPageUrl, searchPageUrl } from '@vue-storefront/core/modules/url/helpers/transformUrl';
 import { isServer } from '@vue-storefront/core/helpers';
 import { UrlState } from '../types/UrlState'
 import { ActionTree } from 'vuex';
@@ -54,11 +54,12 @@ export const actions: ActionTree<UrlState, any> = {
     await Promise.all(registrationRoutePromises)
   },
   mapUrl ({ state, dispatch }, { url, query }: { url: string, query: string}) {
+    
     const parsedQuery = typeof query === 'string' ? queryString.parse(query) : query
     const storeCodeInPath = storeCodeFromRoute(url)
     url = normalizeUrlPath(url)
     if (!url) url = "/";
-    console.log(state.dispatcherMap, 'dispatcherMap');
+    
     return new Promise((resolve, reject) => {
       if (state.dispatcherMap[url]) {
         return resolve(parametrizeRouteData(state.dispatcherMap[url], query, storeCodeInPath))
@@ -107,10 +108,58 @@ export const actions: ActionTree<UrlState, any> = {
    */
   async mapFallbackUrl ({ dispatch }, { url, params }: { url: string, params: any}) {
     url = (removeStoreCodeFromRoute(url.startsWith('/') ? url.slice(1) : url) as string)
+    
+    if (url === 'search') {
+      const searchData = {
+        _index: 'alfardan_3_category_1659289252',
+        _type: 'search',
+        _id: '',
+        _score: 0,
+        _ignored: [ 'description.keyword' ],
+        _source: {
+          parent_id: 2,
+          path: '1/2/6',
+          position: 4,
+          level: 2,
+          children_count: 0,
+          id: 'search',
+          meta_keywords: null,
+          meta_description: null,
+          description: '',
+          is_active: true,
+          landing_page: null,
+          is_anchor: true,
+          include_in_menu: 1,
+          custom_use_parent_settings: 0,
+          custom_apply_to_products: 0,
+          name: 'العناية بالسيارة',
+          image: null,
+          meta_title: null,
+          display_mode: 'PRODUCTS',
+          custom_design: null,
+          page_layout: 'category-full-width',
+          url_key: 'search',
+          url_path: 'search',
+          custom_design_from: null,
+          custom_design_to: null,
+          slug: '',
+          default_sort_by: 'position',
+          available_sort_by: [ 'name', 'price', 'position' ],
+          product_count: 76,
+          children_data: []
+        }
+      }
+
+      const [result] = await Promise.all([
+        dispatch('transformFallback', { ...searchData, params }),
+        dispatch('saveFallbackData', searchData)
+      ])
+      return result
+    }
 
     // search for record in ES based on `url`
     const fallbackData = await dispatch('getFallbackByUrl', { url, params })
-
+    
     // if there is record in ES then map data
     if (fallbackData) {
       const [result] = await Promise.all([
@@ -135,6 +184,7 @@ export const actions: ActionTree<UrlState, any> = {
     const groupToken = context.rootState.user.groupToken || null
     try {
       const requestUrl = `${adjustMultistoreApiUrl(processURLAddress(config.urlModule.map_endpoint))}`
+      
       let response: any = await fetch(
         requestUrl,
         {
@@ -187,6 +237,9 @@ export const actions: ActionTree<UrlState, any> = {
       }
       case 'cms_page': {
         return transformCmsPageUrl(_source)
+      }
+      case 'search' : {
+        return searchPageUrl();
       }
       default: {
         return {

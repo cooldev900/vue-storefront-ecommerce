@@ -30,3 +30,10 @@ export const transformCmsPageUrl = (cmsPage) => {
     }
   }
 }
+
+export const searchPageUrl = () => {
+  const { storeCode, appendStoreCode } = currentStoreView()
+  return {
+    name: localizedDispatcherRouteName('search', storeCode, appendStoreCode),
+  }
+}
