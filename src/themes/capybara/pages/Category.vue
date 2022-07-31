@@ -626,7 +626,6 @@ export default {
     },
     activeVehicle () {
       this.$store.dispatch('category-next/switchSearchFilters', [
-        { id: 'updated_at:desc', type: 'sort' }
       ]);
     },
     $route: {
