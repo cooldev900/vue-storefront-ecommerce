@@ -626,6 +626,7 @@ export default {
     },
     activeVehicle () {
       this.$store.dispatch('category-next/switchSearchFilters', [
+        { id: `${config.products.defaultSortBy.attribute}:${config.products.defaultSortBy.order}`, type: 'sort' }
       ]);
     },
     $route: {
