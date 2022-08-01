@@ -149,7 +149,22 @@
             <span>{{ $t("Enquire") }}</span>
           </SfButton>
         </div>
-        <slot v-else name="reviews" v-bind="{ maxRating, scoreRating }">
+        <slot v-else name="reviews" v-bind="{ maxRating, scoreRating, product, loading }">
+          <div class="product-card__action-area">
+            <SfButton
+              :disabled="loading"
+              class="
+              a-add-to-cart
+              om-btn--primary
+              btn--narrow
+              sf-button--full-width
+            "
+              @click.native="addToCart(product)"
+            >
+              <SfLoader v-if="loading" :loading="loading" />
+              <span v-else>{{ $t("Add to cart") }}</span>
+            </SfButton>
+          </div>
           <div
             v-if="typeof scoreRating === 'number'"
             class="sf-product-card__reviews"
@@ -189,6 +204,12 @@ import { ModalList } from 'theme/store/ui/modals';
 import OmQuantitySelector from './om-quantity-selector.vue';
 import { mapGetters, mapActions } from 'vuex';
 import { onlineHelper } from '@vue-storefront/core/helpers';
+import buildQuery from '@vue-storefront/core/modules/catalog/helpers/associatedProducts/buildQuery.ts';
+import { ProductService } from '@vue-storefront/core/data-resolver/ProductService';
+import { StorageManager } from '@vue-storefront/core/lib/storage-manager';
+import {
+  SfLoader
+} from '@storefront-ui/vue';
 
 export default {
   name: 'OmProductCard',
@@ -201,7 +222,8 @@ export default {
     SfCircleIcon,
     SfBadge,
     SfButton,
-    OmQuantitySelector
+    OmQuantitySelector,
+    SfLoader
   },
   directives: { focus },
   props: {
@@ -393,6 +415,7 @@ export default {
     return {
       isAddingToCart: false,
       qty: 1,
+      loading: false,
     };
   },
   computed: {
@@ -459,6 +482,113 @@ export default {
     ...mapActions('ui', {
       openModal: 'openModal'
     }),
+    async addToCart (product) {
+      this.loading = true;
+      this.$store.dispatch('product/setCurrent', product);
+      const res = await this.$store.dispatch('stock/check', {
+        product: product,
+        qty: product.qty
+      });
+      let manageQuantity = res.isManageStock;
+      let max = res.qty || res.isManageStock ? res.qty : null;
+      let isAvailable = !onlineHelper.isOnline || !!max || !manageQuantity || ['simple', 'configurable'].includes(
+        this.product?.type_id
+      );
+      if (!isAvailable) {
+        this.loading = false;
+        return;
+      }
+
+      this.isAddingToCart = true;
+      const query = buildQuery([product.sku]);
+      try {
+        const { items = [] } = await ProductService.getProducts({
+          query,
+          size: 1,
+          configuration: { sku: product.sku },
+          options: {
+            prefetchGroupProducts: true,
+            assignProductConfiguration: true
+          }
+        });
+        const productData = items[0] || null;
+        productData.qty = this.qty;
+        const { serverResponses } = await this.$store.dispatch('cart/addItem', {
+          productToAdd: Object.assign({}, productData, { qty: this.qty })
+        });
+        let errorMessage = '';
+        if (serverResponses?.length) {
+          const response = serverResponses[0];
+          if (response.status !== 200) {
+            errorMessage = response?.result?.result;
+          }
+        }
+
+        const cartItems = await StorageManager.get('cart').getItem('current-cart');
+        cartItems.forEach(item => {
+          if (item.groupedParents) {
+            item.groupedParents.map(p => {
+              if (p.name === productData?.name && this.activeVehicle?.National_Code) {
+                if (item.fitVehicles) {
+                  const existFitVehicle = item.fitVehicles.find(item => item.National_Code === this.activeVehicle?.National_Code);
+                  if (!existFitVehicle) {
+                    item.fitVehicles = [ ...item.fitVehicles, this.activeVehicle ];
+                  }
+                } else {
+                  item.fitVehicles = [ this.activeVehicle ];
+                }
+
+                // setting main_image
+              }
+              if (p.name === productData?.name && productData?.main_image) {
+                item.main_image = productData?.main_image;
+              }
+            })
+          } else {
+            if (item.sku === productData?.sku && this.activeVehicle?.National_Code) {
+              if (item.fitVehicles) {
+                const existFitVehicle = item.fitVehicles.find(item => item.National_Code === this.activeVehicle?.National_Code);
+                if (!existFitVehicle) {
+                  item.fitVehicles = [ ...item.fitVehicles, this.activeVehicle ];
+                }
+              } else {
+                item.fitVehicles = [ this.activeVehicle ];
+              }
+            }
+          }
+        })
+
+        await StorageManager.get('cart').setItem('current-cart', cartItems).catch((reason) => {
+          Logger.error(reason)()
+        })
+        const storedItems = await StorageManager.get('cart').getItem('current-cart');
+        this.$store.dispatch('cart/syncCartWhenLocalStorageChange', { items: storedItems })
+        this.loading = false;
+        console.log(storedItems, 'storeItems');
+        this.$store.commit(
+          'notification/clearNotification',
+          { root: true }
+        );
+
+        this.openModal({
+          name: ModalList.OmCartPopupModal,
+          payload: {
+            qty: this.qty,
+            name: productData.name,
+            errorMessage
+          }
+        });
+      } catch (message) {
+        this.loading = false;
+        this.$store.dispatch(
+          'notification/spawnNotification',
+          notifications.createNotification({ type: 'danger', message }),
+          { root: true }
+        );
+      }
+      this.$store.dispatch('vehicles/saveQTY', 1);
+      this.isAddingToCart = false;
+    },
     showEnquiryModal () {
       this.$store.dispatch('product/setCurrent', this.product);
       this.openModal({

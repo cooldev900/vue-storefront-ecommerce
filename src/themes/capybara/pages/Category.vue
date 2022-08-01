@@ -209,7 +209,7 @@
                   <b :style="{ color: 'black' }">Not Available Online</b>
                 </template>
                 <template #reviews>
-                  <div class="product-card__action-area">
+                  <!-- <div class="product-card__action-area">
                     <SfButton
                       :disabled="isProductDisabled || loading"
                       class="
@@ -223,7 +223,7 @@
                       <SfLoader v-if="loading" :loading="loading" />
                       <span v-else>{{ $t("Add to cart") }}</span>
                     </SfButton>
-                  </div>
+                  </div> -->
                 </template>
               </OmProductCard>
             </div>
