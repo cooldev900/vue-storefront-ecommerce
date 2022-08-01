@@ -147,7 +147,7 @@ export default {
   },
   methods: {
     getResultValue(result) {
-      return result.text + " / " + result.field; 
+      return result.text + " - " + result.field; 
     },
     async getSearchResult(input) {
       this.search = input;

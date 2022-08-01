@@ -1,0 +1,39 @@
+version: '3.0'
+services:
+  redis:
+    image: redis:5.0-alpine
+  app:
+    # image: divante/vue-storefront:latest
+    build:
+      context: .
+      dockerfile: docker/vue-storefront/Dockerfile
+    env_file: docker/vue-storefront/default.env
+    environment:
+      VS_ENV: dev
+    volumes:
+      - './babel.config.js:/var/www/babel.config.js'
+      - './config:/var/www/config'
+      - './core:/var/www/core'
+      - './ecosystem.json:/var/www/ecosystem.json'
+      - './.eslintignore:/var/www/.eslintignore'
+      - './.eslintrc.js:/var/www/.eslintrc.js'
+      - './lerna.json:/var/www/lerna.json'
+      - './tsconfig.json:/var/www/tsconfig.json'
+      - './tsconfig-build.json:/var/www/tsconfig-build.json'
+      - './shims.d.ts:/var/www/shims.d.ts'
+      - './package.json:/var/www/package.json'
+      - './src:/var/www/src'
+      - './var:/var/www/var'
+      - './packages:/var/www/packages'
+    tmpfs:
+      - /var/www/dist
+    depends_on:
+      - redis
+  varnish:
+    image: cooptilleuls/varnish:6.0-stretch
+    volumes:
+      - ./src/modules/vsf-cache-varnish/docker/varnish/config.vcl:/usr/local/etc/varnish/default.vcl
+    ports:
+      - '80:80'
+    depends_on:
+      - app

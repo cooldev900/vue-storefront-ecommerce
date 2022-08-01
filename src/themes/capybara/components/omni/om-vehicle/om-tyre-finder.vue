@@ -307,7 +307,7 @@ export default {
     display: block;
     }
     &__container{
-      padding: 15px 0;
+      padding: 15px 20px;
       display: flex;
       justify-content: center;
       align-items: center;

@@ -3,7 +3,7 @@
     <VueSkeletonLoader
       type="rect"
       width="100%"
-      height="20px"
+      height="60px"
       animation="fade"
       class="title"
     />

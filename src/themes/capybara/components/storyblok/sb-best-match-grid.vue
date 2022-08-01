@@ -1,11 +1,9 @@
 <template>
-  <div class="grid-container">
+  <div class="grid-container--restricted">
     <div class="promo-area">
       <div class="promo-area__item" v-for="(card, index) in cards" :key="index">
-        <router-link
-          :to="localizedRoute(card.cta)"
-        >
-          <img class="promo-area__item--img" :src="card.imgUrl">
+        <router-link :to="localizedRoute(card.cta)">
+          <img class="promo-area__item--img" :src="card.imgUrl" />
         </router-link>
       </div>
     </div>
@@ -13,73 +11,73 @@
 </template>
 
 <script>
-import OmCard from '../omni/om-card-collection/om-card.vue';
-import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
+import OmCard from "../omni/om-card-collection/om-card.vue";
+import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 
 export default {
-  name: 'SbBestMatchGrid',
+  name: "SbBestMatchGrid",
   components: {
     OmCard,
     SwiperSlide,
-    Swiper
+    Swiper,
   },
   props: {
     content: {
       type: Object,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   computed: {
-    cards () {
+    cards() {
       if (this.content) {
         return this.content.logos.map((logo) => ({
           imgUrl: logo.logo.filename,
           title: logo.title,
           text: logo.description,
-          cta: logo.cta.url
+          cta: logo.cta.url,
         }));
       } else {
         return [];
       }
     },
-    swiper () {
+    swiper() {
       return this.$refs.bestMatchCarousel.$swiper;
-    }
+    },
   },
-  data () {
+  data() {
     return {
       swiperOption: {
         slidesPerView: 4,
         spaceBetween: 20,
         pagination: {
-          el: '.swiper-pagination--best-match',
-          clickable: true
+          el: ".swiper-pagination--best-match",
+          clickable: true,
         },
         navigation: {
-          nextEl: '.swiper-button-next--best-match',
-          prevEl: '.swiper-button-prev--best-match'
+          nextEl: ".swiper-button-next--best-match",
+          prevEl: ".swiper-button-prev--best-match",
         },
         breakpoints: {
           1401: {
             slidesPerView: 3.3,
-            spaceBetween: 30
+            spaceBetween: 30,
           },
           1300: {
             slidesPerView: 3.2,
-            spaceBetween: 30
+            spaceBetween: 30,
           },
           600: {
             slidesPerView: 2,
-            spaceBetween: 20
+            spaceBetween: 20,
           },
           320: {
             slidesPerView: 1.1,
-            spaceBetween: 10
-          }
-        }
-      }
+            spaceBetween: 10,
+          },
+        },
+      },
     };
-  }
+  },
 };
 </script>
 <style lang="scss">
@@ -102,6 +100,7 @@ export default {
     &--img {
       width: 100%;
       vertical-align: middle;
+      position: relative;
     }
   }
   &__title {
@@ -214,5 +213,20 @@ export default {
   .swiper-slide {
     height: auto !important;
   }
+}
+.promo-area__item a{
+  display: inline-block;
+  overflow: hidden;
+  transition: 0.3s ease;
+img{
+  transition: 0.3s ease;
+&:hover{
+  transform: scale(1.04);
+  transition: .2s ease;
+}
+}
+&:hover{
+  transition: .2s ease;
+}
 }
 </style>

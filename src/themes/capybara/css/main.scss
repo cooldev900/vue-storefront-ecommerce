@@ -148,6 +148,14 @@
     @include for-mobile{
       padding: 0 15px;
     }
+  &--restricted{
+    max-width: 1200px;
+    padding: 0 25px;
+    margin: auto;
+    @include for-mobile{
+      padding: 0 15px;
+    }
+  }
   }
   .om-btn--primary{
     height: 54px;
@@ -155,9 +163,21 @@
     padding-right: 30px;
     border-radius: 4px;
     background-color: orange;
+    color: #fff;
     font-size: 15px !important;
     font-weight: 700;
     font-family: var(--font-family-bold);
+    &:hover{
+      background-color: grey;
+    }
+  }
+  .sf-add-to-cart__button:disabled{
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  .sf-button:disabled{
+    cursor: not-allowed;
+    opacity: 0.6;
   }
   .btn--narrow{
     height: 30px;

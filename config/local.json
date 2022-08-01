@@ -10,8 +10,8 @@
       "minifyJS": true,
       "minifyCSS": true
     },
-    "useOutputCacheTagging": false,
-    "useOutputCache": false,
+    "useOutputCacheTagging": true,
+    "useOutputCache": true,
     "outputCacheDefaultTtl": 86400,
     "availableCacheTags": [
       "attribute",
@@ -29,7 +29,7 @@
     ],
     "invalidateCacheKey": "aeSu7aip",
     "invalidateCacheForwarding": true,
-    "invalidateCacheForwardUrl": "http://localhost:8082/invalidate?key=aeSu7aip&tag=",
+    "invalidateCacheForwardUrl": "http://localhost:8080/invalidate?key=aeSu7aip&tag=",
     "dynamicConfigReload": true,
     "dynamicConfigContinueOnError": false,
     "dynamicConfigExclude": [
@@ -231,7 +231,7 @@
         "dateFormat": "HH:mm D-M-YYYY"
       },
       "seo": {
-        "defaultTitle": "Ocean Group"
+        "defaultTitle": "Alfardan Commercial"
       }
     },
     "mini": {
@@ -439,6 +439,7 @@
         "brand_colour",
         "brand_logo",
         "oe_brand",
+        "battery_capacity",
         "usp1",
         "usp2",
         "secondary_title",
@@ -529,6 +530,7 @@
         "brand_colour",
         "brand_logo",
         "oe_brand",
+        "battery_capacity",
         "usp1",
         "usp2",
         "secondary_title",
@@ -767,13 +769,14 @@
       "Melange graphite": "#eeeeee"
     },
     "defaultSortBy": {
-      "attribute": "updated_at",
+      "attribute": "stock.is_in_stock",
       "order": "desc"
     },
     "sortByAttributes": {
       "Latest": "updated_at:desc",
-      "Price: Low to high": "final_price",
-      "Price: High to low": "final_price:desc"
+      "Price: Low to high": "price",
+      "Price: High to low": "price:desc",
+      "Stock": "stock.is_in_stock:desc"
     },
     "gallery": {
       "mergeConfigurableChildren": true,
@@ -826,7 +829,7 @@
         }
       ]
     },
-    "priceFilterKey": "final_price",
+    "priceFilterKey": "price",
     "priceFilters": {
       "ranges": [
         {
@@ -948,15 +951,6 @@
   },
   "shipping": {
     "methods": [
-      {
-        "method_title": "DPD Courier",
-        "method_code": "flatrate",
-        "carrier_code": "flatrate",
-        "amount": 4,
-        "price_incl_tax": 5,
-        "default": true,
-        "offline": true
-      }
     ]
   },
   "syncTasks": {
@@ -1075,7 +1069,9 @@
     "enabled": false
   },
   "varnish": {
-    "enabled": false
+    "enabled": true,
+    "host": "localhost",
+    "port": 80
   },
   "purgeConfig": [
     "server.invalidateCacheKey",

@@ -1,6 +1,6 @@
 <template>
   <div class="m-product-gallery">
-    <div class="new-label" v-if="isNew"><h2>{{$t('NEW')}}</h2></div>
+    <div class="new-label" v-if="isNew"><span>{{$t('New')}}</span></div>
     <OmGallery
       ref="gallery"
       :image-width="900"
@@ -272,9 +272,19 @@ width: 100%;
 }
 .new-label {
   position: absolute;
-  left: 20px;
-  color: red;
-  z-index: 10;
+    right: 20px;
+    top: 20px;
+    color: #fff;
+    height: 30px;
+    align-items: center;
+    width: 30px;
+    justify-content: center;
+    display: flex;
+    padding: 10px;
+    background: green;
+    border-radius: 100%;
+    z-index: 1;
+    font-size: 14px;
 }
 ::v-deep .sf-image--has-size img:not(.noscript){
   position: absolute !important;

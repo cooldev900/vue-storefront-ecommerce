@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="category">
-      <lazy-hydrate  :trigger-hydration="loading">
+      <lazy-hydrate :trigger-hydration="loading">
         <OmCategoryHeader
           v-if="!!getCurrentCategory"
           :title="getCurrentCategory.name"
@@ -140,7 +140,7 @@
         <div class="products">
           <div v-if="loading && !currentPageProducts.length">
             <transition-group
-              
+
               name="products__slide"
               tag="div"
               class="products__grid"
@@ -163,7 +163,7 @@
           <template>
             <!-- <lazy-hydrate :trigger-hydration="loading"> -->
 
-            <div              
+            <div
               name="products__slide"
               tag="div"
               class="products__grid"
@@ -612,11 +612,8 @@ export default {
     //   );
     // },
     shouldShowVehicleCard () {
-      if (this.$route.path === '/car-accessories' ) 
-        return true;
-      else 
-        return this.getCurrentCategory?.id && this.getCurrentCategory?.page_layout !== 'category-full-width'
-    },
+      if (this.$route.path === '/car-accessories') { return true; } else { return this.getCurrentCategory?.id && this.getCurrentCategory?.page_layout !== 'category-full-width' }
+    }
   },
   watch: {
     sortOrder () {
@@ -626,13 +623,13 @@ export default {
     },
     activeVehicle: {
       immediate: true,
-      handler() {
+      handler () {
         this.$store.dispatch('category-next/switchSearchFilters', [
           { id: `${config.products.defaultSortBy.attribute}:${config.products.defaultSortBy.order}`, type: 'sort' }
         ]);
       },
       deep: true
-    },      
+    },
     $route: {
       immediate: true,
       handler (to, from) {
@@ -651,10 +648,11 @@ export default {
     await composeInitialPageState(store, route);
   },
   async beforeRouteEnter (to, from, next) {
-    if (isServer) 
+    if (isServer) {
       next((vm) => {
         vm.loading = false;
       });
+    }
     // SSR no need to invoke SW caching here
     else if (!from.name) {
       // SSR but client side invocation, we need to cache products and invoke requests from asyncData for offline support
@@ -681,7 +679,7 @@ export default {
       }
     });
     this.$store.dispatch('category-next/switchSearchFilters', [
-      { id: 'updated_at:desc', type: 'sort' }
+      { id: `${config.products.defaultSortBy.attribute}:${config.products.defaultSortBy.order}`, type: 'sort' }
     ]);
     this.$bus.$on('product-after-list', this.initPagination);
     window.addEventListener('resize', this.getBrowserWidth);
