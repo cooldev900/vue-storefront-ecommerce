@@ -90,6 +90,7 @@ import config from 'config';
 import axios from 'axios';
 import Autocomplete from '@trevoreyre/autocomplete-vue'
 import '@trevoreyre/autocomplete-vue/dist/style.css'
+import i18n from '@vue-storefront/i18n'
 
 export default {
   name: 'OSearchPanel',
@@ -147,7 +148,7 @@ export default {
   },
   methods: {
     getResultValue(result) {
-      return result.text + " - " + result.field; 
+      return i18n.t(result.text); 
     },
     async getSearchResult(input) {
       this.search = input;
