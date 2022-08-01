@@ -57,7 +57,7 @@
         v-model.trim="shipping.apartmentNumber"
         class="form__element"
         name="apartment-number"
-        :label="$t('Address line 2')"
+        :label="$t('Address Line 2')"
       />
       <SfInput
         v-model.trim="shipping.city"

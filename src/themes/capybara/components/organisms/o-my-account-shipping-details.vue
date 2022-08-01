@@ -37,7 +37,7 @@
             <SfInput
               v-model="editedAddress.streetName"
               name="streetName"
-              :label="$t('Street Name')"
+              :label="$t('Address Line 1')"
               required
               :valid="!$v.editedAddress.streetName.$error"
               :error-message="$t('Field is required.')"
@@ -46,7 +46,7 @@
             <SfInput
               v-model="editedAddress.apartment"
               name="apartment"
-              :label="$t('House/Apartment number')"
+              :label="$t('Address Line 2')"
               required
               :valid="!$v.editedAddress.apartment.$error"
               :error-message="$t('Field is required.')"
