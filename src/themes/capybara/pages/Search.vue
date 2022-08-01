@@ -364,6 +364,8 @@ import { Logger } from '@vue-storefront/core/lib/logger';
 import { notifications } from '@vue-storefront/core/modules/cart/helpers';
 import { StorageManager } from '@vue-storefront/core/lib/storage-manager';
 import { onlineHelper } from '@vue-storefront/core/helpers'
+import * as types from '@vue-storefront/core/modules/catalog-next/store/category/mutation-types';
+
 const THEME_PAGE_SIZE = 12;
 const LAZY_LOADING_ACTIVATION_BREAKPOINT = 1024;
 
@@ -426,6 +428,7 @@ export default {
   computed: {
     ...mapGetters({
       getCurrentSearchQuery: 'category-next/getCurrentSearchQuery',
+      getCategorySearchProductsStats: 'category-next/getCategorySearchProductsStats',
       getCategoryProducts: 'category-next/getCategoryProducts',
       getCurrentCategory: 'category-next/getCurrentCategory',
       getCategoryProductsTotal: 'category-next/getCategoryProductsTotal',
@@ -625,9 +628,14 @@ export default {
     $route: {
       immediate: true,
       handler (to, from) {
+        console.log(to, 'route', from);
         this.$store.commit('vehicles/toggleSetPrompt', false);
         if (to.query?.page && to?.path === from?.path) {
-          this.changePage(parseInt(to.query.page) || 1);
+          if (to?.query.page !== from?.query?.page) {
+            this.changePage(parseInt(to.query.page)); 
+          } else {
+            this.changePage(1, true)
+          }         
         } else {
           this.initPagination();
         }
@@ -649,25 +657,25 @@ export default {
       // SSR but client side invocation, we need to cache products and invoke requests from asyncData for offline support
       next(async (vm) => {
         // vm.loading = true;
-        // await composeInitialPageState(vm.$store, to, true);
-        // await vm.$store.dispatch('category-next/cacheProducts', { route: to }); // await here is because we must wait for the hydration
+        await composeInitialPageState(vm.$store, to, true);
+        await vm.$store.dispatch('category-next/cacheProducts', { route: to }); // await here is because we must wait for the hydration
         vm.loading = false;
       });
     } else {
       // Pure CSR, with no initial category state
       next(async (vm) => {
         vm.loading = true;
-        // vm.$store.dispatch('category-next/cacheProducts', { route: to });
+        vm.$store.dispatch('category-next/cacheProducts', { route: to });
         vm.loading = false;
       });
     }
   },
-  mounted () {
-    this.unsubscribeFromStoreAction = this.$store.subscribeAction((action) => {
-      if (action.type === 'category-next/loadAvailableFiltersFrom') {
-        this.aggregations = action.payload.aggregations;
-      }
-    });
+  async mounted () {
+    // this.unsubscribeFromStoreAction = this.$store.subscribeAction((action) => {
+    //   if (action.type === 'category-next/loadAvailableFiltersFrom') {
+    //     this.aggregations = action.payload.aggregations;
+    //   }
+    // });
     // this.$store.dispatch('category-next/switchSearchFilters', [
     //   { id: 'updated_at:desc', type: 'sort' }
     // ]);
@@ -855,7 +863,8 @@ export default {
       await this.$store.dispatch('category-next/loadMoreCategoryProducts');
       this.loadingProducts = false;
     },
-    async changePage (page = this.currentPage) {
+    async changePage (page = this.currentPage, reload = false) {
+      console.log('here page change' + page);
       this.loading = true;
       const start = (page - 1) * THEME_PAGE_SIZE;
 
@@ -888,11 +897,11 @@ export default {
       }
 
       const filterQuery = buildFilterProductsQuery(
-        this.getCurrentCategory,
+        this.getCurrentCategory ,
         filters
       );
-      console.log(this.$route.query, 'query');
-      if (this.$route.query && this.$route.query.search) {
+      console.log(this.$route.query?.search, 'query', filterQuery);
+      if (this.$route?.query && this.$route?.query?.search) {
         filterQuery.setSearchText(this.$route.query.search);
       }
 
@@ -904,6 +913,19 @@ export default {
         includeFields: includeFields,
         excludeFields: excludeFields
       });
+      
+      const {
+      items,
+      perPage,
+      total,
+      aggregations,
+      attributeMetadata
+    } = searchResult;
+
+    if (reload) {
+      this.$store.commit(types.CATEGORY_SET_SEARCH_PRODUCTS_STATS, { perPage, start, total });
+      this.$store.commit(types.CATEGORY_SET_PRODUCTS, items);
+    }
 
       this.getMoreCategoryProducts = await this.$store.dispatch(
         'category-next/processCategoryProducts',
@@ -932,6 +954,7 @@ export default {
       }
     },
     changeFilter (filter) {
+      this.$store.commit(types.CATEGORY_SET_SEARCH_PRODUCTS_STATS, { ...this.getCategorySearchProductsStats, start: 0 });
       this.$store.dispatch('category-next/switchSearchFilters', [filter]);
     },
     clearAllFilters () {
@@ -979,22 +1002,17 @@ export default {
     }
   },
   metaInfo () {
-    const storeView = currentStoreView();
-    const { meta_title, meta_description, name, slug } =
-      this.getCurrentCategory;
-    const meta = meta_description
-      ? [
-        {
-          vmid: 'description',
-          name: 'description',
-          content: htmlDecode(meta_description)
-        }
-      ]
-      : [];
-
     return {
-      title: htmlDecode(meta_title || name),
-      meta
+      title: this.$route.meta.title,
+      meta: this.$route.meta.description
+        ? [
+          {
+            vmid: 'search',
+            name: 'search',
+            content: this.$route.meta.description
+          }
+        ]
+        : []
     };
   }
 };
