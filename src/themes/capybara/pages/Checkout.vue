@@ -206,7 +206,7 @@ export default {
     },
     shippingAddressText () {
       let excludeFields = ['firstName', 'lastName', 'emailAddress', 'shippingCarrier', 'shippingMethod', 'region_id', 'telephone', 'phoneNumber', 'country'];
-      return Object.keys(this.getShippingDetails).filter(payment => !excludeFields.includes(payment) && this.getShippingDetails[payment]).map(key => this.getShippingDetails[key]).join(', ');
+      return Object.keys(this.getShippingDetails).filter(payment => !excludeFields.includes(payment) && this.getShippingDetails[payment]).map(key => this.getShippingDetails[key]).filter(value =>!!value).join(', ');
     },    
     getBookedTime() {
       if (this.slotData?.id) {

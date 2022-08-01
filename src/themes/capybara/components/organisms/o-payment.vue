@@ -443,8 +443,8 @@ export default {
     },
     billingAddress () {
       let excludeFields = ['firstName', 'lastName', 'region_id', 'telephone', 'phoneNumber', 'country', 'paymentMethod', 'taxId', 'isThankYouPage', 'modifiedAt'];
-      if (this.paymentDetails.firstName) return Object.keys(this.paymentDetails).filter(payment => !excludeFields.includes(payment)).map(key => this.paymentDetails[key]).join(', ');
-      else return Object.keys(this.getShippingDetails).filter(payment => !excludeFields.includes(payment)).map(key => this.getShippingDetails[key]).join(', ');
+      if (this.paymentDetails.firstName) return Object.keys(this.paymentDetails).filter(payment => !excludeFields.includes(payment)).map(key => this.paymentDetails[key]).filter(value => !!value).join(', ');
+      else return Object.keys(this.getShippingDetails).filter(payment => !excludeFields.includes(payment)).map(key => this.getShippingDetails[key]).filter(value => !!value).join(', ');
     }
   },
   beforeCreate () {
