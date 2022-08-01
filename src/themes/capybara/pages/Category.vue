@@ -624,11 +624,15 @@ export default {
         this.changePage();
       }
     },
-    activeVehicle () {
-      this.$store.dispatch('category-next/switchSearchFilters', [
-        { id: `${config.products.defaultSortBy.attribute}:${config.products.defaultSortBy.order}`, type: 'sort' }
-      ]);
-    },
+    activeVehicle: {
+      immediate: true,
+      handler() {
+        this.$store.dispatch('category-next/switchSearchFilters', [
+          { id: `${config.products.defaultSortBy.attribute}:${config.products.defaultSortBy.order}`, type: 'sort' }
+        ]);
+      },
+      deep: true
+    },      
     $route: {
       immediate: true,
       handler (to, from) {
