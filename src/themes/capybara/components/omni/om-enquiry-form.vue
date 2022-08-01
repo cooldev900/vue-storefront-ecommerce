@@ -362,5 +362,8 @@ export default {
   ::v-deep .sf-loader__spinner {
     stroke: white !important;
   }
+  .sf-loader {
+    width: 21px;
+  }
 }
 </style>
