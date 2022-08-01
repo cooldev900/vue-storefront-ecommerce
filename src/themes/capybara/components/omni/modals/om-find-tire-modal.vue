@@ -47,7 +47,7 @@
               <div class="number-holder">
                 <span class="number">3</span>
               </div>
-              <div class="columnTitle"><h5>{{ $t('Rim Title') }}</h5></div>
+              <div class="columnTitle"><h5>{{ $t('Rim title') }}</h5></div>
               <div class="imageslot">
                 <img
                   src="/assets/tire-size-03.png"
@@ -62,7 +62,7 @@
           </div>
           <div class="tire-finder__diagram">
             <img
-              src="/assets/tire-guide.png"
+              src="/assets/tire-size-guide.png"
             />
           </div>
         </div>
@@ -130,6 +130,9 @@ export default {
 }
 
 #findSizeInner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   height: auto;
   position: relative;
   margin: 0 auto;
@@ -201,6 +204,7 @@ export default {
     grid-template-columns: 1fr 1fr 1fr;
     @include for-mobile{
       grid-template-columns: 1fr;
+      order: 3;
     }
     .process-item {
       margin: 10px;
@@ -236,6 +240,12 @@ export default {
         width: 100%;
         box-sizing: border-box;
         background: #f2f2f2;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        h5{
+        margin-top: 0;
+        margin-bottom: 0;
+        }
       }
       .imageslot {
         background: #ffffff;

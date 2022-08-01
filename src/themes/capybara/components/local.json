@@ -110,7 +110,7 @@
   },
   "seo": {
     "useUrlDispatcher": true,
-    "disableUrlRoutesPersistentCache": true,
+    "disableUrlRoutesPersistentCache": false,
     "defaultTitle": "Vue Storefront"
   },
   "console": {

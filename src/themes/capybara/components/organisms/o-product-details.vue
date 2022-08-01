@@ -21,10 +21,10 @@
     <p>{{ $t('Tire Size') }}</p><span> {{product.tyre_size}}</span>
     </div>
      <div v-else-if="product.oil_type" class="product__header--spec">
-    <p>{{ $t('Oil Type') }}</p><span> {{oilType}}</span>
+    <p>{{ $t('Oil Type') }}</p><span> {{getAttributeLabelById('oil_type', product.oil_type)}}</span>
     </div>
       <div v-else-if="product.battery_capacity" class="product__header--spec">
-    <p>{{ $t('Battery Capacity') }}</p><span> {{product.battery_capacity}}</span>
+    <p>{{ $t('Battery Capacity') }}</p><span> {{getAttributeLabelById('battery_capacity', product.battery_capacity)}}</span>
     </div>
     </div>
     <div class="product__main">

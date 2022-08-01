@@ -194,7 +194,7 @@ export default {
     },
     validPhoneNumber (phone) {
       if (!phone) return true;
-      const regex = /^[0-9]{8,12}$/;
+      const regex = /^[0-9]{7,12}$/;
       return regex.test(phone);
     },
     validEmail (email) {

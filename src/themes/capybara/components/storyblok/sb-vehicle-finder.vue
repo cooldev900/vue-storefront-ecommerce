@@ -1,5 +1,5 @@
 <template>
-  <div class="af-vehicle-finder">
+  <div class="grid-container--restricted af-vehicle-finder">
     <div class="container">
       <SfTabs :open-tab="selectedTab">
         <SfTab :title="$t('Tire By Vehicle')">
@@ -304,14 +304,12 @@ export default {
 <style lang="scss">
 @import "~@storefront-ui/shared/styles/helpers/breakpoints";
 .af-vehicle-finder {
-  max-width: 1200px;
   margin-top: -63px !important;
   margin: auto;
 @include for-mobile{
   margin-top: 10px !important;
 }
   .container {
-    margin: 0 15px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;

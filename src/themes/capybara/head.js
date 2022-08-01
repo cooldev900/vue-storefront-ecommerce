@@ -94,7 +94,7 @@ export default {
       crossorigin: 'anonymous'
     },
     {
-      src: 'https://code.tidio.co/ouxfybu7oftz1t7n3fwbhm5yk7yrupum.js',
+      src: 'https://code.tidio.co/timabuttg0kjhjbp66efk20ij9tzvsb1.js',
       async: true
     }
   ]

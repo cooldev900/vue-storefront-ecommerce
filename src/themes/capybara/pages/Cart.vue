@@ -114,10 +114,12 @@
             </transition>
           </div>
         </transition>
+        <SfButton class="om-btn--primary checkout--btn mobile-only" @click="goToCheckout">
+    {{ $t('Go to checkout') }}
+    </SfButton>
       </div>
     </div>
   </div>
-  <SbTeaseV2 />
   </div>
 </NoSSR>
 </template>

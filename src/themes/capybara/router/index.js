@@ -75,7 +75,7 @@ let routes = [
   { name: 'vehicle-page', path: '/vehicle', component: Vehicle, meta: { breadcrumb: 'Vehicle page' } },
   { name: 'vehicle-svg', path: '/vehicle/:nationalCode/parts/:visualGroup', component: VehicleSvg, meta: { breadcrumb: 'Vehicle svg page' } },
   { name: 'external-thank-you', path: '/order-success', component: ExternalSuccessPage, meta: { layout: 'default' } },
-  { name: 'search', path: '/search', component: Search, meta: { breadcrumb: 'Search' } },
+  { name: 'search', path: '/search', component: Search, meta: { breadcrumb: 'Static' } },
   { name: 'deliver', path: '/cart/deliver', component: DeliverPage, meta: { breadcrumb: 'Deliver' } }
 ];
 

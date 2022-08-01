@@ -203,6 +203,9 @@ export default {
 }
 .swiper-button-next, .swiper-button-prev{
     z-index: 1;
+  @include for-mobile{
+    top: 42%;
+  }
 }
 .sb-products-carousel {
   --chevron-color: white;
