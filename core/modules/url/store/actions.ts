@@ -70,7 +70,9 @@ export const actions: ActionTree<UrlState, any> = {
         } else {
           const mappingActionName = config.urlModule.enableMapFallbackUrl ? 'mapFallbackUrl' : 'mappingFallback'
           dispatch(mappingActionName, { url, params: parsedQuery }).then(mappedFallback => {
+            // console.log(mappedFallback, 'route fallback data');
             const routeData = getFallbackRouteData({ mappedFallback, url })
+            // console.log(routeData, 'routeData');
             dispatch('registerMapping', { url, routeData }) // register mapping for further usage
             resolve(parametrizeRouteData(routeData, query, storeCodeInPath))
           }).catch(reject)
@@ -108,7 +110,6 @@ export const actions: ActionTree<UrlState, any> = {
    */
   async mapFallbackUrl ({ dispatch }, { url, params }: { url: string, params: any}) {
     url = (removeStoreCodeFromRoute(url.startsWith('/') ? url.slice(1) : url) as string)
-    
     if (url === 'search') {
       const searchData = {
         _index: 'alfardan_3_category_1659289252',
@@ -157,9 +158,36 @@ export const actions: ActionTree<UrlState, any> = {
       return result
     }
 
+    const urls = url.split("/");
+    if (urls?.length && urls[0] === 'p') {
+      let routeData = {};
+      if (urls.length === 3) {
+        routeData = {
+          name: 'virtual-product',
+          params: {
+            parentSku: urls[1],
+            slug: urls[2],
+          }
+        }
+      } else if (urls.length === 4) {
+        routeData = {
+          name: 'product',
+          params: {
+            parentSku: urls[1],
+            slug: urls[2],
+            childSku: urls[3]
+          }
+        }
+      }
+      const [result] = await Promise.all([
+        routeData,
+        {}
+      ])
+      return result
+    }
+
     // search for record in ES based on `url`
     const fallbackData = await dispatch('getFallbackByUrl', { url, params })
-    
     // if there is record in ES then map data
     if (fallbackData) {
       const [result] = await Promise.all([
