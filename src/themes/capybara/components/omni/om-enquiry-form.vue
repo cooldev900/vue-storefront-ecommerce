@@ -58,7 +58,7 @@
         name="vin"
         class="form__element form__element--half"
       /> -->
-      <SfSelect
+      <Select
         v-model="vin"
         name="vin"
         :label="$t('Services')"
@@ -67,18 +67,17 @@
           form__element--half
           form__element--half-even
           form__select
-          sf-select--underlined
           vin-select
           "
       >
-        <SfSelectOption
+        <Option
           v-for="(service, key) in services"
           :key="key"
           :value="service"
         >
           {{ $t(service) }}
-        </SfSelectOption>
-      </SfSelect>
+        </Option>
+      </Select>
       <SfInput
         v-model="item_required"
         :label="$t('Items required')"
@@ -306,8 +305,11 @@ export default {
   }
 }
 .vin-select {
-  padding: 0 !important;
+  padding: 14px !important;
   margin-top: 42px !important;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: rgb(244,244,244);
 }
 .form {
   padding: var(--spacer-sm) 0;
