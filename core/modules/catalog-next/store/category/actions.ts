@@ -27,6 +27,7 @@ import { filter } from 'vue/types/umd';
 import {
   currentStoreView
 } from '@vue-storefront/core/lib/multistore';
+import rootStore from '@vue-storefront/core/store'
 
 const actions: ActionTree<CategoryState, RootState> = {
   async loadCategoryProducts (
@@ -429,6 +430,15 @@ const actions: ActionTree<CategoryState, RootState> = {
         { root: true }
       );
     }
+    
+    if (aggregations?.agg_max_price) {
+      rootStore.dispatch('priceRange/saveMaxPrice', aggregations.agg_max_price.value);
+    }
+
+    if (aggregations?.agg_min_price) {
+      rootStore.dispatch('priceRange/saveMinPrice', aggregations.agg_min_price.value);
+    }
+
     const aggregationFilters = getters.getAvailableFiltersFrom(aggregations);
     const currentCategory = category || getters.getCurrentCategory;
     const categoryMappedFilters = getters.getFiltersMap[currentCategory.id];

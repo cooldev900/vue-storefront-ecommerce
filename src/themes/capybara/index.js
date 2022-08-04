@@ -9,6 +9,7 @@ import { module as cartModule } from './store/cart';
 
 import { claimsStore } from 'theme/store/claims';
 import { vehiclesStore } from 'theme/store/vehicles';
+import { priceRangeStore } from 'theme/store/priceRange';
 import { checkoutStore } from 'theme/store/checkoutStep';
 import { omLocatorStore } from 'theme/store/om-locator';
 import { homepageStore } from 'theme/store/homepage';
@@ -80,6 +81,7 @@ function initTheme (app, router, store, config) {
   store.registerModule('instagram', instagramStore);
   store.registerModule('defaultContent', defaultContentStore);
   store.registerModule('vehicles', vehiclesStore);
+  store.registerModule('priceRange', priceRangeStore);
   store.registerModule('checkoutStep', checkoutStore);
   store.registerModule('omLocator', omLocatorStore);
   store.registerModule('Fulfillment', FulfillmentStore);

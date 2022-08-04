@@ -120,7 +120,16 @@
                       </div>
                     </template>
                     <template v-else>
+                        <vue-range-slider
+                          v-if="filterType === 'price_filter'"
+                          :value="range"
+                          @input="changeRange"
+                          :min="minPrice"
+                          :max="maxPrice"
+                          :tooltip-merge="false"
+                        />
                       <SfFilter
+                      
                         v-for="filter in filters"
                         :key="filter.id"
                         :label="filter.label"
@@ -365,6 +374,10 @@ import { Logger } from '@vue-storefront/core/lib/logger';
 import { notifications } from '@vue-storefront/core/modules/cart/helpers';
 import { StorageManager } from '@vue-storefront/core/lib/storage-manager';
 import { onlineHelper } from '@vue-storefront/core/helpers'
+import NoSSR from 'vue-no-ssr';
+import VueRangeSlider from 'vue-range-component';
+import 'vue-range-component/dist/vue-range-slider.css';
+
 const THEME_PAGE_SIZE = 12;
 const LAZY_LOADING_ACTIVATION_BREAKPOINT = 1024;
 
@@ -426,7 +439,9 @@ export default {
     SfImage,
     OmAppointmentSelector,
     OmProductCard,
-    SbTeaseV2
+    SbTeaseV2,
+    VueRangeSlider,
+    NoSSR
   },
   mixins: [],
   data () {
@@ -439,7 +454,8 @@ export default {
       isFilterSidebarOpen: false,
       unsubscribeFromStoreAction: null,
       aggregations: null,
-      sortOrderValue: ''
+      sortOrderValue: '',
+      range: [0, 10],
     };
   },
   computed: {
@@ -458,7 +474,9 @@ export default {
       getAttributeLabelById: 'vehicles/getAttributeLabelById',
       getAttributeIdByLabel: 'vehicles/getAttributeIdByLabel',
       activeVehicle: 'vehicles/activeVehicle',
-      qty: 'vehicles/getQty'
+      qty: 'vehicles/getQty',
+      maxPrice: 'priceRange/getMaxPrice',
+      minPrice: 'priceRange/getMinPrice',
     }),
     isLazyHydrateEnabled () {
       return config.ssr.lazyHydrateFor.includes('category-next.products');
@@ -695,6 +713,9 @@ export default {
       openVehicleCart: 'ui/toggleSidebar',
       openModal: 'ui/openModal'
     }),
+    changeRange(event) {
+      console.log(event, 'event');
+    },
     async addToCart (product) {
       this.$store.dispatch('product/setCurrent', product);
       const res = await this.$store.dispatch('stock/check', {
@@ -1006,6 +1027,12 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@storefront-ui/shared/styles/helpers/breakpoints";
+
+.vue-range-slider {
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 60px;
+}
 
 .fade-enter-active,
 .fade-leave-active {
