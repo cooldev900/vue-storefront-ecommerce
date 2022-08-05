@@ -129,6 +129,7 @@
                           :tooltip-merge="false"
                         />
                       <SfFilter
+                        v-else
                         v-for="filter in filters"
                         :key="filter.id"
                         :label="filter.label"
@@ -966,8 +967,8 @@ export default {
       console.log(filter, 'changeFilter');
       this.$store.dispatch('category-next/switchSearchFilters', [filter]);
     },
-    debouceRange: _.debounce(function() {
-      this.changeRange(this.value);
+    debouceRange: _.debounce(function(event) {
+      this.changeRange(event);
     }, 500),
     changeRange(event) {
       console.log(event, 'event');
