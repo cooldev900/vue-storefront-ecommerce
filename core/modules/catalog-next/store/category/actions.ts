@@ -432,8 +432,8 @@ const actions: ActionTree<CategoryState, RootState> = {
     }
 
     if ((aggregations?.agg_max_price || aggregations?.agg_max_price) && category?.id !== rootStore.getters['priceRange/getCategoryId']) {
-      if (aggregations?.agg_max_price) rootStore.dispatch('priceRange/saveMaxPrice', aggregations.agg_max_price.value);
-      if (aggregations?.agg_min_price) rootStore.dispatch('priceRange/saveMinPrice', aggregations.agg_min_price.value);
+      if (aggregations?.agg_max_price) rootStore.dispatch('priceRange/saveMaxPrice', aggregations.agg_max_price?.value || 0);
+      if (aggregations?.agg_min_price) rootStore.dispatch('priceRange/saveMinPrice', aggregations.agg_min_price?.value || 0);
       rootStore.dispatch('priceRange/saveCategoryId', category.id);
     }
 

@@ -122,14 +122,13 @@
                     <template v-else>
                         <vue-range-slider
                           v-if="filterType === 'price_filter'"
-                          :value="range"
-                          @input="changeRange"
+                          v-model="value"
+                          @input="debouceRange"
                           :min="minPrice"
                           :max="maxPrice"
                           :tooltip-merge="false"
                         />
                       <SfFilter
-                        v-else
                         v-for="filter in filters"
                         :key="filter.id"
                         :label="filter.label"
@@ -374,6 +373,7 @@ import { Logger } from '@vue-storefront/core/lib/logger';
 import { notifications } from '@vue-storefront/core/modules/cart/helpers';
 import { StorageManager } from '@vue-storefront/core/lib/storage-manager';
 import { onlineHelper } from '@vue-storefront/core/helpers'
+import _ from 'lodash';
 import NoSSR from 'vue-no-ssr';
 import VueRangeSlider from 'vue-range-component';
 import 'vue-range-component/dist/vue-range-slider.css';
@@ -455,7 +455,7 @@ export default {
       unsubscribeFromStoreAction: null,
       aggregations: null,
       sortOrderValue: '',
-      range: [this.minPrice, this.maxPrice],
+      value: [this.minPrice, this.maxPrice],
     };
   },
   computed: {
@@ -477,6 +477,7 @@ export default {
       qty: 'vehicles/getQty',
       maxPrice: 'priceRange/getMaxPrice',
       minPrice: 'priceRange/getMinPrice',
+      getCategoryId: 'priceRange/getCategoryId'
     }),
     isLazyHydrateEnabled () {
       return config.ssr.lazyHydrateFor.includes('category-next.products');
@@ -660,10 +661,10 @@ export default {
       }
     },
     maxPrice(value) {
-      this.range[1] = value;
+      this.value[1] = value;
     },
     minPrice(value) {
-      this.range[0] = value;
+      this.value[0] = value;
     }
   },
   async asyncData ({ store, route, context }) {
@@ -708,8 +709,8 @@ export default {
     this.$bus.$on('product-after-list', this.initPagination);
     window.addEventListener('resize', this.getBrowserWidth);
     this.getBrowserWidth();
-    if (!this.range[0]) this.range[0] = this.minPrice;
-    if (!this.range[1]) this.range[1] = this.maxPrice;
+    if (!this.value[0]) this.value[0] = this.minPrice;
+    if (!this.value[1]) this.value[1] = this.maxPrice;
   },
   beforeDestroy () {
     this.unsubscribeFromStoreAction();
@@ -965,6 +966,9 @@ export default {
       console.log(filter, 'changeFilter');
       this.$store.dispatch('category-next/switchSearchFilters', [filter]);
     },
+    debouceRange: _.debounce(function() {
+      this.changeRange(this.value);
+    }, 500),
     changeRange(event) {
       console.log(event, 'event');
       const priceFilter = {
