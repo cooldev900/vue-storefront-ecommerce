@@ -89,3 +89,34 @@ export const loadMinPrice = async () => {
     console.log('localStorage error----', e);
   }
 }
+
+export const saveCategoryId = async data => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      asyncLocalStorage?.removeItem(storeView.storeCode + '/categoryId');
+      asyncLocalStorage?.setItem(
+        storeView.storeCode + '/categoryId',
+        JSON.stringify(data)
+      );
+    }
+  } catch (e) {
+    console.log('localStorage error----', e);
+  }
+}
+
+export const loadCategoryId = async () => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      const categoryId = await asyncLocalStorage?.getItem(
+        storeView.storeCode + '/categoryId'
+      );
+      return categoryId ? parseInt(JSON.parse(categoryId)) : 0;
+    }
+  } catch (e) {
+    console.log('localStorage error----', e);
+  }
+}

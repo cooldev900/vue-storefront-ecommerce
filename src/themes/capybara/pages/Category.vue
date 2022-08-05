@@ -129,7 +129,7 @@
                           :tooltip-merge="false"
                         />
                       <SfFilter
-                      
+                        v-else
                         v-for="filter in filters"
                         :key="filter.id"
                         :label="filter.label"
@@ -455,7 +455,7 @@ export default {
       unsubscribeFromStoreAction: null,
       aggregations: null,
       sortOrderValue: '',
-      range: [0, 10],
+      range: [this.minPrice, this.maxPrice],
     };
   },
   computed: {
@@ -658,6 +658,12 @@ export default {
           this.initPagination();
         }
       }
+    },
+    maxPrice(value) {
+      this.range[1] = value;
+    },
+    minPrice(value) {
+      this.range[0] = value;
     }
   },
   async asyncData ({ store, route, context }) {
@@ -702,6 +708,8 @@ export default {
     this.$bus.$on('product-after-list', this.initPagination);
     window.addEventListener('resize', this.getBrowserWidth);
     this.getBrowserWidth();
+    if (!this.range[0]) this.range[0] = this.minPrice;
+    if (!this.range[1]) this.range[1] = this.maxPrice;
   },
   beforeDestroy () {
     this.unsubscribeFromStoreAction();
@@ -713,9 +721,6 @@ export default {
       openVehicleCart: 'ui/toggleSidebar',
       openModal: 'ui/openModal'
     }),
-    changeRange(event) {
-      console.log(event, 'event');
-    },
     async addToCart (product) {
       this.$store.dispatch('product/setCurrent', product);
       const res = await this.$store.dispatch('stock/check', {
@@ -957,7 +962,22 @@ export default {
       }
     },
     changeFilter (filter) {
+      console.log(filter, 'changeFilter');
       this.$store.dispatch('category-next/switchSearchFilters', [filter]);
+    },
+    changeRange(event) {
+      console.log(event, 'event');
+      const priceFilter = {
+        color: null,
+        count: 10,
+        from: event[0],
+        id: `${event[0]}-${event[1]}`,
+        // label: "< QR 500",
+        single: true, 
+        to: event[1],        
+        type: "price"
+      }
+      this.$store.dispatch('category-next/switchSearchFilters', [priceFilter]);
     },
     clearAllFilters () {
       this.$store.dispatch('category-next/resetSearchFilters');

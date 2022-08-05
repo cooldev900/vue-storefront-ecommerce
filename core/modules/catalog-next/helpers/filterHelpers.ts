@@ -37,9 +37,11 @@ export const getFiltersFromQuery = ({ filtersQuery = {}, availableFilters = {} }
   const searchQuery = {
     filters: {}
   }
+  console.log(availableFilters, 'getFilterFromQuery', filtersQuery);
   Object.keys(filtersQuery).forEach(filterKey => {
     const filter = availableFilters[filterKey]
     let queryValue = filtersQuery[filterKey]
+    console.log(filterKey, 'filterKey', filter);
     if (!filter) return
     // keep original value for system filters - for example sort
     if (getSystemFilterNames.includes(filterKey)) {
@@ -47,12 +49,26 @@ export const getFiltersFromQuery = ({ filtersQuery = {}, availableFilters = {} }
     } else {
       queryValue = [].concat(filtersQuery[filterKey])
       queryValue.map(singleValue => {
-        const variant = filter.find(filterVariant => filterVariant.id === singleValue)
+        let variant = filter.find(filterVariant => filterVariant.id === singleValue)
+        if (filterKey === 'price') {
+          variant = {
+            color: null,
+            count: 10,
+            from: singleValue?.split("-")[0],
+            id: singleValue,
+            // label: "< QR 500",
+            single: true, 
+            to: singleValue?.split("-")[1],        
+            type: "price"
+          }
+        }
+        console.log(variant, 'varant')
         if (!variant) return
         if (!Array.isArray(searchQuery.filters[filterKey])) searchQuery.filters[filterKey] = []
         searchQuery.filters[filterKey].push({ ...variant, attribute_code: filterKey })
       })
     }
   })
+  console.log(searchQuery, 'searchQuery');
   return searchQuery
 }

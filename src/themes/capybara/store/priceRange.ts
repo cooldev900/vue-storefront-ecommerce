@@ -5,7 +5,8 @@ export const priceRangeStore = {
   namespaced: true,
   state: {
     maxPrice: 0,
-    minPrice: 0
+    minPrice: 0,
+    categoryId: -1,
   },
   actions: {
     async loadMaxPrice ({ commit }) {
@@ -24,6 +25,14 @@ export const priceRangeStore = {
       await priceRangeStorage.saveMinPrice(minPrice);
       commit('setMinPrice', minPrice);
     },
+    async loadCategoryId ({ commit }) {
+      let categoryId = await priceRangeStorage.loadCategoryId(); 
+      commit('setCategoryId', categoryId);
+    },
+    async saveCategoryId ({ commit }, categoryId) {
+      await priceRangeStorage.saveCategoryId(categoryId);
+      commit('setCategoryId', categoryId);
+    },
   },
   mutations: {
     setMaxPrice(state, value) {
@@ -32,6 +41,9 @@ export const priceRangeStore = {
     setMinPrice(state, value) {
       state.minPrice = value;
     },
+    setCategoryId(state, value) {
+      state.categoryId = value;
+    }
   },
   getters: {
     getMaxPrice: state => {
@@ -40,5 +52,8 @@ export const priceRangeStore = {
     getMinPrice: state => {
       return state.minPrice;
     },
+    getCategoryId: state => {
+      return state.categoryId;
+    }
   }
 };
