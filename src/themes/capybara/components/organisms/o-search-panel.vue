@@ -1,11 +1,5 @@
 <template>
   <div class="o-search-panel">
-    <SfButton class="sf-button--pure close-button" @click="$store.commit('ui/setSearchpanel', false)">
-      <SfIcon
-        icon="cross"
-        size="xxs"
-      />
-    </SfButton>
     <div class="o-search">
       <!-- <SfSearchBar
         v-model="search"
@@ -25,8 +19,14 @@
         @submit="submit"
         @click.native="goToSearch"
     ></autocomplete>
+       <SfButton class="sf-button--pure close-button" @click="$store.commit('ui/setSearchpanel', false)">
+      <SfIcon
+        icon="cross"
+        size="xxs"
+      />
+    </SfButton>
     </div>
-    <div
+    <!-- <div
       v-if="noResultsMessage"
       class="no-results"
     >
@@ -35,7 +35,7 @@
     <div v-else class="grid-container">
       <div class="products">
         <!-- <SfHeading :level="3" :title="$t('Product suggestions')" class="products__title sf-heading--left" /> -->
-        <div class="products__listing">
+        <!-- <div class="products__listing">
           <SfProductCard
             v-for="product in visibleProducts"
             :key="product.id"
@@ -74,7 +74,7 @@
           <li v-for="(value, key) in searchResult" :key="key">{{value}}</li>
         </ul>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -90,7 +90,6 @@ import config from 'config';
 import axios from 'axios';
 import Autocomplete from '@trevoreyre/autocomplete-vue'
 import '@trevoreyre/autocomplete-vue/dist/style.css'
-import i18n from '@vue-storefront/i18n'
 
 export default {
   name: 'OSearchPanel',
@@ -148,12 +147,12 @@ export default {
   },
   methods: {
     getResultValue(result) {
-      return i18n.t(result.text); 
+      return result.text;
     },
     async getSearchResult(input) {
       this.search = input;
       this.startSearch();
-      if (input.length >= 3) {
+      if (input.length >= 1) {
         try {
           const {
                 data: {
@@ -226,29 +225,30 @@ export default {
 };
 </script>
 
+
 <style lang="scss" scoped>
 @import "~@storefront-ui/shared/styles/helpers/breakpoints";
 
 .o-search-panel {
   position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   left: 0;
   right: 0;
-  padding-top: 40px;
-  top: var(--_header-height);
-  background: var(--c-light);
-  overflow: auto;
-  max-height: calc(66vh - var(--_header-height));
-
+  top: 0;
+  background: #000;
+  z-index: 99;
+  height: var(--_header-height);
   @include for-mobile {
-    max-height: calc(100vh - var(--_header-height));
+   height: 70px;
   }
 
   .close-button {
     position: absolute;
-    right: 0;
-    top: 0;
-    background: #fff;
-    padding: 10px;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   .container {
@@ -329,15 +329,23 @@ export default {
 
 .o-search {
   --search-bar-border-width: 0;
-  background-color: var(--c-light);
+  background-color: #000;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 10px;
+  padding: 0 15px;
+  width: 50%;
+  position: relative;
+  @include for-mobile{
+    width: 100%;
+  }
   .sf-search-bar {
     width: initial;
     height: initial;
   }
+}
+.sf-header__search{
+  --header-search-flex: 1;
 }
 ::v-deep .sf-search-bar__icon {
     --icon-size: 1.25rem;

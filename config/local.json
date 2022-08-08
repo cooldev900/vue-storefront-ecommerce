@@ -10,8 +10,8 @@
       "minifyJS": true,
       "minifyCSS": true
     },
-    "useOutputCacheTagging": true,
-    "useOutputCache": true,
+    "useOutputCacheTagging": false,
+    "useOutputCache": false,
     "outputCacheDefaultTtl": 86400,
     "availableCacheTags": [
       "attribute",
