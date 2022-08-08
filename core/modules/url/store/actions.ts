@@ -304,6 +304,8 @@ export const actions: ActionTree<UrlState, any> = {
     }
   },
   setCurrentRoute ({ commit, state, rootGetters }, { to, from } = {}) {
+    console.log(to, 'to');
+    console.log(state, 'state');
     commit(types.SET_CURRENT_ROUTE, {
       ...to,
       scrollPosition: { ...state.prevRoute.scrollPosition },
@@ -321,6 +323,7 @@ export const actions: ActionTree<UrlState, any> = {
       x: !isServer ? window.pageXOffset : 0,
       y: !isServer ? window.pageYOffset : 0
     }
+    console.log(from, 'from', scrollPosition, 'scrollPosition');
     commit(types.SET_PREV_ROUTE, {
       ...from,
       scrollPosition,
