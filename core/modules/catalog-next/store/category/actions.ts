@@ -167,17 +167,17 @@ const actions: ActionTree<CategoryState, RootState> = {
         storeCode + '/active-vehicle'
       );
 
-      if (savedActiveVehicle && savedActiveVehicle !== '{}') {
-        const activeVehicle = JSON.parse(savedActiveVehicle);
-        let national_code = [];
-        national_code.push({
-          attribute_code: 'national_code.keyword',
-          id: activeVehicle.national_code,
-          label: activeVehicle.national_code,
-          type: 'national_code.keyword'
-        });
-        searchQuery.filters['national_code.keyword'] = national_code;
-      }
+    //   if (savedActiveVehicle && savedActiveVehicle !== '{}') {
+    //     const activeVehicle = JSON.parse(savedActiveVehicle);
+    //     let national_code = [];
+    //     national_code.push({
+    //       attribute_code: 'national_code.keyword',
+    //       id: activeVehicle.national_code,
+    //       label: activeVehicle.national_code,
+    //       type: 'national_code.keyword'
+    //     });
+    //     searchQuery.filters['national_code.keyword'] = national_code;
+    //   }
     }
 
     if (route.query && route.query?.field && route.query?.value) {

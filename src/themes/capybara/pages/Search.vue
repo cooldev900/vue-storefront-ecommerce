@@ -884,16 +884,16 @@ export default {
       ) {
         // Nothing to do
       } else {
-        if (this?.activeVehicle && Object.keys(this.activeVehicle).length) {
-          let national_code = [];
-          national_code.push({
-            attribute_code: 'national_code.keyword',
-            id: this.activeVehicle.national_code,
-            label: this.activeVehicle.national_code,
-            type: 'national_code.keyword'
-          });
-          filters['national_code.keyword'] = national_code;
-        }
+        // if (this?.activeVehicle && Object.keys(this.activeVehicle).length) {
+        //   let national_code = [];
+        //   national_code.push({
+        //     attribute_code: 'national_code.keyword',
+        //     id: this.activeVehicle.national_code,
+        //     label: this.activeVehicle.national_code,
+        //     type: 'national_code.keyword'
+        //   });
+        //   filters['national_code.keyword'] = national_code;
+        // }
       }
 
       const filterQuery = buildFilterProductsQuery(
