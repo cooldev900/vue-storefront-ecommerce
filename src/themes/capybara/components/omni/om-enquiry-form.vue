@@ -58,26 +58,30 @@
         name="vin"
         class="form__element form__element--half"
       /> -->
-      <Select
-        v-model="vin"
-        name="vin"
-        :label="$t('Services')"
-        required
-        class="form__element
-          form__element--half
-          form__element--half-even
-          form__select
-          vin-select
-          "
-      >
-        <Option
-          v-for="(service, key) in services"
-          :key="key"
-          :value="service"
-        >
-          {{ $t(service) }}
-        </Option>
-      </Select>
+      <div class="inputs">
+          <label for="billing-country" class="sf-input__label">
+            Services
+            <span class="label--required"> * </span></label
+          >
+          <Select
+            v-model="vin"
+            name="vin"
+            :label="$t('Services')"
+            required
+            class="form__element
+              form__select
+              vin-select
+              "
+          >
+            <Option
+              v-for="(service, key) in services"
+              :key="key"
+              :value="service"
+            >
+              {{ $t(service) }}
+            </Option>
+          </Select>
+        </div>
       <SfInput
         v-model="item_required"
         :label="$t('Items required')"
@@ -304,9 +308,18 @@ export default {
     margin: 0 auto;
   }
 }
+.inputs {
+  width: 50%;
+}
+.label {
+  display: block;
+  font-weight: 700;
+  font-size: 14px;
+}
 .vin-select {
+  width: 100%;  
   padding: 14px !important;
-  margin-top: 42px !important;
+  margin-top: 20px !important;
   border-radius: 4px;
   border: 1px solid #ccc;
   background-color: rgb(244,244,244);
