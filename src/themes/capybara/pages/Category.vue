@@ -102,7 +102,6 @@
                 open="all"
                 :first-open="true"
                 :multiple="true"
-                transition=""
                 show-chevron
               >
                 <template v-for="(filters, filterType) in availableFilters">
@@ -147,7 +146,7 @@
         </div>
         <div class="products">
           <div v-if="loading && !currentPageProducts.length">
-            <transition-group
+            <div
 
               name="products__slide"
               tag="div"
@@ -157,7 +156,7 @@
                 v-for="(value, index) in new Array(12).fill('')"
                 :key="index"
               />
-            </transition-group>
+            </div>
           </div>
           <SfHeading
             v-if="isCategoryEmpty && !loading"
@@ -261,7 +260,6 @@
               :first-open="true"
               open="all"
               :multiple="true"
-              transition=""
               show-chevron
             >
               <template v-for="(filters, filterType) in availableFilters">
