@@ -212,6 +212,12 @@ export default {
     async clickContinuePayment () {
       this.$v.$touch();
       if (this.$v.shipping.$invalid) {
+        const id = this.idData.find( row => {
+          if (this.$v.personalDetails[row.name]?.$invalid) return true;
+        });
+        if (id) {
+          setTimeout(() => { document.getElementById(id.id).scrollIntoView({ behavior: 'smooth' }); }, 0);
+        }
         return;
       }
       this.nextAccordion(1);

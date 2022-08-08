@@ -181,7 +181,13 @@ export default {
           }
         }
       ],
-      appointmentsTaken: []
+      appointmentsTaken: [],
+      idData: [
+        {name: 'firstName',  id: 'first-name'},
+        {name: 'lastName', id: 'last-name'},
+        {name: 'emailAddress', id: 'email-address'},
+        {name: 'telephone', id: 'telephone'},
+      ]
     };
   },
   validations: {
@@ -243,6 +249,12 @@ export default {
     async goToShipping () {
       this.$v.$touch();
       if (this.$v.personalDetails.$invalid) {
+        const id = this.idData.find( row => {
+          if (this.$v.personalDetails[row.name]?.$invalid) return true;
+        });
+        if (id) {
+          setTimeout(() => { document.getElementById(id.id).scrollIntoView({ behavior: 'smooth' }); }, 0);
+        }
         return;
       }
       this.nextAccordion(0);

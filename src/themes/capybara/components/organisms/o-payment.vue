@@ -463,6 +463,15 @@ export default {
       },
       isMessage: false,
       message: '',
+      idData: [
+        {name: 'firstName',  id: 'first-name'},
+        {name: 'lastName', id: 'last-name'},
+        {name: 'streetAddress', id: 'street-address'},
+        {name: 'apartmentNumber', id: 'apartment-number'},
+        {name: 'city', id: 'city'},
+        {name: 'state', id: 'state'},
+        {name: 'country', id: 'countries'},
+      ]
     };
   },
   methods: {
@@ -480,6 +489,12 @@ export default {
     saveBillingAddress () {
       this.$v.$touch();
       if (this.$v.payment.$invalid) {
+        const id = this.idData.find( row => {
+          if (this.$v.personalDetails[row.name]?.$invalid) return true;
+        });
+        if (id) {
+          setTimeout(() => { document.getElementById(id.id).scrollIntoView({ behavior: 'smooth' }); }, 0);
+        }
         return;
       }
       this.sendToBillingAddress = true;

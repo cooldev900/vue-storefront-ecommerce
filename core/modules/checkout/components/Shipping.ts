@@ -39,6 +39,13 @@ export const Shipping = {
         postcode: '',
         telephone: ''
       },
+      idData: [
+        {name: 'streetAddress',  id: 'street-address'},
+        {name: 'apartmentNumber', id: 'apartment-number'},
+        {name: 'city', id: 'City'},
+        {name: 'state', id: 'state'},
+        {name: 'country', id: 'Country'},
+      ]
     }
   },
   computed: {
