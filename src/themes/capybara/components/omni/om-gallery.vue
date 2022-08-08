@@ -274,75 +274,13 @@ export default {
 </script>
 <style lang="scss">
 @import "~@storefront-ui/shared/styles/helpers/breakpoints";
-.sf-gallery {
-  display: flex;
-  flex-direction: var(--gallery-flex-direction, column);
-  &__thumbs {
-    display: var(--gallery-thumbs-display, flex);
-    flex: var(--gallery-thumbs-flex);
-    flex-direction: var(--gallery-thumbs-flex-direction);
-    margin: var(--gallery-thumbs-margin, var(--spacer-xs) 0 0 0);
-    order: var(--gallery-thumbs-order);
-    overflow: auto;
-    &::-webkit-scrollbar {
-      width: 0;
-    }
-  }
-  &__item {
-    display: flex;
-    flex: 0 0 var(--gallery-thumb-width, 10rem);
-    margin: var(--gallery-item-margin, 0 var(--spacer-xs) 0 0);
-    &:last-child {
-      --gallery-item-margin: 0;
-    }
-    opacity: var(--gallery-item-opacity, 0.5);
-    transition: var(--gallery-item-transition, opacity 150ms ease-in-out);
-    cursor: var(--gallery-item-cursor, pointer);
-    &--selected {
-      --gallery-item-opacity: 1;
-      --gallery-item-cursor: default;
-    }
-  }
-  &__thumb {
-    width: var(--gallery-thumb-width, calc(var(--_image-width, 10rem) * 1px));
-    height: var(
-      --gallery-thumb-height,
-      calc(var(--_image-height, 10rem) * 1px)
-    );
-  }
-  &__stage {
-    flex: 1;
-    max-width: var(--gallery-stage-width, 26.375rem);
-  }
-  .glide {
-    &__slide {
-      flex: 1;
-      display: flex;
-    }
-    &__slides {
-      margin: 0;
-    }
-  }
-  .swiper-slide {
-    display: flex;
-    justify-content: center;
-    margin: 30px 0;
-  }
-  @include for-desktop {
-    --gallery-flex-direction: column;
-    --gallery-thumbs-flex: 0 0 var(--gallery-thumb-width, 10rem);
-    --gallery-thumbs-flex-direction: row;
-    --gallery-thumbs-order: 1;
-    --gallery-thumbs-margin: 0 var(--spacer-xs) 0 0;
-    --gallery-item-margin: 0 0 var(--spacer-xs) 0;
-    &__item {
-      &:last-child {
-        --gallery-item-margin: 0;
-      }
-    }
-  }
-  .sf-gallery__thumbs{
-    gap: 15px;
-  }
+.sf-gallery__thumbs{
+  padding: 20px;
+}
+.sf-gallery__item--selected{
+  border: 1px solid var(--c-primary);
+}
+.sf-gallery__item{
+  border: 1px solid var(--c-primary);
 }
 </style>
