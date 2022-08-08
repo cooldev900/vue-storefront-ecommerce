@@ -6,6 +6,8 @@ export const priceRangeStore = {
   state: {
     maxPrice: 0,
     minPrice: 0,
+    startPrice: 0,
+    endPrice: 0,
     categoryId: -1,
   },
   actions: {
@@ -33,6 +35,22 @@ export const priceRangeStore = {
       await priceRangeStorage.saveCategoryId(categoryId);
       commit('setCategoryId', categoryId);
     },
+    async loadStartPrice ({ commit }) {
+      let startPrice = await priceRangeStorage.loadStartPrice(); 
+      commit('setStartPrice', startPrice);
+    },
+    async saveStartPrice ({ commit }, startPrice) {
+      await priceRangeStorage.saveStartPrice(startPrice);
+      commit('setStartPrice', startPrice);
+    },
+    async loadEndPrice ({ commit }) {
+      let endPrice = await priceRangeStorage.loadEndPrice(); 
+      commit('setEndPrice', endPrice);
+    },
+    async saveEndPrice ({ commit }, endPrice) {
+      await priceRangeStorage.saveEndPrice(endPrice);
+      commit('setEndPrice', endPrice);
+    },
   },
   mutations: {
     setMaxPrice(state, value) {
@@ -43,6 +61,12 @@ export const priceRangeStore = {
     },
     setCategoryId(state, value) {
       state.categoryId = value;
+    },
+    setStartPrice(state, value) {
+      state.startPrice = value;
+    },
+    setEndPrice(state, value) {
+      state.endPrice = value;
     }
   },
   getters: {
@@ -54,6 +78,8 @@ export const priceRangeStore = {
     },
     getCategoryId: state => {
       return state.categoryId;
-    }
+    },
+    getStartPrice: state => state.startPrice,
+    getEndPrice: state => state.endPrice,
   }
 };

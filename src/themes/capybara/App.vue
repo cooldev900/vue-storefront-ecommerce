@@ -38,6 +38,8 @@ export default {
     await this.$store.dispatch('vehicles/fetchStep')
     await this.$store.dispatch('vehicles/loadSlotID')
     await this.$store.dispatch('vehicles/loadSlotData')
+    await this.$store.dispatch('priceRange/loadStartPrice')
+    await this.$store.dispatch('priceRange/loadEndPrice')
     const storeId = currentStoreView().storeId
     document.documentElement.classList.add('theme-' + storeId);
   }

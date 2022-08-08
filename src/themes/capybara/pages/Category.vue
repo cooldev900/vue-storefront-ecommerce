@@ -120,13 +120,12 @@
                       </div>
                     </template>
                     <template v-else>
-                        <vue-range-slider
-                          v-if="filterType === 'price_filter'"
+                        <SfRange
+                          v-if="filterType == 'price_filter'"
                           v-model="value"
-                          @input="debouceRange"
-                          :min="minPrice"
-                          :max="maxPrice"
-                          :tooltip-merge="false"
+                          :disabled="false"
+                          :config='{"start":[getStartPrice ? getStartPrice : minPrice,getEndPrice ? getEndPrice: maxPrice],"range":{"min":minPrice,"max":maxPrice},"step":1,"tooltips":true}'
+                          @change="debouceRange"
                         />
                       <SfFilter
                         v-else
@@ -376,8 +375,8 @@ import { StorageManager } from '@vue-storefront/core/lib/storage-manager';
 import { onlineHelper } from '@vue-storefront/core/helpers'
 import _ from 'lodash';
 import NoSSR from 'vue-no-ssr';
-import VueRangeSlider from 'vue-range-component';
-import 'vue-range-component/dist/vue-range-slider.css';
+import SfRange from 'theme/components/atoms/a-range.vue';
+// import 'vue-range-component/dist/vue-range-slider.css';
 
 const THEME_PAGE_SIZE = 12;
 const LAZY_LOADING_ACTIVATION_BREAKPOINT = 1024;
@@ -441,7 +440,7 @@ export default {
     OmAppointmentSelector,
     OmProductCard,
     SbTeaseV2,
-    VueRangeSlider,
+    SfRange,
     NoSSR
   },
   mixins: [],
@@ -478,7 +477,9 @@ export default {
       qty: 'vehicles/getQty',
       maxPrice: 'priceRange/getMaxPrice',
       minPrice: 'priceRange/getMinPrice',
-      getCategoryId: 'priceRange/getCategoryId'
+      getCategoryId: 'priceRange/getCategoryId',
+      getStartPrice: 'priceRange/getStartPrice',
+      getEndPrice: 'priceRange/getEndPrice',
     }),
     isLazyHydrateEnabled () {
       return config.ssr.lazyHydrateFor.includes('category-next.products');
@@ -972,6 +973,9 @@ export default {
     }, 500),
     changeRange(event) {
       console.log(event, 'event');
+      this.value = event;
+      this.$store.dispatch('priceRange/saveStartPrice', event[0]);
+      this.$store.dispatch('priceRange/saveEndPrice', event[1]);
       const priceFilter = {
         color: null,
         count: 10,
@@ -1053,7 +1057,11 @@ export default {
 <style lang="scss" scoped>
 @import "~@storefront-ui/shared/styles/helpers/breakpoints";
 
-.vue-range-slider {
+.sf-range {
+  width: auto !important;
+}
+
+.noUi-base {
   margin-right: auto;
   margin-left: auto;
   margin-top: 60px;

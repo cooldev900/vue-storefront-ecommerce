@@ -120,3 +120,65 @@ export const loadCategoryId = async () => {
     console.log('localStorage error----', e);
   }
 }
+
+export const saveStartPrice = async data => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      asyncLocalStorage?.removeItem(storeView.storeCode + '/startPrice');
+      asyncLocalStorage?.setItem(
+        storeView.storeCode + '/startPrice',
+        JSON.stringify(data)
+      );
+    }
+  } catch (e) {
+    console.log('localStorage error----', e);
+  }
+}
+
+export const loadStartPrice = async () => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      const startPrice = await asyncLocalStorage?.getItem(
+        storeView.storeCode + '/startPrice'
+      );
+      return startPrice ? parseInt(JSON.parse(startPrice)) : 0;
+    }
+  } catch (e) {
+    console.log('localStorage error----', e);
+  }
+}
+
+export const saveEndPrice = async data => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      asyncLocalStorage?.removeItem(storeView.storeCode + '/endPrice');
+      asyncLocalStorage?.setItem(
+        storeView.storeCode + '/endPrice',
+        JSON.stringify(data)
+      );
+    }
+  } catch (e) {
+    console.log('localStorage error----', e);
+  }
+}
+
+export const loadEndPrice = async () => {
+  try {
+    const existLocalStorage = await availableLocalStorage();
+    const storeView = currentStoreView();
+    if (existLocalStorage) {
+      const endPrice = await asyncLocalStorage?.getItem(
+        storeView.storeCode + '/endPrice'
+      );
+      return endPrice ? parseInt(JSON.parse(endPrice)) : 0;
+    }
+  } catch (e) {
+    console.log('localStorage error----', e);
+  }
+}
