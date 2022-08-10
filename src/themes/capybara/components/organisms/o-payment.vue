@@ -193,30 +193,29 @@
         </div>
       </template>
     </OmAlertBox>
-    <OmAlertBox type="info" style="margin-bottom: 20px; margin-top: 40px;" v-show="sendToBillingAddress">
-      <template #message>
-        <div class="om-alert-box-message">
-          <div>
-            <p>
-              You will be redirected to CyberSource to make a secure payment
-            </p>
+    
+    <div class="form" v-show="sendToBillingAddress">
+      <div class="form__radio-group">
+        <div v-for="method in paymentMethods" :key="method.code" class="payment-method">
+          <div class="payment-method__option">
+            <SfRadio            
+              :key="method.code"
+              v-model="payment.paymentMethod"
+              :label="method.title ? method.title : method.name"
+              :value="method.code"
+              name="payment-method"
+              class="form__radio payment-method"
+              @input="changePaymentMethod"
+            />
+            <div class="payment-method__option--logo">
+              {{ method.code + '.png' }}
+            </div>
+          </div>
+          <div class="payment-method__contents" v-if="payment.paymentMethod === method.code">
+
+            <PaymentMethodComponent :paymentMethod="payment.paymentMethod" :editAccordion="editAccordion"/>
           </div>
         </div>
-      </template>
-    </OmAlertBox>
-    <img style="max-width: 350px" src="/assets/supported-cards.png" v-show="sendToBillingAddress">
-    <div class="form" v-show="sendToBillingAddress">
-      <div class="form__radio-group" style="display: none">
-        <SfRadio
-          v-for="method in paymentMethods"
-          :key="method.code"
-          v-model="payment.paymentMethod"
-          :label="method.title ? method.title : method.name"
-          :value="method.code"
-          name="payment-method"
-          class="form__radio payment-method"
-          @input="changePaymentMethod"
-        />
         <!-- <payment-stripe v-if="payment.paymentMethod === 'cnpayment'" /> -->
         <div id="checkout-order-review-additional-container" />
       </div>
@@ -249,7 +248,7 @@
             {{ $t("Continue to Payment") }}
           </SfButton>
         </form> -->
-        <CybersourcePayVue :editAccordion="editAccordion"/>
+        <!-- <CybersourcePayVue :editAccordion="editAccordion"/> -->
       </div>
     </div>
     <!-- This dummy container below is needed because src\modules\payment-cash-on-delivery\index.ts
@@ -284,6 +283,7 @@ import { getShaSignature } from 'theme/helpers/index.ts';
 import CybersourcePayVue from './o-cybersource-pay.vue';
 import config from 'config';
 import { ModalList } from 'theme/store/ui/modals';
+import PaymentMethodComponent from './PaymentMethodComponent.vue';
 
 export default {
   name: 'OPayment',
@@ -295,9 +295,10 @@ export default {
     SfHeading,
     SfCheckbox,
     OmAlertBox,
-    CybersourcePayVue
-    // PaymentStripe
-  },
+    CybersourcePayVue,
+    // PaymentStripe,
+    PaymentMethodComponent
+},
   mixins: [Payment, OrderReview],
   props: {
     nextAccordion: {
@@ -570,6 +571,10 @@ export default {
       display: flex;
     }
   }
+
+  &__radio-group {
+    width: 100%;
+  }
 }
 .payment-method {
   --radio-container-align-items: center;
@@ -577,8 +582,30 @@ export default {
   --ratio-content-margin: 0 0 0 var(--spacer-lg);
   --radio-background: transparent;
   white-space: nowrap;
+
   @include for-desktop {
     --radio-container-padding: var(--spacer-sm);
+  }
+
+  &__option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-radius: 2px;
+    color: #141414;
+    font-weight: 500;
+    border: 1px solid;
+    border-collapse: collapse;
+  }
+
+  &__contents {
+    border-radius: 2px;
+    color: #141414;
+    font-weight: 500;
+    border: 1px solid;
+    border-collapse: collapse;
+    padding: 15px;
   }
 }
 

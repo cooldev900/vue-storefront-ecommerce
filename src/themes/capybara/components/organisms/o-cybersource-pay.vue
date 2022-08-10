@@ -1,42 +1,55 @@
 <template>
-  <!-- it's epdq form -->
-  <form
-    class="sf-button--full-width"
-    method="post"
-    action="https://secureacceptance.cybersource.com/pay"
-    id="form1"
-    name="form1"
-    ref="form"
-  >
-    <!-- general parameters: see Form parameters -->
-    <input type="hidden" name="access_key" :value="edpqForm.access_key">
-    <input type="hidden" name="amount" :value="edpqForm.amount">
-    <input type="hidden" name="currency" :value="edpqForm.currency">
-    <input type="hidden" name="locale" :value="edpqForm.locale">
-    <input type="hidden" name="profile_id" :value="edpqForm.profile_id">
-    <input type="hidden" name="reference_number" :value="edpqForm.reference_number">
-    <input type="hidden" name="signed_date_time" :value="edpqForm.signed_date_time">
-    <input type="hidden" name="signed_field_names" :value="edpqForm.signed_field_names">
-    <input type="hidden" name="transaction_type" :value="edpqForm.transaction_type">
-    <input type="hidden" name="transaction_uuid" :value="edpqForm.transaction_uuid">
-    <input type="hidden" name="bill_to_forename" :value="edpqForm.bill_to_forename">
-    <input type="hidden" name="bill_to_surname" :value="edpqForm.bill_to_surname">
-    <input type="hidden" name="bill_to_email" :value="edpqForm.bill_to_email">
-    <input type="hidden" name="bill_to_address_line1" :value="edpqForm.bill_to_address_line1">
-    <input type="hidden" name="bill_to_address_country" :value="edpqForm.bill_to_address_country">
-    <input type="hidden" name="bill_to_address_city" :value="edpqForm.bill_to_address_city">
-
-    <!-- check before the payment: see Security: Check before the payment -->
-    <input type="hidden" name="signature" :value="edpqForm.signature">
-    <!-- layout information: see Look and feel of the payment page -->
-
-    <SfButton
-      class="sf-button--full-width om-btn--primary"
-      @click.prevent="process"
+  <div>
+    <OmAlertBox type="info" style="margin-bottom: 20px; margin-top: 40px;">
+      <template #message>
+        <div class="om-alert-box-message">
+          <div>
+            <p>
+              You will be redirected to CyberSource to make a secure payment
+            </p>
+          </div>
+        </div>
+      </template>
+    </OmAlertBox>
+    <img style="max-width: 350px" src="/assets/supported-cards.png">
+    <form
+      class="sf-button--full-width"
+      method="post"
+      action="https://secureacceptance.cybersource.com/pay"
+      id="form1"
+      name="form1"
+      ref="form"
     >
-      {{ $t("Continue to Payment") }}
-    </SfButton>
-  </form>
+      <!-- general parameters: see Form parameters -->
+      <input type="hidden" name="access_key" :value="edpqForm.access_key">
+      <input type="hidden" name="amount" :value="edpqForm.amount">
+      <input type="hidden" name="currency" :value="edpqForm.currency">
+      <input type="hidden" name="locale" :value="edpqForm.locale">
+      <input type="hidden" name="profile_id" :value="edpqForm.profile_id">
+      <input type="hidden" name="reference_number" :value="edpqForm.reference_number">
+      <input type="hidden" name="signed_date_time" :value="edpqForm.signed_date_time">
+      <input type="hidden" name="signed_field_names" :value="edpqForm.signed_field_names">
+      <input type="hidden" name="transaction_type" :value="edpqForm.transaction_type">
+      <input type="hidden" name="transaction_uuid" :value="edpqForm.transaction_uuid">
+      <input type="hidden" name="bill_to_forename" :value="edpqForm.bill_to_forename">
+      <input type="hidden" name="bill_to_surname" :value="edpqForm.bill_to_surname">
+      <input type="hidden" name="bill_to_email" :value="edpqForm.bill_to_email">
+      <input type="hidden" name="bill_to_address_line1" :value="edpqForm.bill_to_address_line1">
+      <input type="hidden" name="bill_to_address_country" :value="edpqForm.bill_to_address_country">
+      <input type="hidden" name="bill_to_address_city" :value="edpqForm.bill_to_address_city">
+
+      <!-- check before the payment: see Security: Check before the payment -->
+      <input type="hidden" name="signature" :value="edpqForm.signature">
+      <!-- layout information: see Look and feel of the payment page -->
+
+      <SfButton
+        class="sf-button--full-width om-btn--primary"
+        @click.prevent="process"
+      >
+        {{ $t("Continue to Payment") }}
+      </SfButton>
+    </form>
+  </div>
 </template>
 <script>
 
@@ -48,12 +61,14 @@ import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 import axios from 'axios';
 import config from 'config';
 import { ModalList } from 'theme/store/ui/modals';
+import OmAlertBox from 'theme/components/omni/om-alert-box';
 
 export default {
   name: 'OCybersourcepay',
   components: {
-    SfButton
-    // PaymentStripe
+    SfButton,
+    // PaymentStripe,
+    OmAlertBox
   },
   props: {
     editAccordion: {
