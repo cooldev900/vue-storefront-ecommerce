@@ -380,5 +380,9 @@ export default {
   .sf-loader {
     width: 21px;
   }
+
 }
+  .om-alert-box {
+    margin-bottom: 0;
+  }
 </style>
