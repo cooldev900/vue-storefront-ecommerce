@@ -120,17 +120,25 @@
                       </div>
                     </template>
                     <template v-else>
-                      <SfFilter
-                        v-for="filter in filters"
-                        :key="filter.id"
-                        :label="filter.label"
-                        :count="filter.count"
-                        :color="filter.color"
-                        :selected="isFilterActive(filter)"
-                        class="filters__item"
-                        @change="changeFilter(filter)"
+                      <SfRange
+                        v-if="filterType == 'price_filter'"
+                        v-model="value"
+                        :disabled="false"
+                        :config='{"start":[getStartPrice ? getStartPrice : minPrice,getEndPrice ? getEndPrice: maxPrice],"range":{"min":minPrice,"max":maxPrice},"step":1,"tooltips":true}'
+                        @change="debouceRange"
                       />
-                    </template>
+                    <SfFilter
+                      v-else
+                      v-for="filter in filters"
+                      :key="filter.id"
+                      :label="filter.label"
+                      :count="filter.count"
+                      :color="filter.color"
+                      :selected="isFilterActive(filter)"
+                      class="filters__item"
+                      @change="changeFilter(filter)"
+                    />
+                  </template>
                   </SfAccordionItem>
                 </template>
               </SfAccordion>
@@ -270,7 +278,15 @@
                     </div>
                   </template>
                   <template v-else>
+                    <SfRange
+                      v-if="filterType == 'price_filter'"
+                      v-model="value"
+                      :disabled="false"
+                      :config='{"start":[getStartPrice ? getStartPrice : minPrice,getEndPrice ? getEndPrice: maxPrice],"range":{"min":minPrice,"max":maxPrice},"step":1,"tooltips":true}'
+                      @change="debouceRange"
+                    />
                     <SfFilter
+                      v-else
                       v-for="filter in filters"
                       :key="filter.id"
                       :label="filter.label"
@@ -365,6 +381,8 @@ import { notifications } from '@vue-storefront/core/modules/cart/helpers';
 import { StorageManager } from '@vue-storefront/core/lib/storage-manager';
 import { onlineHelper } from '@vue-storefront/core/helpers'
 import * as types from '@vue-storefront/core/modules/catalog-next/store/category/mutation-types';
+import SfRange from 'theme/components/atoms/a-range.vue';
+import _ from 'lodash';
 
 const THEME_PAGE_SIZE = 12;
 const LAZY_LOADING_ACTIVATION_BREAKPOINT = 1024;
@@ -409,7 +427,8 @@ export default {
     SfImage,
     OmAppointmentSelector,
     OmProductCard,
-    SbTeaseV2
+    SbTeaseV2,
+    SfRange
   },
   mixins: [  ],
   data () {
@@ -423,6 +442,7 @@ export default {
       unsubscribeFromStoreAction: null,
       aggregations: null,
       sortOrderValue: '',
+      value: [this.minPrice, this.maxPrice],
     };
   },
   computed: {
@@ -443,7 +463,12 @@ export default {
       getAttributeLabelById: 'vehicles/getAttributeLabelById',
       getAttributeIdByLabel: 'vehicles/getAttributeIdByLabel',
       activeVehicle: 'vehicles/activeVehicle',
-      qty: 'vehicles/getQty'
+      qty: 'vehicles/getQty',
+      maxPrice: 'priceRange/getMaxPrice',
+      minPrice: 'priceRange/getMinPrice',
+      getCategoryId: 'priceRange/getCategoryId',
+      getStartPrice: 'priceRange/getStartPrice',
+      getEndPrice: 'priceRange/getEndPrice',
     }),
     search() {
       return this.$route?.query?.search || this.$route?.query?.value || '';
@@ -682,6 +707,8 @@ export default {
     this.$bus.$on('product-after-list', this.initPagination);
     window.addEventListener('resize', this.getBrowserWidth);
     this.getBrowserWidth();
+    if (!this.value[0]) this.value[0] = this.minPrice;
+    if (!this.value[1]) this.value[1] = this.maxPrice;
   },
   beforeDestroy () {
     this.unsubscribeFromStoreAction();
@@ -693,6 +720,26 @@ export default {
       openVehicleCart: 'ui/toggleSidebar',
       openModal: 'ui/openModal'
     }),
+    debouceRange: _.debounce(function(event) {
+      this.changeRange(event);
+    }, 500),
+    changeRange(event) {
+      console.log(event, 'event');
+      this.value = event;
+      this.$store.dispatch('priceRange/saveStartPrice', event[0]);
+      this.$store.dispatch('priceRange/saveEndPrice', event[1]);
+      const priceFilter = {
+        color: null,
+        count: 10,
+        from: event[0],
+        id: `${event[0]}-${event[1]}`,
+        // label: "< QR 500",
+        single: true, 
+        to: event[1],        
+        type: "price"
+      }
+      this.$store.dispatch('category-next/switchSearchFilters', [priceFilter]);
+    },
     async addToCart (product) {
       this.$store.dispatch('product/setCurrent', product);
       const res = await this.$store.dispatch('stock/check', {
@@ -1020,6 +1067,16 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@storefront-ui/shared/styles/helpers/breakpoints";
+
+.sf-range {
+  width: auto !important;
+}
+
+.noUi-base {
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 60px;
+}
 
 .fade-enter-active,
 .fade-leave-active {

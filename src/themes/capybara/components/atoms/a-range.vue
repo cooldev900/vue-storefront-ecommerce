@@ -165,4 +165,9 @@ export default {
     right: 0 !important;
   }
 }
+
+// .noUi-tooltip:nth-child(2) {
+//   top: -120%;
+//   bottom: 0;
+// }
 </style>

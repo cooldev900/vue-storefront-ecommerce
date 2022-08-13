@@ -277,17 +277,25 @@
                     </div>
                   </template>
                   <template v-else>
-                    <SfFilter
-                      v-for="filter in filters"
-                      :key="filter.id"
-                      :label="filter.label"
-                      :count="filter.count"
-                      :color="filter.color"
-                      :selected="isFilterActive(filter)"
-                      class="filters__item"
-                      @change="changeFilter(filter)"
+                    <SfRange
+                      v-if="filterType == 'price_filter'"
+                      v-model="value"
+                      :disabled="false"
+                      :config='{"start":[getStartPrice ? getStartPrice : minPrice,getEndPrice ? getEndPrice: maxPrice],"range":{"min":minPrice,"max":maxPrice},"step":1,"tooltips":true}'
+                      @change="debouceRange"
                     />
-                  </template>
+                  <SfFilter
+                    v-else
+                    v-for="filter in filters"
+                    :key="filter.id"
+                    :label="filter.label"
+                    :count="filter.count"
+                    :color="filter.color"
+                    :selected="isFilterActive(filter)"
+                    class="filters__item"
+                    @change="changeFilter(filter)"
+                  />
+                </template>
                 </SfAccordionItem>
               </template>
             </SfAccordion>
