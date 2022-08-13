@@ -4,24 +4,24 @@
   </div>
 </template>
 <script>
-import noUiSlider from "nouislider";
-import "nouislider/dist/nouislider.css";
+import noUiSlider from 'nouislider';
+import 'nouislider/dist/nouislider.css';
 export default {
-  name: "SfRange",
+  name: 'SfRange',
   props: {
     /*
      * Sets the starting values for slider(s), if only one number is given than only one slider appears
      */
     value: {
       type: Array,
-      default: () => [0, 1],
+      default: () => [0, 1]
     },
     /*
      * Disabling the slider
      */
     disabled: {
       type: Boolean,
-      default: false,
+      default: false
     },
     /*
      * Settings for noUiSlider library
@@ -33,57 +33,57 @@ export default {
           start: [0, 1],
           range: {
             min: 0,
-            max: 10,
+            max: 10
           },
-          step: 1,
+          step: 1
         };
-      },
-    },
+      }
+    }
   },
   watch: {
     config: {
-      handler(newConfig) {
+      handler (newConfig) {
         if (this.$refs && this.$refs.range && this.$refs.range.noUiSlider) {
           this.$refs.range.noUiSlider.destroy();
           const newSlider = this.noUiSliderInit(newConfig);
           return newSlider;
         }
       },
-      deep: true,
+      deep: true
     },
     value: {
-      handler(values) {
+      handler (values) {
         if (this.$refs && this.$refs.range && this.$refs.range.noUiSlider) {
           return this.$refs.range.noUiSlider.set(values);
         }
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
-  mounted() {
+  mounted () {
     this.noUiSliderInit(this.config);
   },
-  beforeDestroy() {
+  beforeDestroy () {
     if (this.$refs && this.$refs.range && this.$refs.range.noUiSlider) {
       this.$refs.range.noUiSlider.destroy();
     }
   },
   methods: {
-    noUiSliderInit(config) {
+    noUiSliderInit (config) {
       const configSettings = Object.assign(this.config, config);
       noUiSlider
         .create(this.$refs.range, configSettings)
-        .on("change", (values) => {
-          this.$emit("change", values);
+        .on('change', (values) => {
+          this.$emit('change', values);
         });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss">
 @import "~@storefront-ui/shared/styles/helpers";
 
-.sf-range { 
+.sf-range {
   position: relative;
   width: 100%;
   height: 7px;
@@ -158,7 +158,7 @@ export default {
   height: 300px;
   width: 7px;
   .noUi-handle {
-    transform: translate3d(20%, 0, 0);  
+    transform: translate3d(20%, 0, 0);
   }
 }
 .noUi-txt-dir-rtl.noUi-horizontal {
@@ -167,9 +167,10 @@ export default {
     right: 0 !important;
   }
 }
-
-// .noUi-tooltip:nth-child(2) {
-//   top: -120%;
-//   bottom: 0;
-// }
+.noUi-handle-upper {
+  .noUi-tooltip {
+    top: 120%;
+    bottom: 0;
+  }
+}
 </style>
