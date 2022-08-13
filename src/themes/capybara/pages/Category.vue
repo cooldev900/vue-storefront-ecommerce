@@ -26,14 +26,16 @@
               {{ $t("Filters") }}
             </SfButton>
             <template v-if="activeFiltersCount">
-              ({{ activeFiltersCount }})
-              <span> &nbsp;&mdash;&nbsp;</span>
-              <button
-                @click="clearAllFilters"
-                class="sf-button sf-button--text navbar__filters-clear-all"
-              >
-                {{ $t("Clear all") }}
-              </button>
+              <div class="applied-filter">
+                <span>{{ activeFiltersCount }}{{$t(' filter applied')}}</span>
+                <span> &nbsp;&nbsp;</span>
+                <button
+                  @click="clearAllFilters"
+                  class="sf-button sf-button--text navbar__filters-clear-all"
+                >
+                  {{ $t("Clear all") }}
+                </button>
+              </div>
             </template>
           </div>
           <div class="navbar__counter">
@@ -1608,5 +1610,20 @@ gap: 15px;
   justify-content: center;
   align-items: center;
   gap: 15px;
+}
+.navbar__main {
+  @include for-mobile {
+    align-items: flex-start
+  }
+}
+.navbar__filter{
+  @include for-mobile {
+    display: block;
+    text-align: center;
+  }
+}
+.applied-filter {
+  font-size: 11px;
+  margin-top: 14px;
 }
 </style>
