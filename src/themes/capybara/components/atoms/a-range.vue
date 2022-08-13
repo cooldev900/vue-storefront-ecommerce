@@ -84,6 +84,7 @@ export default {
 @import "~@storefront-ui/shared/styles/helpers";
 
 .sf-range { 
+  padding-left: 15px;
   position: relative;
   width: 100%;
   height: 7px;
@@ -156,6 +157,12 @@ export default {
   width: 7px;
   .noUi-handle {
     transform: translate3d(20%, 0, 0);  
+  }
+}
+.noUi-txt-dir-rtl.noUi-horizontal {
+  .noUi-handle {
+    left: 0 !important;
+    right: 0 !important;
   }
 }
 </style>
