@@ -252,7 +252,7 @@ export const Payment = {
       return true
     },
     changePaymentMethod () {
-      this.loading = true;
+      if (this.paymentDetails.paymentMethod !== this.payment.paymentMethod) this.loading = true;
       // reset the additional payment method component container if exists.
       if (document.getElementById('checkout-order-review-additional-container')) {
         document.getElementById('checkout-order-review-additional-container').innerHTML = '<div id="checkout-order-review-additional">&nbsp;</div>' // reset
