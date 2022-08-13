@@ -43,6 +43,7 @@ const About = () =>
 const ExternalSuccessPage = () => import(/* webpackChunkName: "vsf-ExternalSuccessPage" */ '../pages/ExternalSuccess.vue');
 const BCExternalSuccess = () => import(/* webpackChunkName: "vsf-ExternalSuccessPage" */ '../pages/BCExternalSuccess.vue');
 const DeliverPage = () => import(/* webpackChunkName: "vsf-ExternalSuccessPage" */ 'theme/pages/Deliver.vue');
+const CheckoutProcess = () => import(/* webpackChunkName: "vsf-checkout-process" */ 'theme/pages/CheckoutProcess.vue')
 
 let routes = [
   { name: 'home', path: '/', component: Home, alias: '/pwa.html', meta: { breadcrumb: 'Home' } },
@@ -76,7 +77,8 @@ let routes = [
   { name: 'vehicle-svg', path: '/vehicle/:nationalCode/parts/:visualGroup', component: VehicleSvg, meta: { breadcrumb: 'Vehicle svg page' } },
   { name: 'external-thank-you', path: '/order-success', component: ExternalSuccessPage, meta: { layout: 'default' } },
   { name: 'search', path: '/search', component: Search, meta: { breadcrumb: 'Static' } },
-  { name: 'deliver', path: '/cart/deliver', component: DeliverPage, meta: { breadcrumb: 'Deliver' } }
+  { name: 'deliver', path: '/cart/deliver', component: DeliverPage, meta: { breadcrumb: 'Deliver' } },
+  { name: 'checkout-process', path: '/checkout/processing', component: CheckoutProcess, meta: { breadcrumb: 'Checkout-process' } }
 ];
 
 export default routes;

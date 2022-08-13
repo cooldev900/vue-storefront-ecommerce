@@ -197,6 +197,12 @@ export const actions: ActionTree<UrlState, any> = {
       return result
     }
 
+    if (url === 'checkout/processing') {
+      return {
+        name: 'checkout-process'
+      }
+    }
+
     return {
       name: 'page-not-found',
       params: {

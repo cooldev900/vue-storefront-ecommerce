@@ -2,7 +2,7 @@
 <NoSSR>
   <div id="checkout">
     <div v-if="!isThankYouPage" class="checkout grid">
-      <SfLoader :loading="loading" v-show="loading"/>
+      <SfLoader :loading="loading" v-show="loading"  class="checkout-loader"/>
       <div class="checkout__main"  v-show="!loading">
         <SfAccordion :open="opens" class="accordion">
           <SfAccordionItem header="order" ref="personalDetails" id="order">
@@ -523,5 +523,9 @@ export default {
 ::v-deep .sf-accordion-item__content{
   padding: 10px 0 !important;
   border: none !important
+}
+
+.checkout-loader {
+  height: 100vh;
 }
 </style>

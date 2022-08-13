@@ -212,8 +212,10 @@
             </div>
           </div>
           <div class="payment-method__contents" v-if="payment.paymentMethod === method.code">
-
-            <PaymentMethodComponent :paymentMethod="payment.paymentMethod" :editAccordion="editAccordion"/>
+            <SfLoader :loading="loading" v-if="loading" class="payment-loader"/>
+            <div v-else>
+              <PaymentMethodComponent :paymentMethod="payment.paymentMethod" :editAccordion="editAccordion"/>
+            </div>
           </div>
         </div>
         <!-- <payment-stripe v-if="payment.paymentMethod === 'cnpayment'" /> -->
@@ -274,7 +276,8 @@ import {
   SfButton,
   SfSelect,
   SfHeading,
-  SfCheckbox
+  SfCheckbox,
+  SfLoader
 } from '@storefront-ui/vue';
 import { createSmoothscroll } from 'theme/helpers';
 // import PaymentStripe from 'src/modules/stripe/components/PaymentStripe';
@@ -297,7 +300,8 @@ export default {
     OmAlertBox,
     CybersourcePayVue,
     // PaymentStripe,
-    PaymentMethodComponent
+    PaymentMethodComponent,
+    SfLoader
 },
   mixins: [Payment, OrderReview],
   props: {
@@ -472,7 +476,8 @@ export default {
         {name: 'city', id: 'city'},
         {name: 'state', id: 'state'},
         {name: 'country', id: 'countries'},
-      ]
+      ],
+      loading: false,
     };
   },
   methods: {
@@ -574,6 +579,7 @@ export default {
 
   &__radio-group {
     width: 100%;
+    margin-top: 15px;
   }
 }
 .payment-method {
@@ -628,5 +634,9 @@ export default {
   width: 100%;
   padding: 15px 0;
   line-break: anywhere;
+}
+
+.payment-loader {
+  height: 150px;
 }
 </style>

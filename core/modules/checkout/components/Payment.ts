@@ -95,6 +95,9 @@ export const Payment = {
     }
   },
   methods: {
+    disableLoader () {
+      this.loading = false;
+    },
     sendDataToCheckout () {
       this.$bus.$emit('checkout-after-paymentDetails', this.payment, this.$v)
       this.isFilled = true
@@ -249,6 +252,7 @@ export const Payment = {
       return true
     },
     changePaymentMethod () {
+      this.loading = true;
       // reset the additional payment method component container if exists.
       if (document.getElementById('checkout-order-review-additional-container')) {
         document.getElementById('checkout-order-review-additional-container').innerHTML = '<div id="checkout-order-review-additional">&nbsp;</div>' // reset
@@ -258,6 +262,7 @@ export const Payment = {
       if (this.payment.paymentMethod) {
         this.$bus.$emit('checkout-payment-method-changed', this.payment.paymentMethod)
       }
+      setTimeout(this.disableLoader, 1000);
     },
     changeCountry () {
       this.$store.dispatch('checkout/updatePaymentDetails', this.payment)

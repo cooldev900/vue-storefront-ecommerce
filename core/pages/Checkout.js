@@ -382,6 +382,7 @@ export default {
       return errors;
     },
     async placeOrder () {
+      console.log('place order');
       this.checkConnection({ online: typeof navigator !== 'undefined' ? navigator.onLine : true })
       if (this.checkStocks()) {
         const result = await this.$store.dispatch('checkout/placeOrder', { order: this.prepareOrder() })
