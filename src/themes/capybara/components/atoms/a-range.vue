@@ -84,20 +84,20 @@ export default {
 @import "~@storefront-ui/shared/styles/helpers";
 
 .sf-range { 
-  padding-left: 15px;
   position: relative;
   width: 100%;
   height: 7px;
+  font-size: 10px;
   margin: var(--spacer-xl);
   background-color: var(--c-light);
   border: none;
   box-shadow: none;
   .noUi {
     &-handle {
-      width: 33px;
-      height: 33px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
-      transform: translate3d(0, -20%, 0);
+      transform: translate3d(0, 0, 0);
       box-shadow: none;
       @include border(--range-handle-border, 1px, solid, var(--c-primary));
       background-color: var(--c-white);
@@ -119,11 +119,13 @@ export default {
       background-color: var(--c-white);
       border-radius: 50%;
       &:hover {
-        background-color: var(--c-primary-variant);
+        background-color: var(--c-primary);
       }
     }
     &-tooltip {
-      bottom: -120%;
+      bottom: 70%;
+      font-weight: 700 !important;
+      background: none;
       color: var(--c-secondary-variant);
       @include font(
         --range-tooltip-font,
