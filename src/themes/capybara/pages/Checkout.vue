@@ -2,7 +2,8 @@
 <NoSSR>
   <div id="checkout">
     <div v-if="!isThankYouPage" class="checkout grid">
-      <div class="checkout__main">
+      <SfLoader :loading="loading" v-show="loading"/>
+      <div class="checkout__main"  v-show="!loading">
         <SfAccordion :open="opens" class="accordion">
           <SfAccordionItem header="order" ref="personalDetails" id="order">
             <template v-slot:header>
@@ -98,7 +99,7 @@
           </SfAccordionItem>
         </SfAccordion>
       </div>
-      <div class="checkout__aside desktop-only">
+      <div class="checkout__aside desktop-only"  v-show="!loading">
         <OOrderSummary />
       </div>
     </div>
@@ -109,7 +110,7 @@
 </template>
 <script>
 import Checkout from '@vue-storefront/core/pages/Checkout';
-import { SfSteps, SfButton, SfAccordion, SfInput, SfImage } from '@storefront-ui/vue';
+import { SfSteps, SfButton, SfAccordion, SfInput, SfImage, SfLoader } from '@storefront-ui/vue';
 import OPayment from 'theme/components/organisms/o-payment';
 import OShipping from 'theme/components/organisms/o-shipping';
 import OShippingMethod from 'theme/components/organisms/o-shipping-method';
@@ -129,6 +130,7 @@ export default {
   name: 'Checkout',
   components: {
     SfSteps,
+    SfLoader,
     OPayment,
     OShipping,
     OOrderReview,
@@ -180,7 +182,8 @@ export default {
       },
       step: -1,
       opens: ['order'],
-      editable: true
+      editable: true,
+      loading: true,
     };
   },
   computed: {
@@ -342,6 +345,9 @@ export default {
     goto () {
       if (this.step !== -1) setTimeout(() => { document.getElementById(Object.keys(this.models)[this.step]).scrollIntoView({ behavior: 'smooth' }); }, 0);
       if (this.isThankYouPage) setTimeout(() => { document.getElementById('checkout').scrollIntoView({ behavior: 'smooth' }); }, 0);
+    },
+    disableLoader () {
+      this.loading = false;
     }
   },
   async mounted () { 
@@ -355,6 +361,7 @@ export default {
       this.step = this.stepData;
       this.goto();
     }
+    setTimeout(this.disableLoader, 2000);
   },
   watch: {
     isThankYouPage() {
