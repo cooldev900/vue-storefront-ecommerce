@@ -207,9 +207,6 @@
               class="form__radio payment-method"
               @input="changePaymentMethod"
             />
-            <div class="payment-method__option--logo">
-              {{ method.code + '.png' }}
-            </div>
           </div>
           <div class="payment-method__contents" v-if="payment.paymentMethod === method.code">
             <SfLoader :loading="loading" v-if="loading" class="payment-loader"/>
@@ -587,8 +584,6 @@ export default {
   --radio-container-padding: var(--spacer-sm) 0;
   --ratio-content-margin: 0 0 0 var(--spacer-lg);
   --radio-background: transparent;
-  white-space: nowrap;
-
   @include for-desktop {
     --radio-container-padding: var(--spacer-sm);
   }
