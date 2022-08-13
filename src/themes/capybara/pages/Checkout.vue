@@ -343,8 +343,8 @@ export default {
       this.openMicrocart({ type: 'microcart' });
     },
     goto () {
-      if (this.step !== -1) setTimeout(() => { document.getElementById(Object.keys(this.models)[this.step]).scrollIntoView({ behavior: 'smooth' }); }, 0);
-      if (this.isThankYouPage) setTimeout(() => { document.getElementById('checkout').scrollIntoView({ behavior: 'smooth' }); }, 0);
+      if (this.step !== -1) setTimeout(() => { document.getElementById(Object.keys(this.models)[this.step]).scrollIntoView({ behavior: 'smooth' }); }, this.loading ? 2100 : 0);
+      if (this.isThankYouPage) setTimeout(() => { document.getElementById('checkout').scrollIntoView({ behavior: 'smooth' }); }, this.loading ? 2100 : 0);
     },
     disableLoader () {
       this.loading = false;
