@@ -289,7 +289,6 @@ export default {
   --radio-container-padding: var(--spacer-sm) 0;
   --ratio-content-margin: 0 0 0 var(--spacer-lg);
   --radio-background: transparent;
-  white-space: nowrap;
   @include for-desktop {
     --radio-container-padding: var(--spacer-sm);
   }

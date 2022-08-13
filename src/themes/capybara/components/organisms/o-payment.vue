@@ -597,19 +597,21 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    border-radius: 2px;
+    background: #f4f4f4;
+    border-radius: 0;
     color: #141414;
+    padding: 0 10px;
     font-weight: 500;
-    border: 1px solid;
+    border: 1px solid #ddd;
     border-collapse: collapse;
   }
 
   &__contents {
-    border-radius: 2px;
+    border-radius: 0;
     color: #141414;
     font-weight: 500;
-    border: 1px solid;
+    border: 1px solid #ddd;
+    border-top: none !important;
     border-collapse: collapse;
     padding: 15px;
   }
