@@ -103,7 +103,7 @@ export default {
           };
           await axios({method: 'POST', url: `${config.api.url}/api/cart/additional-order-data?cartId=${cartId}&token=${token}`, headers: {}, data: body});
           this.$store.commit('vehicles/setAppointmentError', '');
-          // this.$refs.form.submit();
+          this.$refs.form.submit();
         } else {
           this.$store.commit('vehicles/setAppointmentError', 'This slot is not available');
           this.editAccordion(0);
