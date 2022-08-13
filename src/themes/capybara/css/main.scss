@@ -79,7 +79,7 @@
   .sf-input--has-text{
     .sf-input__label{
       padding: 5px;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
     }
   }
@@ -92,7 +92,6 @@
     position: relative !important;
     margin-bottom: 15px;
     font-family: var(--font-family-bold);
-    font-size: 12px;
   }
   .sf-input input{
     border: 1px solid #ccc;
@@ -298,7 +297,7 @@
     flex: 1;
     height: 50px;
   }
-  --modal-index: 2;
+  --modal-index: 20;
 }
 .sf-search-bar__input{
   border: none;

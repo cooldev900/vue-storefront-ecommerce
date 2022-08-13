@@ -849,6 +849,8 @@ export default {
         return this.$t('Grade');
       } else if (filterType === 'oil_type_filter') {
         return this.$t('Oil Type');
+      } else if (filterType === 'car_size_filter') {
+        return this.$t('Car Size');
       } else if (filterType === 'color_filter') {
         return this.$t('color');
       } else return filterType;

@@ -59,29 +59,28 @@
         class="form__element form__element--half"
       /> -->
       <div class="inputs">
-          <label for="billing-country" class="sf-input__label">
-            Services
-            <span class="label--required"> * </span></label
-          >
-          <Select
-            v-model="vin"
-            name="vin"
-            :label="$t('Services')"
-            required
-            class="form__element
+        <label for="billing-country" class="sf-input__label">
+          Services
+          <span class="label--required"> * </span></label>
+        <Select
+          v-model="vin"
+          name="vin"
+          :label="$t('Services')"
+          required
+          class="form__element
               form__select
               vin-select
               "
+        >
+          <Option
+            v-for="(service, key) in services"
+            :key="key"
+            :value="service"
           >
-            <Option
-              v-for="(service, key) in services"
-              :key="key"
-              :value="service"
-            >
-              {{ $t(service) }}
-            </Option>
-          </Select>
-        </div>
+            {{ $t(service) }}
+          </Option>
+        </Select>
+      </div>
       <SfInput
         v-model="item_required"
         :label="$t('Items required')"
@@ -100,7 +99,7 @@
         minlength="10"
         wrap="soft"
       />
-      <div class="form__action">
+      <div class="cta-area">
         <SfButton class="om-btn--primary" @click.prevent="submit">
           <SfLoader v-if="loading" :loading="loading" />
           <span v-else>{{ $t('Submit') }}</span>
@@ -164,13 +163,13 @@ export default {
       loading: false,
       successMessage: '',
       type: 'info',
-      services: ['Tires', 'Batteries', 'Lubricants', 'Car Care'],
+      services: ['Tires', 'Batteries', 'Lubricants', 'Car Care']
     };
   },
   computed: {
     ...mapGetters({
-      product: 'product/getCurrentProduct',
-    }),
+      product: 'product/getCurrentProduct'
+    })
   },
   methods: {
     ...mapActions('ui', {
@@ -280,16 +279,13 @@ export default {
       this.lastNameBlur = true;
       this.setProductInfo();
     },
-    setProductInfo() {
+    setProductInfo () {
       this.type = 'info';
       this.successMessage = '';
       if (this.product.sku) {
-        if (this.product.name)  
-          this.item_required = this.product.name + ' - ' + this.product.sku;  
-        else 
-          this.item_required = this.product.title + ' - ' + this.product.sku;  
-      }  
-    },
+        if (this.product.name) { this.item_required = this.product.name + ' - ' + this.product.sku; } else { this.item_required = this.product.title + ' - ' + this.product.sku; }
+      }
+    }
   },
   mounted () {
     this.reset();
@@ -310,22 +306,30 @@ export default {
 }
 .inputs {
   width: 50%;
+  margin: 0 0 var(--spacer-sm) 0;
+  @include for-mobile {
+    width: 100%;
+  }
+.sf-input__label {
+  display: block;
+}
 }
 .label {
-  display: block;
+  display: block !important;
   font-weight: 700;
   font-size: 14px;
+  margin-bottom: 15px !important;
 }
 .vin-select {
-  width: 100%;  
-  padding: 14px !important;
-  margin-top: 20px !important;
+  width: 100%;
+  padding: 15px !important;
   border-radius: 4px;
   border: 1px solid #ccc;
   background-color: rgb(244,244,244);
 }
 .form {
   padding: var(--spacer-sm) 0;
+  margin: 0 !important;
   &__group {
     display: flex;
     align-items: flex-start;
@@ -370,7 +374,12 @@ export default {
       --button-width: auto;
     }
   }
-
+.cta-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: auto;
+}
   .form__action-submit {
     min-width: 117.75px !important;
   }
