@@ -528,7 +528,6 @@ export default {
   padding: 15px;
   border-radius: 10px;
   margin: 30px 0;
-  width: 100%;
 }
 .product__header{
   @include for-mobile{
