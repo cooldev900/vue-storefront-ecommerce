@@ -1,36 +1,31 @@
 <template>
   <div class="sf-gallery">
-    <CoolLightBox
-      :items="lightBoxItems"
-      :index="lightBoxIndex"
-      :effect="'fade'"
-      :use-zoom-bar="true"
-      @close="lightBoxIndex = null"
-    />
     <div class="sf-gallery__stage">
-      <swiper
-        ref="swiper"
-        :slides-per-view="1"
-        :space-between="50"
-        @swiper="onSwiper"
-        @slideChange="onSlideChange"
-      >
-        <swiper-slide v-for="(picture, index) in images"
-          :key="'slide-' + index"
-          @mouseover.native="startZoom(picture)"
-          @mousemove.native="moveZoom($event, index)"
-          @mouseout.native="removeZoom(index)"
-        >
-          <SfImage
-            ref="sfGalleryBigImage"           
-            :src="picture.desktop.url"
-            :alt="picture.alt"
-            :lazy="false"            
-            @click="clickImage(picture, index)"
-            :class="{ 'sf-gallery__big-image--has-zoom': enableZoom }"            
-          />
-        </swiper-slide>
-      </swiper>
+      <div ref="glide" class="glide">
+        <div class="glide__track" data-glide-el="track">
+          <ul class="glide__slides">
+            <li
+              v-for="(picture, index) in images"
+              :key="'slide-' + index"
+              class="glide__slide"
+              @mouseover="startZoom(picture)"
+              @mousemove="moveZoom($event, index)"
+              @mouseout="removeZoom(index)"
+            >
+              <SfImage
+                ref="sfGalleryBigImage"
+                class="sf-gallery__big-image"
+                :class="{ 'sf-gallery__big-image--has-zoom': enableZoom }"
+                :src="picture.desktop.url"
+                :alt="picture.alt"
+                :width="imageWidth"
+                :height="imageHeight"
+                @click="$emit('click:stage', { picture, index })"
+              />
+            </li>
+          </ul>
+        </div>
+      </div>
       <transition name="fade">
         <div
           v-if="outsideZoom && pictureSelected"
@@ -58,12 +53,11 @@
           @click="go(index)"
         >
           <SfImage
-            class="sf-gallery__thumb"            
+            class="sf-gallery__thumb"
             :src="image.mobile.url"
             :alt="image.alt"
             :width="thumbWidth"
             :height="thumbHeight"
-            :lazy="false"            
           />
         </SfButton>
       </slot>
@@ -158,10 +152,8 @@ export default {
       eventHover: {},
       pictureSelected: '',
       glide: null,
-      activeIndex: 0,
-      style: '',
-      lightBoxIndex: null,
-      swiper: null,
+      activeIndex: this.current - 1,
+      style: ''
     };
   },
   computed: {
@@ -174,38 +166,20 @@ export default {
     },
     updatedSliderOptions () {
       return { ...this.sliderOptions, startAt: this.activeIndex };
-    },
-    lightBoxItems () {
-      return this.images.map(image => image.desktop.url)
     }
   },
-  async mounted () {
-    this.swiper = this.$refs.swiper.$swiper;
-  },
-  beforeDestroy () {
-    if (this.glide) {
-      this.glide.destroy();
-    }
-  },
-  watch: {
-    images (value) {
-      console.log('images', value);
-      this.$forceUpdate();
-    }
-  },
-  methods: {
-    rerender () {
-      this.$forceUpdate();
-    },
-    initiateGlide () {
-      if (this.glide) this.glide.destroy();
+  mounted () {
+    this.$nextTick(() => {
+      // handle slider with swipe and transitions with Glide.js
+      // https://glidejs.com/docs/
+      if (this.images.length < 1) return;
       const glide = new Glide(this.$refs.glide, this.updatedSliderOptions);
       glide.on('run', () => {
         this.go(glide.index);
       });
       glide.mount();
       this.glide = glide;
-    },
+    });
   },
   beforeDestroy () {
     if (this.glide) {
@@ -226,8 +200,16 @@ export default {
       return '';
     },
     go (index) {
+      if (!this.glide) return;
       this.activeIndex = index;
-      this.swiper.slideTo(index);
+      /**
+       * Event for current image change (`v-model`)
+       * @type {Event}
+       */
+      this.$emit('click', index + 1);
+      if (this.glide) {
+        this.glide.go(`=${index}`);
+      }
     },
     startZoom (picture) {
       if (this.enableZoom) {
@@ -263,17 +245,12 @@ export default {
           'translate3d(0, -50%, 0)';
         this.$refs.sfGalleryBigImage[index].$refs.image.style.top = '50%';
       }
-    },
-    clickImage (picture, index) {
-      console.log('click')
-      this.$emit('click:stage', { picture, index })
-      this.lightBoxIndex = index;
     }
   }
 };
 </script>
 <style lang="scss">
-@import "~@storefront-ui/shared/styles/helpers/breakpoints";
+@import "@storefront-ui/shared/styles/components/molecules/SfGallery.scss";
 .sf-gallery__thumbs{
   padding: 20px;
 }
