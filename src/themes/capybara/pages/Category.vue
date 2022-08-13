@@ -998,6 +998,8 @@ export default {
     },
     clearAllFilters () {
       this.$store.dispatch('category-next/resetSearchFilters');
+      this.$store.dispatch('priceRange/saveStartPrice', this.minPrice);
+      this.$store.dispatch('priceRange/saveEndPrice', this.maxPrice);
     },
     getFilterCount (filter) {
       const aggregations = [
