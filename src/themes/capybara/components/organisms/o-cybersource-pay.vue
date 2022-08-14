@@ -1,6 +1,6 @@
 <template>
   <div>
-    <OmAlertBox type="info" style="margin-bottom: 20px; margin-top: 40px;">
+    <OmAlertBox type="info">
       <template #message>
         <div class="om-alert-box-message">
           <div>

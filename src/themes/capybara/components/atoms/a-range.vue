@@ -123,7 +123,7 @@ export default {
       }
     }
     &-tooltip {
-      bottom: 70%;
+      bottom: 100%;
       font-weight: 700 !important;
       background: none;
       color: var(--c-secondary-variant);
@@ -163,8 +163,6 @@ export default {
 }
 .noUi-txt-dir-rtl.noUi-horizontal {
   .noUi-handle {
-    left: 0 !important;
-    right: 0 !important;
   }
 }
 .noUi-handle-upper {
@@ -172,5 +170,8 @@ export default {
     top: 120%;
     bottom: 0;
   }
+}
+.noUi-horizontal .noUi-handle {
+  right: -11px !important;
 }
 </style>
