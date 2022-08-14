@@ -58,7 +58,6 @@ export const actions: ActionTree<UrlState, any> = {
     const parsedQuery = typeof query === 'string' ? queryString.parse(query) : query
     const storeCodeInPath = storeCodeFromRoute(url)
     url = normalizeUrlPath(url)
-    if (!url) url = "/";
     
     return new Promise((resolve, reject) => {
       if (state.dispatcherMap[url]) {
