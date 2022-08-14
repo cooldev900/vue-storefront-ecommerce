@@ -58,6 +58,14 @@ export default {
     if (context) context.output.cacheTags.add(`home`);
   },
   async mounted () {
+    const { query } = this.$route;
+    if (query?.login === 'open') {
+      this.openModal({ name: ModalList.Auth, payload: 'login' })
+    }
+    if (query?.register === 'open') {
+      this.openModal({ name: ModalList.Auth, payload: 'register' })
+    }
+
     this.$store.commit('vehicles/toggleSetPrompt', true);
     if (!this.isLoggedIn && localStorage.getItem('redirect')) {
       this.$bus.$emit('modal-show', 'modal-signup');
