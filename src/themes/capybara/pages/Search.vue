@@ -187,6 +187,7 @@
                 :special-price="product.price.special"
                 :link="product.link"
                 :qty1="product.qty"
+                :brand="product.oe_brand"
                 :brand-image="product.brand_logo"
                 :brand-color="product.brand_colour"
                 link-tag="router-link"

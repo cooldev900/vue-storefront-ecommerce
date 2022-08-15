@@ -199,7 +199,7 @@
   "defaultStoreCode": "",
   "storeViews": {
     "multistore": true,
-    "commonCache": false,
+    "commonCache": true,
     "mapStoreUrlsFor": [
       "ar",
       "mini"
@@ -411,6 +411,8 @@
         "final_price",
         "id",
         "brand",
+        "news_from_date",
+        "news_to_date",
         "fitting_time",
         "collection_only",
         "image",
@@ -755,7 +757,8 @@
       "price",
       "vehicle_type",
       "battery_capacity",
-      "car_size"
+      "car_size",
+      "promotion"
     ],
     "systemFilterNames": [
       "sort"
@@ -950,8 +953,7 @@
     "finalPriceIncludesTax": false
   },
   "shipping": {
-    "methods": [
-    ]
+    "methods": []
   },
   "syncTasks": {
     "disablePersistentTaskQueue": true
@@ -1112,6 +1114,63 @@
     "2": 28,
     "3": 28,
     "6": 28
+  },
+  "oebrands": {
+    "Continental": {
+      "logo": "/assets/continental_logo.svg",
+      "logo_height": "30",
+      "color": "#ffa500"
+    },
+    "FIAMM": {
+      "logo": "/assets/fiamm_logo.png",
+      "logo_height": "30",
+      "color": "#e21d21"
+    },
+    "Castrol": {
+      "logo": "/assets/castrol_logo.svg",
+      "logo_height": "30",
+      "color": "#00833b"
+    },
+    "SunProtech": {
+      "logo": "/assets/sunprotech.png",
+      "logo_height": "30",
+      "color": "#eaeaea"
+    },
+    "BodyFence": {
+      "logo": "/assets/bodyfence.png",
+      "logo_height": "30",
+      "color": "#EFEFEF"
+    },
+    "Protech": {
+      "logo": "/assets/protech.png",
+      "logo_height": "30",
+      "color": "#e0003f"
+    },
+    "PLATIN": {
+      "logo": "/assets/platin_logo.png",
+      "logo_height": "30",
+      "color": "#000000"
+    },
+    "كونتيننتال": {
+      "logo": "/assets/continental_logo.svg",
+      "logo_height": "30",
+      "color": "#ffa500"
+    },
+    "بطاريات FIAMM": {
+      "logo": "/assets/fiamm_logo.png",
+      "logo_height": "30",
+      "color": "#e21d21"
+    },
+    "كاسترول": {
+      "logo": "/assets/castrol_logo.svg",
+      "logo_height": "30",
+      "color": "#00833b"
+    },
+    "بلاتين": {
+      "logo": "/assets/platin_logo.png",
+      "logo_height": "30",
+      "color": "#000000"
+    }
   },
   "recaptcha": {
     "siteKey": "6LeMJLkZAAAAADcLY2qurohjqjDcZszw98_u1MSE"

@@ -188,6 +188,7 @@
                 :special-price="product.price.special"
                 :link="product.link"
                 :qty1="product.qty"
+                :brand="product.oe_brand"
                 :brand-image="product.brand_logo"
                 :brand-color="product.brand_colour"
                 link-tag="router-link"
@@ -1514,7 +1515,8 @@ export default {
   justify-content: center;
   align-items: center;
   .brand-logo {
-    max-height: 30px;
+    max-width: 50%;
+    max-height: 40px;
   }
 }
 ::v-deep .action-area__wrap {

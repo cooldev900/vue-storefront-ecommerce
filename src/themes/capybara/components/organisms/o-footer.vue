@@ -30,7 +30,7 @@
       <div class="footer-bottom__header">
         <ul>
           <li class="footer-bottom__menu-item">
-            <span @click="backToTop">{{ $t('Back to Top') }}</span>
+            <span class="back-to-top" @click="backToTop">{{ $t('Back to Top') }}</span>
           </li>
           <ul class="social-icon__list">
             <li class="social-icon">
@@ -189,6 +189,9 @@ export default {
     padding: 0 15px;
     text-transform: uppercase;
     color: #fff;
+  &:hover{
+     color: var(--c-primary) !important;
+  }
 }
 ::v-deep .sf-footer-column__title{
   color: #fff;
@@ -223,6 +226,9 @@ export default {
     fill: #000 !important;
     width: 30px;
     height: 30px;
+    &:hover{
+       fill: var(--c-primary) !important;
+  }
   }
   &:last-child{
     padding-right: 0;
@@ -257,6 +263,11 @@ export default {
    &__content{
     border-bottom: 1px solid #eee;
     background: #fff;
+    a{
+      &:hover{
+        color: var(--c-primary)
+      }
+    }
     ul{
       list-style: none;
       max-width: 1400px;
@@ -316,5 +327,11 @@ export default {
 }
 ::v-deep .sf-chevron__bar:after{
   background: #fff;
+}
+.back-to-top{
+  cursor: pointer;
+  &:hover{
+    color: var(--c-primary)
+  }
 }
 </style>
