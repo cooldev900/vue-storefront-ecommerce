@@ -920,10 +920,8 @@ export default {
       const { includeFields, excludeFields } = config.entities.productList;
       const { filters } = this.getCurrentSearchQuery;
       if (
-        this.getCurrentCategory?.page_layout &&
         this.getCurrentCategory?.page_layout === 'category-full-width'
       ) {
-        return;
       } else {
         if (this?.activeVehicle && Object.keys(this.activeVehicle).length) {
           let national_code = [];
