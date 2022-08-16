@@ -91,10 +91,13 @@ export function prepareCategoryProduct (product) {
     sku: product.sku,
     brand_logo: product.brand_logo,
     brand_colour: product.brand_colour,
+    oe_brand: product.oe_brand,
     usp1: product.usp1,
     usp2: product.usp2,
     secondary_title: product.secondary_title,
-    stock: product.stock
+    stock: product.stock,
+    news_from_date: product.news_from_date,
+    news_to_date: product.news_to_date
   };
 }
 

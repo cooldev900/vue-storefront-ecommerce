@@ -25,6 +25,11 @@
         @click="handleClick"
         v-show="sendToBillingAddress"
       >
+        <span><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                   width="25" height="25"
+                   viewBox="0 0 30 30"
+                   style=" fill:#000000;"
+        >    <path d="M 22.828125 3 C 22.316375 3 21.804562 3.1954375 21.414062 3.5859375 L 19 6 L 24 11 L 26.414062 8.5859375 C 27.195062 7.8049375 27.195062 6.5388125 26.414062 5.7578125 L 24.242188 3.5859375 C 23.851688 3.1954375 23.339875 3 22.828125 3 z M 17 8 L 5.2597656 19.740234 C 5.2597656 19.740234 6.1775313 19.658 6.5195312 20 C 6.8615312 20.342 6.58 22.58 7 23 C 7.42 23.42 9.6438906 23.124359 9.9628906 23.443359 C 10.281891 23.762359 10.259766 24.740234 10.259766 24.740234 L 22 13 L 17 8 z M 4 23 L 3.0566406 25.671875 A 1 1 0 0 0 3 26 A 1 1 0 0 0 4 27 A 1 1 0 0 0 4.328125 26.943359 A 1 1 0 0 0 4.3378906 26.939453 L 4.3632812 26.931641 A 1 1 0 0 0 4.3691406 26.927734 L 7 26 L 5.5 24.5 L 4 23 z" /></svg></span>
         {{ locationKind === 'click_collect_free' ? $t('Change billing address') : $t('Change billing address') }}
       </span>
       <SfInput
@@ -193,12 +198,12 @@
         </div>
       </template>
     </OmAlertBox>
-    
+
     <div class="form" v-show="sendToBillingAddress">
       <div class="form__radio-group">
         <div v-for="method in paymentMethods" :key="method.code" class="payment-method">
           <div class="payment-method__option">
-            <SfRadio            
+            <SfRadio
               :key="method.code"
               v-model="payment.paymentMethod"
               :label="method.title ? method.title : method.name"
@@ -209,9 +214,9 @@
             />
           </div>
           <div class="payment-method__contents" v-if="payment.paymentMethod === method.code">
-            <SfLoader :loading="loading" v-if="loading" class="payment-loader"/>
+            <SfLoader :loading="loading" v-if="loading" class="payment-loader" />
             <div v-else>
-              <PaymentMethodComponent :paymentMethod="payment.paymentMethod" :editAccordion="editAccordion"/>
+              <PaymentMethodComponent :payment-method="payment.paymentMethod" :edit-accordion="editAccordion" />
             </div>
           </div>
         </div>
@@ -234,9 +239,7 @@
           <input type="hidden" name="ORDERID" :value="edpqForm.orderId">
           <input type="hidden" name="PSPID" :value="edpqForm.pspId">
 
-          
           <input type="hidden" name="SHASIGN" :value="shaSign">
-          
 
           <SfButton
             class="sf-button--full-width form__action-button"
@@ -299,7 +302,7 @@ export default {
     // PaymentStripe,
     PaymentMethodComponent,
     SfLoader
-},
+  },
   mixins: [Payment, OrderReview],
   props: {
     nextAccordion: {
@@ -400,10 +403,10 @@ export default {
       const shaSignature1 = `${transaction_id}${decision}${req_transaction_uuid}`;
       console.log(process.env, 'secret_key', config.secret_key);
       const checkSumShaSign = this.$CryptoJS.HmacSHA256(shaSignature1, secretKey).toString(this.$CryptoJS.enc.Hex);
-      console.log(JSON.parse(SHASIGN) ===  checkSumShaSign,'is valid sha', SHASIGN, checkSumShaSign);
+      console.log(JSON.parse(SHASIGN) === checkSumShaSign, 'is valid sha', SHASIGN, checkSumShaSign);
       console.log(this.getSlotData, 'getSlotData');
       console.log(this.getSlotID, 'getSlotID');
-      if (JSON.parse(SHASIGN) ===  checkSumShaSign && decision === 'ACCEPT') {
+      if (JSON.parse(SHASIGN) === checkSumShaSign && decision === 'ACCEPT') {
         // let newOrder = await this.prepareOrder();
 
         // newOrder.addressInformation.payment_method_additional = {
@@ -411,15 +414,15 @@ export default {
         // }
         // await this.$store.dispatch('checkout/placeOrder', { order: newOrder });
         // EventBus.$emit('notification-progress-stop')
-        
+
         await this.$bus.$emit('notification-progress-start');
         // await this.$bus.$emit('place-order-after-cybersource-pay');
         const result = await this.placeOrder();
         console.log(result?.result.magentoOrderId, 'result?.result.magentoOrderId');
-    
+
         try {
-            await this.$store.dispatch('vehicles/setAppointment', result?.result.magentoOrderId);
-        } catch(e) {
+          await this.$store.dispatch('vehicles/setAppointment', result?.result.magentoOrderId);
+        } catch (e) {
           console.log(e, 'appointment error');
           await this.$bus.$emit('notification-progress-stop');
           this.openModal({ name: ModalList.OmAppointmentModal, payload: { orderId: result?.result.magentoOrderId } })
@@ -432,7 +435,6 @@ export default {
       this.isMessage = false;
       this.message = '';
     }
-    
   },
   computed: {
     ...mapGetters({
@@ -471,15 +473,15 @@ export default {
       isMessage: false,
       message: '',
       idData: [
-        {name: 'firstName',  id: 'first-name'},
-        {name: 'lastName', id: 'last-name'},
-        {name: 'streetAddress', id: 'street-address'},
-        {name: 'apartmentNumber', id: 'apartment-number'},
-        {name: 'city', id: 'city'},
-        {name: 'state', id: 'state'},
-        {name: 'country', id: 'countries'},
+        { name: 'firstName', id: 'first-name' },
+        { name: 'lastName', id: 'last-name' },
+        { name: 'streetAddress', id: 'street-address' },
+        { name: 'apartmentNumber', id: 'apartment-number' },
+        { name: 'city', id: 'city' },
+        { name: 'state', id: 'state' },
+        { name: 'country', id: 'countries' }
       ],
-      loading: false,
+      loading: false
     };
   },
   methods: {
@@ -497,7 +499,7 @@ export default {
     saveBillingAddress () {
       this.$v.$touch();
       if (this.$v.payment.$invalid) {
-        const id = this.idData.find( row => {
+        const id = this.idData.find(row => {
           if (this.$v.personalDetails[row.name]?.$invalid) return true;
         });
         if (id) {
@@ -549,8 +551,21 @@ export default {
 
   &__billing {
     color: #000000;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
+    &:hover{
+      color: var(--c-primary)
+    }
+    svg{
+    fill: white !important;
+    background: var(--c-primary) !important;
+    padding: 6px;
+    border-radius: 4px;
+    }
   }
 
   &_button {

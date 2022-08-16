@@ -153,6 +153,10 @@ export default {
   margin: 20px 0;
   box-shadow: 0 0 2px 0 rgba(0,0,0,0.1), 0 2px 4px 0 rgba(0,0,0,0.1);
   border-radius: 8px;
+  border: 1px solid transparent;
+  &:hover{
+    border: 1px solid var(--c-primary);
+  }
   .edit {
     position: absolute;
     top: 40px;
@@ -171,5 +175,8 @@ export default {
 ::v-deep .sf-accordion-item__content{
   padding: 10px 0 !important;
   border: none !important
+}
+::v-deep .sf-accordion-item__header{
+   font-weight: 700 !important;
 }
 </style>

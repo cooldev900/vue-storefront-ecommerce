@@ -1,9 +1,12 @@
 <template>
   <div class="sf-product-card">
-    <div class="sf-product-card__brand" :style="{ background: `${brandColor}` }">
+    <div class="sf-product-card__brand" :style="{ background: `${oeBrands.color}` }">
       <img class="brand-logo"
-           :src="brandImage"
+           :src="oeBrands.logo"
       >
+      <div class="corner-ribbon top-right sticky grey shadow" v-if="isNew">
+        {{ $t('New') }}
+      </div>
     </div>
     <SfLink class="sf-product-card__link" :link="link">
       <slot name="title" v-bind="{ title }">
@@ -189,6 +192,7 @@
   </div>
 </template>
 <script>
+import config from 'config';
 import { focus } from '@storefront-ui/vue/src/utilities/directives';
 import { colorsValues as SF_COLORS } from '@storefront-ui/shared/variables/colors';
 import { deprecationWarning } from '@storefront-ui/vue/src/utilities/helpers';
@@ -257,6 +261,10 @@ export default {
     },
     brandColor: {
       type: [Array, Object, String],
+      default: ''
+    },
+    brand: {
+      type: [String, Array, Number],
       default: ''
     },
     brandImage: {
@@ -415,13 +423,14 @@ export default {
     return {
       isAddingToCart: false,
       qty: 1,
-      loading: false,
+      loading: false
     };
   },
   computed: {
     ...mapGetters({
       previewQty: 'vehicles/qty',
       attributeListByCode: 'attribute/attributeListByCode',
+      getAttributeLabelById: 'vehicles/getAttributeLabelById'
     }),
     isSFColors () {
       return SF_COLORS.includes(this.badgeColor.trim());
@@ -459,12 +468,21 @@ export default {
       }
       return 'div';
     },
-    isTire() {
+    isTire () {
       let product_group = this.product.product_group;
       let options = this.attributeListByCode.product_group.options;
       return options?.some(option => option.value == product_group && option.label === 'Tires');
     },
-    isAvailable() {
+    isNew () {
+      const startTime = new Date(this.product.news_from_date).getTime();
+      const endTime = new Date(this.product.news_to_date).getTime();
+      const now = new Date();
+      return now >= startTime && now <= endTime;
+    },
+    oeBrands () {
+      return config['oebrands'][this.getAttributeLabelById('oe_brand', this.brand)];
+    },
+    isAvailable () {
       // if (this.qty1) this.qty = this.qty1;
       // const res = await this.$store.dispatch('stock/check', {
       //   product: this.product,
@@ -612,7 +630,7 @@ export default {
       this.qty = value;
     }
   },
-  async beforeMount() {
+  async beforeMount () {
     // if (this.qty1) this.qty = this.qty1;
     // const res = await this.$store.dispatch('stock/check', {
     //   product: this.product,
@@ -650,5 +668,33 @@ export default {
     color: var(--c-primary);
     margin: 8px 0;
   }
+}
+.corner-ribbon {
+  width: 64px;
+  position: absolute;
+  text-align: center;
+  color: #fff;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  overflow: hidden;
+}
+.corner-ribbon.shadow {
+  box-shadow: 0 0 3px rgba(0, 0, 0, .3);
+}
+/* Different positions */
+
+.corner-ribbon.top-right {
+  top: 10px;
+  right: -21px;
+  left: auto;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(46deg);
+  overflow: hidden;
+}
+.corner-ribbon.grey {
+    background: gray;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 3px 10px;
 }
 </style>

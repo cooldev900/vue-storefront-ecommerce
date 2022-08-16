@@ -321,7 +321,7 @@ export default {
 #detailed-cart {
   box-sizing: border-box;
   background: #f3f4f4;
-  padding-bottom: 10px;
+  padding-bottom: 24px;
 }
 .breadcrumbs {
   padding: var(--spacer-base) 0;
@@ -460,7 +460,7 @@ export default {
 }
 .checkout--btn{
       width: 100%;
-    margin-top: 20px;
+    margin-top: 24px;
 }
 ::v-deep .sf-collected-product__quantity-wrapper{
 position: relative;
