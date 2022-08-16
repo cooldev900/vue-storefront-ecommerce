@@ -94,9 +94,9 @@
       </div>
       <div class="main grid-container">
         <div class="sidebar desktop-only">
-          <div>
+          <!-- <div>
             <omTyreFinder v-if="shouldShowVehicleCard" />
-          </div>
+          </div> -->
           <div class="filters">
             <lazy-hydrate :trigger-hydration="loading">
               <SfAccordion
@@ -254,9 +254,9 @@
         class="sidebar-filters"
         @close="isFilterSidebarOpen = false"
       >
-        <div v-if="shouldShowVehicleCard">
+        <!-- <div v-if="shouldShowVehicleCard">
           <OmVehicleCartCard :vehicle="activeVehicle" :active="true" />
-        </div>
+        </div> -->
         <div class="filters">
           <lazy-hydrate :trigger-hydration="!loading">
             <SfAccordion
@@ -642,7 +642,7 @@ export default {
     //   );
     // },
     shouldShowVehicleCard () {
-      if (this.$route.path === '/car-accessories') { return true; } else { return this.getCurrentCategory?.id && this.getCurrentCategory?.page_layout !== 'category-full-width' }
+      return this.getCurrentCategory?.id && this.getCurrentCategory?.page_layout !== 'category-full-width'
     }
   },
   watch: {
