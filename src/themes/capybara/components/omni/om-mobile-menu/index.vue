@@ -142,7 +142,7 @@ export default {
           this.$emit('close');
         }
       } else {
-        this.$router.push(item.level_1[0].tier_2_link.url);
+        this.$router.push(item.navigation_level_1_link.url);
         this.$emit('close');
       }
     },
