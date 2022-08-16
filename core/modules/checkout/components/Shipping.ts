@@ -45,6 +45,7 @@ export const Shipping = {
         {name: 'city', id: 'City'},
         {name: 'state', id: 'state'},
         {name: 'country', id: 'Country'},
+        {name: 'phoneNumber', id: 'phone'}
       ]
     }
   },

@@ -218,7 +218,7 @@ export default {
       this.$v.$touch();
       if (this.$v.shipping.$invalid) {
         const id = this.idData.find( row => {
-          if (this.$v.personalDetails[row.name]?.$invalid) return true;
+          if (this.$v.shipping[row.name]?.$invalid) return true;
         });
         if (id) {
           setTimeout(() => { document.getElementById(id.id).scrollIntoView({ behavior: 'smooth' }); }, 0);

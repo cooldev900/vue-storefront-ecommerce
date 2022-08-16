@@ -479,7 +479,8 @@ export default {
         { name: 'apartmentNumber', id: 'apartment-number' },
         { name: 'city', id: 'city' },
         { name: 'state', id: 'state' },
-        { name: 'country', id: 'countries' }
+        { name: 'country', id: 'countries' },
+        {name: 'phoneNumber', id: 'phone'}
       ],
       loading: false
     };
@@ -498,14 +499,15 @@ export default {
     },
     saveBillingAddress () {
       this.$v.$touch();
+      console.log(this.$v.payment.$invalid, 'payment invalid');
       if (this.$v.payment.$invalid) {
         const id = this.idData.find(row => {
-          if (this.$v.personalDetails[row.name]?.$invalid) return true;
+          if (this.$v.payment[row.name]?.$invalid) return true;
         });
         if (id) {
           setTimeout(() => { document.getElementById(id.id).scrollIntoView({ behavior: 'smooth' }); }, 0);
         }
-        return;
+        if(id) return;
       }
       this.sendToBillingAddress = true;
       this.sendDataToCheckout();
