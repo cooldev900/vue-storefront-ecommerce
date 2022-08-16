@@ -642,7 +642,7 @@ export default {
     //   );
     // },
     shouldShowVehicleCard () {
-      if (this.$route.path === '/car-accessories') { return true; } else { return this.getCurrentCategory?.id && this.getCurrentCategory?.page_layout !== 'category-full-width' }
+      return this.getCurrentCategory?.id && this.getCurrentCategory?.page_layout !== 'category-full-width'
     }
   },
   watch: {
