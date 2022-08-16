@@ -920,6 +920,7 @@ export default {
       const { includeFields, excludeFields } = config.entities.productList;
       const { filters } = this.getCurrentSearchQuery;
       if (
+        this.getCurrentCategory?.page_layout &&
         this.getCurrentCategory?.page_layout === 'category-full-width'
       ) {
       } else {
