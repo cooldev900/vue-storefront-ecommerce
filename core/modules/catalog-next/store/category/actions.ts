@@ -48,7 +48,7 @@ const actions: ActionTree<CategoryState, RootState> = {
       categoryMappedFilters
       );
       
-    console.log(searchQuery, 'searchQuery');
+    console.log(searchQuery, 'searchQuery', getters.getCurrentCategory);
     if (
       getters.getCurrentCategory?.page_layout &&
       getters.getCurrentCategory?.page_layout === 'category-full-width'
@@ -59,7 +59,7 @@ const actions: ActionTree<CategoryState, RootState> = {
       const savedActiveVehicle = localStorage?.getItem(
         storeCode + '/active-vehicle'
       );
-
+      console.log(savedActiveVehicle, 'savedActiveVehicle');
       if (savedActiveVehicle && savedActiveVehicle !== '{}') {
         const activeVehicle = JSON.parse(savedActiveVehicle);
         let national_code = [];
@@ -75,7 +75,7 @@ const actions: ActionTree<CategoryState, RootState> = {
 
     let filterQr = buildFilterProductsQuery(
       searchCategory,
-      searchQuery.filters
+      searchQuery?.filters
     );
     if (route.query && route.query.search) {
       filterQr.setSearchText(route.query.search);
