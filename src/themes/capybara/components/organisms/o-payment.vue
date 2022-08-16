@@ -126,7 +126,7 @@
           {{ country.name }}
         </SfSelectOption>
       </SfSelect>
-      <!-- <SfInput
+      <SfInput
         v-if="!sendToBillingAddress"
         v-model.trim="payment.phoneNumber"
         class="form__element"
@@ -136,7 +136,7 @@
         :valid="!$v.payment.phoneNumber.$error"
         @blur="$v.payment.phoneNumber.$touch()"
         :error-message="$t('Field is required')"
-      /> -->
+      />
       <!-- <SfCheckbox
         v-if="!sendToBillingAddress"
         v-model="generateInvoice"
@@ -350,7 +350,12 @@ export default {
         required
       },
       paymentMethod: {
-        required
+        required,
+        complex: value => {
+          if (!value) return true;
+          const regex = /^[0-9]{7,12}$/;
+          return regex.test(value);
+        }
       }
     };
     const rulesForInvoice = {
@@ -444,7 +449,7 @@ export default {
       }, {});
     },
     billingAddress () {
-      let excludeFields = ['firstName', 'lastName', 'region_id', 'telephone', 'phoneNumber', 'country', 'paymentMethod', 'taxId', 'isThankYouPage', 'modifiedAt'];
+      let excludeFields = ['firstName', 'lastName', 'region_id', 'telephone', 'country', 'paymentMethod', 'taxId', 'isThankYouPage', 'modifiedAt'];
       if (this.paymentDetails.firstName) return Object.keys(this.paymentDetails).filter(payment => !excludeFields.includes(payment)).map(key => this.paymentDetails[key]).filter(value => !!value).join(', ');
       else return Object.keys(this.getShippingDetails).filter(payment => !excludeFields.includes(payment)).map(key => this.getShippingDetails[key]).filter(value => !!value).join(', ');
     }

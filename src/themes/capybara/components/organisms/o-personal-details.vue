@@ -37,7 +37,7 @@
         "
         :disabled="isLoggedIn"
       />
-      <SfInput
+      <!-- <SfInput
         v-model.trim="personalDetails.telephone"
         class="form__element"
         name="telephone"
@@ -49,7 +49,7 @@
             ? $t('Field is required')
             : $t('Please provide valid telephone.')
         "
-      />
+      /> -->
       <h3>{{ $t('Your appointment') }}</h3>
      <OmAlertBox type="info" style="{margin-bottom: 20px, border: 1px solid #ccc;}">
         <template #message>
@@ -203,14 +203,14 @@ export default {
         required,
         email
       },
-      telephone: {
-        required,
-        complex: value => {
-          if (!value) return true;
-          const regex = /^[0-9]{7,12}$/;
-          return regex.test(value);
-        }
-      }
+      // telephone: {
+      //   required,
+      //   complex: value => {
+      //     if (!value) return true;
+      //     const regex = /^[0-9]{7,12}$/;
+      //     return regex.test(value);
+      //   }
+      // }
     },
     password: {
       required,

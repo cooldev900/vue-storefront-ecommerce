@@ -36,7 +36,7 @@
               <div class="confirm">
                 <div>{{ $t('Your email') }}: {{getPersonalDetails.emailAddress}}</div>
                 <div>{{ $t('Your Name') }}: {{getPersonalDetails.firstName + ' ' + getPersonalDetails.lastName}}</div>
-                <div>{{ $t('Phone Number') }}: {{getPersonalDetails.telephone}}</div>
+                <!-- <div>{{ $t('Phone Number') }}: {{getPersonalDetails.telephone}}</div> -->
                 <div>{{ $t('Your appointment') }}: {{ getBookedTime }}</div>
               </div>
             </div>
@@ -208,7 +208,7 @@ export default {
       return currentStoreView();
     },
     shippingAddressText () {
-      let excludeFields = ['firstName', 'lastName', 'emailAddress', 'shippingCarrier', 'shippingMethod', 'region_id', 'telephone', 'phoneNumber', 'country'];
+      let excludeFields = ['firstName', 'lastName', 'emailAddress', 'shippingCarrier', 'shippingMethod', 'region_id', 'telephone', 'country'];
       return Object.keys(this.getShippingDetails).filter(payment => !excludeFields.includes(payment) && this.getShippingDetails[payment]).map(key => this.getShippingDetails[key]).filter(value =>!!value).join(', ');
     },    
     getBookedTime() {

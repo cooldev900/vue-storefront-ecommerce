@@ -107,7 +107,7 @@
           {{ country.name }}
         </SfSelectOption>
       </SfSelect>
-      <!-- <SfInput
+      <SfInput
         v-model.trim="shipping.phoneNumber"
         class="form__element"
         name="phone"
@@ -116,7 +116,7 @@
         :valid="!$v.shipping.phoneNumber.$error"
         @blur="$v.shipping.phoneNumber.$touch()"
         :error-message="$t('Field is required')"
-      /> -->
+      />
     </div>
     <div class="form">
       <div class="form__action">
@@ -185,10 +185,15 @@ export default {
       city: {
         required,
         unicodeAlpha
+      },
+      phoneNumber: {
+        required,
+        complex: value => {
+          if (!value) return true;
+          const regex = /^[0-9]{7,12}$/;
+          return regex.test(value);
+        }
       }
-      // phoneNumber: {
-      //   required
-      // }
     }
   },
   props: {
@@ -229,7 +234,7 @@ export default {
         firstName: this.personalDetails.firstName,
         lastName: this.personalDetails.lastName,
         paymentMethod: 'cnpayment',
-        phoneNumber: this.personalDetails.telephone,
+        phoneNumber: this.locationKind !== 'click_collect_free' ? this.shipping.phoneNumber : '',
         state: this.shipping.state,
         streetAddress: this.shipping.streetAddress,
         taxId: '',
@@ -247,6 +252,7 @@ export default {
         this.shipping.streetAddress = shippingAddress?.street[0];
         this.shipping.zipCode = shippingAddress?.postcode;
         this.shipping.state = shippingAddress?.region?.region;
+        this.shipping.phoneNumber = shippingAddress?.telephone;
       }
     }
   }
