@@ -139,7 +139,7 @@
         <OmQuantitySelector v-if="isAvailable" :qty="qty" @update:qty="updateQTY" />
         <div v-if="!isAvailable" class="product-card__action-area">
           <SfButton
-            :disabled="isProductDisabled || loading"
+            :disabled="loading"
             class="
                       a-add-to-cart
                       om-btn--primary
@@ -233,11 +233,11 @@ export default {
   props: {
     product: {
       type: Object,
-      default: {}
+      default: () => {}
     },
     stock: {
       type: Object,
-      default: {}
+      default: () => {}
     },
     waranty: {
       type: String,
@@ -493,7 +493,7 @@ export default {
       // this.isAvailable = !onlineHelper.isOnline || !!max || !manageQuantity || ['simple', 'configurable'].includes(
       //   this.product.type_id
       // );
-      return this.stock.is_in_stock;
+      return this.stock?.is_in_stock;
     }
   },
   methods: {
