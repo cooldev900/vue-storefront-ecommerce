@@ -66,7 +66,7 @@
                 </div>
               </div>
               <div class="confirm">                
-                <div v-show="locationKind !== 'click_collect_free'">{{ $t('Fitment location') }} : {{ shippingAddressText }}</div>
+                <div v-show="locationKind !== 'click_collect_free'">{{ $t('Fitment location') }} : {{ shippingAddressText }}<br/>{{ $t('Phone Number') }} : {{ getShippingDetails.phoneNumber ? getShippingDetails.phoneNumber : ''}}</div>
                <div v-show="locationKind === 'click_collect_free'">Collection from: {{activeLocation.location_name}}</div>
               </div>
             </div>
@@ -208,7 +208,7 @@ export default {
       return currentStoreView();
     },
     shippingAddressText () {
-      let excludeFields = ['firstName', 'lastName', 'emailAddress', 'shippingCarrier', 'shippingMethod', 'region_id', 'telephone', 'country'];
+      let excludeFields = ['firstName', 'lastName', 'emailAddress', 'shippingCarrier', 'shippingMethod', 'region_id', 'telephone', 'phoneNumber', 'country'];
       return Object.keys(this.getShippingDetails).filter(payment => !excludeFields.includes(payment) && this.getShippingDetails[payment]).map(key => this.getShippingDetails[key]).filter(value =>!!value).join(', ');
     },    
     getBookedTime() {
