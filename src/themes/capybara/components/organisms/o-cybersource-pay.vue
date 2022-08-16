@@ -83,53 +83,15 @@ export default {
     ...mapActions('ui', {
       openModal: 'openModal'
     }),
-    async process () {
-      // this.openModal({ name: ModalList.OmAppointmentModal, payload: {} })
-      let client_id = this.getSlotData.client_id;
-      let slot_id = this.getSlotID;
-      try {
-        let { data } = await axios.get(`${config.api.url}/api/ext/appointments/available-slot?client_id=${client_id}&slot_id=${slot_id}`);
-        console.log(data, 'available slot');
-        if (data?.success) {
-          let bookingId = this.getSlotData.id;
-          let token = this.token ? this.token : '';
-          let cartId = this.cartToken;
-          let body = {
-            giftMessage: {
-              sender: "customer",
-              recipient: "vehicle_data",
-              message: `cartId: ${cartId}, appointmentId: ${bookingId}`,
-            }
-          };
-          await axios({method: 'POST', url: `${config.api.url}/api/cart/additional-order-data?cartId=${cartId}&token=${token}`, headers: {}, data: body});
-          this.$store.commit('vehicles/setAppointmentError', '');
-          this.$refs.form.submit();
-        } else {
-          this.$store.commit('vehicles/setAppointmentError', 'This slot is not available');
-          this.editAccordion(0);
-        }
-      } catch (e) {
-        this.$store.commit('vehicles/setAppointmentError', 'Appointment Error');
-        this.editAccordion(0);
-      }
-    },
-    // async process() {
+    // async process () {
+    //   // this.openModal({ name: ModalList.OmAppointmentModal, payload: {} })
+    //   let client_id = this.getSlotData.client_id;
+    //   let slot_id = this.getSlotID;
     //   try {
-    //     let params = {
-    //       client_id: this.getSlotData.client_id,
-    //       id: this.getSlotData.id,
-    //       end_time: this.getSlotData.end_time,
-    //       order_id: this.getSlotData.order_id,
-    //       start_time: this.getSlotData.start_time,
-    //       booked_online: true,
-    //       internal_booking: false,
-    //       duration: 2
-    //     }
-    //     let { data } = await axios.post(`${config.api.url}/api/ext/appointments`, params, {
-    //       params
-    //     } );
+    //     let { data } = await axios.get(`${config.api.url}/api/ext/appointments/available-slot?client_id=${client_id}&slot_id=${slot_id}`);
+    //     console.log(data, 'available slot');
     //     if (data?.success) {
-    //       let bookingId = data.result.data[0].id;
+    //       let bookingId = this.getSlotData.id;
     //       let token = this.token ? this.token : '';
     //       let cartId = this.cartToken;
     //       let body = {
@@ -143,15 +105,53 @@ export default {
     //       this.$store.commit('vehicles/setAppointmentError', '');
     //       this.$refs.form.submit();
     //     } else {
-    //       this.$store.commit('vehicles/setAppointmentError', data.result.message);
+    //       this.$store.commit('vehicles/setAppointmentError', 'This slot is not available');
     //       this.editAccordion(0);
     //     }
     //   } catch (e) {
     //     this.$store.commit('vehicles/setAppointmentError', 'Appointment Error');
     //     this.editAccordion(0);
     //   }
-
     // },
+    async process() {
+      try {
+        let params = {
+          client_id: this.getSlotData.client_id,
+          id: this.getSlotData.id,
+          end_time: this.getSlotData.end_time,
+          order_id: this.getSlotData.order_id,
+          start_time: this.getSlotData.start_time,
+          booked_online: true,
+          internal_booking: false,
+          duration: 2
+        }
+        let { data } = await axios.post(`${config.api.url}/api/ext/appointments`, params, {
+          params
+        } );
+        if (data?.success) {
+          let bookingId = data.result.data[0].id;
+          let token = this.token ? this.token : '';
+          let cartId = this.cartToken;
+          let body = {
+            giftMessage: {
+              sender: "customer",
+              recipient: "vehicle_data",
+              message: `cartId: ${cartId}, appointmentId: ${bookingId}`,
+            }
+          };
+          await axios({method: 'POST', url: `${config.api.url}/api/cart/additional-order-data?cartId=${cartId}&token=${token}`, headers: {}, data: body});
+          this.$store.commit('vehicles/setAppointmentError', '');
+          // this.$refs.form.submit();
+        } else {
+          this.$store.commit('vehicles/setAppointmentError', data.result.message);
+          this.editAccordion(0);
+        }
+      } catch (e) {
+        this.$store.commit('vehicles/setAppointmentError', 'Appointment Error');
+        this.editAccordion(0);
+      }
+
+    },
     makeform () {
       const storeId = currentStoreView().storeId
 
