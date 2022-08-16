@@ -850,6 +850,8 @@ export default {
         return this.$t('Grade');
       } else if (filterType === 'oil_type_filter') {
         return this.$t('Oil Type');
+      } else if (filterType === 'promotion_filter') {
+        return this.$t('Promotion');
       } else if (filterType === 'car_size_filter') {
         return this.$t('Car Size');
       } else if (filterType === 'color_filter') {
@@ -921,7 +923,6 @@ export default {
         this.getCurrentCategory?.page_layout &&
         this.getCurrentCategory?.page_layout === 'category-full-width'
       ) {
-        // Nothing to do
       } else {
         if (this?.activeVehicle && Object.keys(this.activeVehicle).length) {
           let national_code = [];

@@ -1,8 +1,8 @@
 <template>
   <div class="sf-product-card">
-    <div class="sf-product-card__brand" :style="{ background: `${oebrands.color}` }">
+    <div class="sf-product-card__brand" :style="{ background: `${oeBrands.color}` }">
       <img class="brand-logo"
-           :src="oebrands.logo"
+           :src="oeBrands.logo"
       >
       <div class="corner-ribbon top-right sticky grey shadow" v-if="isNew">
         {{ $t('New') }}
@@ -264,7 +264,7 @@ export default {
       default: ''
     },
     brand: {
-      type: [String, Array],
+      type: [String, Array, Number],
       default: ''
     },
     brandImage: {
@@ -479,6 +479,9 @@ export default {
       const now = new Date();
       return now >= startTime && now <= endTime;
     },
+    oeBrands () {
+      return config['oebrands'][this.getAttributeLabelById('oe_brand', this.brand)];
+    },
     isAvailable () {
       // if (this.qty1) this.qty = this.qty1;
       // const res = await this.$store.dispatch('stock/check', {
@@ -626,9 +629,6 @@ export default {
     updateQTY (value) {
       this.qty = value;
     }
-  },
-  mounted () {
-    this.oebrands = config['oebrands'][this.getAttributeLabelById('oe_brand', this.brand)];
   },
   async beforeMount () {
     // if (this.qty1) this.qty = this.qty1;

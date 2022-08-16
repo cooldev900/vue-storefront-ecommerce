@@ -116,9 +116,9 @@ export default {
     },
     goto () {
       if (this.storeId === 3) {
-        location.href = "/";
+        location.href = '/';
       } else {
-        location.href = "/ar/";
+        location.href = '/ar/';
       }
     },
     goToAccount () {
@@ -142,10 +142,8 @@ export default {
           this.$emit('close');
         }
       } else {
-        if (item.level_1[0]?.tier_2_link?.url) {
-          this.$router.push(item.level_1[0].tier_2_link.url);
-          this.$emit('close');
-        }
+        this.$router.push(item.level_1[0].tier_2_link.url);
+        this.$emit('close');
       }
     },
     getLabel (item) {
