@@ -4,7 +4,7 @@
       <lazy-hydrate  :trigger-hydration="loading">
         <OmCategoryHeader
           v-if="!!getCurrentCategory"
-          :title="search"
+          :title="title"
           :products="getCurrentCategory.children_data"
           :description="getCurrentCategory.description"
           :parent-id="getCurrentCategory.parent_id"
@@ -470,6 +470,9 @@ export default {
       getStartPrice: 'priceRange/getStartPrice',
       getEndPrice: 'priceRange/getEndPrice',
     }),
+    title() {
+      return "Search Result for " + this.search;
+    },
     search() {
       return this.$route?.query?.search || this.$route?.query?.value || '';
     },
