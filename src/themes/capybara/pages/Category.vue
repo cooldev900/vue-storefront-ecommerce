@@ -924,7 +924,7 @@ export default {
         this.getCurrentCategory?.page_layout === 'category-full-width'
       ) {
       } else {
-        if (this?.activeVehicle && Object.keys(this.activeVehicle).length && this.activeVehicle?.national_code) {
+        if (this?.activeVehicle && Object.keys(this.activeVehicle).length) {
           let national_code = [];
           national_code.push({
             attribute_code: 'national_code.keyword',
