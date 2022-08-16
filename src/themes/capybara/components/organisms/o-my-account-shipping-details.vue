@@ -12,7 +12,7 @@
             {{ $t('Keep your addresses and contact details updated.') }}
           </p>
           <div class="form">
-            <SfInput
+            <!-- <SfInput
               v-model="editedAddress.firstname"
               name="firstname"
               :label="$t('First Name')"
@@ -33,7 +33,7 @@
               :valid="!$v.editedAddress.lastname.$error"
               :error-message="$t('Field is required.')"
               class="form__element form__element--half form__element--half-even"
-            />
+            /> -->
             <SfInput
               v-model="editedAddress.streetName"
               name="streetName"
@@ -67,7 +67,7 @@
               :label="$t('State/Province')"
               class="form__element form__element--half form__element--half-even"
             />
-            <SfInput
+            <!-- <SfInput
               v-model="editedAddress.postcode"
               name="postcode"
               :label="$t('Zip-code')"
@@ -79,8 +79,8 @@
                   : $t('Zip-code must have at least 3 letters.')
               "
               class="form__element form__element--half"
-            />
-            <SfSelect
+            /> -->
+            <!-- <SfSelect
               v-model="editedAddress.country"
               name="country"
               :label="$t('Country')"
@@ -95,8 +95,8 @@
                 :value="country.name"
               >
                 {{ country.name }}
-              </SfSelectOption>
-            </SfSelect>
+              </SfSelectOption> -->
+            <!-- </SfSelect> -->
             <SfInput
               v-model="editedAddress.telephone"
               name="telephone"
@@ -129,8 +129,7 @@
                 <p class="shipping__address">
                   <span class="shipping__client-name">{{ address.firstname }} {{ address.lastname }}</span><br>
                   {{ address.street.join(' ') }}<br>
-                  {{ address.postcode }}
-                  {{ address.city }},<br>{{ getCountryById(address.country_id) }}
+                  {{ address.city }}<br>
                 </p>
                 <p class="shipping__address">
                   {{ address.telephone }}
@@ -179,6 +178,8 @@ export default {
   components: { SfTabs, SfInput, SfButton, SfSelect, SfIcon },
   data () {
     return {
+      firstName: '',
+      lastName: '',
       editAddress: false,
       editedAddressIndex: -1,
       editedAddress: {
@@ -188,7 +189,7 @@ export default {
         apartment: '',
         city: '',
         state: '',
-        postcode: '',
+        postcode: '0000',
         country: '',
         telephone: ''
       },
@@ -205,8 +206,8 @@ export default {
       this.clearFields()
       this.$v.$reset();
       if (index > -1) {
-        this.editedAddress.firstname = this.addresses[index].firstname
-        this.editedAddress.lastname = this.addresses[index].lastname
+        this.editedAddress.firstname = this.firstname
+        this.editedAddress.lastname = this.lastname
         this.editedAddress.streetName = this.addresses[index].street[0]
         this.editedAddress.apartment = this.addresses[index].street[1]
         this.editedAddress.city = this.addresses[index].city
@@ -225,7 +226,7 @@ export default {
       this.editedAddress.apartment = ''
       this.editedAddress.city = ''
       this.editedAddress.state = ''
-      this.editedAddress.postcode = ''
+      this.editedAddress.postcode = '0000'
       this.editedAddress.country = ''
       this.editedAddress.telephone = ''
     },
@@ -234,6 +235,10 @@ export default {
       return countryObject.length > 0 ? countryObject[0].name : id
     },
     updateAddress () {
+      this.editedAddress.firstname = this.firstName;
+      this.editedAddress.lastname = this.lastName;
+      this.editedAddress.postcode = '0000'
+      this.editedAddress.country = 'United Kingdom'
       this.$v.$touch();
       if (this.$v.$invalid) {
         this.$store.dispatch('notification/spawnNotification', {
@@ -304,7 +309,21 @@ export default {
         required
       }
     }
-  }
+  },
+  beforeMount () {
+    // current user may not be available yet in beforeMount hook so vuex watcher is needed
+    const unsubscribeFromStoreWatch = this.$store.watch(
+      state => state.user.current,
+      currentUser => {
+        if (currentUser) {
+          this.firstName = currentUser.firstname;
+          this.lastName = currentUser.lastname;
+        }
+      },
+      { immediate: true });
+
+    this.$once('hook:beforeDestroy', unsubscribeFromStoreWatch)
+  },
 }
 </script>
 
