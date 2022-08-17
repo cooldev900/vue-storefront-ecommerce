@@ -48,17 +48,34 @@ const actions: ActionTree<CategoryState, RootState> = {
       categoryMappedFilters
       );
       
-    console.log(searchQuery, 'searchQuery', getters.getCurrentCategory);
+    console.log(searchQuery, 'searchQuery');
     if (
       getters.getCurrentCategory?.page_layout &&
-      getters.getCurrentCategory?.page_layout !== 'category-full-width'
+      getters.getCurrentCategory?.page_layout === 'category-full-width'
     ) {
       // No filtering by national code
       const { storeCode } = currentStoreView();
       const savedActiveVehicle = localStorage?.getItem(
         storeCode + '/active-vehicle'
       );
-      console.log(savedActiveVehicle, 'savedActiveVehicle');
+
+      if (savedActiveVehicle && savedActiveVehicle !== '{}') {
+        const activeVehicle = JSON.parse(savedActiveVehicle);
+        let national_code = [];
+        national_code.push({
+          attribute_code: 'national_code.keyword',
+          id: activeVehicle.national_code,
+          label: activeVehicle.national_code,
+          type: 'national_code.keyword'
+        });
+        // searchQuery.filters['national_code.keyword'] = national_code;
+      }
+    } else {
+      const { storeCode } = currentStoreView();
+      const savedActiveVehicle = localStorage?.getItem(
+        storeCode + '/active-vehicle'
+      );
+
       if (savedActiveVehicle && savedActiveVehicle !== '{}') {
         const activeVehicle = JSON.parse(savedActiveVehicle);
         let national_code = [];
@@ -74,7 +91,7 @@ const actions: ActionTree<CategoryState, RootState> = {
 
     let filterQr = buildFilterProductsQuery(
       searchCategory,
-      searchQuery?.filters
+      searchQuery.filters
     );
     if (route.query && route.query.search) {
       filterQr.setSearchText(route.query.search);
