@@ -653,8 +653,8 @@ export default {
     },
     activeVehicle: {
       immediate: true,
-      handler () {
-        this.$store.dispatch('category-next/switchSearchFilters', [
+      handler (value) {
+        if (value?.national_code) this.$store.dispatch('category-next/switchSearchFilters', [
           { id: `${config.products.defaultSortBy.attribute}:${config.products.defaultSortBy.order}`, type: 'sort' }
         ]);
       },
@@ -775,9 +775,9 @@ export default {
         cartItems.forEach(item => {
           if (item.groupedParents) {
             item.groupedParents.map(p => {
-              if (p.name === productData?.name && this.activeVehicle?.National_Code) {
+              if (p.name === productData?.name && this.activeVehicle?.national_code) {
                 if (item.fitVehicles) {
-                  const existFitVehicle = item.fitVehicles.find(item => item.National_Code === this.activeVehicle?.National_Code);
+                  const existFitVehicle = item.fitVehicles.find(item => item.national_code === this.activeVehicle?.national_code);
                   if (!existFitVehicle) {
                     item.fitVehicles = [ ...item.fitVehicles, this.activeVehicle ];
                   }
@@ -792,9 +792,9 @@ export default {
               }
             })
           } else {
-            if (item.sku === productData?.sku && this.activeVehicle?.National_Code) {
+            if (item.sku === productData?.sku && this.activeVehicle?.national_code) {
               if (item.fitVehicles) {
-                const existFitVehicle = item.fitVehicles.find(item => item.National_Code === this.activeVehicle?.National_Code);
+                const existFitVehicle = item.fitVehicles.find(item => item.national_code === this.activeVehicle?.national_code);
                 if (!existFitVehicle) {
                   item.fitVehicles = [ ...item.fitVehicles, this.activeVehicle ];
                 }
