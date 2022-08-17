@@ -1,15 +1,6 @@
 <template>
   <div>
     <div id="category">
-      <lazy-hydrate :trigger-hydration="loading">
-        <OmCategoryHeader
-          v-if="!!getCurrentCategory"
-          :title="getCurrentCategory.name"
-          :products="getCurrentCategory.children_data"
-          :description="getCurrentCategory.description"
-          :parent-id="getCurrentCategory.parent_id"
-        />
-      </lazy-hydrate>
       <div class="navbar section grid-container">
         <div class="navbar__main">
           <div class="navbar__filter mobile-only">
