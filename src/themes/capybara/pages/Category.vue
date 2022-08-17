@@ -98,52 +98,50 @@
             <omTyreFinder v-if="shouldShowVehicleCard" />
           </div>
           <div class="filters">
-            <lazy-hydrate :trigger-hydration="loading">
-              <SfAccordion
-                class="tyre-filters"
-                open="all"
-                :first-open="true"
-                :multiple="true"
-                show-chevron
-              >
-                <template v-for="(filters, filterType) in availableFilters">
-                  <SfAccordionItem :key="filterType" :header="title(filterType)">
-                    <template v-if="filterType === 'color_sfilter'">
-                      <div class="filters__colors" :key="filterType + 'filter'">
-                        <SfColor
-                          v-for="filter in filters"
-                          :key="filter.id"
-                          :color="filter.color"
-                          :selected="isFilterActive(filter)"
-                          class="filters__color"
-                          @click="changeFilter(filter)"
-                        />
-                      </div>
-                    </template>
-                    <template v-else>
-                      <SfRange
-                        v-if="filterType == 'price_filter'"
-                        v-model="value"
-                        :disabled="false"
-                        :config="{&quot;start&quot;:[getStartPrice ? getStartPrice : minPrice,getEndPrice ? getEndPrice: maxPrice],&quot;range&quot;:{&quot;min&quot;:minPrice,&quot;max&quot;:maxPrice},&quot;step&quot;:1,&quot;tooltips&quot;:true}"
-                        @change="debouceRange"
-                      />
-                      <SfFilter
-                        v-else
+            <SfAccordion
+              class="tyre-filters"
+              open="all"
+              :first-open="true"
+              :multiple="true"
+              show-chevron
+            >
+              <template v-for="(filters, filterType) in availableFilters">
+                <SfAccordionItem :key="filterType" :header="title(filterType)">
+                  <template v-if="filterType === 'color_sfilter'">
+                    <div class="filters__colors" :key="filterType + 'filter'">
+                      <SfColor
                         v-for="filter in filters"
                         :key="filter.id"
-                        :label="filter.label"
-                        :count="filter.count"
                         :color="filter.color"
                         :selected="isFilterActive(filter)"
-                        class="filters__item"
-                        @change="changeFilter(filter)"
+                        class="filters__color"
+                        @click="changeFilter(filter)"
                       />
-                    </template>
-                  </SfAccordionItem>
-                </template>
-              </SfAccordion>
-            </lazy-hydrate>
+                    </div>
+                  </template>
+                  <template v-else>
+                    <SfRange
+                      v-if="filterType == 'price_filter'"
+                      v-model="value"
+                      :disabled="false"
+                      :config="{&quot;start&quot;:[getStartPrice ? getStartPrice : minPrice,getEndPrice ? getEndPrice: maxPrice],&quot;range&quot;:{&quot;min&quot;:minPrice,&quot;max&quot;:maxPrice},&quot;step&quot;:1,&quot;tooltips&quot;:true}"
+                      @change="debouceRange"
+                    />
+                    <SfFilter
+                      v-else
+                      v-for="filter in filters"
+                      :key="filter.id"
+                      :label="filter.label"
+                      :count="filter.count"
+                      :color="filter.color"
+                      :selected="isFilterActive(filter)"
+                      class="filters__item"
+                      @change="changeFilter(filter)"
+                    />
+                  </template>
+                </SfAccordionItem>
+              </template>
+            </SfAccordion>
           </div>
         </div>
         <div class="products">
@@ -170,7 +168,7 @@
             "
           />
           <template>
-            <lazy-hydrate :trigger-hydration="loading">
+            <lazy-hydrate :trigger-hydration="!loading">
               <div
                 name="products__slide"
                 tag="div"
@@ -257,7 +255,6 @@
           <OmVehicleCartCard :vehicle="activeVehicle" :active="true" />
         </div>
         <div class="filters">
-          <lazy-hydrate :trigger-hydration="!loading">
             <SfAccordion
               :first-open="true"
               open="all"
@@ -301,7 +298,6 @@
                 </SfAccordionItem>
               </template>
             </SfAccordion>
-          </lazy-hydrate>
         </div>
         <template #content-bottom>
           <div class="filters__buttons">
