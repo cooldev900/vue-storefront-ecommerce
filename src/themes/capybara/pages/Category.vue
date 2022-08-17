@@ -650,15 +650,6 @@ export default {
         this.changePage();
       }
     },
-    activeVehicle: {
-      immediate: true,
-      handler (value) {
-        if (value?.national_code) this.$store.dispatch('category-next/switchSearchFilters', [
-          { id: `${config.products.defaultSortBy.attribute}:${config.products.defaultSortBy.order}`, type: 'sort' }
-        ]);
-      },
-      deep: true
-    },
     $route: {
       immediate: true,
       handler (to, from) {
