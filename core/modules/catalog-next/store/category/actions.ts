@@ -51,10 +51,9 @@ const actions: ActionTree<CategoryState, RootState> = {
     console.log(searchQuery, 'searchQuery', getters.getCurrentCategory);
     if (
       getters.getCurrentCategory?.page_layout &&
-      getters.getCurrentCategory?.page_layout === 'category-full-width'
+      getters.getCurrentCategory?.page_layout !== 'category-full-width'
     ) {
       // No filtering by national code
-    } else {
       const { storeCode } = currentStoreView();
       const savedActiveVehicle = localStorage?.getItem(
         storeCode + '/active-vehicle'
