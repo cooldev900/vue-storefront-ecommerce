@@ -1,15 +1,6 @@
 <template>
   <div>
     <div id="category">
-      <lazy-hydrate :trigger-hydration="loading">
-        <OmCategoryHeader
-          v-if="!!getCurrentCategory"
-          :title="getCurrentCategory.name"
-          :products="getCurrentCategory.children_data"
-          :description="getCurrentCategory.description"
-          :parent-id="getCurrentCategory.parent_id"
-        />
-      </lazy-hydrate>
       <div class="navbar section grid-container">
         <div class="navbar__main">
           <div class="navbar__filter mobile-only">
@@ -27,7 +18,7 @@
             </SfButton>
             <template v-if="activeFiltersCount">
               <div class="applied-filter">
-                <span>{{ activeFiltersCount }}{{$t(' filter applied')}}</span>
+                <span>{{ activeFiltersCount }}{{ $t(' filter applied') }}</span>
                 <span> &nbsp;&nbsp;</span>
                 <button
                   @click="clearAllFilters"
@@ -121,13 +112,13 @@
                       </div>
                     </template>
                     <template v-else>
-                        <SfRange
-                          v-if="filterType == 'price_filter'"
-                          v-model="value"
-                          :disabled="false"
-                          :config='{"start":[getStartPrice ? getStartPrice : minPrice,getEndPrice ? getEndPrice: maxPrice],"range":{"min":minPrice,"max":maxPrice},"step":1,"tooltips":true}'
-                          @change="debouceRange"
-                        />
+                      <SfRange
+                        v-if="filterType == 'price_filter'"
+                        v-model="value"
+                        :disabled="false"
+                        :config="{&quot;start&quot;:[getStartPrice ? getStartPrice : minPrice,getEndPrice ? getEndPrice: maxPrice],&quot;range&quot;:{&quot;min&quot;:minPrice,&quot;max&quot;:maxPrice},&quot;step&quot;:1,&quot;tooltips&quot;:true}"
+                        @change="debouceRange"
+                      />
                       <SfFilter
                         v-else
                         v-for="filter in filters"
@@ -170,55 +161,54 @@
             "
           />
           <template>
-            <!-- <lazy-hydrate :trigger-hydration="loading"> -->
-
-            <div
-              name="products__slide"
-              tag="div"
-              class="products__grid"
-            >
-              <OmProductCard
-                v-for="product in currentPageProducts"
-                :product="product"
-                :key="product.id"
-                :title="product.enhanced_title || product.title"
-                :description="product.description"
-                :image="product.image"
-                :regular-price="product.price.regular"
-                :special-price="product.price.special"
-                :link="product.link"
-                :qty1="product.qty"
-                :brand="product.oe_brand"
-                :brand-image="product.brand_logo"
-                :brand-color="product.brand_colour"
-                link-tag="router-link"
-                :wishlist-icon="false"
-                offer="Save 10% with code NEW10"
-                promotion="Mobile Fitting Service Available"
-                :waranty="product.usp1"
-                :usp2="product.usp2"
-                :second-title="product.secondary_title"
-                :stock="product.stock"
-                class="products__product-card"
+            <lazy-hydrate :trigger-hydration="loading">
+              <div
+                name="products__slide"
+                tag="div"
+                class="products__grid"
               >
-                <template #image>
-                  <SfImage
-                    class="sf-product-card__image"
-                    :src="product.image"
-                    :alt="product.enhanced_title || product.title"
-                    :width="216"
-                    :height="326"
-                    lazy
-                    :threshold="0.2"
-                  />
-                </template>
-                <template
-                  v-if="!product.price.regular && !product.price.special"
-                  #price
+                <OmProductCard
+                  v-for="product in currentPageProducts"
+                  :product="product"
+                  :key="product.id"
+                  :title="product.enhanced_title || product.title"
+                  :description="product.description"
+                  :image="product.image"
+                  :regular-price="product.price.regular"
+                  :special-price="product.price.special"
+                  :link="product.link"
+                  :qty1="product.qty"
+                  :brand="product.oe_brand"
+                  :brand-image="product.brand_logo"
+                  :brand-color="product.brand_colour"
+                  link-tag="router-link"
+                  :wishlist-icon="false"
+                  offer="Save 10% with code NEW10"
+                  promotion="Mobile Fitting Service Available"
+                  :waranty="product.usp1"
+                  :usp2="product.usp2"
+                  :second-title="product.secondary_title"
+                  :stock="product.stock"
+                  class="products__product-card"
                 >
-                  <b :style="{ color: 'black' }">Not Available Online</b>
-                </template>
-                <template #reviews>
+                  <template #image>
+                    <SfImage
+                      class="sf-product-card__image"
+                      :src="product.image"
+                      :alt="product.enhanced_title || product.title"
+                      :width="216"
+                      :height="326"
+                      lazy
+                      :threshold="0.2"
+                    />
+                  </template>
+                  <template
+                    v-if="!product.price.regular && !product.price.special"
+                    #price
+                  >
+                    <b :style="{ color: 'black' }">Not Available Online</b>
+                  </template>
+                  <template #reviews>
                   <!-- <div class="product-card__action-area">
                     <SfButton
                       :disabled="isProductDisabled || loading"
@@ -234,10 +224,10 @@
                       <span v-else>{{ $t("Add to cart") }}</span>
                     </SfButton>
                   </div> -->
-                </template>
-              </OmProductCard>
-            </div>
-            <!-- </lazy-hydrate> -->
+                  </template>
+                </OmProductCard>
+              </div>
+            </lazy-hydrate>
             <SfPagination
               v-if="totalPages > 1"
               class="products__pagination"
@@ -284,21 +274,21 @@
                       v-if="filterType == 'price_filter'"
                       v-model="value"
                       :disabled="false"
-                      :config='{"start":[getStartPrice ? getStartPrice : minPrice,getEndPrice ? getEndPrice: maxPrice],"range":{"min":minPrice,"max":maxPrice},"step":1,"tooltips":true}'
+                      :config="{&quot;start&quot;:[getStartPrice ? getStartPrice : minPrice,getEndPrice ? getEndPrice: maxPrice],&quot;range&quot;:{&quot;min&quot;:minPrice,&quot;max&quot;:maxPrice},&quot;step&quot;:1,&quot;tooltips&quot;:true}"
                       @change="debouceRange"
                     />
-                  <SfFilter
-                    v-else
-                    v-for="filter in filters"
-                    :key="filter.id"
-                    :label="filter.label"
-                    :count="filter.count"
-                    :color="filter.color"
-                    :selected="isFilterActive(filter)"
-                    class="filters__item"
-                    @change="changeFilter(filter)"
-                  />
-                </template>
+                    <SfFilter
+                      v-else
+                      v-for="filter in filters"
+                      :key="filter.id"
+                      :label="filter.label"
+                      :count="filter.count"
+                      :color="filter.color"
+                      :selected="isFilterActive(filter)"
+                      class="filters__item"
+                      @change="changeFilter(filter)"
+                    />
+                  </template>
                 </SfAccordionItem>
               </template>
             </SfAccordion>
@@ -464,7 +454,7 @@ export default {
       unsubscribeFromStoreAction: null,
       aggregations: null,
       sortOrderValue: '',
-      value: [this.minPrice, this.maxPrice],
+      value: [this.minPrice, this.maxPrice]
     };
   },
   computed: {
@@ -488,7 +478,7 @@ export default {
       minPrice: 'priceRange/getMinPrice',
       getCategoryId: 'priceRange/getCategoryId',
       getStartPrice: 'priceRange/getStartPrice',
-      getEndPrice: 'priceRange/getEndPrice',
+      getEndPrice: 'priceRange/getEndPrice'
     }),
     isLazyHydrateEnabled () {
       return config.ssr.lazyHydrateFor.includes('category-next.products');
@@ -671,10 +661,10 @@ export default {
         }
       }
     },
-    maxPrice(value) {
+    maxPrice (value) {
       this.value[1] = value;
     },
-    minPrice(value) {
+    minPrice (value) {
       this.value[0] = value;
     }
   },
@@ -980,10 +970,10 @@ export default {
       console.log(filter, 'changeFilter');
       this.$store.dispatch('category-next/switchSearchFilters', [filter]);
     },
-    debouceRange: _.debounce(function(event) {
+    debouceRange: _.debounce(function (event) {
       this.changeRange(event);
     }, 500),
-    changeRange(event) {
+    changeRange (event) {
       console.log(event, 'event');
       this.value = event;
       this.$store.dispatch('priceRange/saveStartPrice', event[0]);
@@ -994,9 +984,9 @@ export default {
         from: event[0],
         id: `${event[0]}-${event[1]}`,
         // label: "< QR 500",
-        single: true, 
-        to: event[1],        
-        type: "price"
+        single: true,
+        to: event[1],
+        type: 'price'
       }
       this.$store.dispatch('category-next/switchSearchFilters', [priceFilter]);
     },
