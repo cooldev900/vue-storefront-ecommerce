@@ -47,8 +47,8 @@ const actions: ActionTree<CategoryState, RootState> = {
     const searchQuery = getters.getCurrentFiltersFrom(
       route[products.routerFiltersSource],
       categoryMappedFilters
-      );
-      
+    );
+
     if (!isServer) {
       if (
         getters.getCurrentCategory?.page_layout &&
@@ -59,7 +59,7 @@ const actions: ActionTree<CategoryState, RootState> = {
         const savedActiveVehicle = localStorage?.getItem(
           storeCode + '/active-vehicle'
         );
-  
+
         if (savedActiveVehicle && savedActiveVehicle !== '{}') {
           const activeVehicle = JSON.parse(savedActiveVehicle);
           let national_code = [];
@@ -76,7 +76,7 @@ const actions: ActionTree<CategoryState, RootState> = {
         const savedActiveVehicle = localStorage?.getItem(
           storeCode + '/active-vehicle'
         );
-  
+
         if (savedActiveVehicle && savedActiveVehicle !== '{}') {
           const activeVehicle = JSON.parse(savedActiveVehicle);
           let national_code = [];
@@ -90,7 +90,6 @@ const actions: ActionTree<CategoryState, RootState> = {
         }
       }
     }
-    
 
     let filterQr = buildFilterProductsQuery(
       searchCategory,
