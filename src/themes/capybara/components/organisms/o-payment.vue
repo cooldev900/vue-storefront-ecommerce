@@ -421,7 +421,20 @@ export default {
         console.log(result?.result.magentoOrderId, 'result?.result.magentoOrderId');
 
         try {
-          await this.$store.dispatch('vehicles/setAppointment', result?.result.magentoOrderId);
+          const { data } = await this.$store.dispatch('vehicles/setAppointment', result?.result.magentoOrderId);          
+          if (data?.success) {
+            let bookingId = data.result.data[0].id;
+            let token = this.token ? this.token : '';
+            let cartId = this.cartToken;
+            let body = {
+              giftMessage: {
+                sender: "customer",
+                recipient: "vehicle_data",
+                message: `cartId: ${cartId}, appointmentId: ${bookingId}`,
+              }
+            };
+            await axios({method: 'POST', url: `${config.api.url}/api/cart/additional-order-data?cartId=${cartId}&token=${token}`, headers: {}, data: body});
+          }          
         } catch (e) {
           console.log(e, 'appointment error');
           await this.$bus.$emit('notification-progress-stop');
