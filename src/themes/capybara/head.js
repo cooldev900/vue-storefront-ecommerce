@@ -89,11 +89,6 @@ export default {
   ],
   script: [
     {
-      src: 'https://cdn.jsdelivr.net/npm/pwacompat@2.0.17/pwacompat.min.js',
-      async: true,
-      crossorigin: 'anonymous'
-    },
-    {
       src: 'https://code.tidio.co/timabuttg0kjhjbp66efk20ij9tzvsb1.js',
       async: true
     }

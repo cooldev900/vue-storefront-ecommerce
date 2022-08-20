@@ -12,12 +12,8 @@ import { vehiclesStore } from 'theme/store/vehicles';
 import { priceRangeStore } from 'theme/store/priceRange';
 import { checkoutStore } from 'theme/store/checkoutStep';
 import { omLocatorStore } from 'theme/store/om-locator';
-import { homepageStore } from 'theme/store/homepage';
 import { uiStore } from 'theme/store/ui';
-import { promotedStore } from 'theme/store/promoted-offers';
-import { instagramStore } from 'theme/store/instagram-images';
 import { FulfillmentStore } from 'theme/store/fulfillment';
-import { defaultContentStore } from 'theme/store/default-content';
 import { StorageManager } from '@vue-storefront/core/lib/storage-manager';
 import { VueReCaptcha } from 'vue-recaptcha-v3';
 import VueAwesomeSwiper from 'vue-awesome-swiper';
@@ -75,11 +71,7 @@ function initTheme (app, router, store, config) {
 
   StorageManager.init('claims');
   store.registerModule('claims', claimsStore);
-  store.registerModule('homepage', homepageStore);
   store.registerModule('ui', uiStore);
-  store.registerModule('promoted', promotedStore);
-  store.registerModule('instagram', instagramStore);
-  store.registerModule('defaultContent', defaultContentStore);
   store.registerModule('vehicles', vehiclesStore);
   store.registerModule('priceRange', priceRangeStore);
   store.registerModule('checkoutStep', checkoutStore);
