@@ -73,8 +73,6 @@ export default {
       getOriginalProduct: 'product/getOriginalProduct',
       attributesByCode: 'attribute/attributeListByCode',
       getCurrentCustomOptions: 'product/getCurrentCustomOptions',
-      promotedOffers: 'promoted/getPromotedOffers',
-      dummyInstagramImages: 'instagram/getInstagramImages',
       getBreadcrumbsRoutes: 'breadcrumbs/getBreadcrumbsRoutes',
       getBreadcrumbsCurrent: 'breadcrumbs/getBreadcrumbsCurrent'
     }),

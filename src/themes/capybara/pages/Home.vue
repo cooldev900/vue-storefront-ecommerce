@@ -27,8 +27,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isLoggedIn: 'user/isLoggedIn',
-      dummyInstagramImages: 'instagram/getInstagramImages'
+      isLoggedIn: 'user/isLoggedIn'
     }),
     ...mapGetters('vehicles', [
       'pageSbData'
@@ -75,17 +74,6 @@ export default {
     const {resetpassword, token} = this.$route.query;
     if (resetpassword) {
       this.openModal({ name: ModalList.Auth, payload: 'forgot-reset' })
-    }
-  },
-  beforeRouteEnter (to, from, next) {
-    if (!isServer && !from.name) {
-      next((vm) => {
-        vm.$store.dispatch('homepage/fetchNewCollection').then(() => {
-          vm.loading = false;
-        });
-      });
-    } else {
-      next();
     }
   },
   metaInfo () {
