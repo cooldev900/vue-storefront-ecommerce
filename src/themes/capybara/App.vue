@@ -30,9 +30,10 @@ export default {
     // const recaptcha = this.$recaptchaInstance;
     // // Hide reCAPTCHA badge:
     // recaptcha?.hideBadge();
+    console.log(this.$route, 'route');
     await this.$store.dispatch('vehicles/fetchVehicles')
     await this.$store.dispatch('vehicles/fetchActiveVehicle')
-    await this.$store.dispatch('vehicles/fetchStoryblok')
+    if (this.$route.name !== 'virtual-product' && this.$route.name != 'bundle-product' && this.$route.name !== 'simple-product') await this.$store.dispatch('vehicles/fetchStoryblok')
     await this.$store.dispatch('vehicles/fetchComplete')
     await this.$store.dispatch('vehicles/fetchOpens')
     await this.$store.dispatch('vehicles/fetchStep')
