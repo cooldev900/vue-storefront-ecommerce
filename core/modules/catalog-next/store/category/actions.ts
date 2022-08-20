@@ -48,46 +48,43 @@ const actions: ActionTree<CategoryState, RootState> = {
       route[products.routerFiltersSource],
       categoryMappedFilters
     );
-
-    if (!isServer) {
-      if (
-        getters.getCurrentCategory?.page_layout &&
+    if (
+      getters.getCurrentCategory?.page_layout &&
         getters.getCurrentCategory?.page_layout === 'category-full-width'
-      ) {
-        // No filtering by national code
-        const { storeCode } = currentStoreView();
-        const savedActiveVehicle = localStorage?.getItem(
-          storeCode + '/active-vehicle'
-        );
+    ) {
+      // No filtering by national code
+      const { storeCode } = currentStoreView();
+      const savedActiveVehicle = localStorage?.getItem(
+        storeCode + '/active-vehicle'
+      );
 
-        if (savedActiveVehicle && savedActiveVehicle !== '{}') {
-          const activeVehicle = JSON.parse(savedActiveVehicle);
-          let national_code = [];
-          national_code.push({
-            attribute_code: 'national_code.keyword',
-            id: activeVehicle.national_code,
-            label: activeVehicle.national_code,
-            type: 'national_code.keyword'
-          });
-          // searchQuery.filters['national_code.keyword'] = national_code;
-        }
-      } else {
-        const { storeCode } = currentStoreView();
-        const savedActiveVehicle = localStorage?.getItem(
-          storeCode + '/active-vehicle'
-        );
+      if (savedActiveVehicle && savedActiveVehicle !== '{}') {
+        const activeVehicle = JSON.parse(savedActiveVehicle);
+        let national_code = [];
+        national_code.push({
+          attribute_code: 'national_code.keyword',
+          id: activeVehicle.national_code,
+          label: activeVehicle.national_code,
+          type: 'national_code.keyword'
+        });
+        // searchQuery.filters['national_code.keyword'] = national_code;
+      }
+    } else {
+      const { storeCode } = currentStoreView();
+      const savedActiveVehicle = localStorage?.getItem(
+        storeCode + '/active-vehicle'
+      );
 
-        if (savedActiveVehicle && savedActiveVehicle !== '{}') {
-          const activeVehicle = JSON.parse(savedActiveVehicle);
-          let national_code = [];
-          national_code.push({
-            attribute_code: 'national_code.keyword',
-            id: activeVehicle.national_code,
-            label: activeVehicle.national_code,
-            type: 'national_code.keyword'
-          });
-          searchQuery.filters['national_code.keyword'] = national_code;
-        }
+      if (savedActiveVehicle && savedActiveVehicle !== '{}') {
+        const activeVehicle = JSON.parse(savedActiveVehicle);
+        let national_code = [];
+        national_code.push({
+          attribute_code: 'national_code.keyword',
+          id: activeVehicle.national_code,
+          label: activeVehicle.national_code,
+          type: 'national_code.keyword'
+        });
+        searchQuery.filters['national_code.keyword'] = national_code;
       }
     }
 
