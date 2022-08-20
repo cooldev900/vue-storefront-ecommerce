@@ -9,7 +9,7 @@
         />
         <div class="o-shipping__addresses--container">
           <div class="o-shipping__addresses--container-content" :class="{'selected': getAddressId === address.id}" v-for="address in currentUser.addresses" :key="address.id" @click="changeShippingAddress(address.id)">
-            {{ $t(address.street[0] + ' ' + address.street[1]) }}
+            {{ $t(address.street[0] + ', ' + address.street[1]) }}
           </div>
         </div>
       </div>
