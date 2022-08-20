@@ -217,7 +217,7 @@
                 >
                   <b :style="{ color: 'black' }">Not Available Online</b>
                 </template>
-                <template #reviews>
+                <!-- <template #reviews>
                   <div class="product-card__action-area">
                     <SfButton
                       :disabled="isProductDisabled"
@@ -232,7 +232,7 @@
                       <span>{{ $t("Add to cart") }}</span>
                     </SfButton>
                   </div>
-                </template>
+                </template> -->
               </OmProductCard>
             </div>
             <!-- </lazy-hydrate> -->
