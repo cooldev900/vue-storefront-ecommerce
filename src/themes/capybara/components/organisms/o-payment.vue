@@ -287,6 +287,7 @@ import CybersourcePayVue from './o-cybersource-pay.vue';
 import config from 'config';
 import { ModalList } from 'theme/store/ui/modals';
 import PaymentMethodComponent from './PaymentMethodComponent.vue';
+import axios from 'axios';
 
 export default {
   name: 'OPayment',
@@ -421,7 +422,20 @@ export default {
         console.log(result?.result.magentoOrderId, 'result?.result.magentoOrderId');
 
         try {
-          const { data } = await this.$store.dispatch('vehicles/setAppointment', result?.result.magentoOrderId);          
+          let params = {
+            client_id: this.getSlotData.client_id,
+            id: this.getSlotData.id,
+            end_time: this.getSlotData.end_time,
+            order_id: result?.result.magentoOrderId,
+            start_time: this.getSlotData.start_time,
+            booked_online: true,
+            internal_booking: false,
+            duration: 2
+          }
+          let { data } = await axios.post(`${config.api.url}/api/ext/appointments`, params, {
+            params
+          } );
+          console.log(data, 'data123')
           if (data?.success) {
             let bookingId = data.result.data[0].id;
             let token = this.token ? this.token : '';
@@ -434,7 +448,10 @@ export default {
               }
             };
             await axios({method: 'POST', url: `${config.api.url}/api/cart/additional-order-data?cartId=${cartId}&token=${token}`, headers: {}, data: body});
-          }          
+            this.$store.commit('vehicles/setAppointmentError', '');
+          } else {
+            this.$store.commit('vehicles/setAppointmentError', data.result.message);
+          }
         } catch (e) {
           console.log(e, 'appointment error');
           await this.$bus.$emit('notification-progress-stop');
