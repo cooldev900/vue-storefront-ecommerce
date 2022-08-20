@@ -1,48 +1,51 @@
 <template>
-<div class="grid-container">
-  <div class="sb-our-services">
-    <div
-      class="sb-our-services__card"
-      v-for="(card, index) in serviceCard"
-      :key="index"
-    >
-      <div class="icon"><img :src="card.image.filename || '' " /></div>
-      <h2 class="title">
-        {{ card.title }}
-      </h2>
-      <p class="description">
-        {{ card.copy }}
-      </p>
+  <div class="grid-container">
+    <div class="sb-our-services">
+      <div
+        class="sb-our-services__card"
+        v-for="(card, index) in serviceCard" :key="index"
+      >
+        <router-link :to="card.url.url">
+          <div class="icon">
+            <img :src="card.image.filename || '' ">
+          </div>
+          <h2 class="title">
+            {{ card.title }}
+          </h2>
+          <p class="description">
+            {{ card.copy }}
+          </p>
+        </router-link>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
-import { SfCallToAction, SfButton, SfImage } from "@storefront-ui/vue";
+import { SfCallToAction, SfButton, SfImage } from '@storefront-ui/vue';
 export default {
-  name: "SbOurServices",
+  name: 'SbOurServices',
   components: {
     SfCallToAction,
     SfButton,
-    SfImage,
+    SfImage
   },
   props: {
     content: {
       type: Object,
-      default: () => {},
+      default: () => {}
     },
     varient: {
       type: String,
-      default: "light", // light/grey/dark
-    },
+      default: 'light' // light/grey/dark
+    }
   },
   computed: {
-    serviceCard() {
+    serviceCard () {
       return Object.keys(this.content) ? this.content.our_service_card : [];
-    },
+    }
   },
-  methods: {},
+  methods: {}
 };
 </script>
 <style lang="scss">

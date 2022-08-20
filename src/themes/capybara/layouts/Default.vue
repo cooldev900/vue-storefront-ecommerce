@@ -18,7 +18,6 @@
 <script>
 import { mapActions } from 'vuex';
 import OHeader from 'theme/components/organisms/o-header';
-import OMicrocart from 'theme/components/organisms/o-microcart';
 import OFooter from 'theme/components/organisms/o-footer';
 import OModal from 'theme/components/organisms/o-modal';
 import MLoader from 'theme/components/molecules/m-loader';
@@ -34,7 +33,6 @@ import get from 'lodash-es/get'
 export default {
   components: {
     OHeader,
-    OMicrocart,
     OFooter,
     MLoader,
     ONotification,
