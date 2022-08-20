@@ -91,18 +91,18 @@ export default {
         let { data } = await axios.get(`${config.api.url}/api/ext/appointments/available-slot?client_id=${client_id}&slot_id=${slot_id}`);
         console.log(data, 'available slot');
         if (data?.success) {
-          let bookingId = this.getSlotData.id;
-          let token = this.token ? this.token : '';
-          let cartId = this.cartToken;
-          let body = {
-            giftMessage: {
-              sender: "customer",
-              recipient: "vehicle_data",
-              message: `cartId: ${cartId}, appointmentId: ${bookingId}`,
-            }
-          };
-          await axios({method: 'POST', url: `${config.api.url}/api/cart/additional-order-data?cartId=${cartId}&token=${token}`, headers: {}, data: body});
-          this.$store.commit('vehicles/setAppointmentError', '');
+          // let bookingId = this.getSlotData.id;
+          // let token = this.token ? this.token : '';
+          // let cartId = this.cartToken;
+          // let body = {
+          //   giftMessage: {
+          //     sender: "customer",
+          //     recipient: "vehicle_data",
+          //     message: `cartId: ${cartId}, appointmentId: ${bookingId}`,
+          //   }
+          // };
+          // await axios({method: 'POST', url: `${config.api.url}/api/cart/additional-order-data?cartId=${cartId}&token=${token}`, headers: {}, data: body});
+          // this.$store.commit('vehicles/setAppointmentError', '');
           this.$refs.form.submit();
         } else {
           this.$store.commit('vehicles/setAppointmentError', 'This slot is not available');
