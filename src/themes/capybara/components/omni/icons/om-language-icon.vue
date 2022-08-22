@@ -43,9 +43,9 @@ export default {
     }),
     goto() {
       if (this.storeId === 3) {
-        location.href = "/";
+        location.href = this.$route.path.slice(3);
       } else {
-        location.href = "/ar/";
+        location.href = "/ar" +  this.$route.path;
       }
     }
   }
