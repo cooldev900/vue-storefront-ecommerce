@@ -75,6 +75,7 @@ export default {
 
   methods: {
     setAppointment () {
+      if (!this.available) return;
       let payload = {...this.appointment};
       // console.log(currentStoreView().storeId, 'storeId');
       // this.checked = !this.checked;
