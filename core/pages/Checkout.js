@@ -310,7 +310,7 @@ export default {
             street: [this.getPaymentDetails.streetAddress, this.getPaymentDetails.apartmentNumber],
             company: this.getPaymentDetails.company,
             telephone: this.getPaymentDetails.phoneNumber,
-            postcode: '0000',
+            postcode: 'test',
             city: this.getPaymentDetails.city,
             firstname: this.getPaymentDetails.firstName,
             lastname: this.getPaymentDetails.lastName,
@@ -320,7 +320,7 @@ export default {
           },
           shipping_method_code: 'freeshipping',
           shipping_carrier_code: 'freeshipping',
-          payment_method_code: 'cnpayment',
+          payment_method_code: 'cybersourcepayment',
           payment_method_additional: this.payment.paymentMethodAdditional,
           shippingExtraFields: this.shipping.extraFields
         }
@@ -333,7 +333,7 @@ export default {
         street: [this.shippingDetails.streetAddress, this.shippingDetails.apartmentNumber],
         company: '',
         telephone: this.shippingDetails.phoneNumber,
-        postcode: '0000',
+        postcode: 'test',
         city: this.shippingDetails.city,
         firstname: this.getPersonalDetails.firstName,
         lastname: this.getPersonalDetails.lastName,

@@ -8,7 +8,7 @@
         {{ $t("Continue to Payment") }}
       </SfButton>
         <payment-stripe v-if="paymentMethod === 'stripe_payments'" />
-        <CybersourcePayVue :editAccordion="editAccordion"  v-if="paymentMethod === 'cnpayment'"/>
+        <CybersourcePayVue :editAccordion="editAccordion"  v-if="paymentMethod === 'cybersourcepayment'"/>
         <PaypalButton v-if="paymentMethod === 'paypal'"/>
         <payment-checkout-com v-if="paymentMethod === 'checkoutcom_card_payment'" />
     </div>

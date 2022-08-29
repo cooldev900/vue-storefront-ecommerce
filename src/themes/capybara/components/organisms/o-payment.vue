@@ -418,7 +418,10 @@ export default {
 
         await this.$bus.$emit('notification-progress-start');
         // await this.$bus.$emit('place-order-after-cybersource-pay');
-        const result = await this.placeOrder();
+        // const result = await this.placeOrder();
+        const result = await this.$bus.$emit('checkout-do-placeOrder', {
+          paymentID: transaction_id
+        });
         console.log(result?.result.magentoOrderId, 'result?.result.magentoOrderId');
 
         try {
@@ -434,7 +437,7 @@ export default {
           }
           let { data } = await axios.post(`${config.api.url}/api/ext/appointments`, params, {
             params
-          } );
+          });
           console.log(data, 'data123')
           if (data?.success) {
             let bookingId = data.result.data[0].id;
@@ -442,12 +445,12 @@ export default {
             let cartId = this.cartToken;
             let body = {
               giftMessage: {
-                sender: "customer",
-                recipient: "vehicle_data",
-                message: `cartId: ${cartId}, appointmentId: ${bookingId}`,
+                sender: 'customer',
+                recipient: 'vehicle_data',
+                message: `cartId: ${cartId}, appointmentId: ${bookingId}`
               }
             };
-            await axios({method: 'POST', url: `${config.api.url}/api/cart/additional-order-data?cartId=${cartId}&token=${token}`, headers: {}, data: body});
+            await axios({ method: 'POST', url: `${config.api.url}/api/cart/additional-order-data?cartId=${cartId}&token=${token}`, headers: {}, data: body });
             this.$store.commit('vehicles/setAppointmentError', '');
           } else {
             this.$store.commit('vehicles/setAppointmentError', data.result.message);
@@ -510,7 +513,7 @@ export default {
         { name: 'city', id: 'city' },
         { name: 'state', id: 'state' },
         { name: 'country', id: 'countries' },
-        {name: 'phoneNumber', id: 'phone'}
+        { name: 'phoneNumber', id: 'phone' }
       ],
       loading: false
     };
@@ -537,7 +540,7 @@ export default {
         if (id) {
           setTimeout(() => { document.getElementById(id.id).scrollIntoView({ behavior: 'smooth' }); }, 0);
         }
-        if(id) return;
+        if (id) return;
       }
       this.sendToBillingAddress = true;
       this.sendDataToCheckout();
