@@ -233,7 +233,7 @@ export default {
         country: this.shipping.country,
         firstName: this.personalDetails.firstName,
         lastName: this.personalDetails.lastName,
-        paymentMethod: 'cnpayment',
+        paymentMethod: 'cybersourcepayment',
         phoneNumber: this.locationKind !== 'click_collect_free' ? this.shipping.phoneNumber : '',
         state: this.shipping.state,
         streetAddress: this.shipping.streetAddress,
