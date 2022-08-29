@@ -103,7 +103,7 @@ export const Shipping = {
     personalDetails (value) {
       this.shipping.firstName = value.firstName;
       this.shipping.lastName = value.lastName;
-      this.shipping.telephone = value.telephone;
+      this.shipping.phoneNumber = value.telephone;
     },
     getShippingDetails (value) {
       this.shipping = {...value};
