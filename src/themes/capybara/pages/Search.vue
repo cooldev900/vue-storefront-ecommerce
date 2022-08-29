@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="category">
-      <lazy-hydrate  :trigger-hydration="loading">
+      <lazy-hydrate :trigger-hydration="loading">
         <OmCategoryHeader
           v-if="!!getCurrentCategory"
           :title="headerTitle"
@@ -124,21 +124,21 @@
                         v-if="filterType == 'price_filter'"
                         v-model="value"
                         :disabled="false"
-                        :config='{"start":[getStartPrice ? getStartPrice : minPrice,getEndPrice ? getEndPrice: maxPrice],"range":{"min":minPrice,"max":maxPrice},"step":1,"tooltips":true}'
+                        :config="{&quot;start&quot;:[getStartPrice ? getStartPrice : minPrice,getEndPrice ? getEndPrice: maxPrice],&quot;range&quot;:{&quot;min&quot;:minPrice,&quot;max&quot;:maxPrice},&quot;step&quot;:1,&quot;tooltips&quot;:true}"
                         @change="debouceRange"
                       />
-                    <SfFilter
-                      v-else
-                      v-for="filter in filters"
-                      :key="filter.id"
-                      :label="filter.label"
-                      :count="filter.count"
-                      :color="filter.color"
-                      :selected="isFilterActive(filter)"
-                      class="filters__item"
-                      @change="changeFilter(filter)"
-                    />
-                  </template>
+                      <SfFilter
+                        v-else
+                        v-for="filter in filters"
+                        :key="filter.id"
+                        :label="filter.label"
+                        :count="filter.count"
+                        :color="filter.color"
+                        :selected="isFilterActive(filter)"
+                        class="filters__item"
+                        @change="changeFilter(filter)"
+                      />
+                    </template>
                   </SfAccordionItem>
                 </template>
               </SfAccordion>
@@ -148,7 +148,7 @@
         <div class="products">
           <div v-if="loading && !currentPageProducts.length">
             <transition-group
-              
+
               name="products__slide"
               tag="div"
               class="products__grid"
@@ -171,7 +171,7 @@
           <template>
             <!-- <lazy-hydrate :trigger-hydration="loading"> -->
 
-            <div              
+            <div
               name="products__slide"
               tag="div"
               class="products__grid"
@@ -283,7 +283,7 @@
                       v-if="filterType == 'price_filter'"
                       v-model="value"
                       :disabled="false"
-                      :config='{"start":[getStartPrice ? getStartPrice : minPrice,getEndPrice ? getEndPrice: maxPrice],"range":{"min":minPrice,"max":maxPrice},"step":1,"tooltips":true}'
+                      :config="{&quot;start&quot;:[getStartPrice ? getStartPrice : minPrice,getEndPrice ? getEndPrice: maxPrice],&quot;range&quot;:{&quot;min&quot;:minPrice,&quot;max&quot;:maxPrice},&quot;step&quot;:1,&quot;tooltips&quot;:true}"
                       @change="debouceRange"
                     />
                     <SfFilter
@@ -431,7 +431,7 @@ export default {
     SbTeaseV2,
     SfRange
   },
-  mixins: [  ],
+  mixins: [ ],
   data () {
     return {
       loading: true,
@@ -443,7 +443,7 @@ export default {
       unsubscribeFromStoreAction: null,
       aggregations: null,
       sortOrderValue: '',
-      value: [this.minPrice, this.maxPrice],
+      value: [this.minPrice, this.maxPrice]
     };
   },
   computed: {
@@ -469,12 +469,12 @@ export default {
       minPrice: 'priceRange/getMinPrice',
       getCategoryId: 'priceRange/getCategoryId',
       getStartPrice: 'priceRange/getStartPrice',
-      getEndPrice: 'priceRange/getEndPrice',
+      getEndPrice: 'priceRange/getEndPrice'
     }),
-    headerTitle() {
-      return "Search Result for " + this.search;
+    headerTitle () {
+      return i18n.t('Search Result for') + '"' + this.search + '"';
     },
-    search() {
+    search () {
       return this.$route?.query?.search || this.$route?.query?.value || '';
     },
     isLazyHydrateEnabled () {
@@ -604,7 +604,7 @@ export default {
           }
           return result;
         }, {});
-      
+
       if (result?.price_filter) {
         result.price_filter = result.price_filter.filter((value, index, self) =>
           index === self.findIndex((t) => (
@@ -637,11 +637,8 @@ export default {
     //   );
     // },
     shouldShowVehicleCard () {
-      if (this.$route.path === '/car-accessories' ) 
-        return true;
-      else 
-        return this.getCurrentCategory?.id && this.getCurrentCategory?.page_layout !== 'category-full-width'
-    },
+      if (this.$route.path === '/car-accessories') { return true; } else { return this.getCurrentCategory?.id && this.getCurrentCategory?.page_layout !== 'category-full-width' }
+    }
   },
   watch: {
     sortOrder () {
@@ -661,10 +658,10 @@ export default {
         this.$store.commit('vehicles/toggleSetPrompt', false);
         if (to.query?.page && to?.path === from?.path) {
           if (to?.query.page !== from?.query?.page) {
-            this.changePage(parseInt(to.query.page)); 
+            this.changePage(parseInt(to.query.page));
           } else {
             this.changePage(1, true)
-          }         
+          }
         } else {
           this.initPagination();
         }
@@ -677,10 +674,11 @@ export default {
     await composeInitialPageState(store, route);
   },
   async beforeRouteEnter (to, from, next) {
-    if (isServer) 
+    if (isServer) {
       next((vm) => {
         vm.loading = false;
       });
+    }
     // SSR no need to invoke SW caching here
     else if (!from.name) {
       // SSR but client side invocation, we need to cache products and invoke requests from asyncData for offline support
@@ -724,10 +722,10 @@ export default {
       openVehicleCart: 'ui/toggleSidebar',
       openModal: 'ui/openModal'
     }),
-    debouceRange: _.debounce(function(event) {
+    debouceRange: _.debounce(function (event) {
       this.changeRange(event);
     }, 500),
-    changeRange(event) {
+    changeRange (event) {
       console.log(event, 'event');
       this.value = event;
       this.$store.dispatch('priceRange/saveStartPrice', event[0]);
@@ -738,9 +736,9 @@ export default {
         from: event[0],
         id: `${event[0]}-${event[1]}`,
         // label: "< QR 500",
-        single: true, 
-        to: event[1],        
-        type: "price"
+        single: true,
+        to: event[1],
+        type: 'price'
       }
       this.$store.dispatch('category-next/switchSearchFilters', [priceFilter]);
     },
@@ -952,7 +950,7 @@ export default {
       }
 
       const filterQuery = buildFilterProductsQuery(
-        this.getCurrentCategory ,
+        this.getCurrentCategory,
         filters
       );
       console.log(this.$route.query?.search, 'query', filterQuery);
@@ -968,19 +966,19 @@ export default {
         includeFields: includeFields,
         excludeFields: excludeFields
       });
-      
-      const {
-      items,
-      perPage,
-      total,
-      aggregations,
-      attributeMetadata
-    } = searchResult;
 
-    if (reload) {
-      this.$store.commit(types.CATEGORY_SET_SEARCH_PRODUCTS_STATS, { perPage, start, total });
-      this.$store.commit(types.CATEGORY_SET_PRODUCTS, items);
-    }
+      const {
+        items,
+        perPage,
+        total,
+        aggregations,
+        attributeMetadata
+      } = searchResult;
+
+      if (reload) {
+        this.$store.commit(types.CATEGORY_SET_SEARCH_PRODUCTS_STATS, { perPage, start, total });
+        this.$store.commit(types.CATEGORY_SET_PRODUCTS, items);
+      }
 
       this.getMoreCategoryProducts = await this.$store.dispatch(
         'category-next/processCategoryProducts',
