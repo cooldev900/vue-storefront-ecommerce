@@ -14,28 +14,29 @@
     <div class="form" v-else>
       <SfInput
         v-model="firstName"
-        label="First name"
+        :label="$t('First name')"
         name="firstName"
         class="form__element form__element--half"
         required
         :valid="firstNameBlur || validFirstName(firstName)"
-        error-message="Please type your name"
+        :error-message="$t('Field is required')"
         @blur="firstNameBlur = false"
       />
       <SfInput
         v-model="lastName"
-        label="Last name"
+        :label="$t('Last name')"
         name="lastName"
         class="form__element form__element--half form__element--half-even"
         required
         :valid="lastNameBlur || validLastName(lastName)"
-        error-message="Please type your last name. Your name should have at least one character."
+        :error-message="$t('Field is required')"
         @blur="lastNameBlur = false"
       />
       <SfInput
         v-model="phoneNumber"
-        label="Phone number"
+        :label="$t('Phone Number')"
         name="phone"
+        required
         type="number"
         class="form__element form__element--half"
         :valid="validPhoneNumber(phoneNumber)"
@@ -43,23 +44,46 @@
       />
       <SfInput
         v-model="email"
-        label="Email"
+        :label="$t('Email address')"
         name="email"
         class="form__element form__element--half form__element--half-even"
         required
         :valid="emailBlur || validEmail(email)"
-        error-message="Please enter a valid email address."
+        :error-message="$t('Field is required')"
         @blur="emailBlur = false"
       />
-      <SfInput
+      <!-- <SfInput
         v-model="vin"
-        label="Registration / VIN"
+        :label="$t('VIN')"
         name="vin"
         class="form__element form__element--half"
-      />
+      /> -->
+      <div class="inputs">
+        <label for="billing-country" class="sf-input__label">
+          Services
+          <span class="label--required"> * </span></label>
+        <Select
+          v-model="vin"
+          name="vin"
+          :label="$t('Services')"
+          required
+          class="form__element
+              form__select
+              vin-select
+              "
+        >
+          <Option
+            v-for="(service, key) in services"
+            :key="key"
+            :value="service"
+          >
+            {{ $t(service) }}
+          </Option>
+        </Select>
+      </div>
       <SfInput
         v-model="item_required"
-        label="Item Required"
+        :label="$t('Items required')"
         name="item_required"
         class="form__element form__element--half form__element--half-even"
       />
@@ -67,7 +91,7 @@
         v-model="message"
         type="textarea"
         class="form__element"
-        label="Message"
+        :label="$t('Message')"
         name="message"
         cols="80"
         rows="15"
@@ -75,10 +99,10 @@
         minlength="10"
         wrap="soft"
       />
-      <div class="form__action">
-        <SfButton class="form__action-submit" @click.prevent="submit">
+      <div class="cta-area">
+        <SfButton class="om-btn--primary" @click.prevent="submit">
           <SfLoader v-if="loading" :loading="loading" />
-          <span v-else>Submit</span>
+          <span v-else>{{ $t('Submit') }}</span>
         </SfButton>
         <SfButton
           class="
@@ -100,17 +124,18 @@ import {
   SfButton,
   SfHeading,
   SfRange,
-  SfLoader
+  SfLoader,
+  SfSelect
 } from '@storefront-ui/vue';
 import axios from 'axios';
 import { notifications } from '@vue-storefront/core/modules/cart/helpers';
 import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 import config from 'config';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import OmAlertBox from 'theme/components/omni/om-alert-box';
 
 export default {
-  name: 'OmContactForm',
+  name: 'OmEnquiryForm',
   components: {
     SfButton,
     SfInput,
@@ -118,6 +143,7 @@ export default {
     SfHeading,
     SfRange,
     SfLoader,
+    SfSelect,
     OmAlertBox
   },
   data () {
@@ -135,9 +161,15 @@ export default {
       vin: '',
       item_required: '',
       loading: false,
+      successMessage: '',
       type: 'info',
-      successMessage: ''
+      services: ['Tires', 'Batteries', 'Lubricants', 'Car Care']
     };
+  },
+  computed: {
+    ...mapGetters({
+      product: 'product/getCurrentProduct'
+    })
   },
   methods: {
     ...mapActions('ui', {
@@ -164,27 +196,16 @@ export default {
     },
     validPhoneNumber (phone) {
       if (!phone) return true;
-      const regex = /^[0-9]{8,12}$/;
+      const regex = /^[0-9]{7,12}$/;
       return regex.test(phone);
     },
     validEmail (email) {
       const regex = /(.+)@(.+){2,}\.(.+){2,}/;
       return regex.test(email.toLowerCase());
     },
-    async recaptcha() {
-      // (optional) Wait until recaptcha has been loaded.
-      await this.$recaptchaLoaded()
-
-      // Execute reCAPTCHA with action "login".
-      const token = await this.$recaptcha('login')
-
-      // Do stuff with the received token.
-      return token;
-    },
     async submit () {
       this.validate();
       if (this.valid) {
-        const token = await this.recaptcha();
         const baseUrl = 'https://portal-api.omninext.app/api';
         const payload = {
           first_name: this.firstName,
@@ -241,8 +262,8 @@ export default {
           this.successMessage = 'Failed registration of a new enquiry!';
           this.loading = false;
         }
-        // this.closeModal();
         // this.loading = false;
+        // this.closeModal();
       }
     },
     reset () {
@@ -258,24 +279,22 @@ export default {
       this.lastNameBlur = true;
       this.setProductInfo();
     },
-    setProductInfo() {
+    setProductInfo () {
       this.type = 'info';
       this.successMessage = '';
       if (this.product.sku) {
-        if (this.product.name)  
-          this.item_required = this.product.name + ' - ' + this.product.sku;  
-        else 
-          this.item_required = this.product.title + ' - ' + this.product.sku;  
-      }  
-    },
+        if (this.product.name) { this.item_required = this.product.name + ' - ' + this.product.sku; } else { this.item_required = this.product.title + ' - ' + this.product.sku; }
+      }
+    }
   },
   mounted () {
     this.reset();
-  }  
+  }
 };
 </script>
 <style lang="scss" scoped>
 @import "~@storefront-ui/vue/styles";
+@import "~@storefront-ui/shared/styles/helpers/breakpoints";
 #form-template {
   box-sizing: border-box;
   padding: 0 var(--spacer-sm);
@@ -285,8 +304,32 @@ export default {
     margin: 0 auto;
   }
 }
+.inputs {
+  width: 50%;
+  margin: 0 0 var(--spacer-sm) 0;
+  @include for-mobile {
+    width: 100%;
+  }
+.sf-input__label {
+  display: block;
+}
+}
+.label {
+  display: block !important;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 15px !important;
+}
+.vin-select {
+  width: 100%;
+  padding: 15px !important;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: rgb(244,244,244);
+}
 .form {
   padding: var(--spacer-sm) 0;
+  margin: 0 !important;
   &__group {
     display: flex;
     align-items: flex-start;
@@ -331,12 +374,24 @@ export default {
       --button-width: auto;
     }
   }
-
+.cta-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: auto;
+}
   .form__action-submit {
     min-width: 117.75px !important;
   }
   ::v-deep .sf-loader__spinner {
     stroke: white !important;
   }
+  .sf-loader {
+    width: 21px;
+  }
+
 }
+  .om-alert-box {
+    margin-bottom: 0;
+  }
 </style>
