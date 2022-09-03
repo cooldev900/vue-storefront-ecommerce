@@ -38,7 +38,7 @@ const createOrderData = ({
       city: shippingDetails.city,
       postcode: '0000',
       street: [shippingDetails.streetAddress],
-      telephone: personalDetails.telephone,
+      telephone: shippingDetails.phoneNumber,
     },
     billingAddress: {
       email: personalDetails.emailAddress,
