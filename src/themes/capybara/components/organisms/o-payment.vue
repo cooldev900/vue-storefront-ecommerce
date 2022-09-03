@@ -417,12 +417,10 @@ export default {
         // EventBus.$emit('notification-progress-stop')
 
         await this.$bus.$emit('notification-progress-start');
-        
         try {
-          // await this.$bus.$emit('place-order-after-cybersource-pay');
-          this.payment.paymentMethodAdditional = {
+          await this.$bus.$emit('update-payment-additional-info', {
             paymentID: transaction_id
-          };
+          });
           const result = await this.placeOrder();
           console.log(result?.result.magentoOrderId, 'result?.result.magentoOrderId');
 

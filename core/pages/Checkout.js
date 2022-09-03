@@ -70,6 +70,7 @@ export default {
     this.$bus.$on('send-sync-totals', this.sendAsyncTotals)
     this.$bus.$on('place-order-after-cybersource-pay', this.placeOrder);
     this.$bus.$on('appointment-error', this.placeOrder);
+    this.$bus.$on('update-payment-additional-info', this.updatePaymentAdditionalInfo);
     if (!this.isThankYouPage) {
       this.$store.dispatch('cart/load', { forceClientState: true }).then(() => {
         if (this.$store.state.cart.cartItems.length === 0) {
@@ -132,12 +133,16 @@ export default {
     this.$bus.$off('send-sync-totals', this.sendAsyncTotals)
     this.$bus.$off('place-order-after-cybersource-pay', this.placeOrder)
     this.$bus.$off('appointment-error', this.goToStepOne);
+    this.$bus.$off('update-payment-additional-info', this.updatePaymentAdditionalInfo);
   },
   watch: {
     '$route': 'activateHashSection',
     'OnlineOnly': 'onNetworkStatusCheck'
   },
   methods: {
+    updatePaymentAdditionalInfo (info) {
+      this.payment.paymentMethodAdditional = info;
+    },
     goToStepOne () {
       this.editAccordion(0);
     },
@@ -340,7 +345,7 @@ export default {
         email: this.getPersonalDetails.emailAddress,
         region_code: this.shippingDetails.region_code ? this.shippingDetails.region_code : ''
       }
-
+      console.log(this.order, 'order');
       return this.order
     },
     validateOrderBeforeSending () {
