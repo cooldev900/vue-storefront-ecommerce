@@ -653,8 +653,8 @@ export default {
     },
     activeVehicle: {
       immediate: true,
-      handler () {
-        this.$store.dispatch('category-next/switchSearchFilters', [
+      handler (value) {
+        if (value?.National_Code || value?.national_code) this.$store.dispatch('category-next/switchSearchFilters', [
           { id: `${config.products.defaultSortBy.attribute}:${config.products.defaultSortBy.order}`, type: 'sort' }
         ]);
       },
@@ -714,9 +714,9 @@ export default {
         this.aggregations = action.payload.aggregations;
       }
     });
-    this.$store.dispatch('category-next/switchSearchFilters', [
-      { id: `${config.products.defaultSortBy.attribute}:${config.products.defaultSortBy.order}`, type: 'sort' }
-    ]);
+    // this.$store.dispatch('category-next/switchSearchFilters', [
+    //   { id: `${config.products.defaultSortBy.attribute}:${config.products.defaultSortBy.order}`, type: 'sort' }
+    // ]);
     this.$bus.$on('product-after-list', this.initPagination);
     window.addEventListener('resize', this.getBrowserWidth);
     this.getBrowserWidth();

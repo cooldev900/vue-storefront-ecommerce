@@ -417,14 +417,15 @@ export default {
         // EventBus.$emit('notification-progress-stop')
 
         await this.$bus.$emit('notification-progress-start');
-        // await this.$bus.$emit('place-order-after-cybersource-pay');
-        // const result = await this.placeOrder();
-        const result = await this.$bus.$emit('checkout-do-placeOrder', {
-          paymentID: transaction_id
-        });
-        console.log(result?.result.magentoOrderId, 'result?.result.magentoOrderId');
-
+        
         try {
+          // await this.$bus.$emit('place-order-after-cybersource-pay');
+          this.payment.paymentMethodAdditional = {
+            paymentID: transaction_id
+          };
+          const result = await this.placeOrder();
+          console.log(result?.result.magentoOrderId, 'result?.result.magentoOrderId');
+
           let params = {
             client_id: this.getSlotData.client_id,
             id: this.getSlotData.id,
@@ -439,22 +440,22 @@ export default {
             params
           });
           console.log(data, 'data123')
-          if (data?.success) {
-            let bookingId = data.result.data[0].id;
-            let token = this.token ? this.token : '';
-            let cartId = this.cartToken;
-            let body = {
-              giftMessage: {
-                sender: 'customer',
-                recipient: 'vehicle_data',
-                message: `cartId: ${cartId}, appointmentId: ${bookingId}`
-              }
-            };
-            await axios({ method: 'POST', url: `${config.api.url}/api/cart/additional-order-data?cartId=${cartId}&token=${token}`, headers: {}, data: body });
-            this.$store.commit('vehicles/setAppointmentError', '');
-          } else {
-            this.$store.commit('vehicles/setAppointmentError', data.result.message);
-          }
+          // if (data?.success) {
+          //   let bookingId = data.result.data[0].id;
+          //   let token = this.token ? this.token : '';
+          //   let cartId = this.cartToken;
+          //   let body = {
+          //     giftMessage: {
+          //       sender: 'customer',
+          //       recipient: 'vehicle_data',
+          //       message: `cartId: ${cartId}, appointmentId: ${bookingId}`
+          //     }
+          //   };
+          //   await axios({ method: 'POST', url: `${config.api.url}/api/cart/additional-order-data?cartId=${cartId}&token=${token}`, headers: {}, data: body });
+          //   this.$store.commit('vehicles/setAppointmentError', '');
+          // } else {
+          //   this.$store.commit('vehicles/setAppointmentError', data.result.message);
+          // }
         } catch (e) {
           console.log(e, 'appointment error');
           await this.$bus.$emit('notification-progress-stop');
