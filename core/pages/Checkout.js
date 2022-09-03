@@ -46,7 +46,8 @@ export default {
       shippingMethods: 'checkout/getShippingMethods',
       paymentMethod: 'checkout/getPaymentMethods',
       shippingDetails: 'checkout/getShippingDetails',
-      getPaymentDetails: 'checkout/getPaymentDetails'
+      getPaymentDetails: 'checkout/getPaymentDetails',
+      getSlotData: 'vehicles/getSlotData'
     })
   },
   async beforeMount () {
@@ -316,7 +317,7 @@ export default {
             lastname: this.getPaymentDetails.lastName,
             email: this.getPersonalDetails.emailAddress,
             region_code: this.getPaymentDetails.region_code ? this.getPaymentDetails.region_code : '',
-            vat_id: this.getPaymentDetails.taxId
+            vat_id: this.getSlotData.start_time
           },
           shipping_method_code: 'freeshipping',
           shipping_carrier_code: 'freeshipping',

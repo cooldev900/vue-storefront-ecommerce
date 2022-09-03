@@ -47,7 +47,7 @@ export default {
       this.loading = true;
       const storeId = currentStoreView().storeId;
       const { data: { result } } = await axios.get(
-        `${config.api.url}/api/storyblok/storyblok-1/info-modals/${this.modalData.payload.contentKey}`
+        `${config.api.url}/api/storyblok/storyblok-${storeId}/info-modals/${this.modalData.payload.contentKey}`
       );
 
       this.content = result;
