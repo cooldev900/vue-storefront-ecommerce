@@ -402,11 +402,8 @@ export default {
     if (SHASIGN) {
       const secretKey = config.secret_key;
       const shaSignature1 = `${transaction_id}${decision}${req_transaction_uuid}`;
-      console.log(process.env, 'secret_key', config.secret_key);
       const checkSumShaSign = this.$CryptoJS.HmacSHA256(shaSignature1, secretKey).toString(this.$CryptoJS.enc.Hex);
       console.log(JSON.parse(SHASIGN) === checkSumShaSign, 'is valid sha', SHASIGN, checkSumShaSign);
-      console.log(this.getSlotData, 'getSlotData');
-      console.log(this.getSlotID, 'getSlotID');
       if (JSON.parse(SHASIGN) === checkSumShaSign && decision === 'ACCEPT') {
         // let newOrder = await this.prepareOrder();
 
@@ -422,7 +419,6 @@ export default {
             paymentID: transaction_id
           });
           const result = await this.placeOrder();
-          console.log(result?.result.magentoOrderId, 'result?.result.magentoOrderId');
 
           let params = {
             client_id: this.getSlotData.client_id,
@@ -437,7 +433,6 @@ export default {
           let { data } = await axios.post(`${config.api.url}/api/ext/appointments`, params, {
             params
           });
-          console.log(data, 'data123')
           // if (data?.success) {
           //   let bookingId = data.result.data[0].id;
           //   let token = this.token ? this.token : '';

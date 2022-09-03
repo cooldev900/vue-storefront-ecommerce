@@ -345,7 +345,7 @@ export default {
         email: this.getPersonalDetails.emailAddress,
         region_code: this.shippingDetails.region_code ? this.shippingDetails.region_code : ''
       }
-      console.log(this.order, 'order');
+      
       return this.order
     },
     validateOrderBeforeSending () {
