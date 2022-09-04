@@ -79,6 +79,7 @@
 </template>
 
 <script>
+import { currentStoreView } from '@vue-storefront/core/lib/multistore';
 import { prepareCategoryProduct } from 'theme/helpers';
 import VueOfflineMixin from 'vue-offline/mixin';
 import { SfHeading, SfButton, SfList, SfSearchBar, SfMenuItem, SfProductCard, SfIcon } from '@storefront-ui/vue';
@@ -152,13 +153,14 @@ export default {
     async getSearchResult(input) {
       this.search = input;
       this.startSearch();
+      const storeId = currentStoreView().storeId
       if (input.length >= 1) {
         try {
           const {
                 data: {
                   result
                 }
-              } = await axios.post(`${config.api.url}/api/search/es-search`, {
+              } = await axios.post(`${config.api.url}/api/search/es-search/${storeId}`, {
                 query: input
               });
           
