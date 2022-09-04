@@ -118,7 +118,7 @@ export default {
       selected: {},
       isAnotherPopUpDisplayed: false,
       days: [
-         'SUN', 'MON', 'THU', 'WED', 'TUE', 'FRI', 'SAT' 
+         'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT' 
       ],
       value1: 'something'
     };
