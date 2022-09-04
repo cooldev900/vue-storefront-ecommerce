@@ -653,8 +653,10 @@ export default {
     },
     activeVehicle: {
       immediate: true,
-      handler (value) {
-        this.$store.dispatch('category-next/switchSearchFilters', [
+      handler (value, oldValue) {
+        console.log(value, 'value')
+        console.log(oldValue, 'oldValue');
+        if (oldValue?.National_Code || oldValue?.national_code || value?.national_code || value?.National_Code) this.$store.dispatch('category-next/switchSearchFilters', [
           { id: `${config.products.defaultSortBy.attribute}:${config.products.defaultSortBy.order}`, type: 'sort' }
         ]);
       },
