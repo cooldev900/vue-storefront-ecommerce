@@ -16,7 +16,7 @@
       {{ $t('Account') }}
     </div>
     <span class="sf-header__split">|</span>
-    <span class="sf-header__custom-icon--help sf-header__custom-icon">{{ $t('Help') }}</span>
+    <span class="sf-header__custom-icon--help sf-header__custom-icon" @click="showContactModal">{{ $t('Help') }}</span>
     <span class="sf-header__split">|</span>
     <a href="https://wa.me/message/WY4AEO7EDPQAA1" target="_blank" title="Whatsapp" class="sf-header__custom-icon search-icon">
       <img src="/assets/whatsapp.png" width="22">
@@ -63,6 +63,9 @@ export default {
       } else {
         this.openModal({ name: ModalList.Auth, payload: 'login' })
       }
+    },
+    showContactModal() {
+      this.openModal({ name: ModalList['OmContactModal']})
     }
   },
   data () {

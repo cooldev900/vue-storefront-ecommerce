@@ -9,6 +9,7 @@
         :variant="content.variant"
       />
     </transition-group>
+    <SbTeaseV2/>
   </div>
 </template>
 
@@ -17,9 +18,13 @@ import { mapGetters, mapActions } from 'vuex';
 import { Logger } from '@vue-storefront/core/lib/logger';
 import { isServer, onlineHelper } from '@vue-storefront/core/helpers';
 import { ModalList } from 'theme/store/ui/modals'
+import SbTeaseV2 from "theme/components/storyblok/sb-teaser-v2.vue";
 
 export default {
   name: 'Home',
+  components: {
+    SbTeaseV2
+  },
   data () {
     return {
       loading: true,
