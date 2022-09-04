@@ -64,6 +64,7 @@
             <SfInput
               v-model="editedAddress.state"
               name="state"
+              required
               :label="$t('Zone')"
               class="form__element form__element--half form__element--half-even"
             />
@@ -99,6 +100,7 @@
             <!-- </SfSelect> -->
             <SfInput
               v-model="editedAddress.telephone"
+              required
               name="telephone"
               :label="$t('Phone number')"
               class="form__element"
@@ -306,6 +308,9 @@ export default {
         minLength: minLength(3)
       },
       country: {
+        required
+      },
+      telephone: {
         required
       }
     }
