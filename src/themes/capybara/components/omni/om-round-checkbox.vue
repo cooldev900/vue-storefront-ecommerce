@@ -143,6 +143,7 @@ export default {
     display: flex;
     display: -webkit-box;
     display: -webkit-flex;
+    display: -webkit-flexbox;
     justify-content: space-between;
     cursor: pointer;
 

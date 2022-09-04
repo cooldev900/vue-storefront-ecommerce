@@ -583,4 +583,14 @@ export default {
     transform: translateX(0);
   }
 }
+
+.slots {
+  display: block;
+  width: 100%;
+
+  .anytime {
+    display: block;
+    width: 100%;
+  }
+ }
 </style>
