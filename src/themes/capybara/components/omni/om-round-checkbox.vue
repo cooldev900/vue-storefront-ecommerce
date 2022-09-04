@@ -141,6 +141,8 @@ export default {
     border: 1px solid #fff;
     margin-top: 15px;
     display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
     justify-content: space-between;
     cursor: pointer;
 
