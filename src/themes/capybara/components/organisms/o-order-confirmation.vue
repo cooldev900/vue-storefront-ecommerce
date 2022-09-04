@@ -106,7 +106,10 @@ export default {
     this.$store.dispatch('checkout/setThankYouPage', false);
   },
   methods: {
-    async handleClick() {
+    handleClick() {
+      this.$router.push(localizedRoute('/'))
+    },
+    async clearAll() {
       await this.$store.dispatch('cart/clear', { sync: false }, { root: true })
       await this.$store.dispatch('checkout/savePersonalDetails', {});
       await this.$store.dispatch('checkout/saveShippingDetails', {});
@@ -114,7 +117,6 @@ export default {
       await this.$store.dispatch('checkout/dropPassword')
       await this.$store.dispatch('vehicles/clearCheckoutSteps');
       await this.$store.commit('vehicles/setSlotData', {});
-      this.$router.push(localizedRoute('/'))
     },
     requestNotificationPermission () {
       if (this.isNotificationSupported && !this.isPermissionGranted) {
@@ -159,6 +161,10 @@ export default {
         action1: { label: this.$t('OK') }
       });
     }
+  },
+  mounted() {
+    this.clearAll();
+    this.$router.push(localizedRoute('/checkout'));
   }
 };
 </script>
