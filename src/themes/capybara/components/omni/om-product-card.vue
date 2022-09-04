@@ -97,8 +97,8 @@
       <h4 class="sub-title">
         {{ secondTitle || ' ' }}
       </h4>
-      <div class="action-area__wrap--promobanner">
-        {{ offer || ' ' }}
+      <div v-if="offerName !== ''" class="action-area__wrap--promobanner">
+        {{ offerName }}
       </div>
     </div>
     <SfButton
@@ -248,7 +248,7 @@ export default {
       default: ''
     },
     offer: {
-      type: String,
+      type: [String, Array, Number],
       default: ''
     },
     usp2: {
@@ -481,6 +481,9 @@ export default {
     },
     oeBrands () {
       return config['oebrands'][this.getAttributeLabelById('oe_brand', this.brand)];
+    },
+    offerName () {
+      return [this.getAttributeLabelById('promotion', this.offer)] || '';
     },
     isAvailable () {
       // if (this.qty1) this.qty = this.qty1;

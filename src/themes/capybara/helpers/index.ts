@@ -94,6 +94,7 @@ export function prepareCategoryProduct (product) {
     oe_brand: product.oe_brand,
     usp1: product.usp1,
     usp2: product.usp2,
+    promotion: product.promotion,
     secondary_title: product.secondary_title,
     stock: product.stock,
     news_from_date: product.news_from_date,
