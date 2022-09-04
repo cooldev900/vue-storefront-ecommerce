@@ -61,7 +61,7 @@
         v-model.trim="payment.streetAddress"
         class="form__element"
         name="street-address"
-        :label="$t('Address Line 1')"
+        :label="$t('Building Number')"
         required
         :valid="!$v.payment.streetAddress.$error"
         :error-message="$t('Field is required')"
@@ -71,7 +71,8 @@
         v-model.trim="payment.apartmentNumber"
         class="form__element"
         name="apartment-number"
-        :label="$t('Address Line 2')"
+        required
+        :label="$t('Street Number & Name')"
       />
       <SfInput
         v-if="!sendToBillingAddress"
@@ -86,25 +87,26 @@
       <SfInput
         v-if="!sendToBillingAddress"
         v-model.trim="payment.state"
+        required
         class="form__element form__element--half form__element--half-even"
         name="state"
-        :label="$t('State / Province')"
+        :label="$t('Zone')"
       />
-      <!-- <SfInput
+      <SfInput
         v-if="!sendToBillingAddress"
         v-model.trim="payment.zipCode"
         class="form__element form__element--half"
         name="zipCode"
-        :label="$t('Zip-code')"
+        :label="$t('Landmark')"
         required
         :valid="!$v.payment.zipCode.$error"
         :error-message="
           !$v.payment.zipCode.required
             ? $t('Field is required')
-            : $t('Zip-code must have at least 3 letters.')
+            : $t('Landmark must have at least 3 letters.')
         "
         @blur="$v.payment.zipCode.$touch()"
-      /> -->
+      />
       <SfSelect
         style="display: none"
         v-if="!sendToBillingAddress"
@@ -337,15 +339,15 @@ export default {
         required,
         unicodeAlphaNum
       },
-      // apartmentNumber: {
-      //   required,
-      //   unicodeAlphaNum
-      // },
-      // zipCode: {
-      //   required,
-      //   minLength: minLength(3),
-      //   unicodeAlphaNum
-      // },
+      apartmentNumber: {
+        required,
+        unicodeAlphaNum
+      },
+      zipCode: {
+        required,
+        minLength: minLength(3),
+        unicodeAlphaNum
+      },
       city: {
         required,
         unicodeAlpha

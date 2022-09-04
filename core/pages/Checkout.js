@@ -305,13 +305,13 @@ export default {
         products: this.$store.state.cart.cartItems,
         addressInformation: {
           billingAddress: {
-            region: this.getPaymentDetails.state,
+            region: this.getPaymentDetails.state, // zone
             region_id: this.getPaymentDetails.region_id ? this.getPaymentDetails.region_id : 0,
             country_id: this.getPaymentDetails.country,
-            street: [this.getPaymentDetails.streetAddress, this.getPaymentDetails.apartmentNumber],
+            street: [this.getPaymentDetails.streetAddress, this.getPaymentDetails.apartmentNumber], // building number & street
             company: this.getPaymentDetails.company,
             telephone: this.getPaymentDetails.phoneNumber,
-            postcode: 'test',
+            postcode: this.getPaymentDetails.zipCode, // landmark
             city: this.getPaymentDetails.city,
             firstname: this.getPaymentDetails.firstName,
             lastname: this.getPaymentDetails.lastName,
@@ -323,7 +323,7 @@ export default {
           shipping_carrier_code: 'freeshipping',
           payment_method_code: 'cybersourcepayment',
           payment_method_additional: this.payment.paymentMethodAdditional,
-          shippingExtraFields: this.shipping.extraFields
+          shippingExtraFields: 'test'
         }
       }
 
@@ -334,7 +334,7 @@ export default {
         street: [this.shippingDetails.streetAddress, this.shippingDetails.apartmentNumber],
         company: '',
         telephone: this.shippingDetails.phoneNumber,
-        postcode: 'test',
+        postcode: this.shippingDetails.zipCode,
         city: this.shippingDetails.city,
         firstname: this.getPersonalDetails.firstName,
         lastname: this.getPersonalDetails.lastName,

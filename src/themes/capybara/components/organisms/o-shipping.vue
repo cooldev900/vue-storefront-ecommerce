@@ -48,7 +48,7 @@
         v-model.trim="shipping.streetAddress"
         class="form__element"
         name="street-address"
-        :label="$t('Address Line 1')"
+        :label="$t('Building Number')"
         required
         :valid="!$v.shipping.streetAddress.$error"
         :error-message="$t('Field is required')"
@@ -57,7 +57,8 @@
         v-model.trim="shipping.apartmentNumber"
         class="form__element"
         name="apartment-number"
-        :label="$t('Address Line 2')"
+        required
+        :label="$t('Street Number & Name')"
       />
       <SfInput
         v-model.trim="shipping.city"
@@ -72,13 +73,14 @@
         v-model.trim="shipping.state"
         class="form__element form__element--half form__element--half-even"
         name="state"
-        :label="$t('State / Province')"
+        required
+        :label="$t('Zone')"
       />
-      <!-- <SfInput
+      <SfInput
         v-model.trim="shipping.zipCode"
         class="form__element form__element--half"
         name="zipCode"
-        :label="$t('Postcode')"
+        :label="$t('Landmark')"
         required
         :valid="!$v.shipping.zipCode.$error"
         :error-message="
@@ -87,7 +89,7 @@
             : $t('Zip-code must have at least 3 letters.')
         "
         @blur="$v.shipping.zipCode.$touch()"
-      /> -->
+      />
       <SfSelect
         style="display: none"
         v-model="shipping.country"
@@ -177,11 +179,11 @@ export default {
         required,
         unicodeAlphaNum
       },
-      // zipCode: {
-      //   required,
-      //   minLength: minLength(3),
-      //   unicodeAlphaNum
-      // },
+      zipCode: {
+        required,
+        minLength: minLength(3),
+        unicodeAlphaNum
+      },
       city: {
         required,
         unicodeAlpha
