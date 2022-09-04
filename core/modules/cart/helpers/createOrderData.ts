@@ -48,7 +48,7 @@ const createOrderData = ({
       postcode: '0000',
       street: [paymentDetails.streetAddress],
       countryId: paymentDetails.country,
-      telephone: personalDetails.telephone,
+      telephone: paymentDetails.phoneNumber,
     },
     method_code: 'freeshipping',
     carrier_code: 'freeshipping',
