@@ -483,7 +483,13 @@ export default {
       return config['oebrands'][this.getAttributeLabelById('oe_brand', this.brand)];
     },
     offerName () {
-      return [this.getAttributeLabelById('promotion', this.offer)] || '';
+      if (!this.offer) return '';
+      const attribute = this.getAttributeLabelById('promotion', this.offer);
+      if (attribute) {
+        return attribute;
+      } else {
+        return ''
+      }
     },
     isAvailable () {
       // if (this.qty1) this.qty = this.qty1;
