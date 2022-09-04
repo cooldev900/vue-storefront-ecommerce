@@ -67,7 +67,7 @@
               :label="$t('State/Province')"
               class="form__element form__element--half form__element--half-even"
             />
-            <!-- <SfInput
+            <SfInput
               v-model="editedAddress.postcode"
               name="postcode"
               :label="$t('Zip-code')"
@@ -79,7 +79,7 @@
                   : $t('Zip-code must have at least 3 letters.')
               "
               class="form__element form__element--half"
-            /> -->
+            />
             <!-- <SfSelect
               v-model="editedAddress.country"
               name="country"
@@ -128,8 +128,9 @@
               <div class="shipping__content">
                 <p class="shipping__address">
                   <span class="shipping__client-name">{{ address.firstname }} {{ address.lastname }}</span><br>
-                  {{ address.street.join(' ') }}<br>
-                  {{ address.city }}<br>
+                  {{ address.street.join(' ') }}<br/>
+                  {{ address.city }}<br/>
+                  {{ address.postcode }}<br/>
                 </p>
                 <p class="shipping__address">
                   {{ address.telephone }}
@@ -189,7 +190,7 @@ export default {
         apartment: '',
         city: '',
         state: '',
-        postcode: '0000',
+        postcode: '',
         country: '',
         telephone: ''
       },
@@ -237,7 +238,6 @@ export default {
     updateAddress () {
       this.editedAddress.firstname = this.firstName;
       this.editedAddress.lastname = this.lastName;
-      this.editedAddress.postcode = '0000'
       this.editedAddress.country = 'United Kingdom'
       this.$v.$touch();
       if (this.$v.$invalid) {

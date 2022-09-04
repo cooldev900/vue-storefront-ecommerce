@@ -106,14 +106,20 @@ export const Shipping = {
       this.shipping.phoneNumber = value.telephone;
     },
     getShippingDetails (value) {
-      this.shipping = {...value};
-    }
+      if (value.firstName) this.shipping = {...value};
+    },
+    currentUser: {
+      async handler () {
+        await this.fetchDefaultAddress();
+      },
+      deep: true,
+    },
   },
   mounted () {
     // this.checkDefaultShippingAddress()
     // this.checkDefaultShippingMethod()
     // this.changeShippingMethod()
-    this.shipping = {...this.getShippingDetails};
+    if (this.getShippingDetails) this.shipping = {...this.getShippingDetails};
     // this.changeShippingMethod()
   },
   methods: {

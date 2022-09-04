@@ -205,17 +205,21 @@ export default {
     }
   },
   async mounted () {    
-    await this.$store.dispatch('checkoutStep/loadAddressId');
-    await this.$store.dispatch('checkout/load');
-    if (this.isLoggedIn && this.currentUser?.addresses?.length && !this.getShippingDetails.streetAddress) {
-      if (this.getAddressId === -1) {
-        this.changeShippingAddress(this.currentUser.addresses[0].id);
-      } else {
-        this.changeShippingAddress(this.getAddressId);
-      }
-    }
+    await this.fetchDefaultAddress();
   },
   methods: {
+    async fetchDefaultAddress() {
+      await this.$store.dispatch('checkoutStep/loadAddressId');
+      await this.$store.dispatch('checkout/load');
+      console.log(!!this.getShippingDetails.streetAddress, 'this.getShippingDetails.streetAddress');
+      if (this.isLoggedIn && this.currentUser?.addresses?.length && !this.getShippingDetails.streetAddress) {
+        if (this.getAddressId === -1) {
+          this.changeShippingAddress(this.currentUser.addresses[0].id);
+        } else {
+          this.changeShippingAddress(this.getAddressId);
+        }
+      }      
+    },
     async clickContinuePayment () {
       this.$v.$touch();
       if (this.$v.shipping.$invalid) {
@@ -248,6 +252,7 @@ export default {
     changeShippingAddress (addressId) {
       this.$store.dispatch('checkoutStep/saveAddressId', addressId);
       const shippingAddress = this.currentUser?.addresses?.find( address => address.id === addressId );
+      console.log(shippingAddress, 'shippingAddress');
       if (shippingAddress) {
         this.shipping.apartmentNumber = shippingAddress?.street[1]
         this.shipping.city = shippingAddress.city;

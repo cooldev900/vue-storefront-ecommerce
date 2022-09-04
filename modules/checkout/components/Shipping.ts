@@ -86,7 +86,7 @@ export const Shipping = {
       }
     },
     onAfterShippingSet (receivedData) {
-      this.shipping = receivedData
+      if (this?.receivedData) this.shipping = receivedData
       this.isFilled = true
     },
     onAfterPersonalDetails (receivedData) {
