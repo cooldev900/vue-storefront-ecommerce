@@ -654,7 +654,7 @@ export default {
     activeVehicle: {
       immediate: true,
       handler (value) {
-        if (value?.National_Code || value?.national_code) this.$store.dispatch('category-next/switchSearchFilters', [
+        this.$store.dispatch('category-next/switchSearchFilters', [
           { id: `${config.products.defaultSortBy.attribute}:${config.products.defaultSortBy.order}`, type: 'sort' }
         ]);
       },
