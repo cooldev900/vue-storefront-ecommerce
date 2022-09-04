@@ -44,8 +44,8 @@ export default {
       console.log(timePart, 'timePart')
       let pm = this.$t('pm');
       let am = this.$t('am');
-      let start_time = new Date(this.appointment.start_time).getHours();
-      let end_time = new Date(this.appointment.end_time).getHours();
+      let start_time = new Date(this.appointment.start_time.replace(/-/g, "/")).getHours();
+      let end_time = new Date(this.appointment.end_time.replace(/-/g, "/")).getHours();
       if (timePart === '12') {
         start_time = start_time === 24 ? '0: 00' : `${start_time}: 00`;
         end_time = end_time === 24 ? '0: 00' : `${end_time}: 00`;
@@ -62,7 +62,7 @@ export default {
       if (!availableStartTime) availableStartTime = this.availableStartTime;
       console.log(availableStartTime, 'available start time')
       let tomorrow = new Date().getTime() + availableStartTime * 3600 * 1000;
-      let startTime = new Date(this.appointment.start_time).getTime();
+      let startTime = new Date(this.appointment.start_time.replace(/-/g, "/")).getTime();
       return !!this.appointment?.available && startTime > tomorrow;
     },
 

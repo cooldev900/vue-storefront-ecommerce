@@ -125,14 +125,14 @@ export default {
       loadSlotID: 'vehicles/loadSlotID',
     }),
     isHoliday (date) {
-      let day = new Date(date).getDay();
+      let day = new Date(date.replace(/-/g, "/")).getDay();
       if (day === 6 || day === 5) return true;
       return false;
     },
     async getAppointment (date) {
       if (this.isHoliday(date)) {
-        let day = new Date(date).getDay();
-        date = new Date(new Date(date).getTime() + (7 - day) * 24 * 60 * 60 * 1000).toISOString();        
+        let day = new Date(date.replace(/-/g, "/")).getDay();
+        date = new Date(new Date(date.replace(/-/g, "/")).getTime() + (7 - day) * 24 * 60 * 60 * 1000).toISOString();        
       };
       if (this.today !== date) {
         this.$store.commit('vehicles/setCurrentDay', date);
@@ -179,7 +179,7 @@ export default {
             ) { currentSchedule = false; }
           }
         }
-        weekDays.push({date: newWeek.date(), day: this.days[newWeek.day()], payload: new Date(newWeek.$d.toISOString().split('T')[0]).toISOString()});
+        weekDays.push({date: newWeek.date(), day: this.days[newWeek.day()], payload: new Date(newWeek.$d.toISOString().split('T')[0].replace(/-/g, "/")).toISOString()});
         weeks.push(schedule);
       }
 
@@ -206,10 +206,10 @@ export default {
       await this.getAppointment(weekDays[0].payload);
     },
     async prevWeek () {
-      let firstDay = new Date(new Date().toISOString().split('T')[0]).toISOString();
+      let firstDay = new Date(new Date().toISOString().split('T')[0].replace(/-/g, "/")).toISOString();
       if (this.weeks.length)
         firstDay = this.weeks[0].days[0].payload;
-      if ( new Date(firstDay).getTime() <= new Date(new Date(new Date().toISOString().split('T')[0]).toISOString()).getTime()) return;
+      if ( new Date(firstDay.replace(/-/g, "/")).getTime() <= new Date(new Date(new Date().toISOString().split('T')[0].replace(/-/g, "/")).toISOString()).getTime()) return;
       let newWeek = this.weeks.length
         ? dayjs(this.weeks[this.weeks.length - 1].week[0].schedule[0].end).add(
           -this.period,
@@ -250,7 +250,7 @@ export default {
             ) { currentSchedule = false; }
           }
         }
-        weekDays.push({date: newWeek.date(), day: this.days[newWeek.day()], payload: new Date(newWeek.$d.toISOString().split('T')[0]).toISOString()});
+        weekDays.push({date: newWeek.date(), day: this.days[newWeek.day()], payload: new Date(newWeek.$d.toISOString().split('T')[0].replace(/-/g, "/")).toISOString()});
         weeks.push(schedule);
       }
 
@@ -309,7 +309,7 @@ export default {
       } while (min > 0);
     },
     async adjustWeek(today, targetDay ) {
-      let delta = (new Date(targetDay).getTime() - new Date(today).getTime())/24/60/60/1000;
+      let delta = (new Date(targetDay.replace(/-/g, "/")).getTime() - new Date(today.replace(/-/g, "/")).getTime())/24/60/60/1000;
       console.log(delta, 'delta');
       if (delta < 0) {
         delta = -1 * delta;
@@ -349,7 +349,7 @@ export default {
     async stepData(value) {
       if (value === 0) {
         if (this.getSlotData?.start_time) { 
-          const date = new Date(this.getSlotData?.start_time.slice(0, 10)).toISOString();
+          const date = new Date(this.getSlotData?.start_time.slice(0, 10).replace(/-/g, "/")).toISOString();
           await this.adjustWeek(this.today, date);
           await this.getAppointment(date);
         }
@@ -358,16 +358,16 @@ export default {
   },
 
   async mounted () {
-    let date = new Date(new Date().toISOString().split('T')[0]).toISOString();
+    let date = new Date(new Date().toISOString().split('T')[0].replace(/-/g, "/")).toISOString();
     if (new Date().getDay() === 5 || new Date().getDay() === 6) {
-      date = new Date(new Date(dayjs().add(7 - new Date().getDay(), 'day').toISOString()).toISOString().split('T')[0]).toISOString()
+      date = new Date(new Date(dayjs().add(7 - new Date().getDay(), 'day').toISOString().replace(/-/g, "/")).toISOString().split('T')[0].replace(/-/g, "/")).toISOString()
     }
     await this.$store.dispatch('vehicles/loadSlotID')
     await this.$store.dispatch('vehicles/loadSlotData')
     console.log(this.getSlotData, 'slot data');
     if (this.getSlotData?.start_time) {
-      date = new Date(this.getSlotData.start_time.slice(0, 10)).toISOString();
-      let days = Math.ceil((new Date(date).getTime() - new Date().getTime())/24/60/60/1000);
+      date = new Date(this.getSlotData.start_time.slice(0, 10).replace(/-/g, "/")).toISOString();
+      let days = Math.ceil((new Date(date.replace(/-/g, "/")).getTime() - new Date().getTime())/24/60/60/1000);
       if (days >= 4) {
         let min = Math.floor(days/5);
         do {
