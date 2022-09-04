@@ -15,7 +15,7 @@
     <form
       class="sf-button--full-width"
       method="post"
-      action="https://testsecureacceptance.cybersource.com/pay"
+      action="https://secureacceptance.cybersource.com/pay"
       id="form1"
       name="form1"
       ref="form"
@@ -155,12 +155,12 @@ export default {
     makeform () {
       const storeId = currentStoreView().storeId
 
-      this.edpqForm.access_key = 'a0b2da90c5d433f6892066d11b97e059';
-      // this.edpqForm.access_key = '98f0ea46fe1a3a66bc929cf8992016f3';
+      // this.edpqForm.access_key = 'a0b2da90c5d433f6892066d11b97e059';
+      this.edpqForm.access_key = '98f0ea46fe1a3a66bc929cf8992016f3';
       this.edpqForm.currency = 'QAR';
       this.edpqForm.locale = storeId === 3 ? 'ar-xn' : 'en-US';
-      this.edpqForm.profile_id = '95937600-7A9B-425E-A47C-4F012E77487F';
-      // this.edpqForm.profile_id = '2F345408-FFA6-4791-BC81-762D0E8320E0';
+      // this.edpqForm.profile_id = '95937600-7A9B-425E-A47C-4F012E77487F';
+      this.edpqForm.profile_id = '2F345408-FFA6-4791-BC81-762D0E8320E0';
       this.edpqForm.signed_field_names = 'access_key,amount,currency,locale,profile_id,reference_number,signed_date_time,signed_field_names,transaction_type,transaction_uuid,bill_to_forename,bill_to_surname,bill_to_email,bill_to_address_line1,bill_to_address_country,bill_to_address_city';
       this.edpqForm.transaction_type = 'sale';
       this.edpqForm.reference_number = this.cartToken;
@@ -181,8 +181,8 @@ export default {
         data.push(item + '=' + edpqForm[item]);
       });
       data = data?.length ? data.join(',') : '';
-      const secretKey = '9f8f91900c274d37925c0be4beebed23b8bc48776e4f4f63a2aa1a0b001dea0140bcac7ae391456989e90ae5e37c6b18c6caca3b5ef64b55a6395a7d0cc0a8d7511c9dae3b8748859c1153206009ad4582e70787acd7488584e6dd7a6ce0f1a3834ade1543da40758044c4fc3849ca0fba812aeca1e0487ebdf04ae2749c1729';
-      // const secretKey = 'a967392922ae4f8abef4d94decba064a53a812b0b3c4431592ef2fd5daf8ef8329d0f68b17b049f0ba7479d1ebb03e258606ae60ba4441d4bdeac3a811d66318eae8cd76048b41cbb9f2d2a78ccc55c99ccd5f2c0e5c4fed9891158a69285a7b9239dbb9886c4b39850b0a48f096b52f40485cd8627a4495afffe0ce32b31775';
+      // const secretKey = '9f8f91900c274d37925c0be4beebed23b8bc48776e4f4f63a2aa1a0b001dea0140bcac7ae391456989e90ae5e37c6b18c6caca3b5ef64b55a6395a7d0cc0a8d7511c9dae3b8748859c1153206009ad4582e70787acd7488584e6dd7a6ce0f1a3834ade1543da40758044c4fc3849ca0fba812aeca1e0487ebdf04ae2749c1729';
+      const secretKey = 'a967392922ae4f8abef4d94decba064a53a812b0b3c4431592ef2fd5daf8ef8329d0f68b17b049f0ba7479d1ebb03e258606ae60ba4441d4bdeac3a811d66318eae8cd76048b41cbb9f2d2a78ccc55c99ccd5f2c0e5c4fed9891158a69285a7b9239dbb9886c4b39850b0a48f096b52f40485cd8627a4495afffe0ce32b31775';
       this.edpqForm.signature = this.$CryptoJS.HmacSHA256(data, secretKey).toString(this.$CryptoJS.enc.Base64);
     }
   },
