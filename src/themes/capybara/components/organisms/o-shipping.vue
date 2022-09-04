@@ -260,6 +260,7 @@ export default {
         this.shipping.zipCode = shippingAddress?.postcode;
         this.shipping.state = shippingAddress?.region?.region;
         this.shipping.phoneNumber = shippingAddress?.telephone;
+        this.$forceUpdate();
       }
     }
   }
