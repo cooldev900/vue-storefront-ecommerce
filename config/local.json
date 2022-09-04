@@ -1170,6 +1170,21 @@
       "logo": "/assets/platin_logo.png",
       "logo_height": "30",
       "color": "#000000"
+    },
+    "صن بروتك": {
+      "logo": "/assets/sunprotech.png",
+      "logo_height": "30",
+      "color": "#eaeaea"
+    },
+    "بادي فينس": {
+      "logo": "/assets/bodyfence.png",
+      "logo_height": "30",
+      "color": "#EFEFEF"
+    },
+    "بروتيك": {
+      "logo": "/assets/protech.png",
+      "logo_height": "30",
+      "color": "#e0003f"
     }
   },
   "recaptcha": {
