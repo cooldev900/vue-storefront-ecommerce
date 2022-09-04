@@ -103,12 +103,8 @@ export default {
       return `${from} - ${to}`;
     },
     appointmentsData () {
-      let today = new Date();
       return this.appointments.filter(appointment => {
-        // if (today.getDate() === new Date(appointment.start_time).getDate()) {
-        //    return new Date(appointment.start_time).getHours() >= 12 && new Date(appointment.start_time).getHours() < 20
-        // } else 
-           return new Date(appointment.start_time).getHours() >= 8 && new Date(appointment.start_time).getHours() < 20
+           return new Date(appointment.start_time.replace(/-/g, "/")).getHours() >= 8 && new Date(appointment.start_time.replace(/-/g, "/")).getHours() < 20
       })
     },
   },
