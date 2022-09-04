@@ -435,6 +435,7 @@ export default {
           let { data } = await axios.post(`${config.api.url}/api/ext/appointments`, params, {
             params
           });
+          await this.$store.commit('vehicles/setSlotData', params);
           // if (data?.success) {
           //   let bookingId = data.result.data[0].id;
           //   let token = this.token ? this.token : '';
