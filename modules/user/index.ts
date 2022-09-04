@@ -15,7 +15,14 @@ export const UserModule: StorefrontModule = async function ({ store }) {
       // TODO: Move it to theme
       store.commit('ui/setSubmenu', {
         depth: 0
-      })
+      });
+      store.dispatch('cart/clear', { sync: false }, { root: true })
+      store.dispatch('checkout/savePersonalDetails', {});
+      store.dispatch('checkout/saveShippingDetails', {});
+      store.dispatch('checkout/savePaymentDetails', {});
+      store.dispatch('checkout/dropPassword')
+      store.dispatch('vehicles/clearCheckoutSteps');
+      store.commit('vehicles/setSlotData', {});
     })
 
     EventBus.$on('user-after-loggedin', receivedData => {
