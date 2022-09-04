@@ -7,5 +7,6 @@ export default interface OrderShippingDetails {
   carrier_code?: string,
   payment_method?: string,
   shippingAddress?: ShippingAddress,
-  billingAddress?: BillingAddress
+  billingAddress?: BillingAddress,
+  payment_method_additional?: any,
 }

@@ -52,7 +52,8 @@ const createOrderData = ({
     },
     method_code: 'freeshipping',
     carrier_code: 'freeshipping',
-    payment_method: payment && payment.code ? payment.code : null
+    payment_method: payment && payment.code ? payment.code : null,
+    payment_method_additional: paymentDetails.paymentMethodAdditional,
   };
 }
 
