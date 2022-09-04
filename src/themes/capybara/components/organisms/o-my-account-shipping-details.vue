@@ -37,7 +37,7 @@
             <SfInput
               v-model="editedAddress.streetName"
               name="streetName"
-              :label="$t('Address Line 1')"
+              :label="$t('Building Number')"
               required
               :valid="!$v.editedAddress.streetName.$error"
               :error-message="$t('Field is required.')"
@@ -46,7 +46,7 @@
             <SfInput
               v-model="editedAddress.apartment"
               name="apartment"
-              :label="$t('Address Line 2')"
+              :label="$t('Street Number & Name')"
               required
               :valid="!$v.editedAddress.apartment.$error"
               :error-message="$t('Field is required.')"
@@ -64,13 +64,13 @@
             <SfInput
               v-model="editedAddress.state"
               name="state"
-              :label="$t('State/Province')"
+              :label="$t('Zone')"
               class="form__element form__element--half form__element--half-even"
             />
             <SfInput
               v-model="editedAddress.postcode"
               name="postcode"
-              :label="$t('Zip-code')"
+              :label="$t('Landmark')"
               required
               :valid="!$v.editedAddress.postcode.$error"
               :error-message="
