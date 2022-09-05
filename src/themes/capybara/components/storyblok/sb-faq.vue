@@ -39,91 +39,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "~@storefront-ui/shared/styles/helpers/breakpoints";
-.mercedes__cart-header{
-  background: #000;
-  padding: var(--spacer-lg) 0;
-.cart-header{
-    display: flex;
-  &__title{
-    width: 50%;
-    h1{
-      color: #fff;
-    }
-  @include for-mobile{
-    width: 100%;
-    text-align: center;
-  }
-  }
-  &__illustration-img{
-    width: 50%;
-    object-fit: contain;
-    align-self: center;
-  }
-}
-}
-#checkout {
-  box-sizing: border-box;
-  @include for-desktop {
-    padding: 0;
-    background: #f4f4f4;
-    margin: 0 auto;
-  }
-}
-
-.grid {
-  margin: 0;
-  padding: 0;
-  @include for-desktop{
-  padding: 0 15px;
-  }
-  @include for-desktop {
-    margin-left: auto;
-    margin-right: auto;
-    padding-right: 12px;
-    padding-left: 12px;
-    max-width: 1280px;
-  }
-}
-
-.checkout {
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-direction: column;
-  flex-direction: column;
-  width: 100%;
-
-  @include for-desktop {
-    --steps-content-padding: 0;
-    flex-direction: row;
-    padding: 0 12px;
-  }
-
-  &__main {
-    background-color: #f4f4f4;
-    width: 100%;
-    order: 2;
-
-    @include for-desktop {
-      flex: 1;
-      width: 66%;
-      order: 1;
-    }
-  }
-
-  &__aside {
-    padding: 0px;
-    order: 1;
-
-    @include for-desktop {
-      padding: 16px;
-      width: 33%;
-      order: 2;
-    }
-  }
-}
 .sf-accordion{
   @include for-mobile{
-    padding: 0 10px
+    padding: 0
   }
 }
 ::v-deep .sf-steps__content {
@@ -178,5 +96,6 @@ export default {
 }
 ::v-deep .sf-accordion-item__header{
    font-weight: 700 !important;
+   border: none;
 }
 </style>

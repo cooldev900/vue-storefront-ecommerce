@@ -339,7 +339,7 @@ export default {
       margin: var(--spacer-sm) 0 0 0;
     }
     &--secondary {
-      margin: var(--spacer-sm) 0 var(--spacer-sm) var(--spacer-base);
+      margin: 0;
     }
   }
   &__button {
@@ -378,7 +378,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: auto;
+  width: 100%;
 }
   .form__action-submit {
     min-width: 117.75px !important;

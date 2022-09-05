@@ -10,6 +10,7 @@ import SbTeaserV2 from './sb-teaser-v2.vue';
 import SbVehicleFinder from './sb-vehicle-finder.vue';
 import SbOurServices from './sb-our-services.vue';
 import SbFaq from './sb-faq.vue';
+import SbAboutUs from './sb-about-us.vue';
 
 export {
   SbHero,
@@ -22,5 +23,6 @@ export {
   SbTeaserV1,
   SbTeaserV2,
   SbVehicleFinder,
-  SbFaq
+  SbFaq,
+  SbAboutUs
 };

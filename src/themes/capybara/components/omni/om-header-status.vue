@@ -82,6 +82,9 @@ export default {
   color: #333;
   z-index: 0;
   position: relative;
+   @include for-mobile{
+     height: 35px;
+   }
   &__inner{
   display: flex;
   justify-content: space-between;
@@ -116,7 +119,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 50px;
+      height: 35px;
     }
   }
 }
