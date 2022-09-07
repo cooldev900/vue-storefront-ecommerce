@@ -125,7 +125,7 @@
                           v-if="filterType == 'price_filter'"
                           v-model="value"
                           :disabled="false"
-                          :config='{"start":[getStartPrice ? getStartPrice : minPrice,getEndPrice ? getEndPrice: maxPrice],"range":{"min":minPrice,"max":maxPrice},"step":1,"tooltips":true}'
+                          :config='{"start":[getStartPrice ? getStartPrice : minPrice,getEndPrice ? getEndPrice: maxPrice],"range":{"min":minPrice,"max":maxPrice},"step":1,"tooltips":true, "direction":slideDirection,}'
                           @change="debouceRange"
                         />
                       <SfFilter
@@ -501,6 +501,14 @@ export default {
     },
     isLazyLoadingEnabled () {
       return this.browserWidth < LAZY_LOADING_ACTIVATION_BREAKPOINT;
+    },
+    slideDirection () {
+      const storeId = currentStoreView().storeId;
+      if (storeId === 3) {
+        return 'rtl'
+      } else {
+        return 'ltr'
+      }
     },
     breadcrumbs () {
       const items = this.getBreadcrumbsRoutes
