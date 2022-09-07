@@ -325,7 +325,7 @@ export default {
   &__whatsapp{
     display: flex;
     position: absolute;
-    right: 50px;
+    right: 54px;
     transform: translateY(-50%);
     top: 50%;
   }

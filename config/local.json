@@ -127,7 +127,7 @@
     "port": 8082
   },
   "api": {
-    "url": "https://alfardan-stage.omninext.co.uk",
+    "url": "https://www.alfardancommercial.com",
     "saveBandwidthOverCache": true,
     "appointmentUrl": "https://portal-api.omninext.app"
   },
