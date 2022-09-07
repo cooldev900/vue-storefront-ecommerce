@@ -36,6 +36,7 @@
   .sf-checkbox__label{
     margin: 0 var(--spacer-sm) 0 0;
   }
+
   .sf-filter__count{
     margin: 0 auto 0 var(--spacer-sm)
   }
@@ -86,5 +87,39 @@
 
   .orders__element--right {
     text-align: left;
+  }
+  .mobile-icon{
+    &__cart{
+      position: absolute;
+      left: 52px;
+      right: auto;
+      transform: translateY(-50%);
+      top: 50%;
+    }
+    &__burger{
+      display: flex;
+      position: absolute;
+      right: 15px;
+      left: auto;
+      transform: translateY(-50%);
+      top: 50%;
+    }
+    &__whatsapp{
+      display: flex;
+      position: absolute;
+      left: 18px;
+      right: auto;
+      transform: translateY(-50%);
+      top: 50%;
+    }
+     &__search{
+      display: flex;
+      position: absolute;
+      right: 50px;
+      left: auto;
+      fill: #fff;
+      transform: translateY(-50%);
+      top: 50%;
+    }
   }
 }

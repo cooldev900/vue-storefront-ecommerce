@@ -192,7 +192,7 @@
                 :brand-color="product.brand_colour"
                 link-tag="router-link"
                 :wishlist-icon="false"
-                offer="Save 10% with code NEW10"
+                :offer="product.promotion"
                 promotion="Mobile Fitting Service Available"
                 :waranty="product.usp1"
                 :usp2="product.usp2"
