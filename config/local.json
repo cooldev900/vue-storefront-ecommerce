@@ -127,14 +127,14 @@
     "port": 8082
   },
   "api": {
-    "url": "https://www.alfardancommercial.com",
+    "url": "https://alfardancommercial.com",
     "saveBandwidthOverCache": true,
     "appointmentUrl": "https://portal-api.omninext.app"
   },
   "elasticsearch": {
     "httpAuth": "",
     "host": "/api/catalog",
-    "index": "alfardan_1",
+    "index": "alfardanlive_1",
     "min_score": 0.02,
     "csrTimeout": 5000,
     "ssrTimeout": 1000,
@@ -212,7 +212,7 @@
       "appendStoreCode": true,
       "elasticsearch": {
         "host": "/api/catalog",
-        "index": "alfardan_3"
+        "index": "alfardanlive_3"
       },
       "tax": {
         "sourcePriceIncludesTax": false,
