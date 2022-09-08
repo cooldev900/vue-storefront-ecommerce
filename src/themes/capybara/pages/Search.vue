@@ -283,7 +283,7 @@
                       v-if="filterType == 'price_filter'"
                       v-model="value"
                       :disabled="false"
-                      :config="{&quot;start&quot;:[getStartPrice ? getStartPrice : minPrice,getEndPrice ? getEndPrice: maxPrice],&quot;range&quot;:{&quot;min&quot;:minPrice,&quot;max&quot;:maxPrice},&quot;step&quot;:1,&quot;tooltips&quot;:true}"
+                      :config="{&quot;start&quot;:[getStartPrice ? getStartPrice : minPrice,getEndPrice ? getEndPrice: maxPrice],&quot;range&quot;:{&quot;min&quot;:minPrice,&quot;max&quot;:maxPrice},&quot;step&quot;:1,&quot;tooltips&quot;:true, }"
                       @change="debouceRange"
                     />
                     <SfFilter

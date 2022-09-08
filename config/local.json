@@ -1146,7 +1146,7 @@
     "Protech": {
       "logo": "/assets/protech.png",
       "logo_height": "30",
-      "color": "#e0003f"
+      "color": "#eaeaea"
     },
     "PLATIN": {
       "logo": "/assets/platin_logo.png",
@@ -1186,7 +1186,7 @@
     "بروتيك": {
       "logo": "/assets/protech.png",
       "logo_height": "30",
-      "color": "#e0003f"
+      "color": "#eaeaea"
     }
   },
   "recaptcha": {
