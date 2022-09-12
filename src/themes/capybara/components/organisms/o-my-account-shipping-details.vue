@@ -193,7 +193,7 @@ export default {
         city: '',
         state: '',
         postcode: '',
-        country: '',
+        country: 'QR',
         telephone: ''
       },
       countries: Countries
@@ -229,7 +229,7 @@ export default {
       this.editedAddress.apartment = ''
       this.editedAddress.city = ''
       this.editedAddress.state = ''
-      this.editedAddress.postcode = '0000'
+      this.editedAddress.postcode = ''
       this.editedAddress.country = ''
       this.editedAddress.telephone = ''
     },
@@ -240,7 +240,7 @@ export default {
     updateAddress () {
       this.editedAddress.firstname = this.firstName;
       this.editedAddress.lastname = this.lastName;
-      this.editedAddress.country = 'United Kingdom'
+      this.editedAddress.country = 'Qatar'
       this.$v.$touch();
       if (this.$v.$invalid) {
         this.$store.dispatch('notification/spawnNotification', {
