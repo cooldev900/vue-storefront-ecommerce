@@ -79,6 +79,13 @@ export default {
       this.activePage = title;
     },
     async logout () {
+      await this.$store.dispatch('cart/clear', { sync: false }, { root: true })
+      await this.$store.dispatch('checkout/savePersonalDetails', {});
+      await this.$store.dispatch('checkout/saveShippingDetails', {});
+      await this.$store.dispatch('checkout/savePaymentDetails', {});
+      await this.$store.dispatch('checkout/dropPassword')
+      await this.$store.dispatch('vehicles/clearCheckoutSteps');
+      await this.$store.commit('vehicles/setSlotData', {});
       await this.$store.dispatch('user/logout', {});
       this.$router.push(this.localizedRoute('/'));
     }
