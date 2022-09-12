@@ -80,7 +80,7 @@
         v-model.trim="shipping.zipCode"
         class="form__element form__element--half"
         name="zipCode"
-        :label="$t('Landmark')"
+        :label="$t('Zip/Landmark')"
         required
         :valid="!$v.shipping.zipCode.$error"
         :error-message="
@@ -91,7 +91,6 @@
         @blur="$v.shipping.zipCode.$touch()"
       />
       <SfSelect
-        style="display: none"
         v-model="shipping.country"
         class="form__element form__element--half form__element--half-even form__select sf-select--underlined"
         name="countries"
@@ -156,8 +155,7 @@ export default {
     SfSelect,
     SfHeading,
     SfCheckbox,
-    OmLocator,
-    SfHeading
+    OmLocator
   },
   mixins: [Shipping],
   validations: {
@@ -173,7 +171,7 @@ export default {
       // },
       country: {
         required,
-        minLength: minLength(2)
+        minLength: minLength(1)
       },
       streetAddress: {
         required,
@@ -204,11 +202,11 @@ export default {
       default: (Number) => {}
     }
   },
-  async mounted () {    
+  async mounted () {
     await this.fetchDefaultAddress();
   },
   methods: {
-    async fetchDefaultAddress() {
+    async fetchDefaultAddress () {
       await this.$store.dispatch('checkoutStep/loadAddressId');
       await this.$store.dispatch('checkout/load');
       console.log(!!this.getShippingDetails.streetAddress, 'this.getShippingDetails.streetAddress');
@@ -218,7 +216,7 @@ export default {
         } else {
           this.changeShippingAddress(this.getAddressId);
         }
-      }      
+      }
     },
     async clickContinuePayment () {
       this.$v.$touch();
@@ -226,6 +224,7 @@ export default {
         const id = this.idData.find( row => {
           if (this.$v.shipping[row.name]?.$invalid) return true;
         });
+        console.log(id, 'id');
         if (id) {
           setTimeout(() => { document.getElementById(id.id).scrollIntoView({ behavior: 'smooth' }); }, 0);
         }
@@ -260,6 +259,7 @@ export default {
         this.shipping.zipCode = shippingAddress?.postcode;
         this.shipping.state = shippingAddress?.region?.region;
         this.shipping.phoneNumber = shippingAddress?.telephone;
+        // this.shipping.country = shippingAddress.country_id;
         this.$forceUpdate();
       }
     }

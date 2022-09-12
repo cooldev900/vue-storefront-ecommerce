@@ -87,6 +87,7 @@ export default {
       await this.$store.dispatch('vehicles/clearCheckoutSteps');
       await this.$store.commit('vehicles/setSlotData', {});
       await this.$store.commit('vehicles/setSlotID', -1);
+      await this.$store.commit('checkoutStep/setAddressId', -1);
       await this.$store.dispatch('user/logout', {});
       this.$router.push(this.localizedRoute('/'));
     }

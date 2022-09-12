@@ -45,7 +45,8 @@ export const Shipping = {
         {name: 'city', id: 'City'},
         {name: 'state', id: 'state'},
         {name: 'country', id: 'Country'},
-        {name: 'phoneNumber', id: 'phone'}
+        {name: 'phoneNumber', id: 'phone'},
+        {name: 'zipCode', id: 'zipCode'}
       ]
     }
   },
@@ -96,7 +97,7 @@ export const Shipping = {
     },
     shipToMyAddress: {
       handler () {
-        this.useMyAddress()
+        // this.useMyAddress()
       },
       immediate: true
     },
@@ -106,7 +107,7 @@ export const Shipping = {
       this.shipping.phoneNumber = value.telephone;
     },
     getShippingDetails (value) {
-      if (value.firstName) this.shipping = {...value};
+      if (value?.streetAddress) this.shipping = {...value};
     },
     currentUser: {
       async handler () {
@@ -119,7 +120,7 @@ export const Shipping = {
     // this.checkDefaultShippingAddress()
     // this.checkDefaultShippingMethod()
     // this.changeShippingMethod()
-    if (this.getShippingDetails) this.shipping = {...this.getShippingDetails};
+    if (this.getShippingDetails?.streetAddress) this.shipping = {...this.getShippingDetails};
     // this.changeShippingMethod()
   },
   methods: {
