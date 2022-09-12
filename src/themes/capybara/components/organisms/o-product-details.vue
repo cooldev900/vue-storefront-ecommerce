@@ -16,16 +16,16 @@
     <meta itemProp="availability" :content="availability">
     <meta itemProp="url" :content="product.url_path">
     <div class="product__header">
-     <h1>{{ product.enhanced_title || product.name | htmlDecode }}</h1>
-    <div v-if="product.tyre_size" class="product__header--spec">
-    <p>{{ $t('Tire Size') }}</p><span> {{product.tyre_size}}</span>
-    </div>
-     <div v-else-if="product.oil_type" class="product__header--spec">
-    <p>{{ $t('Oil Type') }}</p><span> {{getAttributeLabelById('oil_type', product.oil_type)}}</span>
-    </div>
+      <h1>{{ product.enhanced_title || product.name | htmlDecode }}</h1>
+      <div v-if="product.tyre_size" class="product__header--spec">
+        <p>{{ $t('Tire Size') }}</p><span> {{ product.tyre_size }}</span>
+      </div>
+      <div v-else-if="product.oil_type" class="product__header--spec">
+        <p>{{ $t('Oil Type') }}</p><span> {{ getAttributeLabelById('oil_type', product.oil_type) }}</span>
+      </div>
       <div v-else-if="product.battery_capacity" class="product__header--spec">
-    <p>{{ $t('Battery Capacity') }}</p><span> {{getAttributeLabelById('battery_capacity', product.battery_capacity)}}</span>
-    </div>
+        <p>{{ $t('Battery Capacity') }}</p><span> {{ getAttributeLabelById('battery_capacity', product.battery_capacity) }}</span>
+      </div>
     </div>
     <div class="product__main">
       <MProductGallery
@@ -37,87 +37,87 @@
       <div class="product__info">
         <SfSticky>
           <div class="product__info--card">
-              <div class="product__brand" :style="{ background: `${product.brand_colour}` }">
-               <img class="brand-logo"
-              :src="product.brand_logo"
+            <div class="product__brand" :style="{ background: `${oeBrands.color}` }">
+              <img class="brand-logo"
+                   :src="oeBrands.logo"
+              >
+            </div>
+            <MProductShortInfo
+              :product="product"
+              :custom-options="productCustomOptions"
+              :reviews="reviews"
+              :stock="productStock"
             />
-          </div>
-          <MProductShortInfo
-            :product="product"
-            :custom-options="productCustomOptions"
-            :reviews="reviews"
-            :stock="productStock"
-          />
-          <OmRadioCheckbox
-            v-if="showFittingCheckbox"
-            v-model="enableFitting"
-            :items="fittingItems"
-            @change="onFittingChange"
-            :price="fittingPrice"
-          />
-          <!-- <MProductOptionsGroup
+            <OmRadioCheckbox
+              v-if="showFittingCheckbox"
+              v-model="enableFitting"
+              :items="fittingItems"
+              @change="onFittingChange"
+              :price="fittingPrice"
+            />
+            <!-- <MProductOptionsGroup
           v-if="product.type_id =='grouped'"
           :product-options="product.product_links"
         /> -->
-          <div>
             <div>
-              <MProductOptionsConfigurable
-                v-if="product.type_id =='configurable'"
-                :product="product"
-                :configuration="productConfiguration"
-              />
-              <!-- <MProductOptionsGroup
+              <div>
+                <MProductOptionsConfigurable
+                  v-if="product.type_id =='configurable'"
+                  :product="product"
+                  :configuration="productConfiguration"
+                />
+                <!-- <MProductOptionsGroup
                 v-if="product.type_id =='grouped'"
                 :product-options="product.product_links"
               /> -->
-              <MProductOptionsBundle
-                v-if="product.bundle_options && product.bundle_options.length > 0"
-                :product="product"
-              />
-              <MProductOptionsCustom
-                v-else-if="product.custom_options && product.custom_options.length > 0"
-                :product="product"
-              />
-              <MProductAddToCart
-                v-if="availability === 'InStock' && (product.price || product.final_price)"
-                class="product__add-to-cart"
-                :product="product"
-                :stock="productStock"
-              />
-              <div v-else style="padding: 20px;">
-              <SfButton
-                class="sf-button--full-width om-btn--primary"
-                @click="showEnquiryModal"
-              >
-                {{ $t('Enquire') }}
-              </SfButton>
+                <MProductOptionsBundle
+                  v-if="product.bundle_options && product.bundle_options.length > 0"
+                  :product="product"
+                />
+                <MProductOptionsCustom
+                  v-else-if="product.custom_options && product.custom_options.length > 0"
+                  :product="product"
+                />
+                <MProductAddToCart
+                  v-if="availability === 'InStock' && (product.price || product.final_price)"
+                  class="product__add-to-cart"
+                  :product="product"
+                  :stock="productStock"
+                />
+                <div v-else style="padding: 20px;">
+                  <SfButton
+                    class="sf-button--full-width om-btn--primary"
+                    @click="showEnquiryModal"
+                  >
+                    {{ $t('Enquire') }}
+                  </SfButton>
+                </div>
+                <button
+                  v-if="!isJpgRender && isFit"
+                  class="open-modal-button"
+                  @click="openSvgViewerModal"
+                >
+                  {{ $t('Open Interactive Parts') }}
+                </button>
+                <SfNotification
+                  visible="true"
+                  persistent="true"
+                  title=""
+                  message="This product is only available for Collection"
+                  action=""
+                  type="warning"
+                  v-if="isCollectionOnly"
+                />
               </div>
-              <button
-                v-if="!isJpgRender && isFit"
-                class="open-modal-button"
-                @click="openSvgViewerModal"
-              >
-                {{ $t('Open Interactive Parts') }}
-              </button>
-              <SfNotification
-                visible="true"
-                persistent="true"
-                title=""
-                message="This product is only available for Collection"
-                action=""
-                type="warning"
-                v-if="isCollectionOnly"
-              />
             </div>
           </div>
-          </div>
-        <ProductUsp
-        :product="product"
-        />
+          <ProductUsp
+            :product="product"
+          />
         </SfSticky>
       </div>
       <div v-if="product.description" class="product-description">
-     <div v-html="product.description" class="product-copy" />
+        <div v-html="product.description" class="product-copy" />
       </div>
     </div>
   </div>
@@ -212,6 +212,9 @@ export default {
           alt: this.product.name
         }
       }));
+    },
+    oeBrands () {
+      return config['oebrands'][this.getAttributeLabelById('oe_brand', this.product.oe_brand)];
     },
     reviews () {
       const baseReviews = get(this.$store.state.review, 'items.items', []);

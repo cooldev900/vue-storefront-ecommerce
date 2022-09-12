@@ -192,7 +192,7 @@
                 :brand-color="product.brand_colour"
                 link-tag="router-link"
                 :wishlist-icon="false"
-                offer="Save 10% with code NEW10"
+                :offer="product.promotion"
                 promotion="Mobile Fitting Service Available"
                 :waranty="product.usp1"
                 :usp2="product.usp2"
@@ -283,7 +283,7 @@
                       v-if="filterType == 'price_filter'"
                       v-model="value"
                       :disabled="false"
-                      :config="{&quot;start&quot;:[getStartPrice ? getStartPrice : minPrice,getEndPrice ? getEndPrice: maxPrice],&quot;range&quot;:{&quot;min&quot;:minPrice,&quot;max&quot;:maxPrice},&quot;step&quot;:1,&quot;tooltips&quot;:true}"
+                      :config="{&quot;start&quot;:[getStartPrice ? getStartPrice : minPrice,getEndPrice ? getEndPrice: maxPrice],&quot;range&quot;:{&quot;min&quot;:minPrice,&quot;max&quot;:maxPrice},&quot;step&quot;:1,&quot;tooltips&quot;:true, }"
                       @change="debouceRange"
                     />
                     <SfFilter

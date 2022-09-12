@@ -382,6 +382,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@storefront-ui/shared/styles/helpers/breakpoints";
 .appointment-selector {
   margin-bottom: 25px;
   .header {
@@ -455,7 +456,6 @@ export default {
 }
 
 .appointment-selector {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   width: 100%;
 
 .schedule-header {
@@ -543,7 +543,10 @@ export default {
     display: flex;
     flex-direction: column;
     cursor: pointer;
-
+    @include for-mobile{
+      height: 50px;
+      font-size: 14px;
+    }
       &--day {
         font-weight: 400;
       }
