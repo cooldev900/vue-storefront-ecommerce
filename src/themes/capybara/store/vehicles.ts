@@ -40,7 +40,7 @@ export const vehiclesStore = {
     appointmentError: ''
   },
   actions: {
-    async clearCheckoutSteps({ dispatch }) {
+    async clearCheckoutSteps ({ dispatch }) {
       console.log('clearCheckout');
       await dispatch('saveStep', -1);
       await dispatch('saveOpens', ['order']);
@@ -91,15 +91,15 @@ export const vehiclesStore = {
       console.log(opens, 'opens');
       commit('setOpens', opens);
     },
-    async loadSlotID({state}) {
+    async loadSlotID ({ state }) {
       let slot_id = await VehicleStorage.getSlotID();
       state.slot_id = slot_id;
     },
-    async loadSlotData({state}) {
+    async loadSlotData ({ state }) {
       let slot_data = await VehicleStorage.getSlotData();
       state.slot_data = slot_data;
     },
-    async setAppointment({commit, dispatch, state, rootGetters}, orderId = null) {
+    async setAppointment ({ commit, dispatch, state, rootGetters }, orderId = null) {
       if (orderId) {
         state.slot_data.order_id = orderId;
       }
@@ -107,25 +107,25 @@ export const vehiclesStore = {
       const customer = personalDetails?.firstName + ' ' + personalDetails.lastName;
       state.slot_data.customer = customer;
       const res = await axios.post(
-        `${config.api.url}/api/ext/appointments`, state.slot_data 
+        `${config.api.url}/api/ext/appointments`, state.slot_data
       );
 
-      if (res.status === 200 ) {
+      if (res.status === 200) {
         dispatch('fetchAppointmentTaken', state.currentDay);
       }
     },
 
-    async deleteAppointment({commit, dispatch, state}, payload) {
+    async deleteAppointment ({ commit, dispatch, state }, payload) {
       const res = await axios.delete(
         `${config.api.url}/api/ext/appointments`, { params: payload }
       );
 
-      if (res.status === 200 ) {
+      if (res.status === 200) {
         dispatch('fetchAppointmentTaken', state.currentDay);
       }
     },
 
-    async fetchAppointmentTaken({commit}, date) {
+    async fetchAppointmentTaken ({ commit }, date) {
       let params = {
         clientID: '28',
         show: '5 days',
@@ -136,14 +136,14 @@ export const vehiclesStore = {
         `${config.api.url}/api/ext/appointments`, { params }
       );
 
-      if (res.status === 200 ) {
+      if (res.status === 200) {
         commit('fetchAppointmentTakenSuccess', res.data.result.data);
       }
     },
-    async saveSelectedTime({commit}, meeting) {
+    async saveSelectedTime ({ commit }, meeting) {
       commit('setSelectedTime', meeting);
     },
-    async saveQTY({commit}, qty) {
+    async saveQTY ({ commit }, qty) {
       commit('setQTY', qty);
     },
     async saveServiceVehicles ({ commit }, serviceVehicles) {
@@ -218,7 +218,7 @@ export const vehiclesStore = {
     }
   },
   mutations: {
-    setAppointmentError(state, value) {
+    setAppointmentError (state, value) {
       state.appointmentError = value;
     },
     setStoryblok (state, payload) {
@@ -238,28 +238,28 @@ export const vehiclesStore = {
       state.isComplete = { ...completes };
       // Vue.set(state, 'isComplete', completes);
     },
-    async setSlotID(state, id) {
+    async setSlotID (state, id) {
       await VehicleStorage.setSlotID(id);
       state.slot_id = id;
     },
-    async setSlotData(state, id) {
+    async setSlotData (state, id) {
       await VehicleStorage.setSlotData(id);
       state.slot_data = id;
     },
-    async setCurrentDay(state, date) {
+    async setCurrentDay (state, date) {
       console.log(date, 'date');
       await VehicleStorage.setCurrentDay(date);
       state.currentDay = date;
     },
-    async fetchAppointmentTakenSuccess(state, data) {
+    async fetchAppointmentTakenSuccess (state, data) {
       console.log(data, 'appointmentsTaken data');
       await VehicleStorage.saveAppointmentTaken(data);
       state.appointmentTaken = [...data];
     },
-    async setQTY(state, qty) {
+    async setQTY (state, qty) {
       Vue.set(state, 'qty', qty);
     },
-    async setSelectedTime(state, meeting) {
+    async setSelectedTime (state, meeting) {
       Vue.set(state, 'selected', meeting);
     },
     async loadMoreServiceVehicles (state) {
@@ -346,7 +346,7 @@ export const vehiclesStore = {
     getAppointmentError: state => {
       return state.appointmentError;
     },
-    getBackFlag: (state)  => {
+    getBackFlag: (state) => {
       return state.backFlag;
     },
     isCompleteData: (state) => {
@@ -358,16 +358,16 @@ export const vehiclesStore = {
     stepData: (state) => {
       return state.step;
     },
-    getSlotID(state) {
+    getSlotID (state) {
       return state.slot_id;
     },
-    getSlotData(state) {
+    getSlotData (state) {
       return state.slot_data;
     },
-    getCurrentDay(state) {
+    getCurrentDay (state) {
       return state.currentDay;
     },
-    getAppointmentsTaken(state) {
+    getAppointmentsTaken (state) {
       return state.appointmentTaken;
     },
     getQty: (state) => {

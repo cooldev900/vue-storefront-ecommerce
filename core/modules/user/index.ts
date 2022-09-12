@@ -15,6 +15,9 @@ export const UserModule: StorefrontModule = async function ({ store }) {
       // TODO: Move it to theme
       store.commit('ui/setSubmenu', {
         depth: 0
+      });
+      store.commit('ui/setSubmenu', {
+        depth: 0
       })
     })
 

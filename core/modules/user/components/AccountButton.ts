@@ -19,8 +19,15 @@ export const AccountButton = {
         EventBus.$emit('modal-show', 'modal-signup')
       }
     },
-    logout () {
-      EventBus.$emit('user-before-logout')
+    async logout () {
+      await this.store.dispatch('cart/clear', { sync: false }, { root: true })
+      await this.store.dispatch('checkout/savePersonalDetails', {});
+      await this.store.dispatch('checkout/saveShippingDetails', {});
+      await this.store.dispatch('checkout/savePaymentDetails', {});
+      await this.store.dispatch('checkout/dropPassword')
+      await this.store.dispatch('vehicles/clearCheckoutSteps');
+      await this.store.commit('vehicles/setSlotData', {});
+      await EventBus.$emit('user-before-logout')
       this.$router.push(this.localizedRoute('/'))
     }
   }
