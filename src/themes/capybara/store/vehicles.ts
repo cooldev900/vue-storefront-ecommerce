@@ -40,7 +40,7 @@ export const vehiclesStore = {
     appointmentError: ''
   },
   actions: {
-    async clearCheckoutSteps ({ dispatch }) {
+    async clearCheckoutSteps ({ dispatch, commit }) {
       console.log('clearCheckout');
       await dispatch('saveStep', -1);
       await dispatch('saveOpens', ['order']);
@@ -49,6 +49,7 @@ export const vehiclesStore = {
         address: false,
         payment: false
       });
+      await commit('setSlotData', null);
     },
     async fetchStoryblok ({ commit }) {
       const result = { global: {}, home: {}, about: {} };

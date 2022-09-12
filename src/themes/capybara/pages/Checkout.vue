@@ -1,112 +1,116 @@
 <template>
-<NoSSR>
-  <div id="checkout">
-    <div v-if="!isThankYouPage" class="checkout grid">
-      <SfLoader :loading="loading" v-show="loading"  class="checkout-loader"/>
-      <div class="checkout__main"  v-show="!loading">
-        <SfAccordion :open="opens" class="accordion">
-          <SfAccordionItem header="order" ref="personalDetails" id="order">
-            <template v-slot:header>
-              <OmCheckoutAccordionHeader
-                :allStep="3"
-                :step="1"
-                step="1"
-                :title="$t('Contact information')"
-                id="order1"
-                :is-complete="isComplete.order"
-              />
-            </template>
-            <div class="form" v-show="!isComplete.order">
-              <OPersonalDetails
-                :is-active="true"
-                :next-accordion="nextAccordion"
-              />
-            </div>
-            <div v-show="isComplete.order">
-              <div class="edit" v-show="editable">
-                <div
-                  role="button"
-                  tabindex="0"
-                  class="edit__inner"
-                  @click="editAccordion(0)"
-                >
-                {{ $t('Edit') }}
+  <NoSSR>
+    <div id="checkout">
+      <div v-if="!isThankYouPage" class="checkout grid">
+        <SfLoader :loading="loading" v-show="loading" class="checkout-loader" />
+        <div class="checkout__main" v-show="!loading">
+          <SfAccordion :open="opens" class="accordion">
+            <SfAccordionItem header="order" ref="personalDetails" id="order">
+              <template v-slot:header>
+                <OmCheckoutAccordionHeader
+                  :all-step="3"
+                  :step="1"
+                  step="1"
+                  :title="$t('Contact information')"
+                  id="order1"
+                  :is-complete="isComplete.order"
+                />
+              </template>
+              <div class="form" v-show="!isComplete.order">
+                <OPersonalDetails
+                  :is-active="true"
+                  :next-accordion="nextAccordion"
+                />
+              </div>
+              <div v-show="isComplete.order">
+                <div class="edit" v-show="editable">
+                  <div
+                    role="button"
+                    tabindex="0"
+                    class="edit__inner"
+                    @click="editAccordion(0)"
+                  >
+                    {{ $t('Edit') }}
+                  </div>
+                </div>
+                <div class="confirm">
+                  <div>{{ $t('Your email') }}: {{ getPersonalDetails.emailAddress }}</div>
+                  <div>{{ $t('Your Name') }}: {{ getFullName }}</div>
+                  <!-- <div>{{ $t('Phone Number') }}: {{getPersonalDetails.telephone}}</div> -->
+                  <div>{{ $t('Your appointment') }}: {{ getBookedTime }}</div>
                 </div>
               </div>
-              <div class="confirm">
-                <div>{{ $t('Your email') }}: {{getPersonalDetails.emailAddress}}</div>
-                <div>{{ $t('Your Name') }}: {{getPersonalDetails.firstName + ' ' + getPersonalDetails.lastName}}</div>
-                <!-- <div>{{ $t('Phone Number') }}: {{getPersonalDetails.telephone}}</div> -->
-                <div>{{ $t('Your appointment') }}: {{ getBookedTime }}</div>
+            </SfAccordionItem>
+            <SfAccordionItem header="address" ref="shipping" id="address">
+              <template v-slot:header>
+                <OmCheckoutAccordionHeader
+                  :all-step="3"
+                  :step="2"
+                  id="address1"
+                  :title="$t('Fitment location')"
+                  :is-complete="isComplete.address"
+                />
+              </template>
+              <div v-show="!isComplete.address">
+                <OShipping :next-accordion="nextAccordion" />
               </div>
-            </div>
-          </SfAccordionItem>
-          <SfAccordionItem header="address" ref="shipping" id="address">
-            <template v-slot:header>
-              <OmCheckoutAccordionHeader
-                :allStep="3"
-                :step="2"
-                id="address1"
-                :title="$t('Fitment location')"
-                :is-complete="isComplete.address"
-              />
-            </template>
-            <div v-show="!isComplete.address">
-              <OShipping :next-accordion="nextAccordion" />
-            </div>
-            <div v-show="isComplete.address">
-              <div class="edit" v-show="editable">
-                <div
-                  role="button"
-                  tabindex="0"
-                  class="edit__inner"
-                  @click="editAccordion(1)"
-                >
-                  {{ $t('Edit') }}
+              <div v-show="isComplete.address">
+                <div class="edit" v-show="editable">
+                  <div
+                    role="button"
+                    tabindex="0"
+                    class="edit__inner"
+                    @click="editAccordion(1)"
+                  >
+                    {{ $t('Edit') }}
+                  </div>
+                </div>
+                <div class="confirm">
+                  <div v-show="locationKind !== 'click_collect_free'">
+                    {{ $t('Fitment location') }} : {{ shippingAddressText }}<br>{{ $t('Phone Number') }} : {{ getShippingDetails.phoneNumber ? getShippingDetails.phoneNumber : '' }}
+                  </div>
+                  <div v-show="locationKind === 'click_collect_free'">
+                    Collection from: {{ activeLocation.location_name }}
+                  </div>
                 </div>
               </div>
-              <div class="confirm">                
-                <div v-show="locationKind !== 'click_collect_free'">{{ $t('Fitment location') }} : {{ shippingAddressText }}<br/>{{ $t('Phone Number') }} : {{ getShippingDetails.phoneNumber ? getShippingDetails.phoneNumber : ''}}</div>
-               <div v-show="locationKind === 'click_collect_free'">Collection from: {{activeLocation.location_name}}</div>
+            </SfAccordionItem>
+            <SfAccordionItem header="payment" ref="payment" id="payment">
+              <template v-slot:header>
+                <OmCheckoutAccordionHeader
+                  :all-step="3"
+                  :step="3"
+                  :title="$t('Payment')"
+                  id="payment1"
+                  :is-complete="isComplete.payment"
+                />
+              </template>
+              <div v-show="!isComplete.payment">
+                <OPayment :next-accordion="nextAccordion" :edit-accordion="editAccordion" :validate-order-before-sending="validateOrderBeforeSending" :place-order="placeOrder" />
               </div>
-            </div>
-          </SfAccordionItem>
-          <SfAccordionItem header="payment" ref="payment" id="payment">
-            <template v-slot:header>
-              <OmCheckoutAccordionHeader
-                :allStep="3"
-                :step="3"
-                :title="$t('Payment')"
-                id="payment1"
-                :is-complete="isComplete.payment"
-              />
-            </template>
-            <div v-show="!isComplete.payment">
-              <OPayment :next-accordion="nextAccordion" :edit-accordion="editAccordion" :validateOrderBeforeSending="validateOrderBeforeSending" :placeOrder="placeOrder"/>
-            </div>
-            <div v-show="isComplete.payment">
-              <div class="edit" v-show="editable">
-                <div
-                  role="button"
-                  tabindex="0"
-                  class="edit__inner"
-                  @click="editAccordion(3)"
-                >
-                  {{ $t('Edit') }}
+              <div v-show="isComplete.payment">
+                <div class="edit" v-show="editable">
+                  <div
+                    role="button"
+                    tabindex="0"
+                    class="edit__inner"
+                    @click="editAccordion(3)"
+                  >
+                    {{ $t('Edit') }}
+                  </div>
                 </div>
               </div>
-            </div>
-          </SfAccordionItem>
-        </SfAccordion>
+            </SfAccordionItem>
+          </SfAccordion>
+        </div>
+        <div class="checkout__aside desktop-only" v-show="!loading">
+          <OOrderSummary />
+        </div>
       </div>
-      <div class="checkout__aside desktop-only"  v-show="!loading">
-        <OOrderSummary />
-      </div>
+      <OOrderConfirmation v-if="isThankYouPage" />
+      <div />
     </div>
-    <OOrderConfirmation v-if="isThankYouPage" />
-    <div />
-  </div>
-</NoSSR>
+  </NoSSR>
 </template>
 <script>
 import Checkout from '@vue-storefront/core/pages/Checkout';
@@ -183,7 +187,7 @@ export default {
       step: -1,
       opens: ['order'],
       editable: true,
-      loading: true,
+      loading: true
     };
   },
   computed: {
@@ -194,13 +198,17 @@ export default {
       getShippingDetails: 'checkout/getShippingDetails',
       getPersonalDetails: 'checkout/getPersonalDetails',
       getPaymentDetails: 'checkout/getPaymentDetails',
-      productsInCart: 'cart/getCartItems',      
+      productsInCart: 'cart/getCartItems',
       activeLocation: 'omLocator/activeLocation',
       locationKind: 'omLocator/locationKind',
       isVirtualCart: 'cart/isVirtualCart',
       currentDay: 'vehicles/getCurrentDay',
-      slotData: 'vehicles/getSlotData',
+      slotData: 'vehicles/getSlotData'
     }),
+    getFullName () {
+      if (!this.getPersonalDetails?.firstName) return '';
+      return this.getPersonalDetails.firstName + ' ' + this.getPersonalDetails.lastName;
+    },
     currentStep () {
       return this.steps.findIndex((step) => this.activeSection[step.key]);
     },
@@ -209,27 +217,27 @@ export default {
     },
     shippingAddressText () {
       let excludeFields = ['firstName', 'lastName', 'emailAddress', 'shippingCarrier', 'shippingMethod', 'region_id', 'telephone', 'phoneNumber', 'country'];
-      return Object.keys(this.getShippingDetails).filter(payment => !excludeFields.includes(payment) && this.getShippingDetails[payment]).map(key => this.getShippingDetails[key]).filter(value =>!!value).join(', ');
-    },    
-    getBookedTime() {
+      return Object.keys(this.getShippingDetails).filter(payment => !excludeFields.includes(payment) && this.getShippingDetails[payment]).map(key => this.getShippingDetails[key]).filter(value => !!value).join(', ');
+    },
+    getBookedTime () {
       if (this.slotData?.id) {
         let date = this.slotData.start_time.slice(0, 11);
         let start_time = this.slotData.start_time.slice(11, 13);
         let end_time = this.slotData.end_time.slice(11, 13);
-        start_time = start_time === '12' ? '12:00 PM' : start_time > 12 ? (start_time - 12) +  ":00 PM" : start_time +  ":00 AM";
-        end_time = end_time === '12' ? '12:00 PM' : end_time > 12 ? (end_time - 12) +  ":00 PM" : end_time +  ":00 AM";
+        start_time = start_time === '12' ? '12:00 PM' : start_time > 12 ? (start_time - 12) + ':00 PM' : start_time + ':00 AM';
+        end_time = end_time === '12' ? '12:00 PM' : end_time > 12 ? (end_time - 12) + ':00 PM' : end_time + ':00 AM';
         return `${date} ${start_time} ~ ${end_time}`;
       } else {
         return '';
       }
-    },
+    }
   },
   methods: {
     ...mapActions({
       openMicrocart: 'ui/toggleSidebar',
       saveCompete: 'vehicles/saveCompete',
       saveOpens: 'vehicles/saveOpens',
-      saveStep: 'vehicles/saveStep',
+      saveStep: 'vehicles/saveStep'
     }),
     nextAccordion (index) {
       // if (index === 0 && this.locationKind === 'click_collect_free') {
@@ -252,8 +260,8 @@ export default {
       this.isComplete[Object.keys(this.models)[index]] = true;
       // if (this.isComplete[Object.keys(this.models)[index + 1]] === true) index++;
 
-      if (index < 2) { 
-      this.step = index + 1;
+      if (index < 2) {
+        this.step = index + 1;
         this.opens = [...this.opens, Object.keys(this.models)[this.step]];
       }
       if (index < 3) {
@@ -275,7 +283,7 @@ export default {
         opens.push(Object.keys(this.models)[i]);
       }
 
-      for (let i = index ; i < 4; i++) {
+      for (let i = index; i < 4; i++) {
         this.isComplete[Object.keys(this.models)[i]] = false;
       }
 
@@ -350,7 +358,7 @@ export default {
       this.loading = false;
     }
   },
-  async mounted () { 
+  async mounted () {
     await this.$store.commit('omLocator/setLocationKind', 'delivery_estimate_free');
     if (Object.keys(this.isCompleteData).length > 2) {
       this.isComplete = { ...this.isCompleteData };
@@ -364,7 +372,7 @@ export default {
     setTimeout(this.disableLoader, 2000);
   },
   watch: {
-    isThankYouPage() {
+    isThankYouPage () {
       this.goto();
     },
     isCompleteData (value) {
@@ -383,7 +391,7 @@ export default {
       if (value === 0) {
         this.$store.dispatch('vehicles/fetchAppointmentTaken', this.currentDay);
       }
-      if (this.step !== this.stepData) { this.step = this.stepData; this.goto();}
+      if (this.step !== this.stepData) { this.step = this.stepData; this.goto(); }
     }
   }
 };
