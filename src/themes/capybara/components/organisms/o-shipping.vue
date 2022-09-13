@@ -83,14 +83,10 @@
         :label="$t('Zip/Landmark')"
         required
         :valid="!$v.shipping.zipCode.$error"
-        :error-message="
-          !$v.shipping.zipCode.required
-            ? $t('Field is required')
-            : $t('Zip-code must have at least 3 letters.')
-        "
+        :error-message="$t('Field is required')"
         @blur="$v.shipping.zipCode.$touch()"
       />
-      <SfSelect
+      <!-- <SfSelect
         v-model="shipping.country"
         class="form__element form__element--half form__element--half-even form__select sf-select--underlined"
         name="countries"
@@ -107,7 +103,7 @@
         >
           {{ country.name }}
         </SfSelectOption>
-      </SfSelect>
+      </SfSelect> -->
       <SfInput
         v-model.trim="shipping.phoneNumber"
         class="form__element"
@@ -169,10 +165,10 @@ export default {
       //   required,
       //   unicodeAlpha
       // },
-      country: {
-        required,
-        minLength: minLength(1)
-      },
+      // country: {
+      //   required,
+      //   minLength: minLength(1)
+      // },
       streetAddress: {
         required,
         unicodeAlphaNum
@@ -259,7 +255,7 @@ export default {
         this.shipping.zipCode = shippingAddress?.postcode;
         this.shipping.state = shippingAddress?.region?.region;
         this.shipping.phoneNumber = shippingAddress?.telephone;
-        // this.shipping.country = shippingAddress.country_id;
+        this.shipping.country = shippingAddress.country_id;
         this.$forceUpdate();
       }
     }

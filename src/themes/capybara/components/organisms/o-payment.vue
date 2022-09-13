@@ -96,7 +96,7 @@
         v-if="!sendToBillingAddress"
         v-model.trim="payment.zipCode"
         class="form__element form__element--half"
-        name="zipCode"
+        name="zipCode1"
         :label="$t('Landmark')"
         required
         :valid="!$v.payment.zipCode.$error"
@@ -510,7 +510,8 @@ export default {
         { name: 'city', id: 'city' },
         { name: 'state', id: 'state' },
         { name: 'country', id: 'countries' },
-        { name: 'phoneNumber', id: 'phone' }
+        { name: 'phoneNumber', id: 'phone' },
+        { name: 'zipCode', id: 'zipCode1' }
       ],
       loading: false
     };

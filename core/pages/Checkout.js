@@ -213,6 +213,7 @@ export default {
     },
     onAfterShippingDetails (receivedData, validationResult) {
       this.shipping = receivedData
+      this.shipping.country = config.tax.defaultCountry
       this.validationResults.shipping = validationResult
       this.activateSection('payment')
       this.saveShippingDetails()
@@ -241,6 +242,7 @@ export default {
       this.shipping.firstName = value.firstName;
       this.shipping.lastName = value.lastName;
       this.shipping.phoneNumber = value.telephone;
+      this.shipping.country = config.tax.defaultCountry;
     },
 
     checkStocks () {

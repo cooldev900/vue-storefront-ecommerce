@@ -107,11 +107,14 @@ export const Shipping = {
       this.shipping.phoneNumber = value.telephone;
     },
     getShippingDetails (value) {
-      if (value?.streetAddress) this.shipping = {...value};
+      if (value?.streetAddress) {
+        this.shipping = {...value};
+      }
     },
     currentUser: {
       async handler () {
         await this.fetchDefaultAddress();
+        this.shipping.country = config.tax.defaultCountry;
       },
       deep: true,
     },
@@ -120,7 +123,10 @@ export const Shipping = {
     // this.checkDefaultShippingAddress()
     // this.checkDefaultShippingMethod()
     // this.changeShippingMethod()
-    if (this.getShippingDetails?.streetAddress) this.shipping = {...this.getShippingDetails};
+    if (this.getShippingDetails?.streetAddress) {
+      this.shipping = {...this.getShippingDetails};
+      this.shipping.country = config.tax.defaultCountry;
+    }
     // this.changeShippingMethod()
   },
   methods: {
