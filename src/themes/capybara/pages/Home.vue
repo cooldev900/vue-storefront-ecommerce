@@ -70,12 +70,16 @@ export default {
       this.openModal({ name: ModalList.Auth, payload: 'register' })
     }
 
+    if (query?.contact === 'open') {
+      this.openModal({ name: ModalList.OmContactModal, payload: { orderId: '' } })
+    }
+
     this.$store.commit('vehicles/toggleSetPrompt', true);
     if (!this.isLoggedIn && localStorage.getItem('redirect')) {
       this.$bus.$emit('modal-show', 'modal-signup');
     }
     this.$gtm.trackView('MyScreenName', 'currentPath');
-    
+
     const {resetpassword, token} = this.$route.query;
     if (resetpassword) {
       this.openModal({ name: ModalList.Auth, payload: 'forgot-reset' })
